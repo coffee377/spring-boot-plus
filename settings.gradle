@@ -1,0 +1,8 @@
+rootProject.name = 'spring-boot-starter-api'
+
+/* 引入子模块 */
+include 'api-core'
+include 'api-security'
+include 'api-extends'
+include 'api-demo'
+

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+  error:
+    path: /cerror
+spring:
+  application:
+    name: API Platform
+    version: 1.0
+  profiles:
+    active: local
+logging:
+  level:
+    root: info
+    com:
+      voc: debug
+      baomidou: warn
+      alibaba: warn

@@ -1,0 +1,124 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'org.springframework.boot' version '2.3.4.RELEASE' apply(false)
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE' apply(false)
+    id 'org.asciidoctor.convert' version '1.5.8' apply(false)
+}
+
+group = 'com.voc.api'
+version = '0.0.1-SNAPSHOT'
+
+configurations {
+    developmentOnly
+}
+
+/* 所有子项目的通用配置 */
+subprojects {
+//    定制版本管理 https://docs.spring.io/spring-boot/docs/2.3.4.RELEASE/reference/htmlsingle/#dependency-versions-properties
+    ext {
+        set('snippetsDir', file("build/generated-snippets"))
+//        set('lombok.version', '1.18.8')
+    }
+
+    /* 使用二进制插件 */
+    apply plugin: 'java' /* java是Gradle的核心插件，是内置的，内置插件不需要配置依赖路径 */
+    apply plugin: 'idea' /* 同上  让Gradle自动生成Intellij的项目文件*/
+
+    /* 注意gradle插件不再自动应用，所以这里需要指定 */
+    apply plugin: 'org.springframework.boot'
+    /* 依赖管理插件仍然是一个spring-boot-gradle-plugin传递依赖，所以无需在build.gradle配置中明确列出此依赖。 */
+    apply plugin: 'io.spring.dependency-management' /* 依赖管理，用来传递spring的依赖 */
+    apply plugin: 'org.asciidoctor.convert' /* 依赖管理，用来传递spring的依赖 */
+
+    group = 'com.voc.api'
+    version = '0.0.1'
+
+    /* 指定jdk版本 */
+    sourceCompatibility = '1.8'
+
+    /* java编译的时候缺省状态下会因为中文字符而失败 */
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+    repositories {
+        /* Local */
+        maven { url "file://D:/SoftWare/Maven/repository" }
+        /* Ali Yun central仓和jcenter仓的聚合仓 */
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        /* google */
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        /* gradle-plugin */
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        /* spring */
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        /* spring-plugin */
+        maven { url 'https://maven.aliyun.com/repository/spring-plugin' }
+        /* Company */
+        maven { url "http://192.168.44.155/nexus/content/groups/public/" }
+        /* FanRuan */
+        maven { url "http://mvn.finedevelop.com/repository/maven-public/" }
+    }
+
+    configurations {
+        runtimeClasspath {
+//        extendsFrom developmentOnly
+        }
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    /* 添加通用依赖 */
+    dependencies {
+//        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        annotationProcessor 'org.projectlombok:lombok'
+
+//        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+////            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+//        }
+//        testImplementation 'org.testcontainers:junit-jupiter'
+    }
+
+
+    bootJar.enabled(false)
+
+//    bootRun {
+//        sourceResources sourceSets.main
+//    }
+
+    tasks.withType(Delete) {
+        delete('out')
+    }
+
+
+    tasks.withType(JavaCompile) {
+//        sourceCompatibility = JavaVersion.VERSION_1_8
+//        targetCompatibility = JavaVersion.VERSION_1_8
+        /*在单独的守护程序进程中启用编译，默认false*/
+        options.fork = true
+        /*编译JAVA文件时采用UTF-8*/
+        options.encoding = "UTF-8"
+        /*增量编译，默认true*/
+//        options.incremental = true
+        /*注解处理器*/
+//        options.annotationProcessorPath = configurations.annotationProcessor
+//    options.compilerArgs.add("-XDignore.symbol.file=true")
+    }
+
+    test {
+        outputs.dir snippetsDir
+        useJUnitPlatform()
+    }
+
+    asciidoctor {
+        inputs.dir snippetsDir
+        dependsOn test
+    }
+}
+
+dependencies {
+//    implementation project(':api-core')
+//    implementation project(':api-security')
+//    implementation project(':api-extends')
+}
