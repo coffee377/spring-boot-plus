@@ -1,0 +1,4 @@
+## Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.voc.api.config.json.JacksonAutoConfiguration,\
+com.voc.api.config.ApiAutoConfiguration

@@ -1,6 +1,9 @@
 package com.voc.api.entity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.voc.api.bean.IBean;
+import com.voc.api.utils.SpringUtil;
+import lombok.SneakyThrows;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,9 +14,11 @@ import com.voc.api.bean.IBean;
  */
 public class JsonEntity implements IBean {
 
+    @SneakyThrows
     @Override
     public String toString() {
-        return super.toString();
+        ObjectMapper mapper = SpringUtil.getBean(ObjectMapper.class);
+        return mapper.writeValueAsString(this);
     }
 
 }
