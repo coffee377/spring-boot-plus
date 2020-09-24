@@ -6,18 +6,36 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/09/23 11:03
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("${api.prefix:/api}")
 public class TestApiController {
 
     @GetMapping("/test")
     public Result test() {
-        return Result.success("测试数据888888");
+        Demo demo = new Demo();
+        demo.setName("张三");
+        demo.setAge(30);
+        demo.setBirthday(LocalDateTime.now());
+        demo.setBirthday2(LocalDate.now());
+        demo.setBirthday3(LocalTime.now());
+        demo.setBirthday4(new Date());
+        demo.setList(Collections.singletonList("demo"));
+        HashMap<String, Object> hashMap = new HashMap<>(0);
+        hashMap.put("name", "张三");
+        demo.setMap(hashMap);
+        return Result.success(demo);
     }
 
     @GetMapping("/test2")

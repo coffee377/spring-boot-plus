@@ -1,7 +1,5 @@
 server:
   port: 8080
-  error:
-    path: /cerror
 spring:
   application:
     name: API Platform
@@ -10,8 +8,11 @@ spring:
     active: local
 logging:
   level:
-    root: info
+    root: warn
     com:
-      voc: debug
+      voc: warn
       baomidou: warn
       alibaba: warn
+api:
+#  API 前缀
+  prefix: /api

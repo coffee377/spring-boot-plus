@@ -2,9 +2,11 @@ bootJar {
     enabled(false)
 }
 
+jar.enabled = true
+
 dependencies {
-//    implementation 'org.springframework.boot:spring-boot'
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    runtime 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation project(':api-security')
 }

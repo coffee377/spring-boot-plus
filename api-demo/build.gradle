@@ -1,11 +1,18 @@
 bootJar {
     enabled(true)
 }
-bootRun {
-    sourceResources sourceSets.main
+
+jar {
+    enabled(false)
 }
+
+//bootRun {
+//    sourceResources sourceSets.main
+//}
+
 dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-web'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation project(':api-core')
 }
