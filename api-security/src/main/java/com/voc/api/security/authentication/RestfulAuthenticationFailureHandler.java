@@ -1,8 +1,13 @@
 package com.voc.api.security.authentication;
 
+import com.voc.api.response.BaseBizError;
+import com.voc.api.response.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -17,33 +22,26 @@ import java.io.IOException;
  * @email coffee377@dingtalk.com
  * @time 2017/12/27 18:01
  */
-@Component
 @Slf4j
-public class RestfulAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+@Component
+public class RestfulAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        if (log.isInfoEnabled()) {
-            log.info("用户登录失败 - {}", exception.getMessage());
+        if (log.isErrorEnabled()) {
+            log.error("用户登录失败 - {}", exception.getMessage());
         }
-//		if (AjaxUtils.isAjax(request)) {
-//			Result failure = null;
-//			if (exception instanceof BadCredentialsException || exception instanceof UsernameNotFoundException) {
-//				failure = Result.failure(ErrorCode.INVALID_USERNAME_OR_PASSWORD);
-//			} else if (exception instanceof SessionAuthenticationException) {
-//				failure = Result.failure("111", exception.getMessage());
-//			}
-//			String result = JSON.toJSONString(failure);
-//			if (log.isDebugEnabled()) {
-//				log.debug("响应 JSON 数据为：{}", result);
-//			}
-//			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-//			response.getWriter().write(result);
-//		} else {
-//			/*登陆失败时重定向的地址*/
-//			super.setUseForward(false);
-//			super.setDefaultFailureUrl("/");
-//			super.onAuthenticationFailure(request, response, exception);
-//		}
+        Result failure = Result.failure(exception.getMessage());
+        if (exception instanceof BadCredentialsException || exception instanceof UsernameNotFoundException) {
+            failure = Result.failure(BaseBizError.INVALID_USERNAME_OR_PASSWORD);
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }
+        String result = failure.toString();
+        if (log.isDebugEnabled()) {
+            log.debug("响应 JSON 数据为：{}", result);
+        }
+        response.setContentType("application/json;charset=utf-8");
+        response.setCharacterEncoding("utf-8");
+        response.getWriter().write(result);
     }
 }

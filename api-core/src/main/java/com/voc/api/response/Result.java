@@ -1,9 +1,10 @@
 package com.voc.api.response;
 
-import com.voc.api.bean.IBean;
 import com.voc.api.entity.JsonEntity;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Arrays;
 
 /**
  * 响应数据封装
@@ -15,7 +16,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Result extends JsonEntity implements IBean {
+public class Result extends JsonEntity {
 
     /**
      * 是否成功
@@ -71,10 +72,14 @@ public class Result extends JsonEntity implements IBean {
     /**
      * 成功时响应
      *
-     * @param data 数据
-     * @return Result>
+     * @param data    数据
+     * @param message 信息
+     * @return Result
      */
-    public static Result success(Object data) {
+    public static Result success(Object data, String... message) {
+        if (message != null && message.length > 0) {
+            return of(0, message[0], data);
+        }
         return of(BaseBizError.OK, data);
     }
 
@@ -105,6 +110,10 @@ public class Result extends JsonEntity implements IBean {
      */
     public static Result failure(IBizError bizError) {
         return failure(bizError, null);
+    }
+
+    public static Result failure(String message) {
+        return of(99, message, null);
     }
 
 }

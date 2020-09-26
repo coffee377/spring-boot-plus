@@ -1,10 +1,12 @@
 package com.voc.api.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,6 +21,7 @@ import java.util.Set;
  * @time 2018/01/15 19:59
  */
 @Slf4j
+@Component("userDetailsService")
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override

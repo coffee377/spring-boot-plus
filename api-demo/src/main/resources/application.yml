@@ -11,8 +11,6 @@ logging:
     root: warn
     com:
       voc: warn
-      baomidou: warn
-      alibaba: warn
 api:
 #  API 前缀
   prefix: /api
