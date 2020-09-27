@@ -3,6 +3,7 @@ package com.voc.api.controller;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,6 +23,7 @@ import java.util.Set;
 public class Demo {
     private String name;
     private Integer age;
+    private Instant instant;
     private LocalDateTime birthday;
     private LocalDate birthday2;
     private LocalTime birthday3;

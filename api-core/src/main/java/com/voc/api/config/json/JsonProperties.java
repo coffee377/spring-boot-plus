@@ -15,7 +15,15 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @ConfigurationProperties(prefix = "api.json")
 public class JsonProperties {
 
+    /**
+     * json 类型
+     */
     private JsonType type = JsonType.JACKSON;
+
+    /**
+     * 是否开启 utc 时间戳
+     */
+    private boolean utcInstant = false;
 
     @NestedConfigurationProperty
     private JsonFormat format = new JsonFormat();

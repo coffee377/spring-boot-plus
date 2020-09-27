@@ -26,6 +26,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -129,6 +130,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.csrf().disable().headers().frameOptions().disable();
 //        http.formLogin().disable();
 
@@ -146,11 +148,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             handling.accessDeniedHandler(restfulAccessDeniedHandler);
         });
 
-//        /* 注销处理 */
-//        http.logout(httpSecurityLogoutConfigurer -> {
-//            httpSecurityLogoutConfigurer.logoutUrl("/logout");
-//            httpSecurityLogoutConfigurer.logoutSuccessHandler(restfulLogoutSuccessHandler);
-//        });
+        /* 注销处理 */
+        http.logout(httpSecurityLogoutConfigurer -> {
+            httpSecurityLogoutConfigurer.logoutUrl("/logout");
+            httpSecurityLogoutConfigurer.logoutSuccessHandler(restfulLogoutSuccessHandler);
+        });
 //
 //        /* 禁用 session */
 ////        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -29,6 +30,7 @@ public class TestApiController extends BaseController {
         Demo demo = new Demo();
         demo.setName("张三");
         demo.setAge(30);
+        demo.setInstant(Instant.now());
         demo.setBirthday(LocalDateTime.now());
         demo.setBirthday2(LocalDate.now());
         demo.setBirthday3(LocalTime.now());

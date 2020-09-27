@@ -42,7 +42,7 @@ public class BeanConfig {
                         .authorizationUri("https://github.com/login/oauth/authorize")
                         .tokenUri("https://github.com/login/oauth/access_token")
                         .userInfoUri("https://api.github.com/user")
-                        .userNameAttributeName("id")
+                        .userNameAttributeName("login")
                         .clientName("GitHub")
                         .build()
         );
