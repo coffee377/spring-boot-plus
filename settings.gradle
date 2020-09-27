@@ -1,4 +1,4 @@
-rootProject.name = 'spring-boot-starter-api'
+rootProject.name = 'api'
 
 /* 引入子模块 */
 include 'api-core'

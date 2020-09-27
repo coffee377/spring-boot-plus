@@ -1,8 +1,11 @@
 package com.voc.api.utils;
 
+import lombok.Getter;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,13 +14,21 @@ import org.springframework.stereotype.Component;
  * @time 2020/09/24 19:44
  */
 @Component
-public class SpringUtil implements ApplicationContextAware {
+public class SpringUtil implements ApplicationContextAware, EnvironmentAware {
     private static ApplicationContext applicationContext = null;
+    private static Environment environment = null;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (SpringUtil.applicationContext == null) {
             SpringUtil.applicationContext = applicationContext;
+        }
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        if (SpringUtil.environment == null) {
+            SpringUtil.environment = environment;
         }
     }
 
@@ -44,6 +55,7 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 通过class获取Bean
+     *
      * @param clazz
      * @param <T>
      * @return T
@@ -54,6 +66,7 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 通过name,以及Clazz返回指定的Bean
+     *
      * @param name
      * @param clazz
      * @param <T>
@@ -62,4 +75,14 @@ public class SpringUtil implements ApplicationContextAware {
     public static <T> T getBean(String name, Class<T> clazz) {
         return getApplicationContext().getBean(name, clazz);
     }
+
+
+    public static String getProperty(String key) {
+        return environment.getProperty(key);
+    }
+
+    public static <T> T getProperty(String key, Class<T> targetType) {
+        return environment.getProperty(key, targetType);
+    }
+
 }

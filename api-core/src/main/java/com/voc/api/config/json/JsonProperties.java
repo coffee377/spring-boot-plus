@@ -25,6 +25,9 @@ public class JsonProperties {
      */
     private boolean utcInstant = false;
 
+    /**
+     * json 格式
+     */
     @NestedConfigurationProperty
     private JsonFormat format = new JsonFormat();
 

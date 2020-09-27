@@ -1,5 +1,7 @@
 package com.voc.api.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.voc.api.response.BaseBizError;
 import com.voc.api.response.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,8 +28,14 @@ import java.util.HashMap;
 @RequestMapping("${api.prefix:/api}")
 public class TestApiController extends BaseController {
 
+//    @Resource
+//    private Gson gson;
+
+    @Resource
+    private ObjectMapper mapper;
+
     @GetMapping("/test")
-    public Result test() {
+    public Result test() throws JsonProcessingException {
         Demo demo = new Demo();
         demo.setName("张三");
         demo.setAge(30);
@@ -39,7 +48,13 @@ public class TestApiController extends BaseController {
         HashMap<String, Object> hashMap = new HashMap<>(0);
         hashMap.put("name", "张三");
         demo.setMap(hashMap);
+
+        String result = mapper.writeValueAsString(demo);
+
+        Demo demo1 = mapper.readValue(result, Demo.class);
+
         return Result.success(demo);
+
     }
 
     @GetMapping("/test2")

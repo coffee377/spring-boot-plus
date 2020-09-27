@@ -1,10 +1,12 @@
 package com.voc.api.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Wu Yujie
@@ -13,15 +15,15 @@ import javax.annotation.Resource;
  */
 @Configuration
 @EnableConfigurationProperties({ApiProperties.class})
-public class ApiAutoConfiguration {
+public class ApiAutoConfiguration implements WebMvcConfigurer {
 
     @Resource
     private ApiProperties api;
 
 
-//    @Bean
-//    public Object fdf() {
-//        return new Object();
-//    }
-
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        GsonHttpMessageConverter gsonHttpMessageConverter = new GsonHttpMessageConverter();
+//        converters.add(gsonHttpMessageConverter);
+    }
 }

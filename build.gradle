@@ -98,15 +98,12 @@ subprojects {
     }
 
     tasks.withType(JavaCompile) {
-//        sourceCompatibility = JavaVersion.VERSION_1_8
-//        targetCompatibility = JavaVersion.VERSION_1_8
-        /*在单独的守护程序进程中启用编译，默认false*/
+        /* 在单独的守护程序进程中启用编译，默认false */
         options.fork = true
-        /*编译JAVA文件时采用UTF-8*/
+        /* 编译JAVA文件时采用UTF-8 */
         options.encoding = "UTF-8"
-        /*增量编译，默认true*/
+        /* 增量编译，默认true */
         options.incremental = true
-//    options.compilerArgs.add("-XDignore.symbol.file=true")
     }
 
     test {

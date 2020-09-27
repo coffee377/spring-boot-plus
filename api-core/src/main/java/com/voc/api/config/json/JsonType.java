@@ -9,7 +9,10 @@ import lombok.Getter;
  */
 @Getter
 public enum JsonType {
+
     JACKSON,
     GSON,
-    FASTJSON
+    JSONB,
+    FASTJSON,
+
 }

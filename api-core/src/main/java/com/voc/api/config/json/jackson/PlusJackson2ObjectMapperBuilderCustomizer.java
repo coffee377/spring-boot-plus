@@ -2,6 +2,7 @@ package com.voc.api.config.json.jackson;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.voc.api.config.json.JsonProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -50,10 +51,19 @@ public class PlusJackson2ObjectMapperBuilderCustomizer implements Jackson2Object
     @Resource
     private DateJsonSerializer dateJsonSerializer;
 
+    @Resource
+    private DateJsonDeserializer dateJsonDeserializer;
+
     @Bean
     @ConditionalOnMissingBean(DateJsonSerializer.class)
     DateJsonSerializer dateJsonSerializer(JsonProperties jsonProperties) {
         return new DateJsonSerializer(jsonProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(DateJsonDeserializer.class)
+    DateJsonDeserializer dateJsonDeserializer(JsonProperties jsonProperties) {
+        return new DateJsonDeserializer(jsonProperties);
     }
 
     @Override
@@ -78,7 +88,18 @@ public class PlusJackson2ObjectMapperBuilderCustomizer implements Jackson2Object
         serializers.put(LocalDate.class, dateJsonSerializer);
         serializers.put(LocalTime.class, dateJsonSerializer);
         serializers.put(Date.class, dateJsonSerializer);
-        builder.serializersByType(serializers);
+
+//        builder.serializersByType(serializers);
+
+        Map<Class<?>, JsonDeserializer<?>> deserializers = new HashMap<>(0);
+
+        deserializers.put(Instant.class, dateJsonDeserializer);
+        deserializers.put(LocalDateTime.class, dateJsonDeserializer);
+        deserializers.put(LocalDate.class, dateJsonDeserializer);
+        deserializers.put(LocalTime.class, dateJsonDeserializer);
+        deserializers.put(Date.class, dateJsonDeserializer);
+//        builder.deserializersByType(deserializers);
+
     }
 
     @Override

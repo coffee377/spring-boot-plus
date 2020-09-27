@@ -1,6 +1,5 @@
 package com.voc.api.security;
 
-import com.voc.api.security.authentication.RestfulAuthenticationFilter;
 import com.voc.api.security.authentication.RestfulLogoutSuccessHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -23,10 +22,8 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,20 +75,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    /**
-     * 注册自定义的 AuthenticationFilter
-     */
-    @Bean
-    public RestfulAuthenticationFilter restfulAuthenticationFilter() throws Exception {
-        RestfulAuthenticationFilter filter = new RestfulAuthenticationFilter();
-        filter.setAuthenticationSuccessHandler(restfulAuthenticationSuccessHandler);
-        filter.setAuthenticationFailureHandler(restfulAuthenticationFailureHandler);
-        /* 登录处理地址 */
-        filter.setFilterProcessesUrl("/login/password");
-        /*重用 WebSecurityConfigurerAdapter 配置的 AuthenticationManager，不然要自己组装 AuthenticationManager*/
-        filter.setAuthenticationManager(authenticationManagerBean());
-        return filter;
-    }
+//    /**
+//     * 注册自定义的 AuthenticationFilter
+//     */
+//    @Bean
+//    public RestfulAuthenticationFilter restfulAuthenticationFilter() throws Exception {
+//        RestfulAuthenticationFilter filter = new RestfulAuthenticationFilter();
+//        filter.setAuthenticationSuccessHandler(restfulAuthenticationSuccessHandler);
+//        filter.setAuthenticationFailureHandler(restfulAuthenticationFailureHandler);
+//        /* 登录处理地址 */
+//        filter.setFilterProcessesUrl("/login/password");
+//        /*重用 WebSecurityConfigurerAdapter 配置的 AuthenticationManager，不然要自己组装 AuthenticationManager*/
+//        filter.setAuthenticationManager(authenticationManagerBean());
+//        return filter;
+//    }
 
 //    @Bean
 //    public OAuth2LoginAuthenticationFilter auth2LoginAuthenticationFilter() throws Exception {
@@ -111,6 +108,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/favicon.ico", "/error");
         /* 自定义不需要验证权限的URL */
         this.customAntMatchers(web, securityProps.getIgnore());
     }
@@ -132,7 +130,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable().headers().frameOptions().disable();
-//        http.formLogin().disable();
 
         http.authorizeRequests(
                 authorize -> authorize
@@ -157,8 +154,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        /* 禁用 session */
 ////        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
 //
-        /* 用重写的 Filter 替换掉原有的UsernamePasswordAuthenticationFilter */
-        http.addFilterAt(restfulAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        /* 用户名密码登陆处理 */
+        http.formLogin(form -> {
+            form.loginProcessingUrl("/login");
+            form.successHandler(restfulAuthenticationSuccessHandler);
+            form.failureHandler(restfulAuthenticationFailureHandler);
+        });
+//        http.addFilterAt(restfulAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 //        /* 启用切换用户过滤器 */
 ////        http.addFilterAfter(switchUserFilter(), FilterSecurityInterceptor.class);
@@ -189,7 +191,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        auth.inMemoryAuthentication().withUser("admin").password("{noop}1234567").roles("admin");
+        auth.inMemoryAuthentication().withUser("admin").password("{noop}123456").roles("admin");
     }
 
     //token登陆处理

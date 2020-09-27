@@ -7,12 +7,12 @@ import com.voc.api.config.json.JsonFormat;
 import com.voc.api.config.json.JsonProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 
 import java.io.IOException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * jackson 日期序列化实现类
