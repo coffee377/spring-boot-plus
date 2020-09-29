@@ -1,7 +1,7 @@
 package com.voc.api.entity;
 
 import com.voc.api.bean.IBean;
-import com.voc.api.config.json.IJson;
+import com.voc.api.autoconfigure.json.IJson;
 import com.voc.api.utils.SpringUtil;
 
 /**

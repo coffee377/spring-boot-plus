@@ -1,4 +1,4 @@
-package com.voc.api.config.json;
+package com.voc.api.autoconfigure.json;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +23,13 @@ public class JsonProperties {
     /**
      * 是否开启 utc 时间戳
      */
+    @Deprecated
     private boolean utcInstant = false;
+
+    /**
+     * 是否开启 utc 时间戳
+     */
+    private boolean utcTimestamp;
 
     /**
      * json 格式

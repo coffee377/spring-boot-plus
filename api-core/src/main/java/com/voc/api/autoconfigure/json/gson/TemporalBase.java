@@ -1,7 +1,9 @@
-package com.voc.api.config.json.gson;
+package com.voc.api.autoconfigure.json.gson;
 
 import com.google.gson.*;
-import com.voc.api.config.json.JsonProperties;
+import com.voc.api.autoconfigure.json.ITemporal;
+import com.voc.api.autoconfigure.json.IZoneInfo;
+import com.voc.api.autoconfigure.json.JsonProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,22 +17,19 @@ import java.time.format.DateTimeFormatter;
  * @time 2020/09/27 17:25
  */
 @Getter
-public abstract class BaseBean<T> implements JsonSerializer<T>, JsonDeserializer<T> {
+public abstract class TemporalBase<T> implements JsonSerializer<T>, JsonDeserializer<T>, IZoneInfo, ITemporal {
 
     @Setter
     private String format;
 
-    private final boolean utcInstant;
-
-    private final ZoneOffset zoneOffset;
+    private final boolean utcTimestamp;
 
     private final JsonProperties jsonProperties;
 
-    public BaseBean(JsonProperties jsonProperties) {
+    public TemporalBase(JsonProperties jsonProperties) {
         this.jsonProperties = jsonProperties;
         this.format = jsonProperties.getFormat().getInstant();
-        this.utcInstant = jsonProperties.isUtcInstant();
-        this.zoneOffset = ZoneId.systemDefault().getRules().getOffset(Instant.now());
+        this.utcTimestamp = jsonProperties.isUtcTimestamp();
     }
 
     protected String serialize2String(LocalDateTime localDateTime) {
@@ -38,11 +37,11 @@ public abstract class BaseBean<T> implements JsonSerializer<T>, JsonDeserializer
     }
 
     protected Long serialize2Long(LocalDateTime localDateTime) {
-        return OffsetDateTime.of(localDateTime, zoneOffset).toInstant().toEpochMilli();
+        return OffsetDateTime.of(localDateTime, this.getZoneOffset()).toInstant().toEpochMilli();
     }
 
     public JsonElement serialize(LocalDateTime localDateTime, Type typeOfSrc, JsonSerializationContext context) {
-        if (!this.isUtcInstant()) {
+        if (!this.isUtcTimestamp()) {
             return new JsonPrimitive(this.serialize2String(localDateTime));
         }
         return new JsonPrimitive(this.serialize2Long(localDateTime));
@@ -60,10 +59,10 @@ public abstract class BaseBean<T> implements JsonSerializer<T>, JsonDeserializer
                     localDateTime = LocalDateTime.of(localDate, LocalTime.MIN);
                 } else if (format.equals(this.getJsonProperties().getFormat().getLocalTime())) {
                     LocalTime localTime = LocalTime.parse(json.getAsString(), DateTimeFormatter.ofPattern(format));
-                    localDateTime = LocalDateTime.of(LocalDate.of(1970, 1, 1), localTime);
+                    localDateTime = LocalDateTime.of(DEFAULT_INIT_LOCAL_DATE, localTime);
                 }
                 assert localDateTime != null;
-                return localDateTime.toInstant(zoneOffset);
+                return localDateTime.toInstant(this.getZoneOffset());
             }
             if (((JsonPrimitive) json).isNumber()) {
                 return Instant.ofEpochMilli(json.getAsLong());

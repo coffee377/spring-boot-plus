@@ -1,7 +1,6 @@
 package com.voc.api.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.voc.api.autoconfigure.json.IJson;
 import com.voc.api.response.BaseBizError;
 import com.voc.api.response.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -28,16 +27,13 @@ import java.util.HashMap;
 @RequestMapping("${api.prefix:/api}")
 public class TestApiController extends BaseController {
 
-//    @Resource
-//    private Gson gson;
-
     @Resource
-    private ObjectMapper mapper;
+    private IJson json;
 
     @GetMapping("/test")
-    public Result test() throws JsonProcessingException {
+    public Result test() throws Exception {
         Demo demo = new Demo();
-        demo.setName("张三");
+        demo.setName("李四");
         demo.setAge(30);
         demo.setInstant(Instant.now());
         demo.setBirthday(LocalDateTime.now());
@@ -46,13 +42,14 @@ public class TestApiController extends BaseController {
         demo.setBirthday4(new Date());
         demo.setList(Collections.singletonList("demo"));
         HashMap<String, Object> hashMap = new HashMap<>(0);
-        hashMap.put("name", "张三");
+        hashMap.put("name", "张三888");
         demo.setMap(hashMap);
 
-        String result = mapper.writeValueAsString(demo);
+        String result = json.serializer(demo);
 
-        Demo demo1 = mapper.readValue(result, Demo.class);
+        Demo demo1 = json.deserializer(result, Demo.class);
 
+        log.warn("{}", demo1);
         return Result.success(demo);
 
     }

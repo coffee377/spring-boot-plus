@@ -1,7 +1,7 @@
-package com.voc.api.config.json.gson;
+package com.voc.api.autoconfigure.json.gson;
 
 import com.google.gson.*;
-import com.voc.api.config.json.JsonProperties;
+import com.voc.api.autoconfigure.json.JsonProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ import java.time.ZoneId;
         name = "type",
         havingValue = "gson"
 )
-public class InstantBean extends BaseBean<Instant> {
+public class InstantBean extends TemporalBase<Instant> {
 
     public InstantBean(JsonProperties jsonProperties) {
         super(jsonProperties);

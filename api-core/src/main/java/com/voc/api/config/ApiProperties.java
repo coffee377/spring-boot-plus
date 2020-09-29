@@ -1,6 +1,6 @@
 package com.voc.api.config;
 
-import com.voc.api.config.json.JsonProperties;
+import com.voc.api.autoconfigure.json.JsonProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

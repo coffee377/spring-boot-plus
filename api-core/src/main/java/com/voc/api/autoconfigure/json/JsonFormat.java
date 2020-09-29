@@ -1,4 +1,4 @@
-package com.voc.api.config.json;
+package com.voc.api.autoconfigure.json;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,27 +13,27 @@ import lombok.Setter;
 public class JsonFormat {
 
     /**
-     * Instant 类型序列号默认格式
+     * Instant 类型序列化默认格式
      */
     private String instant = "yyyy-MM-dd HH:mm:ss";
 
     /**
-     * Date 类型序列号默认格式
+     * Date 类型序列化默认格式
      */
     private String date = "yyyy-MM-dd HH:mm:ss";
 
     /**
-     * LocalDateTime 类型序列号默认格式
+     * LocalDateTime 类型序列化默认格式
      */
     private String localDateTime = "yyyy-MM-dd HH:mm:ss";
 
     /**
-     * LocalDate 类型序列号默认格式
+     * LocalDate 类型序列化默认格式
      */
     private String localDate = "yyyy-MM-dd";
 
     /**
-     * LocalTime 类型序列号默认格式
+     * LocalTime 类型序列化默认格式
      */
     private String localTime = "HH:mm:ss";
 

@@ -1,8 +1,8 @@
-package com.voc.api.config.json.gson;
+package com.voc.api.autoconfigure.json.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.voc.api.config.json.JsonProperties;
+import com.voc.api.autoconfigure.json.JsonProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

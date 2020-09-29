@@ -1,16 +1,13 @@
-package com.voc.api.config.json.gson;
+package com.voc.api.autoconfigure.json.gson;
 
 import com.google.gson.*;
-import com.voc.api.config.json.JsonProperties;
+import com.voc.api.autoconfigure.json.JsonProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.*;
 
 /**
  * @author Wu Yujie
@@ -24,26 +21,27 @@ import java.util.Date;
         name = "type",
         havingValue = "gson"
 )
-public class DateBean extends BaseBean<Date> {
+public class LocalTimeBean extends TemporalBase<LocalTime> {
 
-    public DateBean(JsonProperties jsonProperties) {
+    public LocalTimeBean(JsonProperties jsonProperties) {
         super(jsonProperties);
-        this.setFormat(jsonProperties.getFormat().getDate());
+        this.setFormat(jsonProperties.getFormat().getLocalTime());
     }
 
     @Override
-    public JsonElement serialize(Date date, Type typeOfSrc, JsonSerializationContext context) {
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    public JsonElement serialize(LocalTime localTime, Type typeOfSrc, JsonSerializationContext context) {
+        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.of(1970, 1, 1), localTime);
         return super.serialize(localDateTime, typeOfSrc, context);
     }
 
     @Override
-    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public LocalTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         Instant instant = deserialize(json);
         if (instant != null) {
-            return new Date(instant.toEpochMilli());
+            return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalTime();
         }
         return null;
     }
+
 
 }
