@@ -1,5 +1,6 @@
 package com.voc.api.controller;
 
+import com.voc.api.response.BizException;
 import com.voc.api.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -28,7 +29,7 @@ public class MessagesController {
 
     @GetMapping(path = "/")
     public String index() {
-        throw new RuntimeException("test exception");
+        throw new BizException("测试异常");
     }
 
     @GetMapping("/messages")

@@ -1,7 +1,9 @@
 package com.voc.api.controller;
 
 import com.voc.api.response.BizException;
+import com.voc.api.response.IBizError;
 import com.voc.api.response.Result;
+import lombok.Getter;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
@@ -10,6 +12,7 @@ import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -41,33 +44,19 @@ public class ErrorPlusController extends AbstractErrorController implements Erro
         this.errorProperties = serverProperties.getError();
     }
 
-    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Result error(HttpServletRequest request, HttpServletResponse response) {
         HttpStatus status = getStatus(request);
         response.setStatus(status.value());
-        Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-
         ErrorAttributeOptions options = getErrorAttributeOptions(request, MediaType.ALL);
         Map<String, Object> model = getErrorAttributes(request, options);
-//        BizException
-        Result result = Result.builder().failure().code(-1).message("AAA").data(model).build();
-        return result;
-    }
-
-    protected BizException getBizException(HttpServletRequest request) {
         Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-        if (exception instanceof BizException) {
-            return (BizException) exception;
-        }
-        return null;
-    }
-
-    protected Result getErrorCode(HttpStatus status, BizException exception) {
-//        Result.builder().
-//        Result result = Result.of(-1, "", null);
-        Result build = Result.builder().build();
-        return null;
+        ExceptionData exceptionData = new ExceptionData(exception, model);
+        return Result.builder().failure()
+                .code(exceptionData.getCode())
+                .message(exceptionData.getMessage())
+                .data(model).build();
     }
 
     @Override
@@ -146,6 +135,37 @@ public class ErrorPlusController extends AbstractErrorController implements Erro
             default:
                 return false;
         }
+    }
+
+
+    @Getter
+    static class ExceptionData implements IBizError {
+
+        private final Exception exception;
+        private final Map<String, Object> model;
+
+        public ExceptionData(Exception exception, Map<String, Object> model) {
+            this.exception = exception;
+            this.model = model;
+        }
+
+        @Override
+        public int getCode() {
+            if (exception instanceof BizException) {
+                return ((BizException) exception).getCode();
+            }
+            return HttpStatus.INTERNAL_SERVER_ERROR.value();
+        }
+
+        @Override
+        public String getMessage() {
+            String message = model.get("message").toString();
+            if (!StringUtils.isEmpty(message)) {
+                return message;
+            }
+            return model.get("error").toString();
+        }
+
     }
 
 }
