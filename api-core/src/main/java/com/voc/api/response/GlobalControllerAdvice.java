@@ -2,7 +2,6 @@ package com.voc.api.response;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,8 +12,9 @@ import javax.servlet.http.HttpServletResponse;
  * @email coffee377@dingtalk.com
  * @time 2020/09/24 21:16
  */
-@ControllerAdvice
 @Slf4j
+//@ControllerAdvice
+// TODO: 2020/10/2 11:20 ControllerAdvice 只能处理 Controller 层错误，无法处理其他错误，通过自定义 ErroeController 实现
 public class GlobalControllerAdvice {
 
     /**
@@ -30,7 +30,7 @@ public class GlobalControllerAdvice {
         if (log.isErrorEnabled()) {
             log.error(exception.getMessage(), exception.getCause());
         }
-        return Result.of(500, exception.getMessage(), null);
+        return Result.failure(exception);
     }
 
     /**
@@ -46,7 +46,7 @@ public class GlobalControllerAdvice {
         if (log.isErrorEnabled()) {
             log.error(bizException.getMessage(), bizException.getCause());
         }
-        return Result.of(bizException.getCode(), bizException.getMessage(), null);
+        return Result.failure(bizException);
     }
 
 }

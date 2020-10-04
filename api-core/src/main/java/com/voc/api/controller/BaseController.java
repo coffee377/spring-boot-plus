@@ -1,6 +1,6 @@
 package com.voc.api.controller;
 
-import com.voc.api.config.ApiProperties;
+import com.voc.api.autoconfigure.ApiProperties;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 public class BaseController {
 
     @Resource
-    public HttpServletRequest request;
+    protected HttpServletRequest request;
 
     @Resource
-    public ApiProperties apiProps;
+    protected ApiProperties apiProps;
 
 }

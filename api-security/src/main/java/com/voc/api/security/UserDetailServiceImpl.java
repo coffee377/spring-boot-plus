@@ -1,16 +1,14 @@
 package com.voc.api.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -29,7 +27,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
         return new UserDetails() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
-                return null;
+                SimpleGrantedAuthority roleAdmin = new SimpleGrantedAuthority("ROLE_ADMIN");
+                SimpleGrantedAuthority roleAdmin2 = new SimpleGrantedAuthority("SCOPE_messages.read");
+                return Arrays.asList(roleAdmin, roleAdmin2);
             }
 
             @Override

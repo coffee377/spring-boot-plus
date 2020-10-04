@@ -12,6 +12,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  */
 @SpringBootApplication(scanBasePackages = {"com.voc.api"})
 public class DemoApplication extends SpringBootServletInitializer {
+
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(DemoApplication.class);
         springApplication.setBanner(new DefaultBanner());

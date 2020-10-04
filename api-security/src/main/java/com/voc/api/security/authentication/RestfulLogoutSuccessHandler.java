@@ -1,6 +1,5 @@
 package com.voc.api.security.authentication;
 
-import com.voc.api.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -27,6 +26,6 @@ public class RestfulLogoutSuccessHandler implements LogoutSuccessHandler {
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("utf-8");
         response.setStatus(HttpStatus.OK.value());
-        response.getWriter().write(Result.success().toString());
+//        response.getWriter().write(Result.success().toString());
     }
 }

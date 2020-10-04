@@ -2,6 +2,7 @@ package com.voc.api.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.voc.api.controller.Certification;
+import com.voc.api.utils.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,7 +48,7 @@ public class RestfulAuthenticationFilter extends AbstractAuthenticationProcessin
         ServletInputStream inputStream = request.getInputStream();
         Certification certification = objectMapper.readValue(inputStream, Certification.class);
 
-        request.setAttribute("certification", certification);
+//        request.setAttribute("certification", certification);
 
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(certification.getUsername(),
                 certification.getPassword().trim());
@@ -60,5 +61,10 @@ public class RestfulAuthenticationFilter extends AbstractAuthenticationProcessin
 
     protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
         authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
+    }
+
+    @Override
+    protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
+        return RequestUtil.isRestfulRequest(request) && super.requiresAuthentication(request, response);
     }
 }

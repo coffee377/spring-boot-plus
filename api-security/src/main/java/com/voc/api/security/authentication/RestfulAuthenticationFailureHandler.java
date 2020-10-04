@@ -31,7 +31,7 @@ public class RestfulAuthenticationFailureHandler implements AuthenticationFailur
         if (log.isErrorEnabled()) {
             log.error("用户登录失败 - {}", exception.getMessage());
         }
-        Result failure = Result.failure(exception.getMessage());
+        Result failure = Result.failure(exception);
         if (exception instanceof BadCredentialsException || exception instanceof UsernameNotFoundException) {
             failure = Result.failure(BaseBizError.INVALID_USERNAME_OR_PASSWORD);
             response.setStatus(HttpStatus.BAD_REQUEST.value());

@@ -4,9 +4,9 @@ import com.voc.api.security.authentication.RestfulLogoutSuccessHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +22,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -37,6 +38,7 @@ import java.util.Optional;
 @Order(2)
 @EnableWebSecurity
 @EnableConfigurationProperties({SecurityProperties.class})
+@Import({BeanConfig.class})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -69,42 +71,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private RestfulLogoutSuccessHandler restfulLogoutSuccessHandler;
 
+//    @Bean
+//    public RestfulAuthenticationFilter restfulAuthenticationFilter(){
+//        RestfulAuthenticationFilter filter = new RestfulAuthenticationFilter();
+//        filter.setAuthenticationManager(authenticationManagerBean());
+////        filter.set
+//        return filter;
+//    }
+
+    @Resource
+    private SwitchUserFilter switchUserFilter;
+
     @Bean
     @ConditionalOnMissingBean(PasswordEncoder.class)
     PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-//    /**
-//     * 注册自定义的 AuthenticationFilter
-//     */
 //    @Bean
-//    public RestfulAuthenticationFilter restfulAuthenticationFilter() throws Exception {
-//        RestfulAuthenticationFilter filter = new RestfulAuthenticationFilter();
-//        filter.setAuthenticationSuccessHandler(restfulAuthenticationSuccessHandler);
-//        filter.setAuthenticationFailureHandler(restfulAuthenticationFailureHandler);
-//        /* 登录处理地址 */
-//        filter.setFilterProcessesUrl("/login/password");
-//        /*重用 WebSecurityConfigurerAdapter 配置的 AuthenticationManager，不然要自己组装 AuthenticationManager*/
-//        filter.setAuthenticationManager(authenticationManagerBean());
-//        return filter;
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
 //    }
-
-//    @Bean
-//    public OAuth2LoginAuthenticationFilter auth2LoginAuthenticationFilter() throws Exception {
-//        OAuth2LoginAuthenticationFilter filter =
-//                new OAuth2LoginAuthenticationFilter(clientRegistrationRepository, oauth2AuthorizedClientService);
-//        filter.setAuthenticationSuccessHandler(restfulAuthenticationSuccessHandler);
-//        filter.setAuthenticationFailureHandler(restfulAuthenticationFailureHandler);
-//        filter.setAuthenticationManager(authenticationManagerBean());
-//        return filter;
-//    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
 
     @Override
     public void configure(WebSecurity web) {
@@ -131,81 +119,109 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable().headers().frameOptions().disable();
 
+//        http.apply(new RestfulLoginConfigurer<>());
+
+        /* org.springframework.security.web.context.SecurityContextPersistenceFilter */
+//        http.securityContext();
+
         http.authorizeRequests(
                 authorize -> authorize
                         .antMatchers(HttpMethod.OPTIONS).permitAll()
+                        .antMatchers("/").permitAll()
                         .antMatchers("/home", "/login/**", "/logout", "/api/test", "/oauth2/**", "/callback").permitAll()
-                        .mvcMatchers("/messages/**").hasAuthority("SCOPE_messages")
-                        .anyRequest().authenticated()
+//                        .mvcMatchers("/messages/**").hasAuthority("SCOPE_messages")
+                        .anyRequest().permitAll()
         );
 
         /* 异常处理 */
-        http.exceptionHandling(handling -> {
-            handling.authenticationEntryPoint(restfulAuthenticationEntryPoint);
-            handling.accessDeniedHandler(restfulAccessDeniedHandler);
-        });
+//        http.exceptionHandling(handling -> {
+////            handling.authenticationEntryPoint(restfulAuthenticationEntryPoint);
+////            handling.accessDeniedHandler(restfulAccessDeniedHandler);
+//        });
 
         /* 注销处理 */
-        http.logout(httpSecurityLogoutConfigurer -> {
-            httpSecurityLogoutConfigurer.logoutUrl("/logout");
-            httpSecurityLogoutConfigurer.logoutSuccessHandler(restfulLogoutSuccessHandler);
-        });
-//
-//        /* 禁用 session */
-////        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
-//
+//        http.logout(httpSecurityLogoutConfigurer -> {
+//            httpSecurityLogoutConfigurer.logoutUrl("/logout");
+////            httpSecurityLogoutConfigurer.logoutSuccessHandler(restfulLogoutSuccessHandler);
+//        });
+
+        /* 禁用 session */
+//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+
         /* 用户名密码登陆处理 */
+//        http.formLogin().loginPage("/login/password");
         http.formLogin(form -> {
-            form.loginProcessingUrl("/login");
-            form.successHandler(restfulAuthenticationSuccessHandler);
-            form.failureHandler(restfulAuthenticationFailureHandler);
+            form.loginProcessingUrl("/login/password");
+////            form.successHandler(restfulAuthenticationSuccessHandler);
+////            form.failureHandler(restfulAuthenticationFailureHandler);
         });
-//        http.addFilterAt(restfulAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 //        /* 启用切换用户过滤器 */
-////        http.addFilterAfter(switchUserFilter(), FilterSecurityInterceptor.class);
-//
-////        http.oauth2Login(new Customsizer<OAuth2LoginConfigurer<HttpSecurity>>() {
-////            @Override
-////            public void customize(OAuth2LoginConfigurer<HttpSecurity> httpSecurityOAuth2LoginConfigurer) {
-////
-////            }
-////        });
-//
-//        /* oauth 资源认证服务 */
-////        http.oauth2ResourceServer().jwt();
-//        http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
-//
-////        http.oauth2Client(OAuth2ClientConfigurer::authorizationCodeGrant);
-        http.oauth2Login(oauth2 -> oauth2
-                .successHandler(restfulAuthenticationSuccessHandler)
-                .failureHandler(restfulAuthenticationFailureHandler)
-                .loginPage("/login/oauth2")
-        );
-        http.oauth2Client();
-//                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+//        http.addFilterBefore(restfulAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterAfter(switchUserFilter, FilterSecurityInterceptor.class);
 
+//        /* oauth2 登录 */
+//        http.oauth2Login(oauth2 -> {
+////            oauth2.
+////            oauth2.defaultSuccessUrl()
+//            oauth2.authorizationEndpoint(authorization -> {
+////                authorization.authorizationRequestRepository(new AuthorizationRequestRepository<OAuth2AuthorizationRequest>() {
+////                    @Override
+////                    public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+////                        return null;
+////                    }
+////
+////                    @Override
+////                    public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
+////
+////                    }
+////
+////                    @Override
+////                    public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request) {
+////                        return null;
+////                    }
+////                });
+////                authorization.
+////                authorization.authorizationRequestResolver(new OAuth2AuthorizationRequestResolver() {
+////                    @Override
+////                    public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
+////                        return null;
+////                    }
+////
+////                    @Override
+////                    public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String clientRegistrationId) {
+////                        return null;
+////                    }
+////                });
+////                authorization.baseUri("/oauth2/authorization/{id}");
+//            }).redirectionEndpoint(redirection -> {
+////                redirection.
+////                redirection.baseUri("/login/oauth2/code/*");
+//            }).tokenEndpoint(token -> {
+////                token.
+//                //token.accessTokenResponseClient()
+//            }).userInfoEndpoint(userInfo -> {
+////                userInfo.
+////                userInfo.userService()
+//            });
+////                        oauth2
+////                .successHandler(restfulAuthenticationSuccessHandler)
+////                .failureHandler(restfulAuthenticationFailureHandler)
+////                .loginPage("/login/oauth2")
+//        });
+//
+//        /* oauth2 客户端 */
+//        http.oauth2Client();
+//
+//        /* oauth2 资源认证服务 */
+//        http.oauth2ResourceServer().jwt();
+////        http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-        auth.inMemoryAuthentication().withUser("admin").password("{noop}123456").roles("admin");
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    //token登陆处理
-//    @Bean
-//    public TokenAuthenticationProvider tokenAuthenticationProsvider() {
-//        return new TokenAuthenticationProvider();
-//    }
-//    /**
-//     * 添加token登陆验证的过滤器
-//     */
-//    @Bean
-//    public TokenAuthenticationFilter tokenAuthenticationFilter() throws Exception {
-//        TokenAuthenticationFilter filter = new TokenAuthenticationFilter();
-//        filter.setAuthenticationManager(authenticationManager());
-//        return filter;
-//    }
 }

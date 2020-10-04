@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.csrf.InvalidCsrfTokenException;
+import org.springframework.security.web.csrf.MissingCsrfTokenException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -38,16 +40,22 @@ public class RestfulAccessDeniedHandler extends AccessDeniedHandlerImpl implemen
      */
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            if (log.isInfoEnabled()) {
-                log.info("{} attempted to access the protected URL: {}", auth.getName(), request.getRequestURI());
+        Result failure;
+        if (e instanceof InvalidCsrfTokenException || e instanceof MissingCsrfTokenException) {
+            failure = Result.failure(e);
+        } else {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null) {
+                if (log.isInfoEnabled()) {
+                    log.info("{} attempted to access the protected URL: {}", auth.getName(), request.getRequestURI());
+                }
             }
+            failure = Result.failure(BaseBizError.FORBIDDEN);
         }
+
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("utf-8");
         response.setStatus(HttpStatus.FORBIDDEN.value());
-        Result failure = Result.failure(BaseBizError.FORBIDDEN);
         if (log.isDebugEnabled()) {
             log.debug("响应 JSON 数据为：{}", failure);
         }

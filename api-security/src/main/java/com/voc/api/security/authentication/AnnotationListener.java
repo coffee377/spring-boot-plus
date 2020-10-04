@@ -22,7 +22,7 @@ public class AnnotationListener {
     @Async
     @EventListener
     public void startSuccess(ApplicationReadyEvent event) {
-        log.info("服务启动成功，加载配置到缓存");
+        log.warn("服务启动成功，加载配置到缓存");
     }
 
     @Async

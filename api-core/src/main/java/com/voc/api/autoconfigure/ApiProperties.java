@@ -1,4 +1,4 @@
-package com.voc.api.config;
+package com.voc.api.autoconfigure;
 
 import com.voc.api.autoconfigure.json.JsonProperties;
 import lombok.Getter;

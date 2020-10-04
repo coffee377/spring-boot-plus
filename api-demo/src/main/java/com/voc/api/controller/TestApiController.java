@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -59,4 +61,8 @@ public class TestApiController extends BaseController {
         return Result.failure(BaseBizError.INTERNAL_SERVER_ERROR);
     }
 
+    @RequestMapping("/oauth2/verify")
+    public void verify(HttpServletRequest request, HttpServletResponse response) {
+        log.warn("/oauth2/verify");
+    }
 }

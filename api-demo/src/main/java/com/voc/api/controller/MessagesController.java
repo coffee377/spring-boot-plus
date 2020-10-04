@@ -2,7 +2,6 @@ package com.voc.api.controller;
 
 import com.voc.api.response.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +26,14 @@ public class MessagesController {
     @Resource
     private ClientRegistrationRepository clientRegistrationRepository;
 
-    @PreAuthorize("hasAuthority('SCOPE_messages')")
+    @GetMapping(path = "/")
+    public String index() {
+        throw new RuntimeException("test exception");
+    }
+
     @GetMapping("/messages")
-    public String[] getMessages() {
-        return new String[]{"Message 1", "Message 2", "Message 3"};
+    public Result getMessages() {
+        return Result.builder().data(new String[]{"Message 1", "Message 2", "Message 3"}).build();
     }
 
     @GetMapping(value = "/callback")
@@ -47,22 +50,22 @@ public class MessagesController {
         log.warn("{}", request);
     }
 
-    @RequestMapping("/login")
-    public Result login(HttpServletRequest request) {
-//        clientRegistrationRepository.
-//        ClientRegistration.withRegistrationId("").o
-        return Result.success("登陆");
-    }
+//    @RequestMapping("/login")
+//    public Result login(HttpServletRequest request) {
+////        clientRegistrationRepository.
+////        ClientRegistration.withRegistrationId("").o
+//        return Result.success("登陆");
+//    }
 
-    @GetMapping
-    public Result home(HttpServletRequest request) {
-        return Result.success("首页");
-    }
+//    @GetMapping
+//    public Result home(HttpServletRequest request) {
+//        return Result.success("首页");
+//    }
 
     @RequestMapping("/home")
     public ModelAndView loginOAuth2(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("index");
-        return mv;
+//        ModelAndView mv = new ModelAndView();
+//        mv.setViewName("index");
+        throw new RuntimeException("test exception");
     }
 }

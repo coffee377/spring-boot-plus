@@ -30,8 +30,8 @@ subprojects {
     ext {
         set('snippetsDir', file("build/generated-snippets"))
 //        set('lombok.version', '1.18.8')
-        //ext['spring-security.version']='5.3.4.RELEASE'
-//        set('spring-security.version', '5.3.4.RELEASE')
+//        ext['spring-security.version']='5.3.4.RELEASE'
+//        set('spring-security.version', '5.4.0')
     }
 
     /* 使用二进制插件 */

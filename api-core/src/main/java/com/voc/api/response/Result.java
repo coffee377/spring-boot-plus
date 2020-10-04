@@ -4,8 +4,6 @@ import com.voc.api.entity.JsonEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Arrays;
-
 /**
  * 响应数据封装
  * Created with IntelliJ IDEA.
@@ -38,82 +36,32 @@ public class Result extends JsonEntity {
      */
     private Object data;
 
-    private Result() {
+    public static ResultBuilder builder() {
+        return new ResultBuilder();
     }
 
-    /**
-     * 响应结果
-     *
-     * @param code    错误编码
-     * @param message 错误信息
-     * @param data    响应数据
-     * @return Result
-     */
-    public static Result of(int code, String message, Object data) {
-        Result item = new Result();
-        item.setSuccess(code == 0);
-        item.setCode(code);
-        item.setMessage(message);
-        item.setData(data);
-        return item;
+    public static ResultBuilder successBuilder(Object data) {
+        return builder().success().code(0).data(data);
     }
 
-    /**
-     * 响应结果
-     *
-     * @param bizError IBizError
-     * @param data     响应数据
-     * @return Result<Object>
-     */
-    public static Result of(IBizError bizError, Object data) {
-        return of(bizError.getCode(), bizError.getMessage(), data);
+    public static Result success(Object data) {
+        return successBuilder(data).build();
     }
 
-    /**
-     * 成功时响应
-     *
-     * @param data    数据
-     * @param message 信息
-     * @return Result
-     */
-    public static Result success(Object data, String... message) {
-        if (message != null && message.length > 0) {
-            return of(0, message[0], data);
-        }
-        return of(BaseBizError.OK, data);
+    public static ResultBuilder failureBuilder(int code, String message, Object data) {
+        return builder().failure().code(code).message(message).data(data);
     }
 
-    /**
-     * 成功时响应
-     *
-     * @return Result>
-     */
-    public static Result success() {
-        return success(null);
+    public static Result failure(int code, String message, Object data) {
+        return failureBuilder(code, message, data).build();
     }
 
-    /**
-     * 错误时响应
-     *
-     * @param bizError 业务错误
-     * @param data     数据
-     * @return Result
-     */
-    public static Result failure(IBizError bizError, Object data) {
-        return of(bizError, data);
+    public static Result failure(Exception exception) {
+        return builder().exception(exception).build();
     }
 
-    /**
-     * 错误时响应
-     *
-     * @return Result<Object>
-     */
     public static Result failure(IBizError bizError) {
-        return failure(bizError, null);
-    }
-
-    public static Result failure(String message) {
-        return of(99, message, null);
+        return builder().error(bizError).build();
     }
 
 }

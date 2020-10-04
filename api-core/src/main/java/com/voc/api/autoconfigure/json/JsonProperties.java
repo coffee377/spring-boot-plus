@@ -1,5 +1,6 @@
 package com.voc.api.autoconfigure.json;
 
+import com.voc.api.autoconfigure.ExceptionResult;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,6 +15,11 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @Setter
 @ConfigurationProperties(prefix = "api.json")
 public class JsonProperties {
+
+    /**
+     * 启用 json 异常响应
+     */
+    private ExceptionResult exceptionResult;
 
     /**
      * json 类型
