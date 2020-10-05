@@ -4,6 +4,7 @@ import com.voc.api.response.BizException;
 import com.voc.api.response.IBizError;
 import com.voc.api.response.Result;
 import lombok.Getter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +30,14 @@ import java.util.Map;
  * @email coffee377@dingtalk.com
  * @time 2020/09/30 11:54
  */
+@RestController
 @RequestMapping("${server.error.path:${error.path:/error}}")
+@ConditionalOnProperty(prefix = "api.json", name = "exception-result", havingValue = "json", matchIfMissing = true)
 public class ErrorPlusController extends AbstractErrorController implements ErrorController {
 
     private final ErrorProperties errorProperties;
+
+    private static String errorPath;
 
     /**
      * Create a new {@link ErrorPlusController} instance.

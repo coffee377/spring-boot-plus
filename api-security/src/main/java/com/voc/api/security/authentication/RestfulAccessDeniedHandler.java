@@ -8,9 +8,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
-import org.springframework.security.web.csrf.InvalidCsrfTokenException;
-import org.springframework.security.web.csrf.MissingCsrfTokenException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -27,7 +24,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class RestfulAccessDeniedHandler extends AccessDeniedHandlerImpl implements AccessDeniedHandler {
+public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
 
     /**
      * 权限异常处理
@@ -41,9 +38,7 @@ public class RestfulAccessDeniedHandler extends AccessDeniedHandlerImpl implemen
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
         Result failure;
-        if (e instanceof InvalidCsrfTokenException || e instanceof MissingCsrfTokenException) {
-            failure = Result.failure(e);
-        } else {
+        if (e.getClass().isAssignableFrom(AccessDeniedException.class)) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth != null) {
                 if (log.isInfoEnabled()) {
@@ -51,6 +46,8 @@ public class RestfulAccessDeniedHandler extends AccessDeniedHandlerImpl implemen
                 }
             }
             failure = Result.failure(BaseBizError.FORBIDDEN);
+        } else {
+            failure = Result.failure(e);
         }
 
         response.setContentType("application/json;charset=utf-8");

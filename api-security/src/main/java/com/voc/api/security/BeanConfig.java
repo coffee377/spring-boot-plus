@@ -2,10 +2,12 @@ package com.voc.api.security;
 
 import com.voc.api.security.authentication.RestfulAuthenticationFailureHandler;
 import com.voc.api.security.authentication.RestfulAuthenticationSuccessHandler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.*;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -29,11 +31,18 @@ import java.util.function.Function;
  * @email coffee377@dingtalk.com
  * @time 2020/09/26 21:12
  */
-@Order(1)
+//@Order(1)
 @Configuration
 public class BeanConfig {
 
     @Bean
+    @ConditionalOnMissingBean(PasswordEncoder.class)
+    PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(SwitchUserFilter.class)
     public SwitchUserFilter switchUserFilter(UserDetailsService userDetailsService,
                                              RestfulAuthenticationSuccessHandler successHandler,
                                              RestfulAuthenticationFailureHandler failureHandler) {

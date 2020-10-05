@@ -35,25 +35,14 @@ public class RestfulLoginConfigurer<H extends HttpSecurityBuilder<H>>
 
     @Override
     public void configure(H http) throws Exception {
-//        PortMapper portMapper = http.getSharedObject(PortMapper.class);
-//        if (portMapper != null) {
-//            authenticationEntryPoint.setPortMapper(portMapper);
-//        }
-//
-//        RequestCache requestCache = http.getSharedObject(RequestCache.class);
-//        if (requestCache != null) {
-//            this.defaultSuccessHandler.setRequestCache(requestCache);
-//        }
 
         RestfulAuthenticationFilter authFilter = getAuthenticationFilter();
 
-        authFilter.setAuthenticationManager(http
-                .getSharedObject(AuthenticationManager.class));
-//        authFilter.setAuthenticationSuccessHandler(successHandler);
-//        authFilter.setAuthenticationFailureHandler(failureHandler);
-//        if (authenticationDetailsSource != null) {
-//            authFilter.setAuthenticationDetailsSource(authenticationDetailsSource);
-//        }
+        authFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
+
+//        authFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+//        authFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+
         SessionAuthenticationStrategy sessionAuthenticationStrategy = http
                 .getSharedObject(SessionAuthenticationStrategy.class);
         if (sessionAuthenticationStrategy != null) {
@@ -64,11 +53,9 @@ public class RestfulLoginConfigurer<H extends HttpSecurityBuilder<H>>
         if (rememberMeServices != null) {
             authFilter.setRememberMeServices(rememberMeServices);
         }
-//        F filter = postProcess(authFilter);
-//        http.addFilter(filter);
+
         RestfulAuthenticationFilter restfulAuthenticationFilter = postProcess(authFilter);
 
-        http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
-//        super.configure(http);
+        http.addFilterBefore(restfulAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

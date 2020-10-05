@@ -1,12 +1,7 @@
 package com.voc.api.autoconfigure;
 
-import com.voc.api.controller.ErrorPlusController;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.error.ErrorAttributes;
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -18,17 +13,18 @@ import javax.annotation.Resource;
  * @time 2020/09/23 12:38
  */
 @Configuration
-@EnableConfigurationProperties({ApiProperties.class})
+//@EnableConfigurationProperties({ApiProperties.class})
+@ConfigurationPropertiesScan("com.voc.api")
 public class ApiAutoConfiguration implements WebMvcConfigurer {
 
     @Resource
     private ApiProperties api;
 
-    @Bean
-    @ConditionalOnProperty(prefix = "api.json", name = "exception-result", havingValue = "json", matchIfMissing = true)
-    ErrorController errorController(ErrorAttributes errorAttributes,
-                                    ServerProperties serverProperties) {
-        return new ErrorPlusController(errorAttributes, serverProperties);
-    }
+//    @Bean
+//    @ConditionalOnProperty(prefix = "api.json", name = "exception-result", havingValue = "json", matchIfMissing = true)
+//    ErrorController errorController(ErrorAttributes errorAttributes,
+//                                    ServerProperties serverProperties) {
+//        return new ErrorPlusController(errorAttributes, serverProperties);
+//    }
 
 }

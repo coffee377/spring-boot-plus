@@ -1,6 +1,5 @@
 package com.voc.api.security.authentication;
 
-import com.voc.api.controller.Certification;
 import com.voc.api.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -50,7 +49,7 @@ public class RestfulAuthenticationSuccessHandler implements AuthenticationSucces
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         publisher.publishEvent(new LogInSuccessEvent(authentication, "用户登录成功"));
-        Object result = "123456";
+        Object result = authentication;
         if (authentication instanceof OAuth2AuthenticationToken) {
             String registrationId = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
             OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest.withClientRegistrationId(registrationId)
@@ -66,10 +65,10 @@ public class RestfulAuthenticationSuccessHandler implements AuthenticationSucces
             OAuth2RefreshToken refreshToken = authorizedClient.getRefreshToken();
             result = accessToken;
         } else {
-            Certification certification = (Certification) request.getAttribute("certification");
+//            Certification certification = (Certification) request.getAttribute("certification");
 
-            String clientId = certification.getUsername();
-            String clientSecret = certification.getPassword();
+//            String clientId = certification.getUsername();
+//            String clientSecret = certification.getPassword();
         }
 //        OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest.withClientRegistrationId("github")
 //                .principal(authentication)
@@ -99,6 +98,9 @@ public class RestfulAuthenticationSuccessHandler implements AuthenticationSucces
 //        OAuth2AccessToken accessToken = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
 //
 
+//        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+//            result = authentication;
+//        }
         String res = Result.success(result).toString();
         if (log.isDebugEnabled()) {
             log.debug("响应 JSON 数据为：{}", res);

@@ -19,6 +19,12 @@ public class ApiProperties {
     private String prefix = "/api";
 
     /**
+     * 登陆配置
+     */
+    @NestedConfigurationProperty
+    private LoginProperties login = new LoginProperties();
+
+    /**
      * json 配置
      */
     @NestedConfigurationProperty

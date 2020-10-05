@@ -12,7 +12,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,21 +38,25 @@ public class RestfulAuthenticationFilter extends AbstractAuthenticationProcessin
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         if (!request.getMethod().equals(REQUEST_METHOD)) {
             throw new AuthenticationServiceException(
                     "Authentication method not supported: " + request.getMethod());
         }
 
-        ServletInputStream inputStream = request.getInputStream();
-        Certification certification = objectMapper.readValue(inputStream, Certification.class);
+        Certification certification;
+        try {
+            ServletInputStream inputStream = request.getInputStream();
+            certification = objectMapper.readValue(inputStream, Certification.class);
+        } catch (IOException e) {
+            throw new AuthenticationServiceException("获取认证数据失败");
+        }
 
-//        request.setAttribute("certification", certification);
+        request.setAttribute("certification", certification);
 
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(certification.getUsername(),
-                certification.getPassword().trim());
+        UsernamePasswordAuthenticationToken authRequest =
+                new UsernamePasswordAuthenticationToken(certification.getUsername(), certification.getPassword().trim());
 
-        // Allow subclasses to set the "details" property
         setDetails(request, authRequest);
 
         return this.getAuthenticationManager().authenticate(authRequest);

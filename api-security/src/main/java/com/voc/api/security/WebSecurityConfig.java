@@ -1,12 +1,14 @@
 package com.voc.api.security;
 
+import com.voc.api.autoconfigure.LoginProperties;
+import com.voc.api.security.authentication.RestfulAuthenticationFilter;
 import com.voc.api.security.authentication.RestfulLogoutSuccessHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,14 +16,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 
 import javax.annotation.Resource;
@@ -38,7 +41,7 @@ import java.util.Optional;
 @Order(2)
 @EnableWebSecurity
 @EnableConfigurationProperties({SecurityProperties.class})
-@Import({BeanConfig.class})
+//@Import({BeanConfig.class})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -71,28 +74,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private RestfulLogoutSuccessHandler restfulLogoutSuccessHandler;
 
-//    @Bean
-//    public RestfulAuthenticationFilter restfulAuthenticationFilter(){
-//        RestfulAuthenticationFilter filter = new RestfulAuthenticationFilter();
-//        filter.setAuthenticationManager(authenticationManagerBean());
-////        filter.set
-//        return filter;
-//    }
+    @Bean
+    @ConditionalOnMissingBean(RestfulAuthenticationFilter.class)
+    RestfulAuthenticationFilter restfulAuthenticationFilter() throws Exception {
+        RestfulAuthenticationFilter filter = new RestfulAuthenticationFilter();
+        filter.setFilterProcessesUrl(loginProps.getProcessUrl());
+        filter.setAuthenticationSuccessHandler(restfulAuthenticationSuccessHandler);
+        filter.setAuthenticationFailureHandler(restfulAuthenticationFailureHandler);
+        filter.setAuthenticationManager(authenticationManagerBean());
+        return filter;
+    }
 
     @Resource
     private SwitchUserFilter switchUserFilter;
 
-    @Bean
-    @ConditionalOnMissingBean(PasswordEncoder.class)
-    PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+    @Resource
+    private LoginProperties loginProps;
 
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    @Resource
+    private PasswordEncoder passwordEncoder;
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Override
     public void configure(WebSecurity web) {
@@ -119,46 +125,46 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable().headers().frameOptions().disable();
 
-//        http.apply(new RestfulLoginConfigurer<>());
-
         /* org.springframework.security.web.context.SecurityContextPersistenceFilter */
-//        http.securityContext();
+        http.securityContext();
 
+        /* 禁用 session */
+        /*http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
+
+        /* 访问权限控制 */
         http.authorizeRequests(
                 authorize -> authorize
                         .antMatchers(HttpMethod.OPTIONS).permitAll()
-                        .antMatchers("/").permitAll()
-                        .antMatchers("/home", "/login/**", "/logout", "/api/test", "/oauth2/**", "/callback").permitAll()
-//                        .mvcMatchers("/messages/**").hasAuthority("SCOPE_messages")
-                        .anyRequest().permitAll()
+                        .antMatchers("/error", "/login/**", "/logout", "/oauth2/**", "/callback").permitAll()
+                        .mvcMatchers("/messages/**").hasAuthority("SCOPE_MESSAGES")
+                        .anyRequest().authenticated()
         );
 
         /* 异常处理 */
-//        http.exceptionHandling(handling -> {
-////            handling.authenticationEntryPoint(restfulAuthenticationEntryPoint);
-////            handling.accessDeniedHandler(restfulAccessDeniedHandler);
-//        });
-
-        /* 注销处理 */
-//        http.logout(httpSecurityLogoutConfigurer -> {
-//            httpSecurityLogoutConfigurer.logoutUrl("/logout");
-////            httpSecurityLogoutConfigurer.logoutSuccessHandler(restfulLogoutSuccessHandler);
-//        });
-
-        /* 禁用 session */
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
-
-        /* 用户名密码登陆处理 */
-//        http.formLogin().loginPage("/login/password");
-        http.formLogin(form -> {
-            form.loginProcessingUrl("/login/password");
-////            form.successHandler(restfulAuthenticationSuccessHandler);
-////            form.failureHandler(restfulAuthenticationFailureHandler);
+        http.exceptionHandling(handling -> {
+            handling.authenticationEntryPoint(restfulAuthenticationEntryPoint);
+            handling.accessDeniedHandler(restfulAccessDeniedHandler);
         });
 
-//        /* 启用切换用户过滤器 */
-//        http.addFilterBefore(restfulAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//        http.addFilterAfter(switchUserFilter, FilterSecurityInterceptor.class);
+        /* 注销处理 */
+        http.logout(httpSecurityLogoutConfigurer -> {
+            httpSecurityLogoutConfigurer.logoutUrl("/logout");
+            httpSecurityLogoutConfigurer.logoutSuccessHandler(restfulLogoutSuccessHandler);
+        });
+
+        http.httpBasic();
+
+        /* 表单登陆处理 */
+        http.formLogin(form -> {
+            form.loginPage(loginProps.getPage());
+            form.loginProcessingUrl(loginProps.getProcessUrl());
+        });
+
+        /* 用户名密码 Restful 登陆处理 */
+        http.addFilterBefore(restfulAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        /* 启用切换用户过滤器 */
+        http.addFilterAfter(switchUserFilter, FilterSecurityInterceptor.class);
 
 //        /* oauth2 登录 */
 //        http.oauth2Login(oauth2 -> {
@@ -221,7 +227,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
 }
