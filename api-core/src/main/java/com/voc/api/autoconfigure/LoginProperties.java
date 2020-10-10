@@ -14,8 +14,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "api.login")
 public class LoginProperties {
 
-    private String page = "/login";
+    private String page;
 
-    private String processUrl = "/login/password";
+    private String processUrl;
 
 }

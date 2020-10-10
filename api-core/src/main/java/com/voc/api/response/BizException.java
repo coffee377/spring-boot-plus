@@ -22,11 +22,11 @@ public class BizException extends RuntimeException {
     }
 
     public BizException(IBizError bizError) {
-        this(bizError.getCode(), bizError.getMessage(), HttpStatus.OK);
+        this(bizError.getCode(), bizError.getMessage(), bizError.getStatus());
     }
 
     public BizException(IBizError bizError, HttpStatus httpStatus) {
-        this(bizError.getCode(), bizError.getMessage(), httpStatus);
+        this(bizError.getCode(), bizError.getMessage(), httpStatus == null ? bizError.getStatus() : httpStatus);
     }
 
     public BizException(int code, String message, HttpStatus httpStatus) {

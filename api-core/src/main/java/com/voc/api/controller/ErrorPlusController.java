@@ -160,7 +160,7 @@ public class ErrorPlusController extends AbstractErrorController implements Erro
             if (exception instanceof BizException) {
                 return ((BizException) exception).getCode();
             }
-            return HttpStatus.INTERNAL_SERVER_ERROR.value();
+            return getStatus().value();
         }
 
         @Override
@@ -170,6 +170,14 @@ public class ErrorPlusController extends AbstractErrorController implements Erro
                 return message;
             }
             return model.get("error").toString();
+        }
+
+        @Override
+        public HttpStatus getStatus() {
+            if (exception instanceof BizException) {
+                return ((BizException) exception).getHttpStatus();
+            }
+            return HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
     }

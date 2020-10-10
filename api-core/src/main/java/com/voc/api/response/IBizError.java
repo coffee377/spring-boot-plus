@@ -1,5 +1,7 @@
 package com.voc.api.response;
 
+import org.springframework.http.HttpStatus;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -20,5 +22,12 @@ public interface IBizError {
      * @return String
      */
     String getMessage();
+
+    /**
+     * 状态码
+     *
+     * @return HttpStatus
+     */
+    HttpStatus getStatus();
 
 }
