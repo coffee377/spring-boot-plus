@@ -2,12 +2,14 @@ package com.voc.api.security.authentication;
 
 import com.voc.api.response.BaseBizError;
 import com.voc.api.response.Result;
+import com.voc.api.utils.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -24,10 +26,16 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class RestfulAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class RestfulAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+
+        if (!RequestUtil.isRestfulRequest(request)) {
+            super.onAuthenticationFailure(request, response, exception);
+            return;
+        }
+
         if (log.isErrorEnabled()) {
             log.error("用户登录失败 - {}", exception.getMessage());
         }

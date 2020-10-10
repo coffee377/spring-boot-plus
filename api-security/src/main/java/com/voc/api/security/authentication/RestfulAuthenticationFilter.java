@@ -1,6 +1,7 @@
 package com.voc.api.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.voc.api.Constants;
 import com.voc.api.controller.Certification;
 import com.voc.api.utils.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class RestfulAuthenticationFilter extends AbstractAuthenticationProcessin
     private ObjectMapper objectMapper;
 
     public RestfulAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/login/password", "POST"));
+        super(new AntPathRequestMatcher(Constants.DEFAULT_LOGIN_PROCESS_URL, "POST"));
     }
 
     @Override

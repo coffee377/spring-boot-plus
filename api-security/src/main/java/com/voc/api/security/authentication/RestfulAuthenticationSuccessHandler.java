@@ -1,9 +1,11 @@
 package com.voc.api.security.authentication;
 
 import com.voc.api.response.Result;
+import com.voc.api.utils.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -12,6 +14,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -29,7 +32,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-public class RestfulAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class RestfulAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     /**
      * 事件发布
@@ -37,18 +40,16 @@ public class RestfulAuthenticationSuccessHandler implements AuthenticationSucces
     @Resource
     private ApplicationEventPublisher publisher;
 
-//    @Resource
-//    private ClientDetailsService clientDetailsService;
-//
-//    @Resource
-//    private AuthorizationServerTokenServices authorizationServerTokenServices;
-
     @Resource
     private OAuth2AuthorizedClientManager authorizedClientManager;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         publisher.publishEvent(new LogInSuccessEvent(authentication, "用户登录成功"));
+        if (!RequestUtil.isRestfulRequest(request)) {
+            super.onAuthenticationSuccess(request, response, authentication);
+            return;
+        }
         Object result = authentication;
         if (authentication instanceof OAuth2AuthenticationToken) {
             String registrationId = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
@@ -64,7 +65,8 @@ public class RestfulAuthenticationSuccessHandler implements AuthenticationSucces
             OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
             OAuth2RefreshToken refreshToken = authorizedClient.getRefreshToken();
             result = accessToken;
-        } else {
+        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            String name = authentication.getName();
 //            Certification certification = (Certification) request.getAttribute("certification");
 
 //            String clientId = certification.getUsername();

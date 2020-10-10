@@ -1,10 +1,11 @@
 package com.voc.api.security;
 
-import com.voc.api.Constants;
 import com.voc.api.autoconfigure.LoginProperties;
-import com.voc.api.security.authentication.RestfulAuthenticationFilter;
 import com.voc.api.security.authentication.RestfulLogoutSuccessHandler;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import com.voc.api.security.configurer.CustomLoginPageConfigurer;
+import com.voc.api.security.configurer.RestfulLoginConfigurer;
+import com.voc.api.security.configurer.SwitchUserConfigurer;
+import com.voc.api.utils.LoginUtil;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
@@ -12,10 +13,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.DefaultLoginPageConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -24,12 +28,8 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenResolv
 import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -49,6 +49,10 @@ import java.util.Optional;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String SLASH = "/";
+
+    public WebSecurityConfig() {
+        super(false);
+    }
 
     @Resource
     private ClientRegistrationRepository clientRegistrationRepository;
@@ -76,24 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private RestfulLogoutSuccessHandler restfulLogoutSuccessHandler;
-
-    @Bean
-    @ConditionalOnMissingBean(RestfulAuthenticationFilter.class)
-    RestfulAuthenticationFilter restfulAuthenticationFilter() throws Exception {
-        RestfulAuthenticationFilter filter = new RestfulAuthenticationFilter();
-        if (!StringUtils.isEmpty(loginProps.getProcessUrl())) {
-            filter.setFilterProcessesUrl(loginProps.getProcessUrl());
-        } else {
-            filter.setFilterProcessesUrl(Constants.DEFAULT_LOGIN_PROCESS_URL);
-        }
-        filter.setAuthenticationSuccessHandler(restfulAuthenticationSuccessHandler);
-        filter.setAuthenticationFailureHandler(restfulAuthenticationFailureHandler);
-        filter.setAuthenticationManager(authenticationManagerBean());
-        return filter;
-    }
-
-    @Resource
-    private SwitchUserFilter switchUserFilter;
 
     @Resource
     private LoginProperties loginProps;
@@ -164,35 +150,44 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         /* 异常处理 */
         http.exceptionHandling(handling -> {
-            if (!StringUtils.isEmpty(loginProps.getPage())) {
-                handling.authenticationEntryPoint(restfulAuthenticationEntryPoint);
-            }
+            handling.authenticationEntryPoint(restfulAuthenticationEntryPoint);
             handling.accessDeniedHandler(restfulAccessDeniedHandler);
         });
 
+        /**
+         * 未配置自定义页面时使用默认登录页面
+         * @see DefaultLoginPageConfigurer#configure(HttpSecurityBuilder)
+         * @see org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer#authenticationEntryPoint(AuthenticationEntryPoint)
+         */
+        if (LoginUtil.isDefaultPage(loginProps)) {
+            CustomLoginPageConfigurer configurer = http.getConfigurer(CustomLoginPageConfigurer.class);
+
+            CustomLoginPageConfigurer<HttpSecurity> apply = http.apply(new CustomLoginPageConfigurer<>());
+        }
+
         /* 注销处理 */
         http.logout(httpSecurityLogoutConfigurer -> {
-//            httpSecurityLogoutConfigurer.logoutUrl("/logout");
-//            httpSecurityLogoutConfigurer.logoutSuccessHandler(restfulLogoutSuccessHandler);
+            /*httpSecurityLogoutConfigurer.logoutUrl("/logout");*/
+            httpSecurityLogoutConfigurer.logoutSuccessHandler(restfulLogoutSuccessHandler);
         });
 
-        http.httpBasic();
+        /* http.httpBasic();*/
 
         /* 表单登陆处理 */
         http.formLogin(form -> {
-            if (!StringUtils.isEmpty(loginProps.getPage())) {
+            if (LoginUtil.isCustomPage(loginProps)) {
                 form.loginPage(loginProps.getPage());
             }
-            if (!StringUtils.isEmpty(loginProps.getProcessUrl())) {
+            if (LoginUtil.isCustomProcessUrl(loginProps)) {
                 form.loginProcessingUrl(loginProps.getProcessUrl());
             }
         });
 
         /* 用户名密码 Restful 登陆处理 */
-        http.addFilterBefore(restfulAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.apply(new RestfulLoginConfigurer<>());
 
         /* 启用切换用户过滤器 */
-        http.addFilterAfter(switchUserFilter, FilterSecurityInterceptor.class);
+        http.apply(new SwitchUserConfigurer<>());
 
         /* oauth2 登录 */
         http.oauth2Login(oauth2 -> {
@@ -237,9 +232,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                userInfo.
 //                userInfo.userService()
             });
-//                        oauth2
-//                .successHandler(restfulAuthenticationSuccessHandler)
-//                .failureHandler(restfulAuthenticationFailureHandler)
+            oauth2.successHandler(restfulAuthenticationSuccessHandler);
+            oauth2.failureHandler(restfulAuthenticationFailureHandler);
 //                .loginPage("/login/oauth2")
         });
 

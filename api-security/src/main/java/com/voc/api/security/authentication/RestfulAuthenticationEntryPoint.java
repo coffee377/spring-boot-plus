@@ -4,6 +4,7 @@ import com.voc.api.Constants;
 import com.voc.api.autoconfigure.LoginProperties;
 import com.voc.api.response.BaseBizError;
 import com.voc.api.response.Result;
+import com.voc.api.utils.LoginUtil;
 import com.voc.api.utils.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,10 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.util.RedirectUrlBuilder;
-import org.springframework.security.web.util.UrlUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,17 +32,8 @@ import java.io.IOException;
 @Component
 public class RestfulAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-
-    private final PortMapper portMapper = new PortMapperImpl();
-
-    private final PortResolver portResolver = new PortResolverImpl();
-
-    private final LoginProperties loginProperties;
-
     public RestfulAuthenticationEntryPoint(LoginProperties loginProperties) {
-        super(StringUtils.isEmpty(loginProperties.getPage()) ? Constants.DEFAULT_LOGIN_PAGE_URL : loginProperties.getPage());
-        this.loginProperties = loginProperties;
+        super(LoginUtil.isDefaultPage(loginProperties) ? Constants.DEFAULT_LOGIN_PAGE_URL : loginProperties.getPage());
     }
 
     /**
@@ -79,44 +68,9 @@ public class RestfulAuthenticationEntryPoint extends LoginUrlAuthenticationEntry
             }
             response.getWriter().write(failure.toString());
         } else {
-            StringBuilder redirectUrl = new StringBuilder();
-            redirectUrl.append(buildRedirectUrl(request, response, e, true));
-            redirectUrl.append("?redirect_url=");
-            redirectUrl.append(buildRedirectUrl(request, response, e, false));
-            redirectStrategy.sendRedirect(request, response, redirectUrl.toString());
+            super.commence(request, response, e);
         }
 
-    }
-
-    protected String buildRedirectUrl(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      AuthenticationException authException,
-                                      boolean loginPage) {
-        String url = Constants.DEFAULT_LOGIN_PAGE_URL;
-        if (!StringUtils.isEmpty(loginProperties.getPage())) {
-            url = loginProperties.getPage();
-        }
-
-        if (!loginPage) {
-            url = request.getContextPath() + request.getServletPath();
-        }
-
-        if (UrlUtils.isAbsoluteUrl(url)) {
-            return url;
-        }
-
-        int serverPort = portResolver.getServerPort(request);
-        String scheme = request.getScheme();
-
-        RedirectUrlBuilder urlBuilder = new RedirectUrlBuilder();
-
-        urlBuilder.setScheme(scheme);
-        urlBuilder.setServerName(request.getServerName());
-        urlBuilder.setPort(serverPort);
-        urlBuilder.setContextPath(request.getContextPath());
-        urlBuilder.setPathInfo(url);
-
-        return urlBuilder.getUrl();
     }
 
 }
