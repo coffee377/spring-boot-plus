@@ -67,42 +67,8 @@ public class RestfulAuthenticationSuccessHandler extends SavedRequestAwareAuthen
             result = accessToken;
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
             String name = authentication.getName();
-//            Certification certification = (Certification) request.getAttribute("certification");
-
-//            String clientId = certification.getUsername();
-//            String clientSecret = certification.getPassword();
         }
-//        OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest.withClientRegistrationId("github")
-//                .principal(authentication)
-//                .attributes(attrs -> {
-//                    attrs.put(HttpServletRequest.class.getName(), request);
-//                    attrs.put(HttpServletResponse.class.getName(), response);
-//                })
-//                .build();
-//        OAuth2AuthorizedClient authorizedClient = this.authorizedClientManager.authorize(authorizeRequest);
-//
-//        OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
 
-//        ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);
-//
-//        if (clientDetails == null) {
-//            throw new UnapprovedClientAuthenticationException("clientId 对应的配置信息不存在");
-//        } else if (!clientDetails.getClientSecret().equals(clientSecret)){
-//            throw new UnapprovedClientAuthenticationException("clientSecret 不匹配");
-//        }
-//
-//        TokenRequest tokenRequest = new TokenRequest(Collections.emptyMap(), clientId, clientDetails.getScope(), "custom");
-//
-//        OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(clientDetails);
-//
-//        OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
-//
-//        OAuth2AccessToken accessToken = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
-//
-
-//        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-//            result = authentication;
-//        }
         String res = Result.success(result).toString();
         if (log.isDebugEnabled()) {
             log.debug("响应 JSON 数据为：{}", res);

@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/09/24 21:16
+ * @deprecated ControllerAdvice 只能处理 Controller 层错误，无法处理其他错误，通过自定义 ErrorController 实现
  */
 @Slf4j
-//@ControllerAdvice
-// TODO: 2020/10/2 11:20 ControllerAdvice 只能处理 Controller 层错误，无法处理其他错误，通过自定义 ErroeController 实现
+@Deprecated
 public class GlobalControllerAdvice {
 
     /**

@@ -1,6 +1,6 @@
 package com.voc.api.response;
 
-import com.voc.api.entity.JsonEntity;
+import com.voc.system.entity.JsonEntity;
 import lombok.Getter;
 import lombok.Setter;
 

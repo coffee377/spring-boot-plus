@@ -6,9 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.*;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.util.StringUtils;
 
@@ -33,26 +37,41 @@ public class BeanConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-//    @Bean
-//    public ClientRegistrationRepository clientRegistrationRepository() {
-//        return new InMemoryClientRegistrationRepository(
-////                ClientRegistration.withClientRegistration(c)
-//                ClientRegistration.withRegistrationId("github")
-//                        .clientId("db3bd3536a1d3163acf9")
-//                        .clientSecret("2b3b4ae1eaf3a9590feb5f01c84b694019c69ce0")
-//                        .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
-//                        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-////                        .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
-//                        .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-//                        .scope("read:user")
-//                        .authorizationUri("https://github.com/login/oauth/authorize")
-//                        .tokenUri("https://github.com/login/oauth/access_token")
-//                        .userInfoUri("https://api.github.com/user")
-//                        .userNameAttributeName("login")
-//                        .clientName("GitHub")
-//                        .build()
-//        );
-//    }
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        ClientRegistration client1 = ClientRegistration
+                .withRegistrationId("test1")
+                .clientName("test1")
+                .clientId("test")
+                .clientSecret("demo")
+                .scope()
+                .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+                .authorizationUri("http://localhost:8088/oauth2/authorize")
+                .tokenUri("http://localhost:8088/oauth2/token")
+                .userInfoUri("http://localhost:8088/oauth2/userinfo").build();
+
+//                .userNameAttributeName("login")
+
+
+        return new InMemoryClientRegistrationRepository(
+                client1,
+                ClientRegistration.withRegistrationId("github")
+                        .clientId("db3bd3536a1d3163acf9")
+                        .clientSecret("2b3b4ae1eaf3a9590feb5f01c84b694019c69ce0")
+                        .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
+                        .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                        .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+                        .scope("read:user")
+                        .authorizationUri("https://github.com/login/oauth/authorize")
+                        .tokenUri("https://github.com/login/oauth/access_token")
+                        .userInfoUri("https://api.github.com/user")
+                        .userNameAttributeName("login")
+                        .clientName("GitHub")
+                        .build()
+        );
+    }
 
     @Bean
     public OAuth2AuthorizedClientService oauth2AuthorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {

@@ -10,7 +10,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @email coffee377@dingtalk.com
  * @time 2020/09/23 10:50
  */
-@SpringBootApplication(scanBasePackages = {"com.voc.api"})
+//@EnableAuthorizationServer
+@SpringBootApplication(scanBasePackages = {"com.voc", "com.voc.api"})
 public class DemoApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

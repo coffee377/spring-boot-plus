@@ -6,6 +6,7 @@ import com.voc.api.security.configurer.CustomLoginPageConfigurer;
 import com.voc.api.security.configurer.RestfulLoginConfigurer;
 import com.voc.api.security.configurer.SwitchUserConfigurer;
 import com.voc.api.utils.LoginUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
@@ -20,9 +21,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.DefaultLoginPageConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
@@ -30,8 +34,11 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.util.AntPathMatcher;
 
 import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +49,7 @@ import java.util.Optional;
  * @email coffee377@dingtalk.com
  * @time 2018/03/14 10:07
  */
-@Order(2)
+@Order(101)
 @EnableWebSecurity
 @EnableConfigurationProperties({SecurityProperties.class})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -223,12 +230,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                });
 //                authorization.baseUri("/oauth2/authorization/{id}");
             }).redirectionEndpoint(redirection -> {
-//                redirection.
 //                redirection.baseUri("/login/oauth2/code/*");
             }).tokenEndpoint(token -> {
-//                token.
-                //token.accessTokenResponseClient()
+//                token.accessTokenResponseClient(new DefaultAuthorizationCodeTokenResponseClient());
+//                token.accessTokenResponseClient()
             }).userInfoEndpoint(userInfo -> {
+//                userInfo.customUserType()
+//                userInfo.userAuthoritiesMapper(new GrantedAuthoritiesMapper() {
+//                    @Override
+//                    public Collection<? extends GrantedAuthority> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
+//                        return null;
+//                    }
+//                });
 //                userInfo.
 //                userInfo.userService()
             });
@@ -237,14 +250,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .loginPage("/login/oauth2")
         });
 
-//        /* oauth2 客户端 */
-//        http.oauth2Client();
-//
+        /* oauth2 客户端 */
+        http.oauth2Client(client -> {
+//            client.authorizationCodeGrant().;
+//            client.authorizationCodeGrant().
+        });
+
         /* oauth2 资源认证服务 */
         http.oauth2ResourceServer(resourceServer -> {
             resourceServer.authenticationEntryPoint(restfulAuthenticationEntryPoint);
             resourceServer.accessDeniedHandler(restfulAccessDeniedHandler);
             resourceServer.jwt(jwt -> {
+//                jwt.
 //                jwt.decoder(token -> {
 //                    Jwt.Builder builder = Jwt.withTokenValue(token);
 //                    return builder.build();
@@ -262,4 +279,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
+    public void testCodota() {
+//        BufferedReader reader =
+    }
 }

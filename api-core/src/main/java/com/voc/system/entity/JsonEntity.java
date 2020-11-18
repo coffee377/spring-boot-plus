@@ -1,4 +1,4 @@
-package com.voc.api.entity;
+package com.voc.system.entity;
 
 import com.voc.api.bean.IBean;
 import com.voc.api.autoconfigure.json.IJson;

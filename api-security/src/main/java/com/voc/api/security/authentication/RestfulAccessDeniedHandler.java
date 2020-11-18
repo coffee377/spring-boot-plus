@@ -38,6 +38,10 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
         Result failure;
+        response.sendError(HttpStatus.FORBIDDEN.value(), e.getMessage());
+        if (response.isCommitted()) {
+            return;
+        }
         if (e.getClass().isAssignableFrom(AccessDeniedException.class)) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth != null) {

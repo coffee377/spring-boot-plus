@@ -1,24 +1,26 @@
 bootJar {
-    enabled(true)
+  enabled(true)
 }
 
 jar {
-    enabled(false)
+  enabled(false)
 }
 
 
 dependencies {
-    implementation('org.springframework.boot:spring-boot-starter-web') {
-        /* 不使用 jackson */
+  implementation('org.springframework.boot:spring-boot-starter-web') {
+    /* 不使用 jackson */
 //        exclude group: 'com.fasterxml.jackson.core'
 //        exclude group: 'com.fasterxml.jackson.datatype'
 //        exclude group: 'com.fasterxml.jackson.module'
-    }
-    implementation 'com.google.code.gson:gson:2.8.6'
+  }
+  implementation 'com.google.code.gson:gson:2.8.6'
 
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation project(':api-security')
-    implementation project(':api-core')
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  implementation project(':api-security')
+  implementation project(':api-core')
+  implementation project(':authorization-server')
 }

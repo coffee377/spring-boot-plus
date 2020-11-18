@@ -1,8 +1,31 @@
-rootProject.name = 'api'
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    maven { url 'https://repo.spring.io/plugins-release' }
+  }
+}
 
-/* 引入子模块 */
-include 'api-core'
-include 'api-security'
-include 'api-system'
-include 'api-demo'
+rootProject.name = 'voc'
 
+///* 引入子模块 */
+//include 'api-core'
+//include 'api-security'
+//include 'api-system'
+//include 'api-demo'
+
+FileTree buildFiles = fileTree(rootDir) {
+  include '**/*.gradle'
+  exclude 'build', '**/gradle', 'settings.gradle', 'build.gradle', '.*', 'out'
+}
+
+/* 自动引入模块 */
+buildFiles.each { File buildFile ->
+  def projectFile = buildFile.parentFile
+  String projectName = projectFile.name
+  String projectPath = ":${projectName}"
+  include "${projectName}"
+//  def project = findProject("${projectPath}")
+//  project.name = projectFile.name
+//  project.projectDir = projectFile
+//  project.buildFileName = buildFile.name
+}
