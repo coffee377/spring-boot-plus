@@ -14,12 +14,12 @@ public class BitUtil {
      * @param b int
      * @return int
      */
-    public static int add(int a, int b) {
+    public static long add(long a, long b) {
         if (b == 0) {
             return a;
         } else {
             /* 进位值 */
-            int carry = (a & b) << 1;
+            long carry = (a & b) << 1;
             a = a ^ b;
             return add(a, carry);
         }
@@ -32,7 +32,7 @@ public class BitUtil {
      * @param b int
      * @return int
      */
-    public static int subtraction(int a, int b) {
+    public static long subtraction(long a, long b) {
         return add(a, ~b + 1);
     }
 
@@ -43,9 +43,9 @@ public class BitUtil {
      * @param b int
      * @return int
      */
-    public static int multiply(int a, int b) {
-        int i = 0;
-        int res = 0;
+    public static long multiply(long a, long b) {
+        long i = 0;
+        long res = 0;
         while (b != 0) {
             if ((b & 1) == 1) {
                 res += (a << i);
@@ -63,8 +63,8 @@ public class BitUtil {
      * @param b int
      * @return int
      */
-    public static int division(int a, int b) {
-        int res;
+    public static long division(long a, long b) {
+        long res;
         if (a < b) {
             return 0;
         } else {

@@ -1,8 +1,13 @@
 package com.voc.api.autoconfigure;
 
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import com.voc.api.autoconfigure.cache.RedisCacheAutoConfiguration;
+import com.voc.api.autoconfigure.json.JsonAutoConfiguration;
+import com.voc.api.controller.ErrorPlusController;
+import com.voc.api.response.ResultAdvice;
+import com.voc.api.utils.SpringUtil;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
@@ -13,18 +18,13 @@ import javax.annotation.Resource;
  * @time 2020/09/23 12:38
  */
 @Configuration
-//@EnableConfigurationProperties({ApiProperties.class})
-@ConfigurationPropertiesScan("com.voc.api")
+@Import({JsonAutoConfiguration.class, RedisCacheAutoConfiguration.class, ErrorPlusController.class,
+        ResultAdvice.class, SpringUtil.class})
+//@ConfigurationPropertiesScan("com.voc.api")
+@EnableConfigurationProperties(ApiProperties.class)
 public class ApiAutoConfiguration implements WebMvcConfigurer {
 
     @Resource
     private ApiProperties api;
-
-//    @Bean
-//    @ConditionalOnProperty(prefix = "api.json", name = "exception-result", havingValue = "json", matchIfMissing = true)
-//    ErrorController errorController(ErrorAttributes errorAttributes,
-//                                    ServerProperties serverProperties) {
-//        return new ErrorPlusController(errorAttributes, serverProperties);
-//    }
 
 }

@@ -14,22 +14,18 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Setter
 public class BizException extends RuntimeException {
-    private int code;
+    private long code;
     private HttpStatus httpStatus;
 
-    public BizException(String message) {
-        this(HttpStatus.INTERNAL_SERVER_ERROR.value(), message, HttpStatus.OK);
+    public BizException(long code, String message) {
+        this(code, message, HttpStatus.OK);
     }
 
-    public BizException(IBizError bizError) {
-        this(bizError.getCode(), bizError.getMessage(), bizError.getStatus());
+    public BizException(IBizStatus bizStatus) {
+        this(bizStatus.getCode(), bizStatus.getMessage(), bizStatus.getStatus());
     }
 
-    public BizException(IBizError bizError, HttpStatus httpStatus) {
-        this(bizError.getCode(), bizError.getMessage(), httpStatus == null ? bizError.getStatus() : httpStatus);
-    }
-
-    public BizException(int code, String message, HttpStatus httpStatus) {
+    public BizException(long code, String message, HttpStatus httpStatus) {
         super(message);
         this.code = code;
         this.httpStatus = httpStatus;

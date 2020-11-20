@@ -1,6 +1,6 @@
 package com.voc.api.security.authentication;
 
-import com.voc.api.response.BaseBizError;
+import com.voc.api.response.BaseBizStatus;
 import com.voc.api.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -49,7 +49,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
                     log.info("{} attempted to access the protected URL: {}", auth.getName(), request.getRequestURI());
                 }
             }
-            failure = Result.failure(BaseBizError.FORBIDDEN);
+            failure = Result.failure(BaseBizStatus.FORBIDDEN);
         } else {
             failure = Result.failure(e);
         }

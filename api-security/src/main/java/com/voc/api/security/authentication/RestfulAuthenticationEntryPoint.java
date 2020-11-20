@@ -2,7 +2,7 @@ package com.voc.api.security.authentication;
 
 import com.voc.api.Constants;
 import com.voc.api.autoconfigure.LoginProperties;
-import com.voc.api.response.BaseBizError;
+import com.voc.api.response.BaseBizStatus;
 import com.voc.api.response.Result;
 import com.voc.api.utils.LoginUtil;
 import com.voc.api.utils.RequestUtil;
@@ -55,13 +55,13 @@ public class RestfulAuthenticationEntryPoint extends LoginUrlAuthenticationEntry
             response.setContentType("application/json;charset=utf-8");
             response.setCharacterEncoding("utf-8");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            Result failure = Result.failure(BaseBizError.UNAUTHORIZED);
+            Result failure = Result.failure(BaseBizStatus.UNAUTHORIZED);
             if (e instanceof InvalidBearerTokenException) {
-                failure = Result.failure(BaseBizError.INVALID_BEARER_TOKEN);
+                failure = Result.failure(BaseBizStatus.INVALID_BEARER_TOKEN);
             } else if (e instanceof UsernameNotFoundException) {
-                failure = Result.failure(BaseBizError.USERNAME_NOT_FOUND);
+                failure = Result.failure(BaseBizStatus.USERNAME_NOT_FOUND);
             } else if (e instanceof BadCredentialsException) {
-                failure = Result.failure(BaseBizError.BAD_CREDENTIALS);
+                failure = Result.failure(BaseBizStatus.BAD_CREDENTIALS);
             }
             if (log.isDebugEnabled()) {
                 log.debug("响应 JSON 数据为：{}", failure.toString());

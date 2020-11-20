@@ -3,6 +3,7 @@ package com.voc.api.autoconfigure.json.jackson.ser;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.voc.api.autoconfigure.json.JsonProperties;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import java.util.Date;
  * @email coffee377@dingtalk.com
  * @time 2020/09/28 11:48
  */
+@Component
 public class DateSerializerPlus extends BaseTemporalSerializer<Date> {
 
     public DateSerializerPlus(JsonProperties jsonProperties) {

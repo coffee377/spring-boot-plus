@@ -3,6 +3,7 @@ package com.voc.api.autoconfigure.json.jackson.ser;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.voc.api.autoconfigure.json.JsonProperties;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
@@ -11,6 +12,7 @@ import java.time.Instant;
  * @email coffee377@dingtalk.com
  * @time 2020/09/28 11:37
  */
+@Component
 public class InstantSerializerPlus extends BaseTemporalSerializer<Instant> {
 
     public InstantSerializerPlus(JsonProperties jsonProperties) {

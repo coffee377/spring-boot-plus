@@ -7,17 +7,17 @@ import org.springframework.http.HttpStatus;
  * @email coffee377@dingtalk.com
  * @time 2020/09/23 11:42
  */
-public interface IBizError {
+public interface IBizStatus {
 
     /**
-     * 错误编码
+     * 业务状态编码
      *
-     * @return int
+     * @return Long
      */
-    int getCode();
+    long getCode();
 
     /**
-     * 错误信息
+     * 业务状态信息
      *
      * @return String
      */

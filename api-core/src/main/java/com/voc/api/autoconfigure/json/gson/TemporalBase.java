@@ -6,6 +6,7 @@ import com.voc.api.autoconfigure.json.IZoneInfo;
 import com.voc.api.autoconfigure.json.JsonProperties;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.core.ResolvableType;
 
 import java.lang.reflect.Type;
 import java.time.*;
@@ -69,6 +70,11 @@ public abstract class TemporalBase<T> implements JsonSerializer<T>, JsonDeserial
             }
         }
         return null;
+    }
+
+    public Class<?> getGenericType(){
+        ResolvableType resolvableType = ResolvableType.forClass(this.getClass());
+        return resolvableType.getSuperType().getGeneric(0).resolve();
     }
 
 }

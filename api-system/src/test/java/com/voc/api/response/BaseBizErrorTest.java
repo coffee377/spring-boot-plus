@@ -11,8 +11,8 @@ class BaseBizErrorTest {
 
     @Test
     void getCode() {
-        BaseBizError[] values = BaseBizError.values();
-        for (BaseBizError value : values) {
+        BaseBizStatus[] values = BaseBizStatus.values();
+        for (BaseBizStatus value : values) {
             System.out.println(value.getCode() + " ==== " + value.getMessage());
         }
     }

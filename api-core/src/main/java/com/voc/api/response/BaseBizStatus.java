@@ -10,15 +10,15 @@ import org.springframework.http.HttpStatus;
  * @email coffee377@dingtalk.com
  * @time 2018/03/22 17:01
  */
-public enum BaseBizError implements IBizError  {
+public enum BaseBizStatus implements IBizStatus {
 
     /**
      * 操作成功返回值
      */
     OK("SUCCESS", HttpStatus.OK) {
         @Override
-        public int getCode() {
-            return 0;
+        public long getCode() {
+            return 0L;
         }
     },
 
@@ -36,7 +36,9 @@ public enum BaseBizError implements IBizError  {
 
     FORBIDDEN("没有访问权限", HttpStatus.FORBIDDEN),
 
-    INTERNAL_SERVER_ERROR("服务器内部错误", HttpStatus.INTERNAL_SERVER_ERROR);
+    INTERNAL_SERVER_ERROR("服务器内部错误", HttpStatus.INTERNAL_SERVER_ERROR),
+    JSON_SERIALIZE_EXCEPTION("序列化异常", HttpStatus.INTERNAL_SERVER_ERROR),
+    JSON_DESERIALIZE_EXCEPTION("反序列化异常", HttpStatus.INTERNAL_SERVER_ERROR);
 
     //    ENTITY_VALIDATED_ERROR(1000, "实体属性校验错误"),
 //    REQUEST_ADDRESS_NOT_MATCH(1001, "请求地址与实体ID不一致"),
@@ -56,15 +58,15 @@ public enum BaseBizError implements IBizError  {
 
     private final HttpStatus status;
 
-    BaseBizError(String message, HttpStatus status) {
+    BaseBizStatus(String message, HttpStatus status) {
         this.message = message;
         this.status = status;
     }
 
     @Override
-    public int getCode() {
+    public long getCode() {
         /* 模块编码 */
-        int module = BitUtil.multiply(1, 1000);
+        long module = BitUtil.multiply(1, 1000);
         return BitUtil.add(module, this.ordinal());
     }
 

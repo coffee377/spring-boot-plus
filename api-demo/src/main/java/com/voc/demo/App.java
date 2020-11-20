@@ -1,4 +1,4 @@
-package com.voc.api;
+package com.voc.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,19 +10,19 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @email coffee377@dingtalk.com
  * @time 2020/09/23 10:50
  */
-//@EnableAuthorizationServer
-@SpringBootApplication(scanBasePackages = {"com.voc", "com.voc.api"})
-public class DemoApplication extends SpringBootServletInitializer {
+//@EnableDingTalk
+@SpringBootApplication
+public class App extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(DemoApplication.class);
-        springApplication.setBanner(new DefaultBanner());
+        SpringApplication springApplication = new SpringApplication(App.class);
+//        springApplication.setBanner(new DefaultBanner());
         springApplication.run(args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(DemoApplication.class);
+        return builder.sources(App.class);
     }
 
 }

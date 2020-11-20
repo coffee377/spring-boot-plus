@@ -1,6 +1,5 @@
 package com.voc.api.utils;
 
-import lombok.Getter;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -50,8 +49,6 @@ public class SpringUtil implements ApplicationContextAware, EnvironmentAware {
     public static Object getBean(String name) {
         return getApplicationContext().getBean(name);
     }
-
-    //.
 
     /**
      * 通过class获取Bean

@@ -1,9 +1,10 @@
 package com.voc.api.autoconfigure.json.gson;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
 import com.voc.api.autoconfigure.json.JsonProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
@@ -18,12 +19,6 @@ import java.util.Date;
  * @time 2020/09/27 17:25
  */
 @Component
-@ConditionalOnClass(Gson.class)
-@ConditionalOnProperty(
-        prefix = "api.json",
-        name = "type",
-        havingValue = "gson"
-)
 public class DateBean extends TemporalBase<Date> {
 
     public DateBean(JsonProperties jsonProperties) {

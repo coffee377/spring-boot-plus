@@ -1,13 +1,12 @@
 package com.voc.api.autoconfigure.json;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import com.voc.api.autoconfigure.json.jackson.JacksonAutoConfigurationPlus;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 
 /**
@@ -16,11 +15,11 @@ import org.springframework.core.env.Environment;
  * @time 2020/09/29 09:06
  */
 @Configuration
-@EnableConfigurationProperties(JsonProperties.class)
-@ConditionalOnClass({ObjectMapper.class, Gson.class})
+@Import({JacksonAutoConfigurationPlus.class})
+@ConfigurationPropertiesScan(basePackages = "com.voc.api")
 public class JsonAutoConfiguration {
 
-    @Bean
+    @Bean("json")
     @ConditionalOnMissingBean
     IJson json(ApplicationContext applicationContext, Environment environment) {
         return new DefaultJson(applicationContext, environment);

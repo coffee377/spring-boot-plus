@@ -1,4 +1,4 @@
-package com.voc.api.controller;
+package com.voc.demo.controller;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

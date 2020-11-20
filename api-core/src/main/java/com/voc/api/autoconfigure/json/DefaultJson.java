@@ -3,6 +3,9 @@ package com.voc.api.autoconfigure.json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.voc.api.autoconfigure.json.exception.JsonDeserializeException;
+import com.voc.api.autoconfigure.json.exception.JsonSerializeException;
+import com.voc.api.response.BaseBizStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 
@@ -23,7 +26,7 @@ public class DefaultJson implements IJson {
     }
 
     @Override
-    public String serializer(Object obj) throws Exception {
+    public String serializer(Object obj) throws JsonSerializeException {
         switch (getJsonType()) {
             case GSON:
                 Gson gson = applicationContext.getBean(Gson.class);
@@ -33,12 +36,16 @@ public class DefaultJson implements IJson {
             case JACKSON:
             default:
                 ObjectMapper mapper = applicationContext.getBean(ObjectMapper.class);
-                return mapper.writeValueAsString(obj);
+                try {
+                    return mapper.writeValueAsString(obj);
+                } catch (JsonProcessingException e) {
+                    throw new JsonSerializeException(BaseBizStatus.JSON_SERIALIZE_EXCEPTION);
+                }
         }
     }
 
     @Override
-    public <T> T deserializer(String jsonSting, Class<T> targetType) throws JsonProcessingException {
+    public <T> T deserializer(String jsonSting, Class<T> targetType) throws JsonDeserializeException {
         switch (getJsonType()) {
             case GSON:
                 Gson gson = applicationContext.getBean(Gson.class);
@@ -48,7 +55,11 @@ public class DefaultJson implements IJson {
             case JACKSON:
             default:
                 ObjectMapper mapper = applicationContext.getBean(ObjectMapper.class);
-                return mapper.readValue(jsonSting, targetType);
+                try {
+                    return mapper.readValue(jsonSting, targetType);
+                } catch (JsonProcessingException e) {
+                    throw new JsonDeserializeException(BaseBizStatus.JSON_DESERIALIZE_EXCEPTION);
+                }
         }
     }
 

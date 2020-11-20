@@ -1,6 +1,6 @@
 package com.voc.api.security.authentication;
 
-import com.voc.api.response.BaseBizError;
+import com.voc.api.response.BaseBizStatus;
 import com.voc.api.response.Result;
 import com.voc.api.utils.RequestUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class RestfulAuthenticationFailureHandler extends SimpleUrlAuthentication
         }
         Result failure = Result.failure(exception);
         if (exception instanceof BadCredentialsException || exception instanceof UsernameNotFoundException) {
-            failure = Result.failure(BaseBizError.INVALID_USERNAME_OR_PASSWORD);
+            failure = Result.failure(BaseBizStatus.INVALID_USERNAME_OR_PASSWORD);
             response.setStatus(HttpStatus.BAD_REQUEST.value());
         }
         String result = failure.toString();

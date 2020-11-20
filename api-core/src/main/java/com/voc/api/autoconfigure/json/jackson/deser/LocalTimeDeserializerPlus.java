@@ -1,6 +1,7 @@
 package com.voc.api.autoconfigure.json.jackson.deser;
 
 import com.voc.api.autoconfigure.json.JsonProperties;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
 import java.time.LocalTime;
@@ -10,6 +11,7 @@ import java.time.LocalTime;
  * @email coffee377@dingtalk.com
  * @time 2020/09/28 22:45
  */
+@Component
 public class LocalTimeDeserializerPlus extends BaseTemporalDeserializer<LocalTime> {
 
     public LocalTimeDeserializerPlus(JsonProperties jsonProperties) {

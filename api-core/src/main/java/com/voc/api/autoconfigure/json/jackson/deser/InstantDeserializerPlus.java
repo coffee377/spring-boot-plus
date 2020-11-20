@@ -1,6 +1,7 @@
 package com.voc.api.autoconfigure.json.jackson.deser;
 
 import com.voc.api.autoconfigure.json.JsonProperties;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
 import java.time.Instant;
@@ -10,6 +11,7 @@ import java.time.Instant;
  * @email coffee377@dingtalk.com
  * @time 2020/09/28 22:43
  */
+@Component
 public class InstantDeserializerPlus extends BaseTemporalDeserializer<Instant> {
 
     public InstantDeserializerPlus(JsonProperties jsonProperties) {

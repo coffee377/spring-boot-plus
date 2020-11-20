@@ -1,6 +1,7 @@
 package com.voc.api.autoconfigure.json.jackson.deser;
 
 import com.voc.api.autoconfigure.json.JsonProperties;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
  * @email coffee377@dingtalk.com
  * @time 2020/09/28 10:16
  */
+@Component
 public class DateDeserializerPlus extends BaseTemporalDeserializer<Date> {
 
     public DateDeserializerPlus(JsonProperties jsonProperties) {

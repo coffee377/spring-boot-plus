@@ -1,5 +1,8 @@
 package com.voc.api.autoconfigure.json;
 
+import com.voc.api.autoconfigure.json.exception.JsonDeserializeException;
+import com.voc.api.autoconfigure.json.exception.JsonSerializeException;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -12,8 +15,10 @@ public interface IJson {
      *
      * @param obj Object
      * @return String
+     * @throws JsonSerializeException 序列化异常
      */
-    String serializer(Object obj) throws Exception;
+
+    String serializer(Object obj) throws JsonSerializeException;
 
     /**
      * 反序列化
@@ -22,7 +27,8 @@ public interface IJson {
      * @param targetType Class<T>
      * @param <T>        泛型
      * @return T
+     * @throws JsonDeserializeException 反序列化异常
      */
-    <T> T deserializer(String jsonSting, Class<T> targetType) throws Exception;
+    <T> T deserializer(String jsonSting, Class<T> targetType) throws JsonDeserializeException;
 
 }
