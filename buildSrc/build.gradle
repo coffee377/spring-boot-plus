@@ -1,0 +1,50 @@
+plugins {
+  id 'java-gradle-plugin'
+}
+
+group = "com.voc"
+version = "1.0.0"
+
+repositories {
+  /* Local */
+  mavenLocal()
+  /* Ali Yun central仓和jcenter仓的聚合仓 */
+  maven { url 'https://maven.aliyun.com/repository/public/' }
+}
+
+dependencies {
+  /* gradle sdk */
+//  compile gradleApi()
+  /* groovy sdk */
+//  compileOnly localGroovy()
+
+  implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.4.0'
+
+  annotationProcessor 'org.projectlombok:lombok:1.18.16'
+}
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+
+tasks.withType(org.gradle.jvm.tasks.Jar) {
+  archiveBaseName.set("gradle-plugin")
+}
+
+gradlePlugin {
+  plugins {
+    devtool {
+      id = "com.voc.devtool"
+      implementationClass = "com.voc.gradle.plugin.DevToolPlugin"
+    }
+    aliyun {
+      id = "com.voc.aliyun"
+      implementationClass = "com.voc.gradle.plugin.AliYunPlugin"
+    }
+  }
+
+}
+
+

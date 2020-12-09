@@ -1,0 +1,4 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.voc.restful.core.AutoConfiguration,\
+com.voc.api.autoconfigure.ApiAutoConfiguration

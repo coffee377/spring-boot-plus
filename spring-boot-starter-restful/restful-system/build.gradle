@@ -1,0 +1,4 @@
+dependencies {
+  implementation project(":${project.parent.name}:restful-core")
+//  implementation 'org.springframework.security.experimental:spring-security-oauth2-authorization-server:0.0.2'
+}

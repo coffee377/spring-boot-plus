@@ -1,135 +1,246 @@
+import java.util.function.Consumer
+import java.util.function.Predicate
+import java.util.stream.Collectors
+
 plugins {
-  id 'java'
-  id 'idea'
-  id 'org.springframework.boot' version '2.4.0'
-  id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.asciidoctor.convert' version '1.5.8'
+//  id 'idea'
+
+//  id 'com.voc.devtool'
+//  id 'java-library'
+//  id 'maven-publish'
+  id 'org.springframework.boot'
+  id 'io.spring.dependency-management'
+
+//  id 'org.asciidoctor.convert' version '1.5.8'
+//  id "org.springframework.boot.optional-dependencies"
 }
 
-//group = 'com.voc.api'
-//version = '0.0.1-SNAPSHOT'
+group = 'com.voc.boot'
 
+/* 本地仓库地址 */
+def localRepositoryPath = 'D:/SoftWare/Maven/repository'
 
 /* 所有项目配置 */
 allprojects {
-  idea {
-    module {
-      inheritOutputDirs = false
-      outputDir = compileJava.destinationDir
-      testOutputDir = compileTestJava.destinationDir
-    }
-  }
+  ext.set("localRepositoryUrl", localRepositoryPath)
 
-  group = 'com.voc'
-  version = '0.0.1'
+  group = 'com.voc.boot'
+
+  apply plugin: 'idea'  /* 让Gradle自动生成Intellij的项目文件 */
+  apply plugin: 'io.spring.dependency-management' /* 依赖管理，用来传递依赖 */
+  apply plugin: 'com.voc.devtool' /* 通用开发工具插件 */
+  apply plugin: 'com.voc.aliyun'
+
+//  devtool {
+//    localMavenRepository = "fdfdf"
+//    kotlin = true
+//    groovy = true
+//  }
+
+//  apply plugin: 'io.spring.dependency-management' /* 依赖管理，用来传递spring的依赖 */
+//  apply plugin: 'maven-publish'
+
+//  idea {
+//    module {
+//      inheritOutputDirs = false
+//      outputDir = compileJava.destinationDir
+//      testOutputDir = compileTestJava.destinationDir
+//    }
+//  }
+//
+//  publishing {
+//    publications {
+//      mavenJava(MavenPublication) {
+////      artifact uberJar
+////      artifact javadocJar
+//        from components.java
+//        pom {
+//          developers {
+//            developer {
+//              id = 'coffee377'
+//              name = 'Wu Yujie'
+//              email = 'coffee377@dingtalk.com'
+//            }
+//          }
+//        }
+//      }
+//
+//    }
+//    /* 声明要发布到的存储库 */
+//    repositories {
+//      maven { url = localRepositoryPath }
+////      maven {
+////        // change to point to your repo, e.g. http://my.org/repo
+////        def snapshotsRepo = "$buildDir/repos/snapshots"
+////        def releaseRepo = "$buildDir/repos/releases"
+////        name "Nexus"
+////        url = version.endsWith('SNAPSHOT') ? snapshotsRepo : releaseRepo
+////      }
+//      /* 阿里云效个人仓库 */
+//      maven {
+//        // change to point to your repo, e.g. http://my.org/repo
+//        def repo = 'https://packages.aliyun.com/maven/repository/2038604'
+//        def snapshotsRepo = "${repo}-snapshot-XNRePo/"
+//        def releaseRepo = "${repo}-release-0bMxsA/"
+//        name "AliYun"
+//        credentials {
+//          username '5f4ba059fa82bfeb805a1e09'
+//          password 'a3XkZLNApybs'
+//        }
+//        url = version.endsWith('SNAPSHOT') ? snapshotsRepo : releaseRepo
+//      }
+//    }
+//
+//  }
 
 }
+
+subprojects
+        .stream()
+        .filter(new Predicate<Project>() {
+          @Override
+          boolean test(Project project) {
+            return project.path.startsWith(":spring-boot-starter")
+          }
+        })
+        .collect(Collectors.toList())
+        .forEach(new Consumer<Project>() {
+          @Override
+          void accept(Project project) {
+            project.getPlugins().apply("org.springframework.boot")
+          }
+        })
+
 
 /* 所有子项目的通用配置 */
 subprojects {
 /* 定制版本管理 https://docs.spring.io/spring-boot/docs/2.3.4.RELEASE/reference/htmlsingle/#dependency-versions-properties */
   ext {
-    set('snippetsDir', file("build/generated-snippets"))
+//    set('snippetsDir', file("build/generated-snippets"))
 //        set('lombok.version', '1.18.8')
 //        ext['spring-security.version']='5.3.4.RELEASE'
 //        set('spring-security.version', '5.4.0')
   }
 
-  /* 使用二进制插件 */
-  apply plugin: 'java' /* java是Gradle的核心插件，是内置的，内置插件不需要配置依赖路径 */
-  apply plugin: 'idea' /* 同上  让Gradle自动生成Intellij的项目文件*/
+//  /* 使用二进制插件 */
+//  apply plugin: 'java' /* java是Gradle的核心插件，是内置的，内置插件不需要配置依赖路径 */
+//  apply plugin: 'idea' /* 同上  让Gradle自动生成Intellij的项目文件*/
 
   /* 注意gradle插件不再自动应用，所以这里需要指定 */
-  apply plugin: 'org.springframework.boot'
+//  apply plugin: 'org.springframework.boot'
   /* 依赖管理插件仍然是一个spring-boot-gradle-plugin传递依赖，所以无需在build.gradle配置中明确列出此依赖。 */
-  apply plugin: 'io.spring.dependency-management' /* 依赖管理，用来传递spring的依赖 */
-  apply plugin: 'org.asciidoctor.convert' /* 依赖管理，用来传递spring的依赖 */
+//  apply plugin: 'io.spring.dependency-management' /* 依赖管理，用来传递spring的依赖 */
+//  apply plugin: 'org.asciidoctor.convert' /* 依赖管理，用来传递spring的依赖 */
+//  apply plugin: 'maven-publish'
 
   /* 指定jdk版本 */
-  sourceCompatibility = '1.8'
+//  sourceCompatibility = '1.8'
 
   /* java编译的时候缺省状态下会因为中文字符而失败 */
-  [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+//  [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
   repositories {
     /* Local */
-    maven { url "file://D:/SoftWare/Maven/repository" }
+//    maven { url "file://D:/SoftWare/Maven/repository" }
+
     /* Ali Yun central仓和jcenter仓的聚合仓 */
-    maven { url 'https://maven.aliyun.com/repository/public/' }
-    /* ailyun devopts */
-    maven {
-      url 'https://packages.aliyun.com/maven/repository/2038604-release-0bMxsA/'
-    }
-    /* google */
-    maven { url 'https://maven.aliyun.com/repository/google' }
-    /* gradle-plugin */
-    maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
-    /* spring */
-    maven { url 'https://maven.aliyun.com/repository/spring' }
-    /* spring-plugin */
-    maven { url 'https://maven.aliyun.com/repository/spring-plugin' }
-    /* Company */
-    maven { url "http://192.168.44.155/nexus/content/groups/public/" }
-    /* FanRuan */
-    maven { url "http://mvn.finedevelop.com/repository/maven-public/" }
+//    maven { url 'https://maven.aliyun.com/repository/public/' }
+//    maven {
+//      credentials {
+//        username '5f4ba059fa82bfeb805a1e09'
+//        password 'a3XkZLNApybs'
+//      }
+//      url 'https://packages.aliyun.com/maven/repository/2038604-snapshot-XNRePo/'
+//    }
+//    /* google */
+//    maven { url 'https://maven.aliyun.com/repository/google' }
+//    /* gradle-plugin */
+//    maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+//    /* spring */
+//    maven { url 'https://maven.aliyun.com/repository/spring' }
+//    /* spring-plugin */
+//    maven { url 'https://maven.aliyun.com/repository/spring-plugin' }
+
+//    /* Company */
+//    maven { url "http://192.168.44.155/nexus/content/groups/public/" }
+//    /* FanRuan */
+//    maven { url "http://mvn.finedevelop.com/repository/maven-public/" }
   }
 
-  configurations {
-    compileOnly {
-      extendsFrom annotationProcessor
-    }
-  }
+//  configurations {
+//    compileOnly {
+//      extendsFrom annotationProcessor
+//    }
+//  }
 
   /* 添加通用依赖 */
   dependencies {
-//        developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-//            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+//        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//    annotationProcessor 'org.projectlombok:lombok'
+//    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+//
+//    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+////            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+//    }
+//    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.7.0'
+
 //    testImplementation("org.junit.vintage:junit-vintage-engine") {
 //      exclude group: "org.hamcrest", module: "hamcrest-core"
 //    }
 //        testImplementation 'org.testcontainers:junit-jupiter'
   }
 
-  tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar) {
-    enabled(false)
-  }
+//  tasks.withType(org.springframework.boot.gradle.tasks.bundling.BootJar) {
+//    enabled(false)
+//  }
+//
+//  tasks.withType(org.gradle.jvm.tasks.Jar) {
+//    enabled(true)
+//    exclude('rebel.xml')
+//  }
 
-  tasks.withType(org.gradle.jvm.tasks.Jar) {
-    enabled(true)
-    exclude('rebel.xml')
-  }
+//  tasks.withType(Delete) {
+//    delete('out')
+//  }
 
-  tasks.withType(Delete) {
-    delete('out')
-  }
+//  tasks.withType(JavaCompile) {
+//    /* 在单独的守护程序进程中启用编译，默认false */
+//    options.fork = true
+//    /* 编译JAVA文件时采用UTF-8 */
+//    options.encoding = "UTF-8"
+//    /* 增量编译，默认true */
+//    options.incremental = true
+//  }
 
-  tasks.withType(JavaCompile) {
-    /* 在单独的守护程序进程中启用编译，默认false */
-    options.fork = true
-    /* 编译JAVA文件时采用UTF-8 */
-    options.encoding = "UTF-8"
-    /* 增量编译，默认true */
-    options.incremental = true
-  }
+//  test {
+//    outputs.dir snippetsDir
+//    useJUnitPlatform()
+//  }
+//
+//  asciidoctor {
+//    inputs.dir snippetsDir
+//    dependsOn test
+//  }
 
-  test {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
-  }
-
-  asciidoctor {
-    inputs.dir snippetsDir
-    dependsOn test
-  }
 }
 
 dependencies {
-//    implementation project(':api-core')
+//  compile("${group}:spring-boot-starter-api:${version}")
 //    implementation project(':api-security')
 //    implementation project(':api-extends')
 }
+
+//apply plugin: 'io.spring.dependency-management'
+
+//dependencyManagement {
+//  imports {
+//    mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+//  }
+//
+//  dependencies {
+////    dependency "${group}:spring-boot-starter-api:${version}"
+//    dependency "${group}:spring-boot-starter-dingtalk:${version}"
+//  }
+//}
+

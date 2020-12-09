@@ -1,4 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.voc.core.AutoConfiguration,\
-com.voc.api.autoconfigure.ApiAutoConfiguration

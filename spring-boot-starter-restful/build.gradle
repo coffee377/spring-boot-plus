@@ -1,0 +1,13 @@
+plugins {
+
+}
+
+dependencyManagement {
+
+}
+
+dependencies {
+  api project(":${project.name}:restful-core")
+  api project(":${project.name}:restful-security")
+  api project(":${project.name}:restful-system")
+}

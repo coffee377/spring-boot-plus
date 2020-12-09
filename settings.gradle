@@ -1,31 +1,48 @@
+import java.util.function.Function
+import java.util.function.Predicate
+import java.util.stream.Collectors
+
 pluginManagement {
   repositories {
     gradlePluginPortal()
     maven { url 'https://repo.spring.io/plugins-release' }
   }
+  /* 插件版本管理 */
+  plugins {
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'org.springframework.boot' version '2.4.0'
+  }
 }
 
-rootProject.name = 'voc'
+rootProject.name = 'tvoc-boot'
 
-///* 引入子模块 */
-//include 'api-core'
-//include 'api-security'
-//include 'api-system'
-//include 'api-demo'
+/* 引入子模块 */
 
 FileTree buildFiles = fileTree(rootDir) {
   include '**/*.gradle'
-  exclude 'build', '**/gradle', 'settings.gradle', 'build.gradle', '.*', 'out'
+  exclude 'build/', 'buildSrc', '**/gradle/', 'settings.gradle', 'build.gradle', '.*', 'out'
 }
 
 /* 自动引入模块 */
-buildFiles.each { File buildFile ->
-  def projectFile = buildFile.parentFile
-  String projectName = projectFile.name
-  String projectPath = ":${projectName}"
-  include "${projectName}"
-//  def project = findProject("${projectPath}")
-//  project.name = projectFile.name
-//  project.projectDir = projectFile
-//  project.buildFileName = buildFile.name
-}
+buildFiles.files.stream()
+        .map(new Function<File, String>() {
+          @Override
+          String apply(File file) {
+            return rootDir.relativePath(file.parentFile).replace("/", ":")
+          }
+        })
+        .filter(new Predicate<String>() {
+          @Override
+          boolean test(String name) {
+            return ["spring-boot-starter-dingtalk"].stream().anyMatch(new Predicate<String>() {
+              @Override
+              boolean test(String s) {
+                return s != name
+              }
+            })
+          }
+        })
+        .collect(Collectors.toSet())
+        .each { name ->
+          include "${name}"
+        }
