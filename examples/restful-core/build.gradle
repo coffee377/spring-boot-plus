@@ -1,0 +1,15 @@
+
+dependencies {
+  implementation("com.voc.boot:spring-boot-starter-restful-core:${version}")
+//  implementation(project(":spring-boot-starter-restful:spring-boot-starter-restful-core"))
+  implementation('org.springframework.boot:spring-boot-starter-web')
+//  implementation('org.springframework.boot:spring-boot-autoconfigure')
+}
+
+bootJar {
+  enabled(true)
+}
+
+jar {
+  enabled(false)
+}

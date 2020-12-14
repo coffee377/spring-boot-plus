@@ -8,6 +8,10 @@ import java.time.Duration;
  * @time 2020/11/18 18:19
  */
 public enum DingTalkCacheEnum implements ICache, DingTalkCache {
+
+    /**
+     *
+     */
     ACCESS_TOKEN(DingTalkCache.ACCESS_TOKEN, Duration.ofSeconds(7200)),
     JS_TICKET(DingTalkCache.JS_TICKET, Duration.ofSeconds(7200));
 
@@ -29,4 +33,5 @@ public enum DingTalkCacheEnum implements ICache, DingTalkCache {
     public Duration getExpirationTime() {
         return expirationTime;
     }
+
 }

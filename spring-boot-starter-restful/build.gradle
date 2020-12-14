@@ -1,5 +1,4 @@
 plugins {
-
 }
 
 //dependencyManagement {
@@ -11,6 +10,13 @@ dependencies {
 //  api project(":${project.name}:restful-core")
 //  api project(":${project.name}:restful-security")
 //  api project(":${project.name}:restful-system")
+
+}
+
+subprojects {
+  dependencies {
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+  }
 }
 
 //bootJar {
@@ -20,4 +26,3 @@ dependencies {
 //jar {
 //  enabled(true)
 //}
-

@@ -13,21 +13,21 @@ import org.springframework.stereotype.Component;
  * @time 2020/09/24 19:44
  */
 @Component
-public class SpringUtil implements ApplicationContextAware, EnvironmentAware {
+public class SpringUtils implements ApplicationContextAware, EnvironmentAware {
     private static ApplicationContext applicationContext = null;
     private static Environment environment = null;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        if (SpringUtil.applicationContext == null) {
-            SpringUtil.applicationContext = applicationContext;
+        if (SpringUtils.applicationContext == null) {
+            SpringUtils.applicationContext = applicationContext;
         }
     }
 
     @Override
     public void setEnvironment(Environment environment) {
-        if (SpringUtil.environment == null) {
-            SpringUtil.environment = environment;
+        if (SpringUtils.environment == null) {
+            SpringUtils.environment = environment;
         }
     }
 

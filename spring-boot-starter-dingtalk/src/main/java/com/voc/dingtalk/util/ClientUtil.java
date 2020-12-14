@@ -1,7 +1,7 @@
 package com.voc.dingtalk.util;
 
-import com.voc.dingtalk.UrlConst;
 import com.dingtalk.api.DefaultDingTalkClient;
+import com.voc.dingtalk.UrlConst;
 
 
 /**

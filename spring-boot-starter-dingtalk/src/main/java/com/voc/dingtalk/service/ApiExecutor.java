@@ -41,7 +41,7 @@ public interface ApiExecutor {
      * @throws DingTalkApiException API异常
      */
     default <T extends TaobaoResponse> void execute(UrlConst urlConst, TaobaoRequest<T> request,
-                                                             String session, Consumer<T> consumer)
+                                                    String session, Consumer<T> consumer)
             throws DingTalkApiException {
         T response;
         try {

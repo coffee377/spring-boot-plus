@@ -25,7 +25,7 @@ public class CredentialsServiceImpl implements CredentialsService, DingTalkCache
 
     @Override
     @Cacheable(
-            cacheNames = DingTalkCache.ACCESS_TOKEN,
+            cacheNames = "DingTalkCache.ACCESS_TOKEN",
             key = "#appInfo.appKey",
             condition = "#appInfo.appKey != null and #appInfo.appSecret != null",
             unless = "#result == null"
@@ -52,7 +52,7 @@ public class CredentialsServiceImpl implements CredentialsService, DingTalkCache
 
     @Override
     @Cacheable(
-            cacheNames = DingTalkCache.JS_TICKET,
+            cacheNames = "DingTalkCache.JS_TICKET",
             key = "#appInfo.appKey",
             condition = "#appInfo.appKey != null",
             unless = "#result == null"

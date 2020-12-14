@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -20,7 +22,7 @@ public class Demo {
 
     @GetMapping
     public String index() {
-        return "测试";
+        return "测试" + Instant.now();
     }
 
 }

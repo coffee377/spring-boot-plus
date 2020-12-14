@@ -30,12 +30,12 @@ fileTree(rootDir) {
           @Override
           boolean test(File file) {
             String relativeName = rootDir.relativePath(file.parentFile)
-            return "" != relativeName && !relativeName.startsWith("examples") && !relativeName.startsWith("spring-boot-starter-dingtalk")
+            return "" != relativeName
           }
         })
         .collect(Collectors.toList())
         .each {
-          println "${projectPath(it)} => ${projectName(it)} => ${it.parentFile}"
+//          println "${projectPath(it)} => ${projectName(it)} => ${it.parentFile}"
           include projectPath(it)
           project(projectPath(it)).projectDir = it.parentFile
           project(projectPath(it)).name = projectName(it)
