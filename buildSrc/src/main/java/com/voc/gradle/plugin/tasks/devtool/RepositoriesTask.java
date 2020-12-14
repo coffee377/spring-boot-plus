@@ -1,6 +1,6 @@
 package com.voc.gradle.plugin.tasks.devtool;
 
-import com.voc.gradle.plugin.extension.DevToolExtension;
+import com.voc.gradle.plugin.aliyun.AliYunMavenExtension;
 import com.voc.gradle.plugin.tasks.BaseTask;
 import com.voc.gradle.plugin.util.StringUtils;
 import org.gradle.api.Project;
@@ -13,6 +13,9 @@ import org.gradle.internal.impldep.org.eclipse.jgit.annotations.Nullable;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,10 +24,22 @@ import java.util.Optional;
  * @time 2019/08/11 14:13
  */
 public class RepositoriesTask extends BaseTask {
-    @TaskAction
-    public void ff() {
-        System.out.println(">>>>>>>>>>>>>>>>> RepositoriesTask");
+
+    private final List<ArtifactRepository> repositories;
+
+    public RepositoriesTask() {
+        this.repositories = new LinkedList<>();
     }
+
+    @TaskAction
+    public void repositoriesAction() {
+        getProject().getLogger().warn(">>>>>>>>>>>>>>>>>>>>> RepositoriesTask start");
+        List<ArtifactRepository> list = new ArrayList<>(this.repositories);
+        list.forEach(this::add);
+        AliYunMavenExtension byType = getProject().getExtensions().getByType(AliYunMavenExtension.class);
+        getProject().getLogger().warn(">>>>>>>>>>>>>>>>>>>>> RepositoriesTask end");
+    }
+
     /**
      * 添加 maven 仓库
      *
@@ -32,23 +47,25 @@ public class RepositoriesTask extends BaseTask {
      * @param username      用户名
      * @param password      密码
      */
-    public void add(@NonNull Object repositoryUrl, @Nullable String username, @Nullable String password) {
+    public void addMavenRepository(@NonNull Object repositoryUrl, @Nullable String username, @Nullable String password) {
         Optional.ofNullable(repositoryUrl).ifPresent(url -> {
-            RepositoryHandler repositories = getProject().getRepositories();
-            MavenArtifactRepository maven = repositories.maven(repository -> {
-                repository.setUrl(url);
-                repository.credentials(credentials -> {
-                    if (StringUtils.isNotEmpty(username)) {
-                        credentials.setUsername(username);
-                    }
-                    if (StringUtils.isNotEmpty(password)) {
-                        credentials.setPassword(password);
-                    }
+            if (StringUtils.isNotEmpty((String) url)) {
+                RepositoryHandler repositoryHandler = getProject().getRepositories();
+                MavenArtifactRepository maven = repositoryHandler.maven(repository -> {
+                    repository.setUrl(url);
+                    repository.credentials(credentials -> {
+                        if (StringUtils.isNotEmpty(username)) {
+                            credentials.setUsername(username);
+                        }
+                        if (StringUtils.isNotEmpty(password)) {
+                            credentials.setPassword(password);
+                        }
+                    });
                 });
-            });
-            repositories.add(maven);
-        });
+                this.repositories.add(maven);
+            }
 
+        });
     }
 
     /**
@@ -56,23 +73,16 @@ public class RepositoriesTask extends BaseTask {
      *
      * @param url 仓库地址
      */
-    public void add(Object url) {
-        add(url, null, null);
-    }
-
-    public void add(ArtifactRepository repository) {
-        Optional.ofNullable(repository).ifPresent(rep -> getProject().getRepositories().add(rep));
+    public void addMavenRepository(Object url) {
+        addMavenRepository(url, null, null);
     }
 
     /**
      * 添加本地仓库地址
-     *
      */
-    public void addMavenLocal() {
+    public void addMavenLocal(String localMavenRepository) {
         Project project = getProject();
         MavenArtifactRepository mavenLocal = project.getRepositories().mavenLocal();
-        DevToolExtension extension = project.getExtensions().getByType(DevToolExtension.class);
-        String localMavenRepository = extension.getLocalMavenRepository();
         if (StringUtils.isNotEmpty(localMavenRepository)) {
             File file = new File(localMavenRepository);
             URI uri = file.toURI();
@@ -80,14 +90,18 @@ public class RepositoriesTask extends BaseTask {
                 mavenLocal.setUrl(uri);
             }
         }
-        add(mavenLocal);
+        this.repositories.add(mavenLocal);
     }
 
     /**
      * 添加中央仓库地址
      */
     public void addMavenCentral() {
-        add(getProject().getRepositories().mavenCentral());
+        this.repositories.add(getProject().getRepositories().mavenCentral());
+    }
+
+    protected void add(ArtifactRepository repository) {
+        Optional.ofNullable(repository).ifPresent(rep -> getProject().getRepositories().add(rep));
     }
 
 }

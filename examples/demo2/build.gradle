@@ -1,0 +1,35 @@
+buildscript {
+//  repositories {
+//    maven { url "file://D:/SoftWare/Maven/repository" }
+//    maven { url "http://central.maven.org/maven2/" }
+//  }
+//
+//  dependencies {
+//    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.40"
+//  }
+}
+
+plugins {
+//  id 'java'
+//  id "org.jetbrains.kotlin.jvm" version "1.3.40"
+}
+
+//aliyun {
+//  mavenData {
+//    url.set("a")
+//    username.set("b")
+//    password.set("c")
+//    password.set("cc")
+//  }
+//}
+
+repositories {
+//  mavenLocal()
+}
+
+dependencies {
+//  implementation 'org.projectlombok:lombok:1.18.16'
+//  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+//  annotationProcessor 'org.projectlombok:lombok:1.18.16'
+}
+

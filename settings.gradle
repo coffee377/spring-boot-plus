@@ -1,4 +1,3 @@
-import java.util.function.Function
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
@@ -14,35 +13,52 @@ pluginManagement {
   }
 }
 
-rootProject.name = 'tvoc-boot'
+plugins {
 
-/* 引入子模块 */
-
-FileTree buildFiles = fileTree(rootDir) {
-  include '**/*.gradle'
-  exclude 'build/', 'buildSrc', '**/gradle/', 'settings.gradle', 'build.gradle', '.*', 'out'
 }
 
-/* 自动引入模块 */
-buildFiles.files.stream()
-        .map(new Function<File, String>() {
+/* 根项目名称 */
+rootProject.name = 'tvoc-boot'
+
+/* 自动引入项目及模块 */
+fileTree(rootDir) {
+  include '**/*.gradle'
+  exclude '**/settings.gradle'
+  exclude '**/buildSrc'
+}.files.stream()
+        .filter(new Predicate<File>() {
           @Override
-          String apply(File file) {
-            return rootDir.relativePath(file.parentFile).replace("/", ":")
+          boolean test(File file) {
+            String relativeName = rootDir.relativePath(file.parentFile)
+            return "" != relativeName && !relativeName.startsWith("examples") && !relativeName.startsWith("spring-boot-starter-dingtalk")
           }
         })
-        .filter(new Predicate<String>() {
-          @Override
-          boolean test(String name) {
-            return ["spring-boot-starter-dingtalk"].stream().anyMatch(new Predicate<String>() {
-              @Override
-              boolean test(String s) {
-                return s != name
-              }
-            })
-          }
-        })
-        .collect(Collectors.toSet())
-        .each { name ->
-          include "${name}"
+        .collect(Collectors.toList())
+        .each {
+          println "${projectPath(it)} => ${projectName(it)} => ${it.parentFile}"
+          include projectPath(it)
+          project(projectPath(it)).projectDir = it.parentFile
+          project(projectPath(it)).name = projectName(it)
         }
+
+/**
+ * 项目路径
+ * @param file
+ * @return String
+ */
+String projectPath(File file) {
+  return ":${rootDir.relativePath(file.parentFile).replace("/", ":")}"
+}
+
+/**
+ * 项目名称
+ * @param file
+ * @return String
+ */
+String projectName(File file) {
+  String[] paths = "${rootDir.relativePath(file.parentFile)}".split("/").reverse()
+  if (paths.length > 1) {
+    return "${paths[1]}-${paths[0]}"
+  }
+  return paths[0]
+}

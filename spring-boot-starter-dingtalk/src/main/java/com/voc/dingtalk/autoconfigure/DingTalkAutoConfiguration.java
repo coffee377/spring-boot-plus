@@ -1,6 +1,6 @@
 package com.voc.dingtalk.autoconfigure;
 
-import com.voc.api.autoconfigure.cache.RedisCacheAutoConfiguration;
+import com.voc.restful.core.autoconfigure.cache.RedisCacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;

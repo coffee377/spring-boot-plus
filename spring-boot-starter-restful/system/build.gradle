@@ -1,0 +1,12 @@
+dependencies {
+  implementation project(":${parent.name}:${parent.name}-core")
+//  implementation 'org.springframework.security.experimental:spring-security-oauth2-authorization-server:0.0.2'
+}
+
+//bootJar {
+//  enabled(false)
+//}
+//
+//jar {
+//  enabled(true)
+//}

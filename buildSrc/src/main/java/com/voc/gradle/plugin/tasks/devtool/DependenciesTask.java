@@ -6,6 +6,9 @@ import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.artifacts.dsl.DependencyHandler;
 import org.gradle.api.tasks.TaskAction;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -13,7 +16,7 @@ import org.gradle.api.tasks.TaskAction;
  */
 public class DependenciesTask extends BaseTask {
 
-//    private Map<String, Set> dd;
+    private Map<String, Set<Object>> configuration;
 
     @TaskAction
     public void ff() {

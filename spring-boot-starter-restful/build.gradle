@@ -2,12 +2,22 @@ plugins {
 
 }
 
-dependencyManagement {
-
-}
+//dependencyManagement {
+//
+//}
 
 dependencies {
-  api project(":${project.name}:restful-core")
-  api project(":${project.name}:restful-security")
-  api project(":${project.name}:restful-system")
+//    implementation('com.alibaba:sdk:20201113')
+//  api project(":${project.name}:restful-core")
+//  api project(":${project.name}:restful-security")
+//  api project(":${project.name}:restful-system")
 }
+
+//bootJar {
+//  enabled(false)
+//}
+//
+//jar {
+//  enabled(true)
+//}
+
