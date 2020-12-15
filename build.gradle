@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit
+
 plugins {
   id 'org.springframework.boot' apply(false)
   id 'io.spring.dependency-management'
@@ -8,9 +10,12 @@ group = 'com.voc.boot'
 allprojects {
   group = 'com.voc.boot'
   configurations.all {
-//    resolutionStrategy.cacheChangingModulesFor 4, 'hours'   // 缓存时间4小时
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'   // 每次都刷新动态缓存
-//    resolutionStrategy.cacheChangingModulesFor 10, 'minutes'  // 缓存十分钟
+    resolutionStrategy {
+      /* 动态版本依赖缓存 10 minutes */
+      cacheDynamicVersionsFor(10, TimeUnit.MINUTES)
+      /* SNAPSHOT版本依赖缓存 0 seconds */
+      cacheChangingModulesFor(0, TimeUnit.SECONDS)
+    }
   }
 }
 

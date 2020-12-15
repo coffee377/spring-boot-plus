@@ -1,7 +1,11 @@
-
 dependencies {
-  implementation("com.voc.boot:spring-boot-starter-restful-core:${version}")
-//  implementation(project(":spring-boot-starter-restful:spring-boot-starter-restful-core"))
+
+//  if ("${version}".endsWith("SNAPSHOT")) {
+//    implementation(project(":spring-boot-starter-restful:spring-boot-starter-restful-core"))
+//  } else {
+    implementation("com.voc.boot:spring-boot-starter-restful-core:${version}")
+//  }
+
   implementation('org.springframework.boot:spring-boot-starter-web')
 //  implementation('org.springframework.boot:spring-boot-autoconfigure')
 }
