@@ -1,6 +1,11 @@
+
 dependencies {
   implementation project(':spring-boot-starter-restful:spring-boot-starter-restful-core')
   implementation('org.springframework.boot:spring-boot-starter-web')
   implementation('org.springframework.boot:spring-boot-starter-data-redis')
   implementation('com.alibaba:sdk:20201113')
+}
+
+dependencyManagement{
+
 }

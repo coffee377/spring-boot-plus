@@ -3,6 +3,7 @@ import java.util.concurrent.TimeUnit
 plugins {
   id 'org.springframework.boot' apply(false)
   id 'io.spring.dependency-management'
+//  id 'com.voc.devtools'
 }
 
 group = 'com.voc.boot'
@@ -21,6 +22,7 @@ allprojects {
 
 subprojects {
   apply plugin: 'java-library'
+//  apply plugin: 'com.voc.devtools'
 
   if (path.startsWith(":spring-boot") || path.startsWith(":examples")) {
     apply plugin: 'org.springframework.boot'

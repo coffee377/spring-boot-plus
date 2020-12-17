@@ -1,6 +1,5 @@
-package com.voc.gradle.plugin;
+package com.voc.gradle.plugin.api;
 
-import com.voc.gradle.plugin.config.IConfigurable;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
@@ -9,7 +8,7 @@ import org.gradle.api.Project;
  * @email coffee377@dingtalk.com
  * @time 2019/08/13 16:19
  */
-public interface IPlugin extends Plugin<Project>, IConfigurable {
+public interface IPlugin extends Plugin<Project>, IProject {
 
     /**
      * 官方插件入口
