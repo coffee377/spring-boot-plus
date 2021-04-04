@@ -75,11 +75,11 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
         project.afterEvaluate(p ->
                 extensions.configure(DevToolsExtension.class, devToolExtension -> {
                     if (devToolExtension.isAliMaven()) {
-                        INNER_ALI_MAVEN.forEach(
-                                (name, url) -> devToolExtension.getMaven().create(name, mavenRepositories ->
-                                        mavenRepositories.setUrl(url)
-                                )
-                        );
+//                        INNER_ALI_MAVEN.forEach(
+//                                (name, url) -> devToolExtension.getMaven().create(name, mavenRepositories ->
+//                                        mavenRepositories.setUrl(url)
+//                                )
+//                        );
                     }
                 })
         );

@@ -12,7 +12,7 @@ public enum JsonType {
 
     JACKSON,
     GSON,
-    JSONB,
-    FASTJSON,
+//    JSONB,
+//    FASTJSON,
 
 }

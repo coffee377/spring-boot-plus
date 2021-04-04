@@ -45,16 +45,16 @@
 //                .collect(Collectors.toList());
 //    }
 //
-//    /**
-//     * 从功能获取权限
-//     *
-//     * @param actions IActions
-//     * @return List<GrantedAuthority>
-//     */
-//    public static List<GrantedAuthority> create4Functions(IMasks actions) {
-//        return EnumDict.contains(ActionType.class, actions).stream()
-//                .map(ActionGrantedAuthority::new).collect(Collectors.toList());
-//    }
+////    /**
+////     * 从功能获取权限
+////     *
+////     * @param actions IActions
+////     * @return List<GrantedAuthority>
+////     */
+////    public static List<GrantedAuthority> create4Functions(IMasks actions) {
+////        return EnumDict.contains(ActionType.class, actions).stream()
+////                .map(ActionGrantedAuthority::new).collect(Collectors.toList());
+////    }
 //
 //    /**
 //     * 是否拥有某项操作权限

@@ -31,8 +31,8 @@ public class DefaultJson implements IJson {
             case GSON:
                 Gson gson = applicationContext.getBean(Gson.class);
                 return gson.toJson(obj);
-            case FASTJSON:
-            case JSONB:
+//            case FASTJSON:
+//            case JSONB:
             case JACKSON:
             default:
                 ObjectMapper mapper = applicationContext.getBean(ObjectMapper.class);
@@ -50,8 +50,8 @@ public class DefaultJson implements IJson {
             case GSON:
                 Gson gson = applicationContext.getBean(Gson.class);
                 return gson.fromJson(jsonSting, targetType);
-            case FASTJSON:
-            case JSONB:
+//            case FASTJSON:
+//            case JSONB:
             case JACKSON:
             default:
                 ObjectMapper mapper = applicationContext.getBean(ObjectMapper.class);

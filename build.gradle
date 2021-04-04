@@ -24,6 +24,7 @@ subprojects {
   apply plugin: 'java-library'
 //  apply plugin: 'com.voc.devtools'
 
+
   if (path.startsWith(":spring-boot") || path.startsWith(":examples")) {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
@@ -48,8 +49,8 @@ subprojects {
   }
 
   dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
-    annotationProcessor("org.projectlombok:lombok:1.18.4")
+//    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+    annotationProcessor "org.projectlombok:lombok:1.18.4"
   }
 
   configurations {
