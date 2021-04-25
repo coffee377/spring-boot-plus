@@ -1,19 +1,31 @@
 plugins {
 }
 
-//dependencyManagement {
-//
-//}
+dependencyManagement {
+  dependencies {
+    dependencySet(group:'com.voc', version: "$version") {
+      entry 'spring-boot-starter-restful-core'
+      entry 'spring-boot-starter-restful-dingtalk'
+      entry 'spring-boot-starter-restful-security'
+      entry 'spring-boot-starter-restful-system'
+    }
+//    dependency "com.voc:spring-boot-starter-restful-core:${version}"
+  }
+}
 
 dependencies {
 //    implementation('com.alibaba:sdk:20201113')
 //  api project(":${project.name}:restful-core")
 //  api project(":${project.name}:restful-security")
 //  api project(":${project.name}:restful-system")
+}
 
+jar {
+  enabled(false)
 }
 
 subprojects {
+
   dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation('org.springframework.boot:spring-boot-starter-test')
@@ -22,5 +34,32 @@ subprojects {
   test {
     useJUnitPlatform()
   }
+
+  publishing {
+    publications {
+      mavenJava(MavenPublication) {
+        from components.java
+      }
+
+    }
+    /* 声明要发布到的存储库 */
+    repositories {
+      /* 阿里云效个人仓库 */
+      maven {
+        // change to point to your repo, e.g. http://my.org/repo
+        def repo = 'https://packages.aliyun.com/maven/repository/2038604'
+        def snapshotsRepo = "${repo}-snapshot-XNRePo/"
+        def releaseRepo = "${repo}-release-0bMxsA/"
+        name "AliYun"
+        credentials {
+          username '5f4ba059fa82bfeb805a1e09'
+          password 'a3XkZLNApybs'
+        }
+        url = version.endsWith('SNAPSHOT') ? snapshotsRepo : releaseRepo
+      }
+    }
+
+  }
+
 }
 

@@ -34,12 +34,6 @@ public class JsonProperties {
     /**
      * 是否开启 utc 时间戳
      */
-    @Deprecated
-    private boolean utcInstant = false;
-
-    /**
-     * 是否开启 utc 时间戳
-     */
     private boolean utcTimestamp;
 
     /**
@@ -48,6 +42,11 @@ public class JsonProperties {
     @NestedConfigurationProperty
     private JsonFormat format = new JsonFormat();
 
+    /**
+     * Result 序列化名称配置
+     */
+    @NestedConfigurationProperty
+    private ResultFieldName result = new ResultFieldName();
 }
 
 

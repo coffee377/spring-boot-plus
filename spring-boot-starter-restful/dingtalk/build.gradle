@@ -1,12 +1,14 @@
-plugins {
-
-}
 
 dependencies {
-  api 'org.springframework.boot:spring-boot-starter-web'
-  implementation 'org.springframework.boot:spring-boot-starter-actuator'
-  compileOnly 'org.springframework.boot:spring-boot-starter-data-redis'
-  compileOnly 'com.google.code.gson:gson:2.8.6'
+  api project(":${parent.name}:${parent.name}-core")
+  implementation('org.springframework.boot:spring-boot-starter-data-redis')
+//  implementation('com.alibaba:sdk:20201113')
+  implementation 'com.alibaba:sdk:20210421'
+//  implementation(files('lib/taobao-sdk-java.jar'))
+}
+
+dependencyManagement{
+
 }
 
 //publishing {

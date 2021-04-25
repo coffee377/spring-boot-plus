@@ -1,5 +1,6 @@
 package com.voc.system.entity;
 
+import com.voc.restful.core.entity.JsonEntity;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

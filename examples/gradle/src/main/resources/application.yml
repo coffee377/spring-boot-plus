@@ -1,0 +1,9 @@
+spring:
+  redis:
+    password: test
+api:
+  json:
+    result:
+      success: succeed
+      code: status
+      message: msg

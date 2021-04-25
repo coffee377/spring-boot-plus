@@ -1,7 +1,7 @@
 package com.voc.restful.core.response;
 
 import com.voc.restful.core.bean.IBean;
-import com.voc.system.entity.JsonEntity;
+import com.voc.restful.core.entity.JsonEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;

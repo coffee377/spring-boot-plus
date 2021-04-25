@@ -1,0 +1,59 @@
+plugins {
+  id "com.voc.devtools"
+}
+
+dependencies {
+
+//  if ("${version}".endsWith("SNAPSHOT")) {
+  /* rest 接口核心模块 */
+//  implementation project(":spring-boot-starter-restful:spring-boot-starter-restful-core")
+//  /* 系统模块 */
+  implementation project(":spring-boot-starter-restful:spring-boot-starter-restful-system")
+  implementation 'com.google.code.gson:gson:2.8.6'
+//    implementation(project(":spring-boot-starter-dingtalk"))
+//  } else {
+//  implementation("com.voc.boot:spring-boot-starter-restful-core:${version}")
+//  }
+
+//  implementation('org.springframework.boot:spring-boot-starter-web')
+//  implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//  implementation group: 'io.spring.dependency-management', name: 'io.spring.dependency-management.gradle.plugin', version: '1.0.10.RELEASE', ext: 'pom'
+
+//  implementation('org.springframework.boot:spring-boot-autoconfigure')
+}
+
+devtools {
+//  javaTools = true
+//  googleAutoService = true
+//  aliMaven = false
+//  ali {
+//    snapshot {
+//      id = "2038604"
+//      snapshot = true
+//      hash = "XNRePo"
+//      username = "5f4ba059fa82bfeb805a1e09"
+//      password = "a3XkZLNApybs"
+//    }
+//    release {
+//      id = "2038604"
+//      hash = "0bMxsA"
+//      username = "5f4ba059fa82bfeb805a1e09"
+//      password = "a3XkZLNApybs"
+//    }
+//  }
+//  maven {
+////    AliYun { url = "https://maven.aliyun.com/repository/public/" }
+////    Google { url = "https://maven.aliyun.com/repository/google" }
+////    GradlePlugin { url = "https://maven.aliyun.com/repository/gradle-plugin" }
+////    Spring { url = "https://maven.aliyun.com/repository/spring" }
+////    SpringPlugin { url = "https://maven.aliyun.com/repository/spring-plugin" }
+//  }
+}
+
+bootJar {
+  enabled(true)
+}
+
+jar {
+  enabled(false)
+}

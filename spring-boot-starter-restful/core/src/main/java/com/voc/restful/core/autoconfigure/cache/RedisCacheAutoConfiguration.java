@@ -78,7 +78,7 @@ public class RedisCacheAutoConfiguration {
      * @return RedisTemplate<String, Object>
      * @see RedisAutoConfiguration#redisTemplate(RedisConnectionFactory)
      */
-    @Bean("redisTemplate")
+    @Bean("redisTemplate2")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory, RedisSerializer<Object> redisValueSerializer) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);

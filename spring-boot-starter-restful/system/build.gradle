@@ -1,8 +1,6 @@
 dependencies {
-  implementation project(":${parent.name}:${parent.name}-core")
-  implementation 'org.springframework.boot:spring-boot-starter-web'
+  api project(":${parent.name}:${parent.name}-core")
   implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-
 //  implementation 'org.springframework.security.experimental:spring-security-oauth2-authorization-server:0.0.2'
 }
 

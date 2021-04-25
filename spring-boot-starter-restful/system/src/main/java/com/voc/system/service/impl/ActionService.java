@@ -1,10 +1,12 @@
 package com.voc.system.service.impl;
 
 import com.voc.restful.core.response.BizException;
+import com.voc.system.dao.IActionDao;
 import com.voc.system.entity.Action;
 import com.voc.system.service.IActionService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -15,18 +17,17 @@ import java.util.List;
 @Service
 public class ActionService implements IActionService {
 
-//    @Resource
-//    private IActionDao actionDao;
+    @Resource
+    private IActionDao actionDao;
 
     @Override
     public List<Action> findAll() throws BizException {
-//        return actionDao.findAll();
-        return null;
+        return actionDao.findAll();
     }
 
     @Override
     public boolean add(Action action) {
-//        actionDao.insert(action);
-        return true;
+        Action ac = actionDao.add(action);
+        return ac != null;
     }
 }

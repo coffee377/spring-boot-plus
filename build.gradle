@@ -6,10 +6,12 @@ plugins {
 //  id 'com.voc.devtools'
 }
 
-group = 'com.voc.boot'
+group = 'com.voc'
 
 allprojects {
-  group = 'com.voc.boot'
+  apply plugin: 'maven-publish'
+
+  group = 'com.voc'
   configurations.all {
     resolutionStrategy {
       /* 动态版本依赖缓存 10 minutes */
@@ -18,6 +20,7 @@ allprojects {
       cacheChangingModulesFor(0, TimeUnit.SECONDS)
     }
   }
+
 }
 
 subprojects {
@@ -65,6 +68,48 @@ subprojects {
 
   tasks.withType(Delete.class) {
     delete('out')
+  }
+
+  publishing {
+    publications {
+      mavenJava(MavenPublication) {
+        versionMapping {
+          usage('java-api') {
+            fromResolutionOf('runtimeClasspath')
+          }
+          usage('java-runtime') {
+            fromResolutionResult()
+          }
+        }
+        pom {
+          developers {
+            developer {
+              id = 'coffee377'
+              name = 'Wu Yujie'
+              email = 'coffee377@dingtalk.com'
+            }
+          }
+        }
+      }
+
+    }
+    /* 声明要发布到的存储库 */
+    repositories {
+      /* 阿里云效个人仓库 */
+      maven {
+        // change to point to your repo, e.g. http://my.org/repo
+        def repo = 'https://packages.aliyun.com/maven/repository/2038604'
+        def snapshotsRepo = "${repo}-snapshot-XNRePo/"
+        def releaseRepo = "${repo}-release-0bMxsA/"
+        name "AliYun"
+        credentials {
+          username '5f4ba059fa82bfeb805a1e09'
+          password 'a3XkZLNApybs'
+        }
+        url = version.endsWith('SNAPSHOT') ? snapshotsRepo : releaseRepo
+      }
+    }
+
   }
 
 }

@@ -1,5 +1,0 @@
-#api:
-#  json:
-#    exception-result: json
-#    type: jackson
-#debug: true

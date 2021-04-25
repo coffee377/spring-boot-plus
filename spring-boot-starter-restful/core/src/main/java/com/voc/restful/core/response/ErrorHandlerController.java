@@ -57,6 +57,9 @@ public class ErrorHandlerController extends AbstractErrorController implements E
         Map<String, Object> model = getErrorAttributes(request, options);
         Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
         ExceptionData exceptionData = new ExceptionData(exception, model);
+        model.put("status", exceptionData.getStatus().value());
+        model.put("error", exceptionData.getStatus().toString());
+        model.put("message", exceptionData.getMessage());
         return Result.builder().failure(exceptionData).data(model).build();
     }
 
