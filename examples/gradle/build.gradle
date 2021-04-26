@@ -2,24 +2,13 @@ plugins {
   id "com.voc.devtools"
 }
 
+def restful = "spring-boot-starter-restful"
+
 dependencies {
 
-//  if ("${version}".endsWith("SNAPSHOT")) {
-  /* rest 接口核心模块 */
-//  implementation project(":spring-boot-starter-restful:spring-boot-starter-restful-core")
-//  /* 系统模块 */
-  implementation project(":spring-boot-starter-restful:spring-boot-starter-restful-system")
-  implementation 'com.google.code.gson:gson:2.8.6'
-//    implementation(project(":spring-boot-starter-dingtalk"))
-//  } else {
-//  implementation("com.voc.boot:spring-boot-starter-restful-core:${version}")
-//  }
+  implementation project(":$restful:$restful-system")
+  compileOnly 'com.google.code.gson:gson:2.8.6'
 
-//  implementation('org.springframework.boot:spring-boot-starter-web')
-//  implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-//  implementation group: 'io.spring.dependency-management', name: 'io.spring.dependency-management.gradle.plugin', version: '1.0.10.RELEASE', ext: 'pom'
-
-//  implementation('org.springframework.boot:spring-boot-autoconfigure')
 }
 
 devtools {

@@ -1,8 +1,8 @@
 package com.voc.system.dao.impl;
 
 import com.voc.restful.core.persist.mongo.impl.BaseMongoDao;
-import com.voc.system.dao.IActionDao;
-import com.voc.system.entity.Action;
+import com.voc.system.dao.IMenuDao;
+import com.voc.system.entity.Menu;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
  * @time 2021/02/05 14:49
  */
 @Repository
-public class ActionDao extends BaseMongoDao<Action, String> implements IActionDao {
+public class MenuDao extends BaseMongoDao<Menu, String> implements IMenuDao {
 
 }

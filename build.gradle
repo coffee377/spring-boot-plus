@@ -47,8 +47,20 @@ subprojects {
     maven { url "file://D:/SoftWare/Maven/repository" }
     /* Ali Yun central仓和jcenter仓的聚合仓 */
     maven { url 'https://maven.aliyun.com/repository/public/' }
-    maven { url 'https://packages.aliyun.com/maven/repository/2038604-release-0bMxsA/' }
-    maven { url 'https://packages.aliyun.com/maven/repository/2038604-snapshot-XNRePo/' }
+    maven {
+      url 'https://packages.aliyun.com/maven/repository/2038604-release-0bMxsA/'
+      credentials {
+        username '5f4ba059fa82bfeb805a1e09'
+        password 'a3XkZLNApybs'
+      }
+    }
+    maven {
+      url 'https://packages.aliyun.com/maven/repository/2038604-snapshot-XNRePo/'
+      credentials {
+        username '5f4ba059fa82bfeb805a1e09'
+        password 'a3XkZLNApybs'
+      }
+    }
   }
 
   dependencies {
@@ -95,6 +107,11 @@ subprojects {
     }
     /* 声明要发布到的存储库 */
     repositories {
+      /* 本地仓库 */
+      maven {
+        name "local"
+        url = "D:/SoftWare/Maven/repository"
+      }
       /* 阿里云效个人仓库 */
       maven {
         // change to point to your repo, e.g. http://my.org/repo
@@ -108,6 +125,7 @@ subprojects {
         }
         url = version.endsWith('SNAPSHOT') ? snapshotsRepo : releaseRepo
       }
+
     }
 
   }

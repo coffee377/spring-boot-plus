@@ -1,10 +1,11 @@
-package com.voc.system.dao;
+package com.voc.restful.core.persist.mongo;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
@@ -17,51 +18,33 @@ import java.util.Optional;
  * @time 2021/02/07 10:25
  */
 @NoRepositoryBean
-public interface IMongoDao<T, ID> {
+public interface IMongoDao<T, ID> extends PagingAndSortingRepository<T, ID> {
 
     /**
-     * 新增数据
+     * 查找所有
      *
-     * @param entity E
-     * @param <E>    E extends T
-     * @return E
+     * @return list<t>
      */
-    <E extends T> E add(E entity);
+    @Override
+    List<T> findAll();
 
     /**
-     * 新增数据
+     * 排序查找
      *
-     * @param entities Iterable<E>
-     * @param <E>      E extends T
-     * @return List<E>
+     * @param sort 排序
+     * @return List<T>
      */
-    <E extends T> List<E> add(Iterable<E> entities);
+    @Override
+    List<T> findAll(Sort sort);
 
     /**
-     * Deletes the entity with the given id.
+     * 根据 ID 集合查询数据
      *
-     * @param id must not be {@literal null}.
+     * @param ids ID 集合
+     * @return List<T>
      */
-    void deleteById(ID id);
-
-    /**
-     * Deletes a given entity.
-     *
-     * @param entity must not be {@literal null}.
-     */
-    void delete(T entity);
-
-    /**
-     * Deletes the given entities.
-     *
-     * @param entities must not be {@literal null}. Must not contain {@literal null} elements.
-     */
-    void deleteAll(Iterable<? extends T> entities);
-
-    /**
-     * Deletes all entities managed by the repository.
-     */
-    void deleteAll();
+    @Override
+    List<T> findAllById(Iterable<ID> ids);
 
     /**
      * 根据id修改
@@ -115,14 +98,6 @@ public interface IMongoDao<T, ID> {
     Optional<T> findOne(@Nullable Query condition);
 
     /**
-     * 根据ID查询
-     *
-     * @param id ID
-     * @return Optional<T>
-     */
-    Optional<T> findById(ID id);
-
-    /**
      * 根据 ID 集合查询
      *
      * @param ids Iterable<ID>
@@ -130,43 +105,4 @@ public interface IMongoDao<T, ID> {
      */
     List<T> findById(Iterable<ID> ids);
 
-    /**
-     * 查询所有数据
-     *
-     * @return List<T>
-     */
-    List<T> findAll();
-
-    /**
-     * 查询所有数据
-     *
-     * @param sort 排序信息
-     * @return List<T>
-     */
-    List<T> findAll(Sort sort);
-
-    /**
-     * 查询所有数据
-     *
-     * @param pageable 分页信息
-     * @return List<T>
-     */
-    Page<T> findAll(Pageable pageable);
-
-
-//    /**
-//     * 根据传入的对象 修改
-//     *
-//     * @param id     主键
-//     * @param entity 实体
-//     */
-//    void update(ID id, T entity);
-//
-//    /**
-//     * 根据id修改
-//     *
-//     * @param id             更新主键
-//     * @param updateFieldMap key:需要更新的属性  value:对应的属性值
-//     */
-//    void update(ID id, Map<String, Object> updateFieldMap);
 }

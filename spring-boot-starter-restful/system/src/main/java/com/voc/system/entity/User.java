@@ -2,6 +2,7 @@ package com.voc.system.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author Wu Yujie
@@ -10,6 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Document(collection = "sys_user")
 public class User implements IUser<String> {
 
     private String id;
@@ -18,13 +20,10 @@ public class User implements IUser<String> {
 
     private String password;
 
-    @Override
-    public String getId() {
-        return id;
-    }
+    private String avatar;
 
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
+    private String realName;
+
+    private Integer status;
+
 }

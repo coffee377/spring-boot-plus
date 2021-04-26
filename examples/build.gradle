@@ -5,17 +5,17 @@ plugins {
 
 subprojects {
   repositories {
-    mavenLocal()
-    /* Ali Yun central仓和jcenter仓的聚合仓 */
-    maven { url 'https://maven.aliyun.com/repository/public/' }
-    maven {
-      credentials {
-        username '5f4ba059fa82bfeb805a1e09'
-        password 'a3XkZLNApybs'
-      }
-      url 'https://packages.aliyun.com/maven/repository/2038604-snapshot-XNRePo/'
-    }
-    maven { url 'https://packages.aliyun.com/maven/repository/2038604-release-0bMxsA/' }
+//    mavenLocal()
+//    /* Ali Yun central仓和jcenter仓的聚合仓 */
+//    maven { url 'https://maven.aliyun.com/repository/public/' }
+//    maven {
+//      credentials {
+//        username '5f4ba059fa82bfeb805a1e09'
+//        password 'a3XkZLNApybs'
+//      }
+//      url 'https://packages.aliyun.com/maven/repository/2038604-snapshot-XNRePo/'
+//    }
+//    maven { url 'https://packages.aliyun.com/maven/repository/2038604-release-0bMxsA/' }
   }
 }
 

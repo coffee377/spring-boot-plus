@@ -1,4 +1,4 @@
-package com.voc.api;
+package com.voc.restful.core.banner;
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringBootVersion;
@@ -21,14 +21,14 @@ import java.util.*;
  * @email coffee377@dingtalk.com
  * @time 2018/07/12 21:37
  */
-public class DefaultBanner implements Banner {
+public class VocBanner implements Banner {
     private static final String[] BANNER = new String[]{"********************************************************************************************************************************", "*                                                                                                                              *", "*    ___________.__             ____   ____    .__               ________   _____                _____  _____                  *", "*    \\__    ___/|  |__   ____   \\   \\ /   /___ |__| ____  ____   \\_____  \\_/ ____\\   ____  _____/ ____\\/ ____\\____   ____      *", "*      |    |   |  |  \\_/ __ \\   \\   Y   /  _ \\|  |/ ___\\/ __ \\   /   |   \\   __\\  _/ ___\\/  _ \\   __\\\\   __\\/ __ \\_/ __ \\     *", "*      |    |   |   Y  \\  ___/    \\     (  <_> )  \\  \\__\\  ___/  /    |    \\  |    \\  \\__(  <_> )  |   |  | \\  ___/\\  ___/     *", "*      |____|   |___|  /\\___  >    \\___/ \\____/|__|\\___  >___  > \\_______  /__|     \\___  >____/|__|   |__|  \\___  >\\___  >    *", "*                    \\/     \\/                         \\/    \\/          \\/             \\/                       \\/     \\/     *", "*                                                                                                                              *", "********************************************************************************************************************************"};
     private static final int STRAP_LINE_SIZE = 128;
     private static final String PADDING_CHAR = " ";
     private static final String DEFAULT_BANNER = "banner.txt";
     private final Resource resource;
 
-    public DefaultBanner() {
+    public VocBanner() {
         this.resource = new ClassPathResource(DEFAULT_BANNER);
     }
 

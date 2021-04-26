@@ -1,9 +1,9 @@
-package com.voc.system.dao.impl;
+package com.voc.restful.core.persist.mongo.impl;
 
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import com.voc.system.dao.IMongoDao;
-import com.voc.system.entity.IEntity;
+import com.voc.restful.core.entity.IEntity;
+import com.voc.restful.core.persist.mongo.IMongoDao;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -23,13 +23,12 @@ import org.springframework.data.mongodb.repository.query.MongoEntityInformation;
 import org.springframework.data.mongodb.repository.support.MappingMongoEntityInformation;
 import org.springframework.data.util.StreamUtils;
 import org.springframework.data.util.Streamable;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -38,7 +37,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * @email coffee377@dingtalk.com
  * @time 2021/02/07 10:28
  */
-public class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T, ID>, ApplicationContextAware {
+public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T, ID>, ApplicationContextAware {
 
     protected MongoOperations mongoOperations;
 
@@ -62,22 +61,43 @@ public class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T, ID>, Ap
     }
 
     @Override
-    public <E extends T> E add(E entity) {
+    public <S extends T> S save(S entity) {
         Assert.notNull(entity, "Entity must not be null!");
-        return mongoOperations.insert(entity, entityInformation.getCollectionName());
+        if (entityInformation.isNew(entity)) {
+            return mongoOperations.insert(entity, entityInformation.getCollectionName());
+        }
+        return mongoOperations.save(entity, entityInformation.getCollectionName());
     }
 
     @Override
-    public <E extends T> List<E> add(Iterable<E> entities) {
+    public <S extends T> List<S> saveAll(Iterable<S> entities) {
         Assert.notNull(entities, "The given Iterable of entities not be null!");
-
-        List<E> list = Streamable.of(entities).stream().collect(StreamUtils.toUnmodifiableList());
-
-        if (list.isEmpty()) {
-            return list;
+        Streamable<S> source = Streamable.of(entities);
+        boolean allNew = source.stream().allMatch(entityInformation::isNew);
+        if (allNew) {
+            List<S> result = source.stream().collect(Collectors.toList());
+            return new ArrayList<>(mongoOperations.insert(result, entityInformation.getCollectionName()));
         }
+        return source.stream().map(this::save).collect(Collectors.toList());
+    }
 
-        return new ArrayList<>(mongoOperations.insertAll(list));
+    @Override
+    public Optional<T> findById(ID id) {
+        Assert.notNull(id, "The given id must not be null!");
+        return Optional.ofNullable(
+                mongoOperations.findById(id, entityInformation.getJavaType(), entityInformation.getCollectionName()));
+    }
+
+    @Override
+    public boolean existsById(ID id) {
+        Assert.notNull(id, "The given id must not be null!");
+        return mongoOperations.exists(getIdQuery(id), entityInformation.getJavaType(),
+                entityInformation.getCollectionName());
+    }
+
+    @Override
+    public long count() {
+        return mongoOperations.count(new Query(), entityInformation.getCollectionName());
     }
 
     @Override
@@ -110,6 +130,32 @@ public class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T, ID>, Ap
     }
 
     @Override
+    public List<T> findAll() {
+        return findAll(new Query());
+    }
+
+    @Override
+    public List<T> findAllById(Iterable<ID> ids) {
+        Assert.notNull(ids, "The given Ids of entities not be null!");
+        return findAll(new Query(new Criteria(entityInformation.getIdAttribute())
+                .in(Streamable.of(ids).stream().collect(StreamUtils.toUnmodifiableList()))));
+    }
+
+    @Override
+    public Page<T> findAll(Pageable pageable) {
+        Assert.notNull(pageable, "Pageable must not be null!");
+        long count = count();
+        List<T> list = findAll(new Query().with(pageable));
+        return new PageImpl<>(list, pageable, count);
+    }
+
+    @Override
+    public List<T> findAll(Sort sort) {
+        Assert.notNull(sort, "Sort must not be null!");
+        return findAll(new Query().with(sort));
+    }
+
+    @Override
     public boolean updateById(ID id, Map<String, Object> updateFieldMap) {
         Query idQuery = getIdQuery(id);
         Update update = new Update();
@@ -125,12 +171,10 @@ public class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T, ID>, Ap
 
     @Override
     public <E extends T> boolean update(E entity) {
-//        String idAttribute = entityInformation.getIdAttribute();
         Query idQuery = getIdQuery(entity.getId());
         Update update = new Update();
-//        Update.update("name",entity);
         UpdateResult updateResult = mongoOperations.updateFirst(idQuery, update, entityInformation.getJavaType(), entityInformation.getCollectionName());
-        return false;
+        return updateResult.getModifiedCount() > 0;
     }
 
     @Override
@@ -159,40 +203,11 @@ public class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T, ID>, Ap
     }
 
     @Override
-    public Optional<T> findById(ID id) {
-        Assert.notNull(id, "The given id must not be null!");
-        return Optional.ofNullable(
-                mongoOperations.findById(id, entityInformation.getJavaType(), entityInformation.getCollectionName()));
-    }
-
-    @Override
     public List<T> findById(Iterable<ID> ids) {
         Assert.notNull(ids, "The given Ids of entities not be null!");
         List<ID> idList = Streamable.of(ids).stream().collect(StreamUtils.toUnmodifiableList());
         Query query = Query.query(where(entityInformation.getIdAttribute()).in(idList));
         return find(query);
-    }
-
-    @Override
-    public List<T> findAll() {
-        return find(new Query());
-    }
-
-    @Override
-    public List<T> findAll(Sort sort) {
-        return find(new Query().with(sort));
-    }
-
-    @Override
-    public Page<T> findAll(Pageable pageable) {
-        Query query = new Query().with(pageable);
-        List<T> list = find(query);
-        long total = total(query);
-        return new PageImpl<>(list, pageable, total);
-    }
-
-    private Query ensureQuery(Query query) {
-        return Optional.ofNullable(query).orElse(new Query());
     }
 
     private Query getIdQuery(Object id) {
@@ -203,5 +218,15 @@ public class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T, ID>, Ap
         return where(entityInformation.getIdAttribute()).is(id);
     }
 
+    private Query ensureQuery(Query query) {
+        return Optional.ofNullable(query).orElse(new Query());
+    }
+
+    private List<T> findAll(@Nullable Query query) {
+        if (query == null) {
+            return Collections.emptyList();
+        }
+        return mongoOperations.find(query, entityInformation.getJavaType(), entityInformation.getCollectionName());
+    }
 }
 

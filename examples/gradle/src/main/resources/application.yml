@@ -1,9 +1,17 @@
 spring:
+  application:
+    name: 演示项目
+    version: 1.0.0
+
   redis:
     password: test
+  data:
+    mongodb:
+      uri: mongodb://backend:backend@localhost:27017/backend?authSource=admin
 api:
   json:
     result:
       success: succeed
       code: status
       message: msg
+#debug: true

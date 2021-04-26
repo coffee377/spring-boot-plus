@@ -4,3 +4,6 @@ com.voc.restful.core.autoconfigure.cache.RedisCacheAutoConfiguration,\
 com.voc.restful.core.autoconfigure.json.JsonAutoConfiguration,\
 com.voc.restful.core.autoconfigure.result.ResultAutoConfiguration,\
 com.voc.restful.core.autoconfigure.util.UtilsAutoConfiguration
+
+org.springframework.context.ApplicationListener=\
+com.voc.restful.core.banner.BannerListener

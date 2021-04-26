@@ -48,6 +48,10 @@ public class Result<T> extends JsonEntity {
         return builder().success().code(0).data(data);
     }
 
+    public static Result success() {
+        return successBuilder(null).build();
+    }
+
     public static Result success(Object data) {
         return successBuilder(data).build();
     }
