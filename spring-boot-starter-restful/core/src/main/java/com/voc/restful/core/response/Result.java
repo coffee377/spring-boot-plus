@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
  * @time 2018/11/04 23:07
  */
 @Getter
-@Setter
+@SuppressWarnings("unchecked")
 public class Result<T> extends JsonEntity {
 
     /**
@@ -40,41 +40,61 @@ public class Result<T> extends JsonEntity {
     public Result() {
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public Result<T> setSuccess(boolean success) {
+        this.success = success;
+        return this;
     }
 
-    public static Builder successBuilder(Object data) {
-        return builder().success().code(0).data(data);
+    public Result<T> setCode(long code) {
+        this.code = code;
+        return this;
     }
 
-    public static Result success() {
-        return successBuilder(null).build();
+    public Result<T> setMessage(String message) {
+        this.message = message;
+        return this;
     }
 
-    public static Result success(Object data) {
+    public Result<T> setData(T data) {
+        this.data = data;
+        return this;
+    }
+
+    public static <D> Builder<D> builder() {
+        return new Builder<>();
+    }
+
+    public static <D> Builder<D> successBuilder(D data) {
+        return (Builder<D>) builder().success().code(0).data(data);
+    }
+
+    public static <D> Result<D> success() {
+        return (Result<D>) successBuilder(null).build();
+    }
+
+    public static <D> Result<D> success(D data) {
         return successBuilder(data).build();
     }
 
-    public static Builder failureBuilder(long code, String message, Object data) {
-        return builder().failure(code, message).data(data);
+    public static <D> Builder<D> failureBuilder(long code, String message, D data) {
+        return (Builder<D>) builder().failure(code, message).data(data);
     }
 
-    public static Result failure(int code, String message, Object data) {
+    public static <D> Result<D> failure(int code, String message, D data) {
         return failureBuilder(code, message, data).build();
     }
 
-    public static Result failure(Exception exception) {
-        return builder().failure(exception).build();
+    public static <D> Result<D> failure(Exception exception) {
+        return (Result<D>) builder().failure(exception).build();
     }
 
-    public static Result failure(IBizStatus bizStatus) {
-        return builder().failure(bizStatus).build();
+    public static <D> Result<D> failure(IBizStatus bizStatus) {
+        return (Result<D>) builder().failure(bizStatus).build();
     }
 
     @Getter
     @Setter
-    public static class Builder implements IBean {
+    public static class Builder<D> implements IBean {
 
         /**
          * 是否成功
@@ -94,7 +114,7 @@ public class Result<T> extends JsonEntity {
         /**
          * 数据
          */
-        private Object data;
+        private D data;
 
         /**
          * 成功结果
@@ -103,7 +123,7 @@ public class Result<T> extends JsonEntity {
          * @param data    数据
          * @return Builder
          */
-        public Builder success(String message, Object data) {
+        public Builder<D> success(String message, D data) {
             this.message = message;
             this.data = data;
             return this;
@@ -115,7 +135,7 @@ public class Result<T> extends JsonEntity {
          * @param data 数据
          * @return Builder
          */
-        public Builder success(Object data) {
+        public Builder<D> success(D data) {
             this.data = data;
             return this;
         }
@@ -125,7 +145,7 @@ public class Result<T> extends JsonEntity {
          *
          * @return Builder
          */
-        public Builder success() {
+        public Builder<D> success() {
             return this;
         }
 
@@ -136,7 +156,7 @@ public class Result<T> extends JsonEntity {
          * @param message 提示信息
          * @return Builder
          */
-        public Builder failure(long code, String message) {
+        public Builder<D> failure(long code, String message) {
             this.success = false;
             this.code = code;
             this.message = message;
@@ -149,7 +169,7 @@ public class Result<T> extends JsonEntity {
          * @param bizStatus 业务状态
          * @return Builder
          */
-        public Builder failure(IBizStatus bizStatus) {
+        public Builder<D> failure(IBizStatus bizStatus) {
             this.success = false;
             this.code = bizStatus.getCode();
             this.message = bizStatus.getMessage();
@@ -162,7 +182,7 @@ public class Result<T> extends JsonEntity {
          * @param exception Exception
          * @return Builder
          */
-        public Builder failure(Exception exception) {
+        public Builder<D> failure(Exception exception) {
             this.success = false;
             if (exception instanceof BizException) {
                 BizException bizException = (BizException) exception;
@@ -181,7 +201,7 @@ public class Result<T> extends JsonEntity {
          * @param code 业务状态码
          * @return Builder
          */
-        public Builder code(long code) {
+        public Builder<D> code(long code) {
             this.code = code;
             this.success = code == 0L;
             return this;
@@ -193,7 +213,7 @@ public class Result<T> extends JsonEntity {
          * @param message 信息
          * @return Builder
          */
-        public Builder message(String message) {
+        public Builder<D> message(String message) {
             this.message = message;
             return this;
         }
@@ -204,7 +224,7 @@ public class Result<T> extends JsonEntity {
          * @param data 数据
          * @return Builder
          */
-        public Builder data(Object data) {
+        public Builder<D> data(D data) {
             this.data = data;
             return this;
         }
@@ -214,12 +234,9 @@ public class Result<T> extends JsonEntity {
          *
          * @return Result
          */
-        public Result<Object> build() {
-            Result<Object> result = new Result<>();
-            result.setSuccess(this.success);
-            result.setCode(this.code);
-            result.setMessage(this.message);
-            result.setData(this.data);
+        public Result<D> build() {
+            Result<D> result = new Result<>();
+            result.setSuccess(this.success).setCode(this.code).setMessage(this.message).setData(this.data);
             return result;
         }
 

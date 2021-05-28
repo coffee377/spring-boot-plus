@@ -1,6 +1,8 @@
 package com.voc.dingtalk.controller;
 
 import com.voc.dingtalk.service.CredentialsService;
+import com.voc.restful.core.response.ResponseResult;
+import com.voc.restful.core.response.Result;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +23,8 @@ public class UserController {
     private CredentialsService credentialsService;
 
     @PostMapping("/login")
-    public String login(@RequestParam("authCode") String code) {
+    @ResponseResult
+    public Result<String> login(@RequestParam("authCode") String code) {
         // 获取access_token，注意正式代码要有异常流处理
         String accessToken = "";
 //        服务端通过临时授权码获取授权用户的个人信息。
@@ -39,6 +42,9 @@ public class UserController {
 //        调用user/get接口获取用户信息，详情请参考获取用户详情。
 //
 //        示例代码
-        return "";
+        Result<String> success = Result.success("");
+        Result<Integer> success1 = Result.success(2);
+        Result<Object> success2 = Result.success();
+        return success;
     }
 }
