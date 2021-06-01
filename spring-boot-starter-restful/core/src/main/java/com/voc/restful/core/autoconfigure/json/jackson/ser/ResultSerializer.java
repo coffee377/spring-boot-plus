@@ -8,6 +8,7 @@ import com.voc.restful.core.props.ApiProperties;
 import com.voc.restful.core.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 
@@ -29,10 +30,12 @@ public class ResultSerializer extends JsonSerializer<Result> {
     @Override
     public void serialize(Result result, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
-        gen.writeBooleanField(resultField.getSuccess(),result.isSuccess());
-        gen.writeNumberField(resultField.getCode(),result.getCode());
-        gen.writeStringField(resultField.getMessage(),result.getMessage());
-        gen.writeObjectField(resultField.getData(),result.getData());
+        gen.writeBooleanField(resultField.getSuccess(), result.isSuccess());
+        gen.writeNumberField(resultField.getCode(), result.getCode());
+        gen.writeStringField(resultField.getMessage(), result.getMessage());
+        if (!ObjectUtils.isEmpty(result.getData())) {
+            gen.writeObjectField(resultField.getData(), result.getData());
+        }
         gen.writeEndObject();
     }
 }
