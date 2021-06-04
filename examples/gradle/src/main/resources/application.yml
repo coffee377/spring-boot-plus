@@ -2,16 +2,27 @@ spring:
   application:
     name: 演示项目
     version: 1.0.0
-
   redis:
     password: test
   data:
     mongodb:
       uri: mongodb://backend:backend@localhost:27017/backend?authSource=admin
+  cache:
+    type: caffeine
+    redis:
+      time-to-live: 2h
+#      cache-null-values: false
+#      enable-statistics: true
+    caffeine:
+      spec:
 api:
   json:
-    result:
-      success: succeed
-      code: status
-      message: msg
+    automatic-wrapped: true
+#    result:
+#      success: succeed
+#      code: status
+#      message: msg
 #debug: true
+logging:
+  level:
+    root: info

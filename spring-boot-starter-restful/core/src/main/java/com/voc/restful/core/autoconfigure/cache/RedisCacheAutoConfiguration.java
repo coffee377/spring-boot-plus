@@ -1,10 +1,15 @@
 package com.voc.restful.core.autoconfigure.cache;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
+import com.voc.restful.core.props.RedisCacheProperties;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.CacheKeyPrefix;
@@ -24,9 +29,9 @@ import java.time.Duration;
  * @email coffee377@dingtalk.com
  * @time 2020/11/18 16:03
  */
-@EnableCaching
 @Configuration
 @ConditionalOnClass(RedisOperations.class)
+@EnableConfigurationProperties(RedisCacheProperties.class)
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisCacheAutoConfiguration {
 
@@ -43,10 +48,16 @@ public class RedisCacheAutoConfiguration {
      * @return RedisSerializer<Object>
      */
     @Bean("redisValueSerializer")
-    public RedisSerializer<Object> redisValueSerializer(ObjectMapper mapper) {
+    public RedisSerializer<?> redisValueSerializer() {
         /* 使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值 */
+        ObjectMapper objectMapper = new ObjectMapper();
+        PolymorphicTypeValidator typeValidator = objectMapper.getPolymorphicTypeValidator();
+        objectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+//        GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(mapper);
         Jackson2JsonRedisSerializer<Object> serializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        serializer.setObjectMapper(mapper);
+        serializer.setObjectMapper(objectMapper);
         return serializer;
     }
 
@@ -55,19 +66,40 @@ public class RedisCacheAutoConfiguration {
      *
      * @param redisValueSerializer RedisSerializer<Object>
      * @return RedisCacheConfiguration
-     * @see #redisValueSerializer(ObjectMapper)
+     * @see #redisValueSerializer()
      */
     @Bean("redisCacheConfiguration")
-    public RedisCacheConfiguration redisCacheConfiguration(RedisSerializer<Object> redisValueSerializer) {
+    public RedisCacheConfiguration redisCacheConfiguration(RedisCacheProperties cacheProperties,
+                                                           RedisSerializer<Object> redisValueSerializer) {
+        CacheProperties.Redis redis = cacheProperties.getRedis();
         RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig();
+
         configuration = configuration
                 /* 覆盖默认的双冒号前缀配置 */
                 .computePrefixWith(singleColon)
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisValueSerializer))
-                /* 不缓存空值 */
-                .disableCachingNullValues()
-                /* 设置缓存的默认过期时间，也是使用Duration设置 */
-                .entryTtl(Duration.ofSeconds(30));
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisValueSerializer));
+
+        /* 设置缓存的默认过期时 */
+        Duration duration = redis.getTimeToLive();
+        if (duration == null) {
+            configuration = configuration.entryTtl(Duration.ofSeconds(30));
+        } else {
+            configuration = configuration.entryTtl(duration);
+        }
+
+        if (redis.getKeyPrefix() != null) {
+            configuration = configuration.prefixCacheNameWith(redis.getKeyPrefix());
+        }
+
+        /* 不缓存空值 */
+        if (!redis.isCacheNullValues()) {
+            configuration = configuration.disableCachingNullValues();
+        }
+
+        if (!redis.isUseKeyPrefix()) {
+            configuration = configuration.disableKeyPrefix();
+        }
+
         return configuration;
     }
 
@@ -82,10 +114,10 @@ public class RedisCacheAutoConfiguration {
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory, RedisSerializer<Object> redisValueSerializer) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
-        template.setValueSerializer(redisValueSerializer);
         /* 使用StringRedisSerializer来序列化和反序列化redis的key值 */
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setKeySerializer(StringRedisSerializer.UTF_8);
+        template.setHashKeySerializer(StringRedisSerializer.UTF_8);
+        template.setValueSerializer(redisValueSerializer);
         template.setHashValueSerializer(redisValueSerializer);
         template.afterPropertiesSet();
         return template;
