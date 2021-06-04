@@ -1,12 +1,15 @@
 package com.voc.restful.core.autoconfigure.cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.voc.restful.core.props.CaffeineCacheProperties;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.concurrent.TimeUnit;
+import javax.annotation.Resource;
+import java.time.Duration;
 
 /**
  * @author Wu Yujie
@@ -14,21 +17,42 @@ import java.util.concurrent.TimeUnit;
  * @time 2021/06/01 17:07
  */
 @Configuration
+@EnableConfigurationProperties(CaffeineCacheProperties.class)
 @ConditionalOnClass({Caffeine.class, CaffeineCacheManager.class})
 public class CaffeineCacheAutoConfiguration implements CacheManagerCustomizer<CaffeineCacheManager> {
+
+    @Resource
+    private CaffeineCacheProperties cacheProperties;
 
     /**
      * 配置缓存管理器
      */
     @Override
     public void customize(CaffeineCacheManager cacheManager) {
-        cacheManager.setCaffeine(Caffeine.newBuilder()
-                // 设置最后一次写入或访问后经过固定时间过期
-                .expireAfterWrite(10, TimeUnit.SECONDS)
-//                .expireAfterAccess(60, TimeUnit.SECONDS)
+        Caffeine<Object, Object> caffeine = Caffeine.newBuilder()
                 // 初始的缓存空间大小
-                .initialCapacity(100)
+                .initialCapacity(cacheProperties.getInitialCapacity())
                 // 缓存的最大条数
-                .maximumSize(1000));
+                .maximumSize(cacheProperties.getMaximumSize());
+        CaffeineCacheProperties.ExpireStrategy expireStrategy = cacheProperties.getExpireStrategy();
+
+        Duration timeToLive = cacheProperties.getTimeToLive();
+
+        if (timeToLive != null) {
+            switch (expireStrategy) {
+                case AFTER_ACCESS:
+                    // 被读或被写后的一段时间后过期
+                    caffeine.expireAfterAccess(timeToLive);
+                    break;
+                case AFTER_WRITE:
+                    // 被写入后的一段时间后过期
+                    caffeine.expireAfterWrite(timeToLive);
+                    break;
+                case NONE:
+                default:
+            }
+        }
+
+        cacheManager.setCaffeine(caffeine);
     }
 }
