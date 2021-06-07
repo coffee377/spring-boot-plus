@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @time 2021/04/25 12:01
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping({"${api.system.prefix:}/user"})
 public class UserController {
 
 //    @Resource

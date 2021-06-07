@@ -13,19 +13,47 @@ import java.util.List;
  * @time 2021/04/26 15:52
  */
 @RestController
-@RequestMapping("/menu")
+@RequestMapping({"${api.system.prefix:}/menu"})
 public class MenuController {
 
     @Resource
     private IMenuService menuService;
 
+    /**
+     * 获取所有菜单
+     *
+     * @return List<Menu>
+     */
     @GetMapping
     public List<Menu> get() {
-        return null;
+        return menuService.findAll();
     }
 
+    /**
+     * 添加菜单
+     *
+     * @param menu Menu
+     * @return 菜单唯一标识
+     */
     @PostMapping
-    public String add(@RequestBody Menu menu){
+    public String add(@RequestBody Menu menu) {
         return menuService.save(menu);
     }
+
+    /**
+     * 删除菜单
+     *
+     * @param id 菜单 ID
+     */
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable String id) {
+        menuService.deleteById(id);
+    }
+
+    @PutMapping
+    public Menu update(@RequestBody Menu menu) {
+        return menuService.update(menu);
+    }
+
+
 }

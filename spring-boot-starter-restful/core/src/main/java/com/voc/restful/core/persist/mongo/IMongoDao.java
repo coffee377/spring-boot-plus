@@ -51,18 +51,17 @@ public interface IMongoDao<T, ID> extends PagingAndSortingRepository<T, ID> {
      *
      * @param id             更新主键
      * @param updateFieldMap key:需要更新的属性  value:对应的属性值
-     * @return 是否更新成功
+     * @return T
      */
-    boolean updateById(ID id, Map<String, Object> updateFieldMap);
+    T updateById(ID id, Map<String, Object> updateFieldMap);
 
     /**
      * 更新数据
      *
-     * @param entity E
-     * @param <E>    E extends T
+     * @param entity T
      * @return E
      */
-    <E extends T> boolean update(E entity);
+    T update(T entity);
 
     /**
      * 数据总记录数

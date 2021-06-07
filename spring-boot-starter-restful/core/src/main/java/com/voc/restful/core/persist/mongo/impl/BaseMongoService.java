@@ -7,6 +7,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.ResolvableType;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -33,6 +40,52 @@ public abstract class BaseMongoService<E extends IEntity, D extends BaseMongoDao
     public String save(E entity) {
         return mongoDao.save(entity).getId().toString();
     }
+
+    @Override
+    public List<Serializable> saveAll(Iterable<E> entities) {
+        List<E> list = mongoDao.saveAll(entities);
+        return list.stream().map(IEntity::getId).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(Object id) {
+        mongoDao.deleteById(id);
+    }
+
+    @Override
+    public void deleteByIds(Iterable<Object> ids) {
+        ids.forEach(this::deleteById);
+    }
+
+    @Override
+    public E update(E entity) {
+        return (E) mongoDao.update(entity);
+    }
+
+    @Override
+    public E updateById(Object id, Map<String, Object> updateFieldMap) {
+        return (E) mongoDao.updateById(id, updateFieldMap);
+    }
+
+    @Override
+    public List<E> updateAll(Iterable<E> entities) {
+        LinkedList<E> list = new LinkedList<>();
+        entities.forEach(entity -> {
+            E update = this.update(entity);
+            list.add(update);
+        });
+        return new ArrayList<>(list);
+    }
+
+    @Override
+    public List<E> findAll() {
+        return mongoDao.findAll();
+    }
+
+    //    @Override
+//    public boolean insert(E entity) {
+//        return false;
+//    }
 
     //    @Override
 //    public <ID extends Serializable> ID save(E entity) {

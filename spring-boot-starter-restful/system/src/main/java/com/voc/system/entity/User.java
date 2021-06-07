@@ -1,5 +1,6 @@
 package com.voc.system.entity;
 
+import com.voc.restful.core.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 @Document(collection = "sys_user")
-public class User implements IUser<String> {
+public class User extends BaseEntity<String> implements IUser<String> {
 
     private String id;
 

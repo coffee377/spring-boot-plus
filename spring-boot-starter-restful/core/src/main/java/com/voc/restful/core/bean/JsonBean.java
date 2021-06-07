@@ -1,8 +1,6 @@
 package com.voc.restful.core.bean;
 
-import com.voc.restful.core.autoconfigure.json.IJson;
 import com.voc.restful.core.autoconfigure.json.exception.JsonSerializeException;
-import com.voc.restful.core.util.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -11,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  * @time 2020/12/14 16:20
  */
 @Slf4j
-public abstract class JsonBean implements IBean {
+public abstract class JsonBean implements IJsonBean {
 
     @Override
     public String toString() {
@@ -21,11 +19,6 @@ public abstract class JsonBean implements IBean {
             log.error(e.getMessage());
         }
         return super.toString();
-    }
-
-    public String toJson() throws JsonSerializeException {
-        IJson json = SpringUtils.getBean(IJson.class);
-        return json.serializer(this);
     }
 
 }

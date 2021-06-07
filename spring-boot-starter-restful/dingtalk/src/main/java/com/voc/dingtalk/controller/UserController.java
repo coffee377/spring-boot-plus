@@ -1,9 +1,8 @@
 package com.voc.dingtalk.controller;
 
 import com.voc.dingtalk.service.CredentialsService;
-import com.voc.restful.core.response.ResponseResult;
 import com.voc.restful.core.response.Result;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,15 +14,14 @@ import javax.annotation.Resource;
  * @email coffee377@dingtalk.com
  * @time 2021/04/21 21:27
  */
-@RestController
+@RestController("dingtalkUserController")
 @RequestMapping("/dingtalk")
 public class UserController {
 
     @Resource
     private CredentialsService credentialsService;
 
-    @PostMapping("/login")
-    @ResponseResult
+    @GetMapping("/login")
     public Result<String> login(@RequestParam("authCode") String code) {
         // 获取access_token，注意正式代码要有异常流处理
         String accessToken = "";

@@ -1,6 +1,6 @@
 package com.voc.system.entity;
 
-import com.voc.restful.core.entity.JsonEntity;
+import com.voc.restful.core.entity.BaseEntity;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -11,10 +11,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @time 2021/02/05 09:12
  */
 @Document(collection = "sys_action")
-public class Action extends JsonEntity implements IAction<String> {
+public class Action extends BaseEntity<String> implements IAction<String> {
 
 //    @MongoId(FieldType.STRING)
-    private String id;
+//    private String id;
 
     @Field(name = "name", order = 1)
     private String name;
@@ -28,24 +28,14 @@ public class Action extends JsonEntity implements IAction<String> {
     public Action() {
     }
 
-    public Action(String id,String name, int mask) {
-        this.id = id;
+    public Action(String id, String name, int mask) {
+//        this.id = id;
         this.name = name;
         this.mask = mask;
     }
 
     public Action(String name, int mask) {
         this(null, name, mask);
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
     }
 
     @Override

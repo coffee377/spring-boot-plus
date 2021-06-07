@@ -1,8 +1,12 @@
 package com.voc.system.entity;
 
+import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.ITreeEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+
 
 /**
  * @author Wu Yujie
@@ -10,13 +14,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @time 2021/04/26 15:31
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Document(collection = "sys_menu")
-public class Menu implements ITreeEntity<String> {
-
-    /**
-     * 菜单ID
-     */
-    private String id;
+public class Menu extends BaseEntity<String> implements ITreeEntity<String> {
 
     /**
      * 父菜单ID
@@ -54,11 +54,28 @@ public class Menu implements ITreeEntity<String> {
     /**
      * 禁用菜单
      */
-    private boolean disable;
+    private Boolean disable;
 
     /**
      * 在其前后是否插入分隔符的位置
      * 'before' | 'after' | 'all'
      */
     private String divider;
+
+
+    /**
+     * 组件目录类型 layout | page | path
+     */
+    private String type;
+
+    /**
+     * 组件名称
+     */
+    private String component;
+
+    /**
+     * 组件属性配置
+     */
+    private Object props;
+
 }

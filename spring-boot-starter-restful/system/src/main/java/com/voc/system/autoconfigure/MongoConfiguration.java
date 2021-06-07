@@ -1,4 +1,4 @@
-package com.voc.system;
+package com.voc.system.autoconfigure;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
  * @time 2021/02/05 16:22
  */
 @Configuration
-public class MongoConfig {
+public class MongoConfiguration {
 
     @Bean
     public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory factory, MongoMappingContext context,

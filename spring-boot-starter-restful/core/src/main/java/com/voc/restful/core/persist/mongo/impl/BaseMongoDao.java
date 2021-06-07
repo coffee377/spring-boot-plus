@@ -4,6 +4,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.voc.restful.core.entity.IEntity;
 import com.voc.restful.core.persist.mongo.IMongoDao;
+import org.bson.Document;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -103,7 +104,13 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     @Override
     public void deleteById(ID id) {
         Assert.notNull(id, "The given id must not be null!");
-        mongoOperations.remove(getIdQuery(id), entityInformation.getJavaType(), entityInformation.getCollectionName());
+        DeleteResult deleteResult = mongoOperations.remove(getIdQuery(id), entityInformation.getJavaType(), entityInformation.getCollectionName());
+//        if (entityInformation.isVersioned() && deleteResult.wasAcknowledged() && deleteResult.getDeletedCount() == 0) {
+//            throw new OptimisticLockingFailureException(String.format(
+//                    "The entity with id %s with version %s in %s cannot be deleted! Was it modified or deleted in the meantime?",
+//                    id, entityInformation.getVersion(entity),
+//                    entityInformation.getCollectionName()));
+//        }
     }
 
     @Override
@@ -156,25 +163,28 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     }
 
     @Override
-    public boolean updateById(ID id, Map<String, Object> updateFieldMap) {
-        Query idQuery = getIdQuery(id);
-        Update update = new Update();
-        updateFieldMap.forEach((key, value) -> {
-            if (!entityInformation.getIdAttribute().equals(key) && !ObjectUtils.isEmpty(value)) {
-                update.set(key, value);
-            }
-        });
-        UpdateResult updateResult = mongoOperations.updateFirst(idQuery, update,
-                entityInformation.getJavaType(), entityInformation.getCollectionName());
-        return updateResult.getModifiedCount() > 0;
+    public T updateById(ID id, Map<String, Object> updateFieldMap) {
+        return this.innerUpdate(id, updateFieldMap);
     }
 
     @Override
-    public <E extends T> boolean update(E entity) {
-        Query idQuery = getIdQuery(entity.getId());
+    public T update(T entity) {
+        Document document = Document.parse(entity.toJson());
+        return this.innerUpdate(entity.getId(), document);
+    }
+
+    protected T innerUpdate(Object id, Map<String, Object> updateFieldMap) {
+        Query idQuery = getIdQuery(id);
         Update update = new Update();
+        updateFieldMap.entrySet().stream()
+                .filter(entry -> !entityInformation.getIdAttribute().equals(entry.getKey()) && !ObjectUtils.isEmpty(entry.getValue()))
+                .forEach(entry -> update.set(entry.getKey(), entry.getValue()));
         UpdateResult updateResult = mongoOperations.updateFirst(idQuery, update, entityInformation.getJavaType(), entityInformation.getCollectionName());
-        return updateResult.getModifiedCount() > 0;
+        if (updateResult.getModifiedCount() > 0) {
+            Optional<T> one = this.findOne(idQuery);
+            return one.orElse(null);
+        }
+        return null;
     }
 
     @Override

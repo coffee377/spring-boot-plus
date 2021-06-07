@@ -7,10 +7,10 @@ def restful = "spring-boot-starter-restful"
 dependencies {
 
   implementation project(":$restful:$restful-core")
-//  implementation project(":$restful:$restful-dingtalk")
-//  implementation project(":$restful:$restful-system")
+  implementation project(":$restful:$restful-dingtalk")
+  implementation project(":$restful:$restful-system")
 //  compileOnly 'com.google.code.gson:gson:2.8.6'
-  implementation 'com.github.ben-manes.caffeine:caffeine'
+//  implementation 'com.github.ben-manes.caffeine:caffeine'
   implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 

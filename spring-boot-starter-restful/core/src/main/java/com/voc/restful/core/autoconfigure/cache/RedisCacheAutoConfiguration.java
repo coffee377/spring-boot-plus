@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.voc.restful.core.props.RedisCacheProperties;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -32,7 +32,7 @@ import java.time.Duration;
 @Configuration
 @ConditionalOnClass(RedisOperations.class)
 @EnableConfigurationProperties(RedisCacheProperties.class)
-@AutoConfigureAfter(RedisAutoConfiguration.class)
+@AutoConfigureBefore(RedisAutoConfiguration.class)
 public class RedisCacheAutoConfiguration {
 
     /**

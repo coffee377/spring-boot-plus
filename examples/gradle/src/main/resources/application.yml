@@ -3,18 +3,27 @@ spring:
     name: 演示项目
     version: 1.0.0
   redis:
-    password: test
+    database: 7
+    host: tvoc.site
+    password: tvoc.redis
+    port: 8188
   data:
     mongodb:
-      uri: mongodb://backend:backend@localhost:27017/backend?authSource=admin
+#      uri: mongodb://backend:backend@tvoc.site:8189/backend?authSource=admin
+      host: tvoc.site
+      port: 8189
+      database: backend
+      username: backend
+      password: backend
+      authentication-database: admin
   cache:
-    type: caffeine
+    #    type: caffeine
     redis:
       time-to-live: 2h
 #      cache-null-values: false
 #      enable-statistics: true
-    caffeine:
-      time-to-live: 10s
+#    caffeine:
+#      time-to-live: 10s
 api:
   json:
     automatic-wrapped: true
@@ -22,6 +31,8 @@ api:
 #      success: succeed
 #      code: status
 #      message: msg
+  system:
+    prefix: sys
 #debug: true
 logging:
   level:

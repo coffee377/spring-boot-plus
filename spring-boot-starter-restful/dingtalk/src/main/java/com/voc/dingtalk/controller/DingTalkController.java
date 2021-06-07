@@ -8,12 +8,11 @@ import com.taobao.api.ApiException;
 import com.voc.restful.core.response.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Wu Yujie
@@ -24,7 +23,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/dingtalk")
 public class DingTalkController {
-
 
     @GetMapping("/test")
     public String ddd() {
@@ -49,6 +47,12 @@ public class DingTalkController {
         demo.setName("zs");
         demo.setB1(true);
         return demo;
+    }
+
+    @PostMapping("/")
+    public Map<String, Object> scanLogin() {
+        LinkedHashMap<String, Object> linkedHashMap = new LinkedHashMap<>();
+        return new HashMap<>(linkedHashMap);
     }
 
     public static void main(String[] args) {
