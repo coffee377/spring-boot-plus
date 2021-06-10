@@ -9,7 +9,7 @@ spring:
     port: 8188
   data:
     mongodb:
-#      uri: mongodb://backend:backend@tvoc.site:8189/backend?authSource=admin
+      #      uri: mongodb://backend:backend@tvoc.site:8189/backend?authSource=admin
       host: tvoc.site
       port: 8189
       database: backend
@@ -20,17 +20,28 @@ spring:
     #    type: caffeine
     redis:
       time-to-live: 2h
-#      cache-null-values: false
-#      enable-statistics: true
-#    caffeine:
-#      time-to-live: 10s
+  #      cache-null-values: false
+  #      enable-statistics: true
+  #    caffeine:
+  #      time-to-live: 10s
+  dingtalk:
+    corp-id: dingd8b32bfb2b9da7b2
+    app:
+      app1:
+        agent-id: 1038540627
+        app-key: dingopfniakkw72klkjv
+        app-secret: 6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR
+      app2:
+        agent-id: 1212531310
+        app-key: dingygnpkdcsj7hjq5es
+        app-secret: dDvw4ZYAjOmPk5iydhcI7y-HBCEdWBE_MKen8yefAkOrK9HN24T19xwev1n_XJHO
 api:
   json:
     automatic-wrapped: true
-#    result:
-#      success: succeed
-#      code: status
-#      message: msg
+  #    result:
+  #      success: succeed
+  #      code: status
+  #      message: msg
   system:
     prefix: sys
 #debug: true

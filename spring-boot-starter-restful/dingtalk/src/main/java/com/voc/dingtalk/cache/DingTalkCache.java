@@ -10,4 +10,5 @@ public interface DingTalkCache {
 
     String ACCESS_TOKEN = DING_TALK_CACHE_NAME + ":access_token";
     String JS_TICKET = DING_TALK_CACHE_NAME + ":jsapi_ticket";
+    String APP_SECRET = DING_TALK_CACHE_NAME + ":appSecret";
 }

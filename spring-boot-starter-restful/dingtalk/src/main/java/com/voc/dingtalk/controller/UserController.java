@@ -1,29 +1,33 @@
 package com.voc.dingtalk.controller;
 
-import com.voc.dingtalk.service.CredentialsService;
+import com.dingtalk.api.response.OapiSnsGetuserinfoBycodeResponse;
+import com.voc.dingtalk.service.IUserService;
 import com.voc.restful.core.response.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2021/04/21 21:27
  */
-@RestController("dingtalkUserController")
+@RestController("dingTalkUserController")
 @RequestMapping("/dingtalk")
 public class UserController {
 
-    @Resource
-    private CredentialsService credentialsService;
+    private final IUserService userService;
 
-    @GetMapping("/login")
-    public Result<String> login(@RequestParam("authCode") String code) {
+    public UserController(IUserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/{appName}/scanLogin")
+    public Object login(@PathVariable(name = "appName") String appName,
+                        @RequestParam("code") String code,
+                        @RequestParam(required = false) String state) {
+
+        OapiSnsGetuserinfoBycodeResponse.UserInfo info = userService.getUserInfoByCode("appId", "6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR", code);
         // 获取access_token，注意正式代码要有异常流处理
+
         String accessToken = "";
 //        服务端通过临时授权码获取授权用户的个人信息。
 //
@@ -43,6 +47,7 @@ public class UserController {
         Result<String> success = Result.success("");
         Result<Integer> success1 = Result.success(2);
         Result<Object> success2 = Result.success();
-        return success;
+//        return success;
+        return info;
     }
 }

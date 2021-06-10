@@ -36,9 +36,9 @@ public enum BaseBizStatus implements IBizStatus {
 
     INTERNAL_SERVER_ERROR("服务器内部错误", HttpStatus.INTERNAL_SERVER_ERROR),
     JSON_SERIALIZE_EXCEPTION("序列化异常", HttpStatus.INTERNAL_SERVER_ERROR),
-    JSON_DESERIALIZE_EXCEPTION("反序列化异常", HttpStatus.INTERNAL_SERVER_ERROR);
+    JSON_DESERIALIZE_EXCEPTION("反序列化异常", HttpStatus.INTERNAL_SERVER_ERROR),
 
-    //    ENTITY_VALIDATED_ERROR(1000, "实体属性校验错误"),
+    ENTITY_VALIDATED_ERROR("实体属性校验错误", HttpStatus.BAD_REQUEST),
 //    REQUEST_ADDRESS_NOT_MATCH(1001, "请求地址与实体ID不一致"),
 //    INSERT_DATA_ERROR(1002, "插入数据异常"),
 //    UPDATE_DATA_ERROR(1003, "更新数据异常"),
@@ -46,12 +46,13 @@ public enum BaseBizStatus implements IBizStatus {
 //
 
 
-//    RECORD_EXISTS(10005, "已存在该条记录相关数据"),
-//    RECORD_NOT_EXISTS(10006, "指定记录不存在"),
+    //    RECORD_EXISTS(10005, "已存在该条记录相关数据"),
+    RECORD_NOT_EXISTS("指定记录不存在", HttpStatus.NOT_FOUND),
 //    AREA_NOT_FIND(10007, "地区匹配不存在"),
 //    ORGAN_NOT_FIND(10008, "机构匹配不存在"),
 //    DATA_NOT_FIND(10009, "数据查询错误");
 
+    ;
     private final String message;
 
     private final HttpStatus status;

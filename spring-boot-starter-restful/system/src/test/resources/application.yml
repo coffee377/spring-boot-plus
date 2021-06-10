@@ -1,6 +1,17 @@
 spring:
+  profiles:
+    active: dev
   data:
     mongodb:
-      host: 127.0.0.1
       database: backend
-      port: 27017
+      username: backend
+      password: backend
+      authentication-database: admin
+logging:
+  level:
+    root: warn
+    com:
+      voc: info
+api:
+  system:
+    prefix: system

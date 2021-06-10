@@ -66,6 +66,7 @@ subprojects {
   dependencies {
 //    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
     annotationProcessor "org.projectlombok:lombok:1.18.4"
+    testAnnotationProcessor "org.projectlombok:lombok:1.18.4"
 //    implementation group: 'org.springframework.security.experimental', name: 'spring-security-oauth2-authorization-server', version: '0.1.1'
 
   }
@@ -73,6 +74,10 @@ subprojects {
   configurations {
     compileOnly {
       extendsFrom(annotationProcessor)
+    }
+
+    testImplementation{
+      extendsFrom(testAnnotationProcessor)
     }
 
     testcompileOnly {

@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(SystemProperties.class)
-@ComponentScan(basePackages = {"com.voc.system"})
+@ComponentScan(basePackages = {"com.voc.system"}, excludeFilters = {
+//        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = IMongoDao.class)
+}
+)
 public class SystemAutoConfiguration {
 }

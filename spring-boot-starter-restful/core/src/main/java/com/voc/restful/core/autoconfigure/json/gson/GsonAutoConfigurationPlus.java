@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  * @time 2020/11/20 14:50
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(Gson.class)
+@ConditionalOnClass({Gson.class})
 @ConditionalOnProperty(
         prefix = "api.json",
         name = "type",

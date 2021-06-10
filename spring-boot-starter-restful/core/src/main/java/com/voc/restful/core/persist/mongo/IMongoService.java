@@ -1,8 +1,14 @@
 package com.voc.restful.core.persist.mongo;
 
-import java.io.Serializable;
+import com.voc.restful.core.response.BizException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Query;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Wu Yujie
@@ -25,7 +31,7 @@ public interface IMongoService<T, D> {
      * @param entities 实体对象集合
      * @return List<String>
      */
-    List<Serializable> saveAll(Iterable<T> entities);
+    List<String> saveAll(Iterable<T> entities);
 
     /**
      * 根据 ID 删除记录
@@ -73,25 +79,62 @@ public interface IMongoService<T, D> {
      */
     List<T> findAll();
 
-//    boolean insertBatch(List<T> entities);
-//
-//    <ID extends Serializable> boolean deleteById(ID id);
-//
-//    boolean deleteBatch(Collection<? extends Serializable> ids);
-//
-//    boolean deleteBatchIds(String ids);
-//
-//    boolean update(T entity);
-//
-//    boolean updateBatch(List<T> entities);
-//
-//    boolean exists(Serializable id);
-//
-//    T selectOne(Serializable id);
-//
-//    T selectOne(Map<String, Object> params);
-//
-//    List<T> selectList(Map<String, Object> params);
-//
-//    PageResult<T> selectPage(Integer startPageNum, Integer limit, Map<String, Object> params);
+    /**
+     * 排序查询所有数据
+     *
+     * @param sort Sort
+     * @return List<T>
+     */
+    List<T> findAll(Sort sort);
+
+    /**
+     * 分页查询
+     *
+     * @param pageable 分页对象
+     * @return Page<T>
+     */
+    Page<T> findAll(Pageable pageable);
+
+    /**
+     * 指定查询条件记录数,condition 为空即查询所有
+     *
+     * @param condition Query
+     * @return long
+     */
+    long total(Query condition);
+
+    /**
+     * 获取指定 ID 实体
+     *
+     * @param id 主键ID
+     * @return T
+     * @throws BizException 业务异常
+     */
+    T findById(Object id) throws BizException;
+
+    /**
+     * 查询指定添加记录
+     *
+     * @param condition 查询条件
+     * @return List<T>
+     */
+    List<T> find(Query condition);
+
+    /**
+     * 查询满足指定条件的第一条记录
+     *
+     * @param condition 查询条件
+     * @return Optional<T>
+     */
+    Optional<T> findOne(Query condition);
+
+    /**
+     * 分页从查询
+     *
+     * @param condition 查询条件
+     * @param pageable  分页属性
+     * @return Page<T>
+     */
+    Page<T> findPage(Query condition, Pageable pageable);
+
 }

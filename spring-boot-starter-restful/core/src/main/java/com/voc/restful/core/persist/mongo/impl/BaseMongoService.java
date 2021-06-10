@@ -2,16 +2,18 @@ package com.voc.restful.core.persist.mongo.impl;
 
 import com.voc.restful.core.entity.IEntity;
 import com.voc.restful.core.persist.mongo.IMongoService;
+import com.voc.restful.core.response.BaseBizStatus;
+import com.voc.restful.core.response.BizException;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.ResolvableType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Query;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,9 +44,9 @@ public abstract class BaseMongoService<E extends IEntity, D extends BaseMongoDao
     }
 
     @Override
-    public List<Serializable> saveAll(Iterable<E> entities) {
+    public List<String> saveAll(Iterable<E> entities) {
         List<E> list = mongoDao.saveAll(entities);
-        return list.stream().map(IEntity::getId).collect(Collectors.toList());
+        return list.stream().map(e -> e.getId().toString()).collect(Collectors.toList());
     }
 
     @Override
@@ -82,141 +84,39 @@ public abstract class BaseMongoService<E extends IEntity, D extends BaseMongoDao
         return mongoDao.findAll();
     }
 
-    //    @Override
-//    public boolean insert(E entity) {
-//        return false;
-//    }
+    @Override
+    public List<E> findAll(Sort sort) {
+        return mongoDao.findAll(sort);
+    }
 
-    //    @Override
-//    public <ID extends Serializable> ID save(E entity) {
-//        IEntity save = mongoDao.save(entity);
-//        return (ID) save.getId();
-//    }
+    @Override
+    public Page<E> findAll(Pageable pageable) {
+        return mongoDao.findAll(pageable);
+    }
 
-//
-//    @Override
-//    public List<E> findAll(Sort sort) {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<E> findAllById(Iterable<ID> ids) {
-//        return null;
-//    }
-//
-//    @Override
-//    public boolean updateById(ID id, Map<String, Object> updateFieldMap) {
-//        return false;
-//    }
-//
-//    @Override
-//    public <E1 extends E> boolean update(E1 entity) {
-//        return false;
-//    }
-//
-//    @Override
-//    public long total(Query condition) {
-//        return 0;
-//    }
-//
-//    @Override
-//    public List<E> find(Query condition) {
-//        return null;
-//    }
-//
-//    @Override
-//    public Page<E> findPage(Query condition, Pageable pageable) {
-//        return null;
-//    }
-//
-//    @Override
-//    public Optional<E> findOne(Query condition) {
-//        return Optional.empty();
-//    }
-//
-//    @Override
-//    public List<E> findById(Iterable<ID> ids) {
-//        return null;
-//    }
-//
-//    @Override
-//    public Page<E> findAll(Pageable pageable) {
-//        return null;
-//    }
-//
-//    @Override
-//    public <S extends E> S save(S entity) {
-//        return null;
-//    }
-//
-//    @Override
-//    public <S extends E> Iterable<S> saveAll(Iterable<S> entities) {
-//        return null;
-//    }
-//
-//    @Override
-//    public Optional<E> findById(ID id) {
-//        return Optional.empty();
-//    }
-//
-//    @Override
-//    public boolean existsById(ID id) {
-//        return false;
-//    }
-//
-//    @Override
-//    public long count() {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void deleteById(ID id) {
-//
-//    }
-//
-//    @Override
-//    public void delete(E entity) {
-//
-//    }
-//
-//    @Override
-//    public void deleteAll(Iterable<? extends E> entities) {
-//
-//    }
-//
-//    @Override
-//    public void deleteAll() {
-//
-//    }
+    @Override
+    public long total(Query condition) {
+        return mongoDao.total(condition);
+    }
 
-//    @Override
-//    public List<Menu> findAllById(Iterable<MenuDao> menuDaos) {
-//        return null;
-//    }
-//
-//    @Override
-//    public boolean updateById(MenuDao menuDao, Map<String, Object> updateFieldMap) {
-//        return false;
-//    }
-//
-//    @Override
-//    public List<Menu> findById(Iterable<MenuDao> menuDaos) {
-//        return null;
-//    }
-//
-//    @Override
-//    public Optional<Menu> findById(MenuDao menuDao) {
-//        return Optional.empty();
-//    }
-//
-//    @Override
-//    public boolean existsById(MenuDao menuDao) {
-//        return false;
-//    }
-//
-//    @Override
-//    public void deleteById(MenuDao menuDao) {
-//
-//    }
+    @Override
+    public E findById(Object id) {
+        Optional<E> optional = mongoDao.findById(id);
+        return optional.orElseThrow(() -> new BizException(BaseBizStatus.RECORD_NOT_EXISTS));
+    }
 
+    @Override
+    public List<E> find(Query condition) {
+        return mongoDao.find(condition);
+    }
+
+    @Override
+    public Optional<E> findOne(Query condition) {
+        return mongoDao.findOne(condition);
+    }
+
+    @Override
+    public Page<E> findPage(Query condition, Pageable pageable) {
+        return mongoDao.findPage(condition, pageable);
+    }
 }

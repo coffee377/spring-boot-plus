@@ -1,12 +1,8 @@
 package com.voc.dingtalk.controller;
 
-import com.voc.dingtalk.entity.AppInfo;
-import com.voc.dingtalk.service.CredentialsService;
+import com.voc.dingtalk.service.ICredentialsService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -18,21 +14,21 @@ import javax.annotation.Resource;
  * @time 2020/11/19 21:00
  */
 @Slf4j
-@RestController
+@RestController("dingTalkCredentialsController")
 @RequestMapping("/dingtalk")
 public class CredentialsController {
 
     @Resource
-    private CredentialsService credentialsService;
+    private ICredentialsService credentialsService;
 
-    @PostMapping("/access_token")
-    public String getAccessToken(@RequestBody AppInfo appInfo) {
-        return credentialsService.getAccessToken(appInfo);
+    @GetMapping("/{appName}/access_token")
+    public String getAccessToken(@PathVariable("appName") String appName) {
+        return credentialsService.getAccessToken(appName);
     }
 
-    @PostMapping(path = "/jsapi_ticket")
-    public String getJsApiTicketByAccessToken(@RequestBody AppInfo appInfo) {
-        return credentialsService.getJsApiTicket(appInfo);
+    @GetMapping("/{appName}/jsapi_ticket")
+    public String getJsApiTicketByAccessToken(@PathVariable("appName") String appName) {
+        return credentialsService.getJsApiTicket(appName);
     }
 
 }

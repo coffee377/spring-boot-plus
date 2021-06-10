@@ -1,14 +1,13 @@
 package com.voc.system.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2021/02/05 09:04
  */
-@RestController
+//@RestController
 @RequestMapping({"${api.system.prefix:}/page/action"})
 public class PageActionController {
 

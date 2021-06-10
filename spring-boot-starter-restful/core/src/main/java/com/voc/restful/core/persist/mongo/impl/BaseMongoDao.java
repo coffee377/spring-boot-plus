@@ -169,6 +169,7 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
 
     @Override
     public T update(T entity) {
+        Assert.notNull(entity.getId(), "The Entity id must not be null!");
         Document document = Document.parse(entity.toJson());
         return this.innerUpdate(entity.getId(), document);
     }

@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "sys_user")
 public class User extends BaseEntity<String> implements IUser<String> {
 
-    private String id;
+//    private String id;
 
     private String username;
 
