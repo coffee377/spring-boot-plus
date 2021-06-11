@@ -11,7 +11,7 @@ import org.springframework.lang.Nullable;
  * @email coffee377@dingtalk.com
  * @time 2020/11/17 18:33
  */
-public interface ICredentialsService extends IDingTalkService {
+public interface ICredentialsService extends IApiExecutor {
 
     /**
      * 获取企业应用凭证
@@ -30,7 +30,7 @@ public interface ICredentialsService extends IDingTalkService {
      * @return String
      * @throws DingTalkApiException API 异常
      */
-    String getAccessToken(String appName) throws DingTalkApiException;
+    String getAccessTokenByAppName(String appName) throws DingTalkApiException;
 
     /**
      * 获取jsapi ticket, 用于js的签名计算
@@ -40,7 +40,7 @@ public interface ICredentialsService extends IDingTalkService {
      * @return String
      * @throws DingTalkApiException API 异常
      */
-    String getJsApiTicket(@NonNull String appKey, @Nullable String appSecret) throws DingTalkApiException;
+    String getJsApiTicketByAppName(@NonNull String appKey, @Nullable String appSecret) throws DingTalkApiException;
 
     /**
      * 获取jsapi ticket, 用于js的签名计算
@@ -49,6 +49,6 @@ public interface ICredentialsService extends IDingTalkService {
      * @return String
      * @throws DingTalkApiException API 异常
      */
-    String getJsApiTicket(String appName) throws DingTalkApiException;
+    String getJsApiTicketByAppName(String appName) throws DingTalkApiException;
 
 }

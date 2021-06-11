@@ -23,12 +23,12 @@ public class CredentialsController {
 
     @GetMapping("/{appName}/access_token")
     public String getAccessToken(@PathVariable("appName") String appName) {
-        return credentialsService.getAccessToken(appName);
+        return credentialsService.getAccessTokenByAppName(appName);
     }
 
     @GetMapping("/{appName}/jsapi_ticket")
     public String getJsApiTicketByAccessToken(@PathVariable("appName") String appName) {
-        return credentialsService.getJsApiTicket(appName);
+        return credentialsService.getJsApiTicketByAppName(appName);
     }
 
 }

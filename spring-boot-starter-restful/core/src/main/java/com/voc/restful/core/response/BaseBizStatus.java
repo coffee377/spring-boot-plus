@@ -53,7 +53,7 @@ public enum BaseBizStatus implements IBizStatus {
 //    DATA_NOT_FIND(10009, "数据查询错误");
 
     ;
-    private final String message;
+    private String message;
 
     private final HttpStatus status;
 
@@ -72,6 +72,12 @@ public enum BaseBizStatus implements IBizStatus {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public BaseBizStatus message(String message) {
+        this.message = message;
+        return this;
     }
 
     @Override

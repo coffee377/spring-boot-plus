@@ -11,6 +11,7 @@ public enum DingTalkCacheEnum implements ICache, DingTalkCache {
 
     ACCESS_TOKEN(DingTalkCache.ACCESS_TOKEN, Duration.ofSeconds(6900)),
     JS_TICKET(DingTalkCache.JS_TICKET, Duration.ofSeconds(6900)),
+    APP_INFO(DingTalkCache.APP_INFO, Duration.ofDays(30)),
     APP_SECRET(DingTalkCache.APP_SECRET, Duration.ofDays(30));
 
     private final String name;

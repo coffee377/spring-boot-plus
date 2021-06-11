@@ -6,7 +6,9 @@ import com.dingtalk.api.request.OapiV2UserGetRequest;
 import com.dingtalk.api.response.OapiSnsGetuserinfoBycodeResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
 import com.voc.dingtalk.UrlConst;
+import com.voc.dingtalk.properties.App;
 import com.voc.dingtalk.service.ICredentialsService;
+import com.voc.dingtalk.service.IDingTalkService;
 import com.voc.dingtalk.service.IUserService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,16 +22,17 @@ import java.util.concurrent.atomic.AtomicReference;
  * @time 2021/04/21 21:51
  */
 @Service("dingtalkUserService")
-public class UserService extends DingTalkService implements IUserService {
-
-    @Resource
-    private IUserService userService;
+public class UserService implements IUserService {
 
     @Resource
     private ICredentialsService credentialsService;
 
+    @Resource
+    private IDingTalkService dingTalkService;
+
     @Override
-    public OapiSnsGetuserinfoBycodeResponse.UserInfo getUserInfoByCode(String accessKey, String accessSecret, String tmpAuthCode) {
+    public OapiSnsGetuserinfoBycodeResponse.UserInfo getUserOpenInfoByCode(String accessKey, String accessSecret,
+                                                                           String tmpAuthCode) {
         OapiSnsGetuserinfoBycodeRequest req = new OapiSnsGetuserinfoBycodeRequest();
         req.setTmpAuthCode(tmpAuthCode);
         AtomicReference<OapiSnsGetuserinfoBycodeResponse.UserInfo> userInfo = new AtomicReference<>();
@@ -39,27 +42,22 @@ public class UserService extends DingTalkService implements IUserService {
     }
 
     @Override
-    public OapiSnsGetuserinfoBycodeResponse.UserInfo getUserInfoByCode(String appName, String tempAuthCode) {
-        String accessToken = credentialsService.getAccessToken(appName);
-        OapiSnsGetuserinfoBycodeRequest request = new OapiSnsGetuserinfoBycodeRequest();
-        request.setTmpAuthCode(tempAuthCode);
-
-        AtomicReference<OapiSnsGetuserinfoBycodeResponse.UserInfo> userInfo = new AtomicReference<>();
-        this.execute(UrlConst.SNS_GET_USER_INFO_BY_CODE, request, accessToken,
-                response -> userInfo.set(response.getUserInfo()));
-
-        return userInfo.get();
+    public OapiSnsGetuserinfoBycodeResponse.UserInfo getUserOpenInfoByCode(String appName, String tempAuthCode) {
+        App app = dingTalkService.getAppByName(appName);
+        String appKey = app.getAppKey();
+        String appSecret = app.getAppSecret();
+        return this.getUserOpenInfoByCode(appKey, appSecret, tempAuthCode);
     }
 
     @Override
     public String getUnionid(String accessKey, String accessSecret, String tmpAuthCode) {
-        OapiSnsGetuserinfoBycodeResponse.UserInfo userInfo = this.getUserInfoByCode(accessKey, accessSecret, tmpAuthCode);
+        OapiSnsGetuserinfoBycodeResponse.UserInfo userInfo = this.getUserOpenInfoByCode(accessKey, accessSecret, tmpAuthCode);
         return userInfo.getUnionid();
     }
 
     @Override
-    public String getUnionid(String accessToken, String tmpAuthCode) {
-        OapiSnsGetuserinfoBycodeResponse.UserInfo userInfo = this.getUserInfoByCode(accessToken, tmpAuthCode);
+    public String getUnionid(String appName, String tmpAuthCode) {
+        OapiSnsGetuserinfoBycodeResponse.UserInfo userInfo = this.getUserOpenInfoByCode(appName, tmpAuthCode);
         return userInfo.getUnionid();
     }
 
@@ -75,7 +73,7 @@ public class UserService extends DingTalkService implements IUserService {
     }
 
     @Override
-    public OapiV2UserGetResponse.UserGetResponse getUserInfo(String accessToken, String userid, String language) {
+    public OapiV2UserGetResponse.UserGetResponse getUserDetailInfo(String accessToken, String userid, String language) {
         OapiV2UserGetRequest reqGetRequest = new OapiV2UserGetRequest();
         reqGetRequest.setUserid(userid);
         if (StringUtils.hasText(language)) {
@@ -87,4 +85,12 @@ public class UserService extends DingTalkService implements IUserService {
         return reference.get();
     }
 
+    @Override
+    public Object getUserDetailInfo(String appName, String tempAuthCode) {
+        String accessToken = credentialsService.getAccessTokenByAppName(appName);
+        String unionid = this.getUnionid(appName, tempAuthCode);
+        String uid = this.getUserIdByUnionId(accessToken, unionid);
+        OapiV2UserGetResponse.UserGetResponse userInfo = this.getUserDetailInfo(accessToken, uid, "");
+        return userInfo;
+    }
 }

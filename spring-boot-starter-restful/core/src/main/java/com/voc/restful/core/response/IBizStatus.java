@@ -26,6 +26,16 @@ public interface IBizStatus {
     String getMessage();
 
     /**
+     * 重置错误信息
+     *
+     * @param message 提示信息
+     * @return IBizStatus
+     */
+    default IBizStatus message(String message) {
+        return this;
+    }
+
+    /**
      * Http 状态码
      *
      * @return HttpStatus

@@ -4,13 +4,16 @@ import com.voc.dingtalk.cache.DingTalkCache;
 import com.voc.dingtalk.properties.App;
 import com.voc.dingtalk.properties.DingTalkProperties;
 import com.voc.dingtalk.service.IDingTalkService;
+import com.voc.restful.core.response.BaseBizStatus;
+import com.voc.restful.core.response.BizException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
  * @email coffee377@dingtalk.com
  * @time 2021/06/10 11:12
  */
+@Slf4j
 @Service("dingTalkService")
 public class DingTalkService implements IDingTalkService {
 
@@ -32,7 +36,13 @@ public class DingTalkService implements IDingTalkService {
         return dingTalkProperties.getCorpId();
     }
 
+    /**
+     * TODO: 2021/6/11 9:43 在应用启动完成后清除 DingTalkCache.APP_INFO 缓存
+     *
+     * @return List<App>
+     */
     @Override
+    @Cacheable(cacheNames = DingTalkCache.APP_INFO, key = "'apps'")
     public List<App> getApps() {
         return dingTalkProperties.getApp().entrySet().stream().map(entry -> {
             String name = entry.getKey();
@@ -45,29 +55,39 @@ public class DingTalkService implements IDingTalkService {
     }
 
     @Override
+    @Cacheable(cacheNames = DingTalkCache.APP_INFO)
     public App getAppByName(String appName) {
         return dingTalkService.getApps().stream()
                 .filter(app -> app.getName().equals(appName))
-                .findFirst().orElse(new App());
+                .findFirst()
+                .orElseThrow(() -> {
+                    BizException exception = new BizException(BaseBizStatus.RECORD_NOT_EXISTS.message("相关应用配置信息不存在"));
+                    log.error("appName = {} 的配置信息不存在", appName, exception);
+                    return exception;
+                });
     }
 
     @Override
+    @Cacheable(cacheNames = DingTalkCache.APP_INFO)
     public App getAppById(String appId) {
         return dingTalkService.getApps().stream()
                 .filter(app -> app.getAppKey().equals(appId))
-                .findFirst().orElse(new App());
+                .findFirst()
+                .orElseThrow(() -> {
+                    BizException exception = new BizException(BaseBizStatus.RECORD_NOT_EXISTS.message("相关应用配置信息不存在"));
+                    log.error("appKey = {} 的配置信息不存在", appId, exception);
+                    return exception;
+                });
     }
 
     @Override
-    @Cacheable(cacheNames = DingTalkCache.APP_SECRET, keyGenerator = "appKeyGenerator")
-    public String getAppSecretByAppId(String appId) {
-        return Optional.ofNullable(dingTalkService.getAppById(appId).getAppSecret()).orElse("");
-    }
-
-    @Override
-    @Cacheable(cacheNames = DingTalkCache.APP_SECRET, keyGenerator = "appKeyGenerator")
-    public String getAppSecretByAppName(String appName) {
-        return Optional.ofNullable(dingTalkService.getAppByName(appName).getAppSecret()).orElse("");
+    public String ensureAppSecret(String appKey, String appSecret) {
+        Assert.hasText(appKey, "appKey must not be empty");
+        if (StringUtils.hasText(appSecret)) {
+            return appSecret;
+        } else {
+            return dingTalkService.getAppById(appKey).getAppSecret();
+        }
     }
 
 
