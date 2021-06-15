@@ -1,11 +1,11 @@
-package com.voc.api.security.configurer;
+package com.voc.security.configurer;
 
 import com.voc.api.Constants;
-import com.voc.restful.core.props.LoginProperties;
-import com.voc.api.security.authentication.RestfulAuthenticationFailureHandler;
-import com.voc.api.security.authentication.RestfulAuthenticationFilter;
-import com.voc.api.security.authentication.RestfulAuthenticationSuccessHandler;
-import com.voc.api.utils.LoginUtil;
+import com.voc.security.SecurityProperties;
+import com.voc.security.authentication.RestfulAuthenticationFailureHandler;
+import com.voc.security.authentication.RestfulAuthenticationFilter;
+import com.voc.security.authentication.RestfulAuthenticationSuccessHandler;
+import com.voc.api.utils.CommonUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
@@ -41,11 +41,12 @@ public class RestfulLoginConfigurer<H extends HttpSecurityBuilder<H>>
         ApplicationContext applicationContext = http.getSharedObject(ApplicationContext.class);
         RestfulAuthenticationSuccessHandler authenticationSuccessHandler = applicationContext.getBean(RestfulAuthenticationSuccessHandler.class);
         RestfulAuthenticationFailureHandler authenticationFailureHandler = applicationContext.getBean(RestfulAuthenticationFailureHandler.class);
-        LoginProperties loginProps = applicationContext.getBean(LoginProperties.class);
         authFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         authFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-        if (LoginUtil.isCustomProcessUrl(loginProps)) {
-            authFilter.setFilterProcessesUrl(loginProps.getProcessUrl());
+        SecurityProperties securityProps = applicationContext.getBean(SecurityProperties.class);
+        String loginProcessUrl = securityProps.getLoginProcessUrl();
+        if (CommonUtil.isCustomProcessUrl(loginProcessUrl)) {
+            authFilter.setFilterProcessesUrl(loginProcessUrl);
         }
         authFilter = postProcess(authFilter);
 

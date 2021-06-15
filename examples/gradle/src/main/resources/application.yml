@@ -44,7 +44,13 @@ api:
   #      message: msg
   system:
     prefix: sys
+  security:
+    #    不需要权限认证的可以在这里配置
+    ignore: /result
 #debug: true
 logging:
   level:
     root: info
+    com:
+      voc: debug
+

@@ -1,4 +1,4 @@
-package com.voc.api.security.configurer;
+package com.voc.security.configurer;
 
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;

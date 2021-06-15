@@ -24,7 +24,7 @@ public class RequestUtil {
      */
     public static boolean isRestfulRequest(HttpServletRequest request) {
         String contentType = request.getContentType();
-        if (!StringUtils.isEmpty(contentType)) {
+        if (StringUtils.hasText(contentType)) {
             return REST_JSON_PATTERN.matcher(contentType).matches();
         }
         return false;

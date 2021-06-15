@@ -1,4 +1,4 @@
-package com.voc.api.security.authentication;
+package com.voc.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.voc.api.Constants;
@@ -20,7 +20,6 @@ import java.io.IOException;
 
 /**
  * 支持异步请求
- * Created with IntelliJ IDEA.
  *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com

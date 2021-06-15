@@ -1,4 +1,4 @@
-package com.voc.api.security.authentication;
+package com.voc.security.authentication;
 
 import com.voc.restful.core.response.BaseBizStatus;
 import com.voc.restful.core.response.Result;
@@ -8,7 +8,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,14 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created with IntelliJ IDEA.
- *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2018/01/29 16:44
  */
 @Slf4j
-@Component
 public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
 
     /**

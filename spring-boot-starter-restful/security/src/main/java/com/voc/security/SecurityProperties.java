@@ -1,4 +1,4 @@
-package com.voc.api.security;
+package com.voc.security;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +20,15 @@ public class SecurityProperties {
      * 不需要验证权限的地址
      */
     private List<String> ignore;
+
+    /**
+     * 用户名密码登陆处理地址，默认 /login
+     */
+    private String loginProcessUrl;
+
+    /**
+     * 注销用户处理地址，默认 /logout
+     */
+    private String logoutProcessUrl;
 
 }

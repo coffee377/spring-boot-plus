@@ -1,14 +1,17 @@
-package com.voc.api.security;
+package com.voc.security.authentication;
 
+import com.voc.security.authority.RoleGrantedAuthority;
+import com.voc.security.authority.ScopeGrantedAuthority;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -19,17 +22,15 @@ import java.util.*;
  * @time 2018/01/15 19:59
  */
 @Slf4j
-@Component("userDetailsService")
-public class UserDetailServiceImpl implements UserDetailsService {
+public class DefaultUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Collection<GrantedAuthority> authorities = this.getAuthorities(username);
         return new UserDetails() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
-                SimpleGrantedAuthority roleAdmin = new SimpleGrantedAuthority("ROLE_ADMIN");
-                SimpleGrantedAuthority roleAdmin2 = new SimpleGrantedAuthority("SCOPE_messages.read");
-                return Arrays.asList(roleAdmin, roleAdmin2);
+                return authorities;
             }
 
             @Override
@@ -72,6 +73,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
      */
     private Collection<GrantedAuthority> getAuthorities(String username) {
         Set<GrantedAuthority> authorities = new HashSet<>();
+        AuthorityUtils.createAuthorityList("ROLE_ADMIN","SCOPE_messages.read");
+        GrantedAuthority roleAdmin = new RoleGrantedAuthority("ROLE_ADMIN");
+        GrantedAuthority roleAdmin2 = new ScopeGrantedAuthority("SCOPE_messages.read");
+        authorities.add(roleAdmin);
+        authorities.add(roleAdmin2);
         return authorities;
     }
 
