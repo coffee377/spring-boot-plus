@@ -1,5 +1,8 @@
 package com.voc.security.autoconfigure;
 
+import com.voc.security.SecurityProperties;
+import com.voc.security.token.TokenConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -9,6 +12,7 @@ import org.springframework.context.annotation.Import;
  * @time 2021/06/14 08:27
  */
 @Configuration
-@Import({SecurityImport.class, BeanConfig.class, WebSecurityConfig.class})
+@EnableConfigurationProperties({SecurityProperties.class})
+@Import({SecurityImport.class, WebSecurityConfig.class, BeanConfig.class, TokenConfiguration.class})
 public class SecurityAutoConfiguration {
 }

@@ -1,7 +1,12 @@
 package com.voc.security.autoconfigure;
 
+import com.voc.security.listener.AnnotationListener;
+import com.voc.security.token.TokenController;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * @author Wu Yujie
@@ -11,6 +16,11 @@ import org.springframework.core.type.AnnotationMetadata;
 public class SecurityImport implements ImportSelector {
     @Override
     public String[] selectImports(AnnotationMetadata annotationMetadata) {
-        return new String[]{"com.voc.security.listener.AnnotationListener"};
+        return Arrays.stream(classes()).map(Class::getCanonicalName)
+                .collect(Collectors.toList()).toArray(new String[]{});
+    }
+
+    Class<?>[] classes() {
+        return (Class<?>[]) new Class[]{AnnotationListener.class, TokenController.class};
     }
 }

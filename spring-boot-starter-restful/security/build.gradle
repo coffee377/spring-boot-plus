@@ -1,9 +1,15 @@
 dependencies {
   api project(":${parent.name}:${parent.name}-core")
-  implementation 'org.springframework.boot:spring-boot-starter-security'
-//  implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-//  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+  api 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+  implementation 'org.springframework.security.experimental:spring-security-oauth2-authorization-server:0.1.1'
+
+  testImplementation 'org.springframework.security:spring-security-test'
+  testImplementation 'org.springframework.boot:spring-boot-starter-cache'
+  implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
+
 //bootJar {
 //  enabled(false)
 //}

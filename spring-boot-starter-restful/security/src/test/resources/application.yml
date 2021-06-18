@@ -1,0 +1,21 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/token/verify
+          issuer-uri: http://localhost:8080
+  cache:
+    type: redis
+    redis:
+      time-to-live: 2h
+  redis:
+    host: tvoc.site
+    password: tvoc.redis
+    port: 8188
+
+api:
+  security:
+    token:
+      access-token-expires-in: 5m
+      invalid-when-cache-not-exist: false

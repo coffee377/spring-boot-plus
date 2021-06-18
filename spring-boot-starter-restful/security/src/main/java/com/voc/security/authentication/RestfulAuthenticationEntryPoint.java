@@ -9,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
@@ -55,11 +56,9 @@ public class RestfulAuthenticationEntryPoint implements AuthenticationEntryPoint
         Result failure = Result.failure(BaseBizStatus.UNAUTHORIZED);
         if (e instanceof InsufficientAuthenticationException) {
             failure = Result.failure(BaseBizStatus.UNAUTHORIZED);
-        }
-//            if (e instanceof InvalidBearerTokenException) {
-//                failure = Result.failure(BaseBizStatus.INVALID_BEARER_TOKEN);
-//            } else
-        else if (e instanceof UsernameNotFoundException) {
+        } else if (e instanceof InvalidBearerTokenException) {
+            failure = Result.failure(BaseBizStatus.INVALID_BEARER_TOKEN);
+        } else if (e instanceof UsernameNotFoundException) {
             failure = Result.failure(BaseBizStatus.USERNAME_NOT_FOUND);
         } else if (e instanceof BadCredentialsException) {
             failure = Result.failure(BaseBizStatus.BAD_CREDENTIALS);

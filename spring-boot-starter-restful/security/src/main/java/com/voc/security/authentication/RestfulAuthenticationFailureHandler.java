@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import javax.servlet.ServletException;
@@ -26,15 +27,19 @@ public class RestfulAuthenticationFailureHandler implements AuthenticationFailur
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-
         if (log.isErrorEnabled()) {
             log.error("用户登录失败 - {}", exception.getMessage());
         }
+
         Result failure = Result.failure(exception);
-        if (exception instanceof BadCredentialsException || exception instanceof UsernameNotFoundException) {
+        if (exception instanceof InvalidBearerTokenException) {
+            failure = Result.failure(BaseBizStatus.INVALID_BEARER_TOKEN);
+        } else if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
             failure = Result.failure(BaseBizStatus.INVALID_USERNAME_OR_PASSWORD);
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
         }
+
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+
         String result = failure.toString();
         if (log.isDebugEnabled()) {
             log.debug("响应 JSON 数据为：{}", result);

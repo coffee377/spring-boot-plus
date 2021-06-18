@@ -1,6 +1,7 @@
 package com.voc.demo.api;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
 
     @GetMapping
+    @PreAuthorize("hasAuthority('SCOPE_ping')")
     public String home() {
         return "pong";
     }

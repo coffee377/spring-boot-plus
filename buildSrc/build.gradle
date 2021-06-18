@@ -17,9 +17,9 @@ dependencies {
 //  implementation(gradleApi())
   /* groovy sdk */
 //  compileOnly localGroovy()
-
-  api('org.springframework.boot:spring-boot-gradle-plugin:2.4.2')
-  api('io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE')
+/* 公司目前使用版本 */
+  api('org.springframework.boot:spring-boot-gradle-plugin:2.3.5.RELEASE')
+  api('io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE')
   annotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
 

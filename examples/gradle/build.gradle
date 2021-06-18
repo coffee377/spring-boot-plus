@@ -1,5 +1,5 @@
 plugins {
-  id "com.voc.devtools"
+//  id "com.voc.devtools"
 }
 
 def restful = "spring-boot-starter-restful"
@@ -15,7 +15,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
-devtools {
+//devtools {
 //  javaTools = true
 //  googleAutoService = true
 //  aliMaven = false
@@ -41,7 +41,7 @@ devtools {
 ////    Spring { url = "https://maven.aliyun.com/repository/spring" }
 ////    SpringPlugin { url = "https://maven.aliyun.com/repository/spring-plugin" }
 //  }
-}
+//}
 
 bootJar {
   enabled(true)

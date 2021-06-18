@@ -35,6 +35,11 @@ spring:
         agent-id: 1212531310
         app-key: dingygnpkdcsj7hjq5es
         app-secret: dDvw4ZYAjOmPk5iydhcI7y-HBCEdWBE_MKen8yefAkOrK9HN24T19xwev1n_XJHO
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:8080
 api:
   json:
     automatic-wrapped: true
@@ -47,6 +52,8 @@ api:
   security:
     #    不需要权限认证的可以在这里配置
     ignore: /result
+    token:
+      dual-token: true
 #debug: true
 logging:
   level:

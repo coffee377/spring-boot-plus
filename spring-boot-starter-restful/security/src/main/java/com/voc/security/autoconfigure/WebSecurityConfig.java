@@ -5,10 +5,8 @@ import com.voc.security.SecurityProperties;
 import com.voc.security.authentication.RestfulLogoutSuccessHandler;
 import com.voc.security.configurer.RestfulLoginConfigurer;
 import com.voc.security.configurer.SwitchUserConfigurer;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,15 +15,16 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Security 配置
@@ -34,10 +33,8 @@ import java.util.Optional;
  * @email coffee377@dingtalk.com
  * @time 2018/03/14 10:07
  */
-@Order(101)
 @Configuration
 @EnableWebSecurity
-@EnableConfigurationProperties({SecurityProperties.class})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -46,15 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public WebSecurityConfig() {
         super(false);
     }
-
-//    @Resource
-//    private ClientRegistrationRepository clientRegistrationRepository;
-
-//    @Resource
-//    private OAuth2AuthorizedClientService oauth2AuthorizedClientService;
-
-//    @Resource
-//    private UserDetailsService userDetailsService;
 
     @Resource
     private SecurityProperties securityProps;
@@ -75,7 +63,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private RestfulLogoutSuccessHandler restfulLogoutSuccessHandler;
 
     @Resource
-    private PasswordEncoder passwordEncoder;
+    private BearerTokenResolver bearerTokenResolver;
+
+    @Resource
+    private JwtDecoder jwtDecoder;
 
     @Bean
     @Override
@@ -85,37 +76,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/favicon.ico", "/error");
         /* 自定义不需要验证权限的URL */
-        this.customAntMatchers(web, securityProps.getIgnore());
+        String[] ignoreUrls = this.ignoreUrls(securityProps.getIgnore(), "/favicon.ico", "/error");
+        web.ignoring().antMatchers(ignoreUrls);
     }
 
-    private void customAntMatchers(WebSecurity web, List<String> antMatchers) {
-        Optional.ofNullable(antMatchers).ifPresent(
-                it -> it.forEach(
-                        item -> {
-                            if (!item.startsWith(SLASH)) {
-                                item = SLASH + item;
-                            }
-                            web.ignoring().antMatchers(item);
-                        }
-                )
-        );
+    private String[] ignoreUrls(List<String> ignore, String... extraUrl) {
+        List<String> list = Optional.ofNullable(ignore).orElse(new LinkedList<>());
+        Set<String> set = new HashSet<>(list);
+        set.addAll(Arrays.asList(extraUrl));
+        return set.stream().map(url -> {
+            if (!url.startsWith(SLASH)) {
+                return SLASH + url;
+            }
+            return url;
+        }).collect(Collectors.toList()).toArray(new String[]{});
     }
-
-//    /**
-//     * 覆盖默认的 TokenResolver
-//     * token 支持从参数 access_token 获取
-//     *
-//     * @return BearerTokenResolver
-//     */
-//    @Bean
-//    BearerTokenResolver bearerTokenResolver() {
-//        DefaultBearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
-//        bearerTokenResolver.setAllowFormEncodedBodyParameter(true);
-//        bearerTokenResolver.setAllowUriQueryParameter(true);
-//        return bearerTokenResolver;
-//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -141,7 +117,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                     authorize
                             .antMatchers(HttpMethod.OPTIONS).permitAll()
-                            .antMatchers("/token").permitAll()
+                            .antMatchers("/token", "/token/verify").permitAll()
                             .antMatchers("/error", "/login/**", "/oauth2/**", "/callback").permitAll()
                             .anyRequest().authenticated();
                 }
@@ -238,27 +214,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 ////            client.authorizationCodeGrant().
 //        });
 //
-//        /* oauth2 资源认证服务 */
-//        http.oauth2ResourceServer(resourceServer -> {
-//            resourceServer.authenticationEntryPoint(restfulAuthenticationEntryPoint);
-//            resourceServer.accessDeniedHandler(restfulAccessDeniedHandler);
-//            resourceServer.jwt(jwt -> {
-////                jwt.
-////                jwt.decoder(token -> {
-////                    Jwt.Builder builder = Jwt.withTokenValue(token);
-////                    return builder.build();
-////                });
-//            });
-////            resourceServer.opaqueToken(opaque -> {
-////
-////            });
-//        });
+        /* oauth2 资源认证服务 */
+//        http.oauth2ResourceServer().jwt();
+        http.oauth2ResourceServer(resourceServer -> {
+            resourceServer.bearerTokenResolver(bearerTokenResolver);
+            resourceServer.authenticationEntryPoint(restfulAuthenticationEntryPoint);
+            resourceServer.accessDeniedHandler(restfulAccessDeniedHandler);
+            resourceServer.jwt(jwt -> {
+//                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)
+                jwt.decoder(jwtDecoder);
+//                jwt.decoder(token -> {
+//                    Jwt.Builder builder = Jwt.withTokenValue(token);
+//                    builder.header("typ", "JWT");
+//                    builder.header("alg", "HS256");
+//                    builder.subject("admin");
+//                    builder.claim("scp", Arrays.asList("ROLE_admin", "SCOPE_message.red", "ping"));
+//                    Instant instant = Instant.now();
+//                    builder.issuedAt(instant);
+//                    builder.expiresAt(instant.plus(7200, ChronoUnit.SECONDS));
+//
+//                    return builder.build();
+//                });
+            });
+        });
 
     }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-//    }
 
 }

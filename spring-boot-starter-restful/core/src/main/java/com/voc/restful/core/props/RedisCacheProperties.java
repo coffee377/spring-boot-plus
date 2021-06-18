@@ -22,7 +22,7 @@ public class RedisCacheProperties {
     public RedisCacheProperties() {
         redis = new CacheProperties.Redis();
         redis.setCacheNullValues(false);
-        redis.setEnableStatistics(true);
+//        redis.setEnableStatistics(true);
     }
 
 
