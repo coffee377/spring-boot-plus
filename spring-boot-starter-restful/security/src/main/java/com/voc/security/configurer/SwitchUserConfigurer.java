@@ -1,7 +1,7 @@
 package com.voc.security.configurer;
 
-import com.voc.security.authentication.RestfulAuthenticationFailureHandler;
-import com.voc.security.authentication.RestfulAuthenticationSuccessHandler;
+import com.voc.security.core.authentication.restful.RestfulAuthenticationFailureHandler;
+import com.voc.security.core.authentication.restful.RestfulAuthenticationSuccessHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;

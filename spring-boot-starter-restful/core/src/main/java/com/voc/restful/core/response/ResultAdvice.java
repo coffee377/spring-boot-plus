@@ -1,6 +1,7 @@
 package com.voc.restful.core.response;
 
 import com.voc.restful.core.autoconfigure.json.exception.JsonSerializeException;
+import com.voc.restful.core.response.impl.BaseBizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.MethodParameter;

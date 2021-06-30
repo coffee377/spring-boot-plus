@@ -20,10 +20,6 @@ spring:
     #    type: caffeine
     redis:
       time-to-live: 2h
-  #      cache-null-values: false
-  #      enable-statistics: true
-  #    caffeine:
-  #      time-to-live: 10s
   dingtalk:
     corp-id: dingd8b32bfb2b9da7b2
     app:
@@ -35,8 +31,28 @@ spring:
         agent-id: 1212531310
         app-key: dingygnpkdcsj7hjq5es
         app-secret: dDvw4ZYAjOmPk5iydhcI7y-HBCEdWBE_MKen8yefAkOrK9HN24T19xwev1n_XJHO
-#  security:
-#    oauth2:
+  security:
+    oauth2:
+      client:
+        registration:
+          dingtalk:
+            provider: dingtalk
+            client-id: dingopfniakkw72klkjv
+            client-secret: 6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR
+            authorization-grant-type: authorization_code
+            redirect-uri: http://127.0.0.1:8080/login/oauth2/code/dingtalk
+            scope: snsapi_login
+            client-name: DingTalk
+        provider:
+          dingtalk:
+            authorization-uri: https://oapi.dingtalk.com/connect/qrconnect
+            token-uri: no_need_token
+            user-info-uri: https://oapi.dingtalk.com/sns/getuserinfo_bycode
+            user-name-attribute: unionid
+            user-info-authentication-method: form
+#            jwk-set-uri:
+#            issuer-uri:
+
 #      resourceserver:
 #        jwt:
 #          issuer-uri: http://localhost:8080

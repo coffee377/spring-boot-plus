@@ -1,8 +1,8 @@
 package com.voc.restful.core.autoconfigure.json.exception;
 
-import com.voc.restful.core.autoconfigure.json.JsonType;
 import com.voc.restful.core.response.BizException;
 import com.voc.restful.core.response.IBizStatus;
+import com.voc.restful.core.response.impl.BaseBizStatus;
 
 /**
  * JSON 反序列号异常
@@ -13,19 +13,13 @@ import com.voc.restful.core.response.IBizStatus;
  */
 public class JsonDeserializeException extends BizException {
 
-    private JsonType jsonType;
-
+    @Deprecated
     public JsonDeserializeException(IBizStatus bizStatus) {
         super(bizStatus);
     }
 
-    public JsonDeserializeException(IBizStatus bizStatus, JsonType jsonType) {
-        super(bizStatus);
-        this.jsonType = jsonType;
+    public JsonDeserializeException() {
+        super(BaseBizStatus.JSON_DESERIALIZE_EXCEPTION);
     }
 
-    @Override
-    public String getMessage() {
-        return super.getMessage();
-    }
 }

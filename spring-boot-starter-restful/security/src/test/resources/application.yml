@@ -5,6 +5,19 @@ spring:
         jwt:
           jwk-set-uri: http://localhost:8080/token/verify
           issuer-uri: http://localhost:8080
+      client:
+        registration:
+          messaging-client-authorization-code:
+#            provider: spring
+            client-id: messaging-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/authorized"
+            scope: message.read,message.write
+            client-name: messaging-client-authorization-code
+        provider:
+          spring:
+            issuer-uri: http://auth-server:8080
   cache:
     type: redis
     redis:
@@ -19,3 +32,5 @@ api:
     token:
       access-token-expires-in: 5m
       invalid-when-cache-not-exist: false
+      jwt:
+        signature-algorithm: rs256

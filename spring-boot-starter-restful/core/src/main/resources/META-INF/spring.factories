@@ -7,3 +7,6 @@ com.voc.restful.core.autoconfigure.util.UtilsAutoConfiguration
 
 org.springframework.context.ApplicationListener=\
 com.voc.restful.core.banner.BannerListener
+
+org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer=\
+com.voc.security.core.authentication.QRAuthenticationProviderConfigurer

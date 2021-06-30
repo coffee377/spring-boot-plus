@@ -1,55 +1,11 @@
-
 dependencies {
   api project(":${parent.name}:${parent.name}-core")
-  implementation('org.springframework.boot:spring-boot-starter-data-redis')
-//  implementation('com.alibaba:sdk:20201113')
+  compileOnly "org.springframework.boot:spring-boot-starter-security"
+  compileOnly 'org.springframework.boot:spring-boot-starter-oauth2-client'
+  implementation 'org.springframework.boot:spring-boot-starter-data-redis'
   implementation 'com.alibaba:sdk:20210421'
-//  implementation(files('lib/taobao-sdk-java.jar'))
 }
 
-dependencyManagement{
+dependencyManagement {
 
 }
-
-//publishing {
-//  publications {
-//    mavenJava(MavenPublication) {
-//      from components.java
-//      versionMapping {
-//        usage('java-api') {
-//          fromResolutionOf('runtimeClasspath')
-//        }
-//        usage('java-runtime') {
-//          fromResolutionResult()
-//        }
-//      }
-//      pom {
-//        developers {
-//          developer {
-//            id = 'coffee377'
-//            name = 'Wu Yujie'
-//            email = 'coffee377@dingtalk.com'
-//          }
-//        }
-//      }
-//    }
-//
-//  }
-//  /* 声明要发布到的存储库 */
-//  repositories {
-//    /* 阿里云效个人仓库 */
-//    maven {
-//      // change to point to your repo, e.g. http://my.org/repo
-//      def repo = 'https://packages.aliyun.com/maven/repository/2038604'
-//      def snapshotsRepo = "${repo}-snapshot-XNRePo/"
-//      def releaseRepo = "${repo}-release-0bMxsA/"
-//      name "AliYun"
-//      credentials {
-//        username '5f4ba059fa82bfeb805a1e09'
-//        password 'a3XkZLNApybs'
-//      }
-//      url = version.endsWith('SNAPSHOT') ? snapshotsRepo : releaseRepo
-//    }
-//  }
-//
-//}

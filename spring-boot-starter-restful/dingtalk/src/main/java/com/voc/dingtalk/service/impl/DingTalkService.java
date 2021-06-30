@@ -4,7 +4,7 @@ import com.voc.dingtalk.cache.DingTalkCache;
 import com.voc.dingtalk.properties.App;
 import com.voc.dingtalk.properties.DingTalkProperties;
 import com.voc.dingtalk.service.IDingTalkService;
-import com.voc.restful.core.response.BaseBizStatus;
+import com.voc.restful.core.response.impl.BaseBizStatus;
 import com.voc.restful.core.response.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;

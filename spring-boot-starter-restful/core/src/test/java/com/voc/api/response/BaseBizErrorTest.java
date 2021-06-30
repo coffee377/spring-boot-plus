@@ -1,6 +1,6 @@
 package com.voc.api.response;
 
-import com.voc.restful.core.response.BaseBizStatus;
+import com.voc.restful.core.response.impl.BaseBizStatus;
 import org.junit.jupiter.api.Test;
 
 /**

@@ -2,19 +2,24 @@ package com.voc.security.autoconfigure;
 
 import com.voc.api.utils.CommonUtil;
 import com.voc.security.SecurityProperties;
-import com.voc.security.authentication.RestfulLogoutSuccessHandler;
-import com.voc.security.configurer.RestfulLoginConfigurer;
-import com.voc.security.configurer.SwitchUserConfigurer;
+import com.voc.security.core.authentication.restful.RestfulLogoutSuccessHandler;
+import com.voc.security.oauth2.OAuth2Properties;
+import com.voc.security.oauth2.client.endpoint.DelegateOAuth2AccessTokenResponseClient;
+import com.voc.security.oauth2.client.web.InMemoryOAuth2AuthorizationRequestRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.userinfo.DelegatingOAuth2UserService;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -68,6 +73,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private JwtDecoder jwtDecoder;
 
+    @Resource
+    private OAuth2AuthorizationRequestResolver oauth2AuthorizationRequestResolver;
+
+    @Resource
+    private OAuth2Properties oauth2Properties;
+
+    @Resource
+    private DelegatingOAuth2UserService delegatingOAuth2UserService;
+
+    @Resource
+    private AuthenticationProvider authenticationProvider;
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -99,7 +116,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().headers().frameOptions().disable();
 
         /* org.springframework.security.web.context.SecurityContextPersistenceFilter */
-        http.securityContext();
+//        http.securityContext();
 
         /* 禁用 session */
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -117,7 +134,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                     authorize
                             .antMatchers(HttpMethod.OPTIONS).permitAll()
-                            .antMatchers("/token", "/token/verify").permitAll()
+                            .antMatchers("/oauth2/**").authenticated()
+                            .antMatchers("/.well-known/oauth-authorization-server").permitAll()
                             .antMatchers("/error", "/login/**", "/oauth2/**", "/callback").permitAll()
                             .anyRequest().authenticated();
                 }
@@ -148,96 +166,60 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         /* http.httpBasic();*/
 
-        /* 用户名密码 Restful 登陆处理 */
-        http.apply(new RestfulLoginConfigurer<>());
-
-        /* 启用切换用户过滤器 */
-        http.apply(new SwitchUserConfigurer<>());
+//        /* 用户名密码 Restful 登陆处理 */
+//        http.apply(new RestfulLoginConfigurer<>());
+////        http.apply(new DingTalkLoginConfigurer<>());
 //
-//        /* oauth2 登录 */
-//        http.oauth2Login(oauth2 -> {
-////            oauth2.loginPage()
-//            oauth2.authorizationEndpoint(authorization -> {
-////                authorization.authorizationRequestRepository(new AuthorizationRequestRepository<OAuth2AuthorizationRequest>() {
-////                    @Override
-////                    public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
-////                        return null;
-////                    }
-////
-////                    @Override
-////                    public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
-////
-////                    }
-////
-////                    @Override
-////                    public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request) {
-////                        return null;
-////                    }
-////                });
-////                authorization.
-////                authorization.authorizationRequestResolver(new OAuth2AuthorizationRequestResolver() {
-////                    @Override
-////                    public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
-////                        return null;
-////                    }
-////
-////                    @Override
-////                    public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String clientRegistrationId) {
-////                        return null;
-////                    }
-////                });
-////                authorization.baseUri("/oauth2/authorization/{id}");
-//            }).redirectionEndpoint(redirection -> {
-////                redirection.baseUri("/login/oauth2/code/*");
-//            }).tokenEndpoint(token -> {
-////                token.accessTokenResponseClient(new DefaultAuthorizationCodeTokenResponseClient());
-////                token.accessTokenResponseClient()
-//            }).userInfoEndpoint(userInfo -> {
-////                userInfo.customUserType()
-////                userInfo.userAuthoritiesMapper(new GrantedAuthoritiesMapper() {
-////                    @Override
-////                    public Collection<? extends GrantedAuthority> mapAuthorities(Collection<? extends GrantedAuthority> authorities) {
-////                        return null;
-////                    }
-////                });
-////                userInfo.
-////                userInfo.userService()
-//            });
-//            oauth2.successHandler(restfulAuthenticationSuccessHandler);
-//            oauth2.failureHandler(restfulAuthenticationFailureHandler);
-////                .loginPage("/login/oauth2")
-//        });
+//        /* 启用切换用户过滤器 */
+//        http.apply(new SwitchUserConfigurer<>());
 
-//        /* oauth2 客户端 */
+        /* oauth2 登录 */
+        http.oauth2Login(oauth2 -> {
+            oauth2.successHandler(restfulAuthenticationSuccessHandler);
+            oauth2.failureHandler(restfulAuthenticationFailureHandler);
+            oauth2.authorizationEndpoint(authorizationEndpoint -> {
+                authorizationEndpoint.baseUri(oauth2Properties.getAuthorizationRequestBaseUri());
+                // TODO: 2021/6/22 11:48 这里需要改成内存实现或 redis 实现，不然 restful oauth2 认证流程走不下去
+                authorizationEndpoint.authorizationRequestRepository(new InMemoryOAuth2AuthorizationRequestRepository());
+                authorizationEndpoint.authorizationRequestResolver(oauth2AuthorizationRequestResolver);
+            });
+            oauth2.tokenEndpoint(tokenEndpoint -> {
+                tokenEndpoint.accessTokenResponseClient(new DelegateOAuth2AccessTokenResponseClient());
+            });
+            oauth2.redirectionEndpoint(redirectionEndpoint -> {
+                redirectionEndpoint.baseUri(oauth2Properties.getAuthorizationResponseBaseUri());
+            });
+            oauth2.userInfoEndpoint(userInfoEndpoint -> {
+                userInfoEndpoint.userService(delegatingOAuth2UserService);
+            });
+        });
+
+        /* oauth2 客户端 */
 //        http.oauth2Client(client -> {
-////            client.authorizationCodeGrant().;
-////            client.authorizationCodeGrant().
+////            client.
+////            client.clientRegistrationRepository()
 //        });
-//
+
+        /* oauth2 认证服务 */
+//        OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer<>();
+//        http.apply(authorizationServerConfigurer);
+
         /* oauth2 资源认证服务 */
-//        http.oauth2ResourceServer().jwt();
         http.oauth2ResourceServer(resourceServer -> {
             resourceServer.bearerTokenResolver(bearerTokenResolver);
             resourceServer.authenticationEntryPoint(restfulAuthenticationEntryPoint);
             resourceServer.accessDeniedHandler(restfulAccessDeniedHandler);
             resourceServer.jwt(jwt -> {
-//                jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)
                 jwt.decoder(jwtDecoder);
-//                jwt.decoder(token -> {
-//                    Jwt.Builder builder = Jwt.withTokenValue(token);
-//                    builder.header("typ", "JWT");
-//                    builder.header("alg", "HS256");
-//                    builder.subject("admin");
-//                    builder.claim("scp", Arrays.asList("ROLE_admin", "SCOPE_message.red", "ping"));
-//                    Instant instant = Instant.now();
-//                    builder.issuedAt(instant);
-//                    builder.expiresAt(instant.plus(7200, ChronoUnit.SECONDS));
-//
-//                    return builder.build();
-//                });
             });
         });
 
     }
 
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider);
+//        super.configure(auth);
+    }
 }

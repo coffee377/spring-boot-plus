@@ -2,7 +2,7 @@ package com.voc.restful.core.persist.mongo.impl;
 
 import com.voc.restful.core.entity.IEntity;
 import com.voc.restful.core.persist.mongo.IMongoService;
-import com.voc.restful.core.response.BaseBizStatus;
+import com.voc.restful.core.response.impl.BaseBizStatus;
 import com.voc.restful.core.response.BizException;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

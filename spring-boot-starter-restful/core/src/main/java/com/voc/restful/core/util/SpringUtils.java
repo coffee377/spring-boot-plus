@@ -5,14 +5,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/09/24 19:44
  */
-@Component
 public class SpringUtils implements ApplicationContextAware, EnvironmentAware {
     private static ApplicationContext applicationContext = null;
     private static Environment environment = null;
@@ -73,6 +71,20 @@ public class SpringUtils implements ApplicationContextAware, EnvironmentAware {
         return getApplicationContext().getBean(name, clazz);
     }
 
+    /**
+     * 如果只有一个该类型的实列，则返回该实列，否则为空。
+     * @param type Class<T>
+     * @param <T> 泛型
+     * @return a bean of the requested class if there's just a single registered component, null otherwise.
+     */
+    public static <T> T getBeanOrNull(Class<T> type) {
+        String[] beanNames = applicationContext.getBeanNamesForType(type);
+        if (beanNames.length != 1) {
+            return null;
+        }
+
+        return applicationContext.getBean(beanNames[0], type);
+    }
 
     /**
      * Return the property value associated with the given key,

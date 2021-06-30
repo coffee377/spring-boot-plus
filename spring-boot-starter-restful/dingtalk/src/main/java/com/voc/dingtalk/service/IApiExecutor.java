@@ -5,7 +5,7 @@ import com.taobao.api.TaobaoRequest;
 import com.taobao.api.TaobaoResponse;
 import com.voc.dingtalk.UrlConst;
 import com.voc.dingtalk.exception.DingTalkApiException;
-import com.voc.dingtalk.util.ClientUtil;
+import com.voc.dingtalk.util.ClientUtils;
 
 import java.util.function.Consumer;
 
@@ -35,7 +35,7 @@ public interface IApiExecutor {
             throws DingTalkApiException {
         T response;
         try {
-            response = ClientUtil.of(urlConst).execute(request, accessKey, accessSecret, suiteTicket, corpId);
+            response = ClientUtils.of(urlConst).execute(request, accessKey, accessSecret, suiteTicket, corpId);
             if (Long.parseLong(response.getErrorCode()) == 0L) {
                 /* 正常响应后再消费数据 */
                 consumer.accept(response);
@@ -109,7 +109,7 @@ public interface IApiExecutor {
             throws DingTalkApiException {
         T response;
         try {
-            response = ClientUtil.of(urlConst).execute(request, session);
+            response = ClientUtils.of(urlConst).execute(request, session);
             if (Long.parseLong(response.getErrorCode()) == 0L) {
                 /* 正常响应后再消费数据 */
                 consumer.accept(response);

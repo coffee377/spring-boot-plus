@@ -72,6 +72,16 @@ public class JwtConfiguration {
         return new ImmutableJWKSet<>(jwkSet);
     }
 
+//    @Bean
+//    @ConditionalOnMissingBean
+//    public JWKSource<SecurityContext> jwkSource() {
+//        RSAKey rsaKey = Jwks.generateRsa();
+//        ECKey ecKey = Jwks.generateEc();
+//        OctetSequenceKey octetSequenceKey = Jwks.generateSecret();
+//        JWKSet jwkSet = new JWKSet(Arrays.asList(rsaKey, ecKey, octetSequenceKey));
+//        return new ImmutableJWKSet<>(jwkSet);
+//    }
+
     /**
      * 用JWK来生成JWT的工具，底层使用了Nimbus库，这个库是Spring Security OAuth2 Client 默认引用的库
      *

@@ -1,6 +1,6 @@
 package com.voc.dingtalk.controller;
 
-import com.voc.dingtalk.service.IUserService;
+import com.voc.dingtalk.service.IDingTalkUserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 public class UserController {
 
     @Resource
-    private IUserService userService;
+    private IDingTalkUserService userService;
 
     @GetMapping("/{appName}/scan")
     public Object login(@PathVariable(name = "appName") String appName,

@@ -13,6 +13,7 @@ dependencies {
   compileOnly 'org.springframework.boot:spring-boot-starter-data-redis'
   compileOnly 'org.springframework.boot:spring-boot-starter-data-mongodb'
   compileOnly 'com.google.code.gson:gson:2.8.6'
+  compileOnly "org.springframework.boot:spring-boot-starter-security"
 }
 
 //publishing {

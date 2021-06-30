@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -66,7 +67,7 @@ public class JwtTokenGenerator implements TokenGenerator, InitializingBean {
         JwtClaimsSet sharedClaims = JwtClaimsSet.builder()
                 .issuer(issuer)
                 .subject(subject)
-                .audience(Collections.singletonList(username))
+//                .audience(Collections.singletonList(username))
                 .claim("scope", scopes)
                 .claim("iat-milliseconds", issuedAt.toEpochMilli())
                 .issuedAt(issuedAt)
@@ -85,15 +86,40 @@ public class JwtTokenGenerator implements TokenGenerator, InitializingBean {
                         .expiresAt(refreshTokenExpiresAt)
                         .build());
 
-        return OAuth2AccessTokenResponse.withToken(accessToken.getTokenValue())
+
+        OAuth2AccessTokenResponse.Builder builder = OAuth2AccessTokenResponse.withToken(accessToken.getTokenValue())
                 .tokenType(OAuth2AccessToken.TokenType.BEARER)
                 .expiresIn(accessTokenExpiresIn.getSeconds())
                 .scopes(scopes)
-                .refreshToken(refreshToken.getTokenValue()).build();
+                .refreshToken(refreshToken.getTokenValue());
+
+        syncIssuedAt(builder, issuedAt);
+
+        return builder.build();
+    }
+
+    /**
+     * 同步 TOKEN 签发时间
+     *
+     * @param builder  OAuth2AccessTokenResponse.Builder
+     * @param issuedAt Instant
+     */
+    private void syncIssuedAt(OAuth2AccessTokenResponse.Builder builder, Instant issuedAt) {
+        /* 由于 OAuth2AccessTokenResponse 类是 final 修饰的，且 内部类 Builder 未提供 issuedAt 的赋值方法，这里通过反射赋值*/
+        try {
+            Class clazz = builder.getClass();
+            Field field = clazz.getDeclaredField("issuedAt");
+            field.setAccessible(true);
+            field.set(builder, issuedAt);
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
     public TokenResult create(Instant issuedAt, UserDetails userDetails, boolean onlyAccessToken) {
+        if (userDetails == null) {
+            return null;
+        }
         OAuth2AccessTokenResponse accessTokenResponse = tokenResponse(issuedAt, userDetails);
         String username = userDetails.getUsername();
         String accessToken = tokenStorage.createAccessToken(username, accessTokenResponse);

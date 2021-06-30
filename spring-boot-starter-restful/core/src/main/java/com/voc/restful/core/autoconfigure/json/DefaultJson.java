@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.voc.restful.core.autoconfigure.json.exception.JsonDeserializeException;
 import com.voc.restful.core.autoconfigure.json.exception.JsonSerializeException;
-import com.voc.restful.core.response.BaseBizStatus;
+import com.voc.restful.core.response.impl.BaseBizStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Wu Yujie
@@ -31,8 +34,6 @@ public class DefaultJson implements IJson {
             case GSON:
                 Gson gson = applicationContext.getBean(Gson.class);
                 return gson.toJson(obj);
-//            case FASTJSON:
-//            case JSONB:
             case JACKSON:
             default:
                 ObjectMapper mapper = applicationContext.getBean(ObjectMapper.class);
@@ -50,19 +51,26 @@ public class DefaultJson implements IJson {
             case GSON:
                 Gson gson = applicationContext.getBean(Gson.class);
                 return gson.fromJson(jsonSting, targetType);
-//            case FASTJSON:
-//            case JSONB:
             case JACKSON:
             default:
                 ObjectMapper mapper = applicationContext.getBean(ObjectMapper.class);
                 try {
                     return mapper.readValue(jsonSting, targetType);
-                } catch (JsonProcessingException e) {
+                } catch (IOException e) {
                     throw new JsonDeserializeException(BaseBizStatus.JSON_DESERIALIZE_EXCEPTION);
                 }
         }
     }
 
+    @Override
+    public <T> T deserializer(InputStream inputStream, Class<T> targetType) throws JsonDeserializeException {
+        ObjectMapper mapper = applicationContext.getBean(ObjectMapper.class);
+        try {
+            return mapper.readValue(inputStream, targetType);
+        } catch (IOException e) {
+            throw new JsonDeserializeException();
+        }
+    }
 
     protected JsonType getJsonType() {
         return environment.getProperty(JsonConstants.API_JSON_TYPE_PREFIX, JsonType.class, JsonType.JACKSON);

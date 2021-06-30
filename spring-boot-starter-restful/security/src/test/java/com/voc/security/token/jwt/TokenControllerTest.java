@@ -1,7 +1,7 @@
 package com.voc.security.token.jwt;
 
-import com.voc.api.controller.Certification;
-import com.voc.restful.core.response.BaseBizStatus;
+import com.voc.restful.core.entity.impl.Certification;
+import com.voc.restful.core.response.impl.BaseBizStatus;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;

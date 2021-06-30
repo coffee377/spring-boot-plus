@@ -31,7 +31,6 @@ public class TokenController {
     @Resource
     private TokenStorage tokenStorage;
 
-
     @GetMapping("/verify")
     @ResponseResult(false)
     public String verifyToken() {

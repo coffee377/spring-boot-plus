@@ -42,4 +42,13 @@ public interface IBizStatus {
      */
     HttpStatus getStatus();
 
+    /**
+     * Http 状态码值
+     *
+     * @return int
+     */
+    default int getHttpStatus() {
+        return this.getStatus().value();
+    }
+
 }

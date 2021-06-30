@@ -3,6 +3,8 @@ package com.voc.restful.core.autoconfigure.json;
 import com.voc.restful.core.autoconfigure.json.exception.JsonDeserializeException;
 import com.voc.restful.core.autoconfigure.json.exception.JsonSerializeException;
 
+import java.io.InputStream;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -30,5 +32,16 @@ public interface IJson {
      * @throws JsonDeserializeException 反序列化异常
      */
     <T> T deserializer(String jsonSting, Class<T> targetType) throws JsonDeserializeException;
+
+    /**
+     * 反序列化
+     *
+     * @param inputStream 输入流
+     * @param targetType  目标类型
+     * @param <T>         泛型
+     * @return T
+     * @throws JsonDeserializeException 反序列化异常
+     */
+    <T> T deserializer(InputStream inputStream, Class<T> targetType) throws JsonDeserializeException;
 
 }

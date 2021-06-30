@@ -24,9 +24,5 @@ public class JwtProperties {
      */
     private String issuer = "https://tvoc.site";
 
-    /**
-     * jwt subject ，默认 all
-     */
-    private String subject = "all";
 
 }
