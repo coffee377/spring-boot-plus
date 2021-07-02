@@ -19,30 +19,4 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "spring.dingtalk", name = "enable", havingValue = "true", matchIfMissing = true)
 public class DingTalkAutoConfiguration {
 
-//    @Configuration
-//    @ComponentScan(basePackages = "com.voc.dingtalk.service", includeFilters = {@ComponentScan.Filter(classes = Service.class)})
-//    static class DingTalkServiceConfiguration {
-//
-//    }
-//
-//    @Configuration
-//    @ComponentScan(basePackages = "com.voc.dingtalk")
-//    static class DingTalkControllerConfiguration {
-//
-//    }
-
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.addAllowedOrigin("*");
-//        config.setAllowCredentials(false);
-//        config.addAllowedMethod("*");
-//        config.addAllowedHeader("*");
-//        config.addExposedHeader("*");
-//
-//        UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
-//        configSource.registerCorsConfiguration("/**", config);
-//
-//        return new CorsFilter(configSource);
-//    }
 }

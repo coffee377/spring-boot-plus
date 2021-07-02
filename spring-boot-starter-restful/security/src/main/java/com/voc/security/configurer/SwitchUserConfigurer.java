@@ -28,10 +28,10 @@ public class SwitchUserConfigurer<H extends HttpSecurityBuilder<H>> extends Abst
 
     @Override
     public void init(H http) throws Exception {
-        ApplicationContext applicationContext = http.getSharedObject(ApplicationContext.class);
-        userDetailsService = applicationContext.getBean(UserDetailsService.class);
-        successHandler = applicationContext.getBean(RestfulAuthenticationSuccessHandler.class);
-        failureHandler = applicationContext.getBean(RestfulAuthenticationFailureHandler.class);
+        ApplicationContext context = http.getSharedObject(ApplicationContext.class);
+        userDetailsService = context.getBean(UserDetailsService.class);
+        successHandler = context.getBean(RestfulAuthenticationSuccessHandler.class);
+        failureHandler = context.getBean(RestfulAuthenticationFailureHandler.class);
     }
 
     @Override

@@ -24,7 +24,6 @@ public class SecurityImport implements ImportSelector {
         return (Class<?>[]) new Class[]{
                 AnnotationListener.class,
                 TokenController.class,
-                DingTalkSecurityConfig.class
         };
     }
 }

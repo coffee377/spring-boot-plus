@@ -39,6 +39,7 @@ public class QRAuthenticationUserDetailsService implements AuthenticationUserDet
         }
         return new DefaultUserDetails(user);
     }
+
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(thirdAppService,"thirdAppService must not be null");

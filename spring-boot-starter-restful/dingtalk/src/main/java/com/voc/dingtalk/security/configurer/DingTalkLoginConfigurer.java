@@ -41,8 +41,6 @@ public class DingTalkLoginConfigurer<H extends HttpSecurityBuilder<H>> extends A
         authFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         authFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
 
-//        IDingTalkUserService dingTalkUserService = applicationContext.getBean(IDingTalkUserService.class);
-//        authFilter.setThirdAppService(dingTalkUserService);
         authFilter = postProcess(authFilter);
 
         http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);

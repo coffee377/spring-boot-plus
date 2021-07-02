@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -134,7 +133,6 @@ public class DingTalkUserService implements IDingTalkUserService {
     public ThirdApp getUserInfoByClientIdAndTmpAuthCode(String clientId, String code) throws AuthenticationException {
         OapiSnsGetuserinfoBycodeResponse.UserInfo info;
         try {
-            log.warn("{},{}", "获取用户基础信息", Instant.now().toEpochMilli());
             info = this.getUserOpenInfoByClientIdAndTmpAuthCode(clientId, code);
         } catch (DingTalkApiException e) {
             throw new AuthorizationCodeException(e.getMessage());
