@@ -1,26 +1,28 @@
-package com.voc.restful.core.service;
+package com.voc.system.service;
 
-import com.voc.restful.core.entity.IUser;
+import com.voc.restful.core.persist.mongo.IMongoService;
+import com.voc.restful.core.service.AuthService;
 import com.voc.restful.core.third.ThirdApp;
+import com.voc.system.dao.impl.UserDao;
+import com.voc.system.entity.impl.User;
 
-import java.io.Serializable;
 import java.util.Set;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
- * @time 2021/04/26 14:44
+ * @time 2021/07/06 16:50
  */
-public interface UserService<ID extends Serializable> {
-    String BEAN_NAME = "com.voc.restful.core.service.UserService";
+public interface IUserService extends AuthService<String>, IMongoService<User, UserDao> {
 
     /**
      * 根据用户名获取用户
      *
      * @param username 用户名/邮箱/手机号
-     * @return IUser<ID>
+     * @return User
      */
-    IUser<ID> getUserByUsername(String username);
+    @Override
+    User getUserByUsername(String username);
 
     /**
      * 获取与第三方应用关联的用户
@@ -28,7 +30,8 @@ public interface UserService<ID extends Serializable> {
      * @param app 第三方应用信息
      * @return IUser<ID>
      */
-    IUser<ID> getUserByThirdApp(ThirdApp app);
+    @Override
+    User getUserByThirdApp(ThirdApp app);
 
     /**
      * 根据用户名获取用户拥有的权限信息（包含角色信息等）
@@ -36,9 +39,10 @@ public interface UserService<ID extends Serializable> {
      * @param uid 用户唯一标识
      * @return 权限集合
      */
-    Set<String> getAuthorities(ID uid);
+    @Override
+    Set<String> getAuthorities(String uid);
 
-//    /**
+    //    /**
 //     * 获取用户拥有的菜单
 //     *
 //     * @return Collection<Menu>
@@ -96,5 +100,4 @@ public interface UserService<ID extends Serializable> {
 //     * @param roles 角色集合
 //     */
 //    void remove(IRole... roles);
-
 }

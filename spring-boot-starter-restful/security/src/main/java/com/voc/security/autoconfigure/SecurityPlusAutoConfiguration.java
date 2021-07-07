@@ -4,6 +4,8 @@ import com.voc.security.SecurityProperties;
 import com.voc.security.configurer.RestfulLoginConfigurer;
 import com.voc.security.configurer.SwitchUserConfigurer;
 import com.voc.security.token.TokenConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -15,8 +17,9 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @EnableConfigurationProperties({SecurityProperties.class})
+@AutoConfigureAfter(SecurityAutoConfiguration.class)
 @Import({SecurityImport.class, WebSecurityConfig.class, RestfulLoginConfigurer.class,
         SwitchUserConfigurer.class, BeanConfig.class,
         TokenConfiguration.class})
-public class SecurityAutoConfiguration {
+public class SecurityPlusAutoConfiguration {
 }

@@ -1,7 +1,7 @@
 package com.voc.security.core.authentication.qrcode;
 
 import com.voc.restful.core.entity.IUser;
-import com.voc.restful.core.service.UserService;
+import com.voc.restful.core.service.AuthService;
 import com.voc.restful.core.third.ThirdApp;
 import com.voc.restful.core.third.ThirdAppService;
 import com.voc.restful.core.util.SpringUtils;
@@ -30,7 +30,7 @@ public class QRAuthenticationUserDetailsService implements AuthenticationUserDet
     @Override
     public UserDetails loadUserDetails(QRAuthenticationToken token) throws UsernameNotFoundException {
         ThirdApp app = thirdAppService.getUserInfoByClientIdAndTmpAuthCode(token.getClientId(), token.getCode());
-        UserService userService = SpringUtils.getBean(UserService.BEAN_NAME, UserService.class);
+        AuthService userService = SpringUtils.getBean(AuthService.class);
         IUser user = userService.getUserByThirdApp(app);
         if (user == null) {
             String message = String.format("the current app %s is not bound to the system user with unionid=%s and " +
@@ -42,7 +42,7 @@ public class QRAuthenticationUserDetailsService implements AuthenticationUserDet
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Assert.notNull(thirdAppService,"thirdAppService must not be null");
+        Assert.notNull(thirdAppService, "thirdAppService must not be null");
     }
 
 }

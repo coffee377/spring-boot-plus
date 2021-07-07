@@ -68,7 +68,7 @@ subprojects {
     annotationProcessor "org.projectlombok:lombok:1.18.4"
     testAnnotationProcessor "org.projectlombok:lombok:1.18.4"
 //    implementation group: 'org.springframework.security.experimental', name: 'spring-security-oauth2-authorization-server', version: '0.1.1'
-
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
   }
 
   configurations {

@@ -13,6 +13,7 @@ dependencies {
 //  compileOnly 'com.google.code.gson:gson:2.8.6'
 //  implementation 'com.github.ben-manes.caffeine:caffeine'
   implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+  testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
 //devtools {

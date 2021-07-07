@@ -1,15 +1,17 @@
 package com.voc.security.autoconfigure;
 
-import com.voc.restful.core.service.UserService;
-import com.voc.restful.core.service.impl.DefaultUserService;
-import com.voc.security.core.authentication.*;
+import com.voc.restful.core.service.AuthService;
+import com.voc.restful.core.service.impl.DefaultAuthService;
+import com.voc.security.core.authentication.DefaultUserDetailService;
 import com.voc.security.core.authentication.restful.*;
 import com.voc.security.oauth2.OAuth2Properties;
 import com.voc.security.oauth2.client.web.DelegateOAuth2AuthorizationRequestResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -38,7 +40,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,17 +67,18 @@ public class BeanConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean(UserService.BEAN_NAME)
+    @Bean
     @ConditionalOnClass(SecurityAutoConfiguration.class)
     @ConditionalOnMissingBean
-    UserService userService() {
-        return new DefaultUserService();
+    AuthService defaultAuthService() {
+        return new DefaultAuthService();
     }
 
     @Bean
     @ConditionalOnMissingBean(UserDetailsService.class)
-    UserDetailsService userDetailsService(UserService<Serializable> userService) {
-        return new DefaultUserDetailService(userService);
+    UserDetailsService userDetailsService(ApplicationContext context) {
+        AuthService authService = context.getBean(AuthService.class);
+        return new DefaultUserDetailService(authService);
     }
 
     /**
@@ -130,7 +132,7 @@ public class BeanConfig {
      * @return LogoutSuccessHandler
      */
     @Bean
-    @ConditionalOnMissingBean(LogoutSuccessHandler.class)
+    @ConditionalOnMissingBean(RestfulLogoutSuccessHandler.class)
     LogoutSuccessHandler restfulLogoutSuccessHandler() {
         return new RestfulLogoutSuccessHandler();
     }

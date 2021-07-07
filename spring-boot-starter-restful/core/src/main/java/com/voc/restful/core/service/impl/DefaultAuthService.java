@@ -2,7 +2,7 @@ package com.voc.restful.core.service.impl;
 
 import com.voc.restful.core.entity.IUser;
 import com.voc.restful.core.entity.impl.BaseUser;
-import com.voc.restful.core.service.UserService;
+import com.voc.restful.core.service.AuthService;
 import com.voc.restful.core.third.ThirdApp;
 
 import java.util.*;
@@ -12,13 +12,13 @@ import java.util.*;
  * @email coffee377@dingtalk.com
  * @time 2021/06/20 11:35
  */
-public class DefaultUserService implements UserService<String> {
+public class DefaultAuthService implements AuthService<String> {
 
     private final Map<String, IUser<String>> users = new HashMap<>(3);
     private final Map<String, Set<String>> authorities = new HashMap<>(3);
     private final Map<ThirdApp, String> apps = new HashMap<>(1);
 
-    public DefaultUserService() {
+    public DefaultAuthService() {
         /* 初始用户 */
         users.put("admin", new BaseUser<>("1", "admin", "{noop}123456"));
         users.put("demo", new BaseUser<>("2", "demo", "{noop}123456"));

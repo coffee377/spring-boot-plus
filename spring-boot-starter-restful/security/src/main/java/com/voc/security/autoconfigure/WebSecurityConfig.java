@@ -8,6 +8,7 @@ import com.voc.security.oauth2.client.endpoint.DelegateOAuth2AccessTokenResponse
 import com.voc.security.oauth2.client.web.InMemoryOAuth2AuthorizationRequestRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
  * @email coffee377@dingtalk.com
  * @time 2018/03/14 10:07
  */
+@Order(1)
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -110,13 +112,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }).collect(Collectors.toList()).toArray(new String[]{});
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable().headers().frameOptions().disable();
 
         /* org.springframework.security.web.context.SecurityContextPersistenceFilter */
-//        http.securityContext();
+//        http.securityContext().securityContextRepository(new TokenSecurityContextRepository());
+
+//        BearerTokenAuthenticationFilter tokenAuthenticationFilter = new BearerTokenAuthenticationFilter(authenticationManagerBean());
+//        tokenAuthenticationFilter.setBearerTokenResolver(bearerTokenResolver);
+//        tokenAuthenticationFilter.setAuthenticationEntryPoint(restfulAuthenticationEntryPoint);
+//        tokenAuthenticationFilter.setAuthenticationFailureHandler(restfulAuthenticationFailureHandler);
+//        http.addFilterBefore(tokenAuthenticationFilter, LogoutFilter.class);
 
         /* 禁用 session */
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -134,9 +143,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                     authorize
                             .antMatchers(HttpMethod.OPTIONS).permitAll()
-                            .antMatchers("/oauth2/**").authenticated()
+                            .antMatchers("/oauth2/**","/logout").authenticated()
                             .antMatchers("/.well-known/oauth-authorization-server").permitAll()
-                            .antMatchers("/error", "/login/**", "/oauth2/**", "/callback").permitAll()
+                            .antMatchers("/error").permitAll()
                             .anyRequest().authenticated();
                 }
         );
@@ -154,13 +163,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             form.disable();
         });
 
+//        http.addFilterAt()
         /* 注销处理 */
-        http.logout(httpSecurityLogoutConfigurer -> {
+        http.logout(logoutConfigurer -> {
             /*httpSecurityLogoutConfigurer.logoutUrl("/logout");*/
-            httpSecurityLogoutConfigurer.logoutSuccessHandler(restfulLogoutSuccessHandler);
+            logoutConfigurer.permitAll();
+//            logoutConfigurer.
+//            logoutConfigurer.permitAll(false);
+//            logoutConfigurer.addLogoutHandler(restfulLogoutHandler);
+//            logoutConfigurer.clearAuthentication(false);
+            logoutConfigurer.logoutSuccessHandler(restfulLogoutSuccessHandler);
             String logoutProcessUrl = securityProps.getLogoutProcessUrl();
             if (CommonUtil.isCustomProcessUrl(logoutProcessUrl)) {
-                httpSecurityLogoutConfigurer.logoutUrl(logoutProcessUrl);
+                logoutConfigurer.logoutUrl(logoutProcessUrl);
             }
         });
 
@@ -204,7 +219,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer<>();
 //        http.apply(authorizationServerConfigurer);
 
-        /* oauth2 资源认证服务 */
+        /* oauth2 资源服务 */
         http.oauth2ResourceServer(resourceServer -> {
             resourceServer.bearerTokenResolver(bearerTokenResolver);
             resourceServer.authenticationEntryPoint(restfulAuthenticationEntryPoint);

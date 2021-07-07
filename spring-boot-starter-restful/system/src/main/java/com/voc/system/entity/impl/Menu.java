@@ -1,5 +1,7 @@
 package com.voc.system.entity.impl;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.ITreeEntity;
 import lombok.Data;
@@ -19,6 +21,8 @@ public class Menu extends BaseEntity<String> implements ITreeEntity<String> {
     /**
      * 父菜单ID
      */
+    @JsonAlias({"parentId", "pid"})
+    @JsonProperty("pid")
     private String parentId;
 
     /**

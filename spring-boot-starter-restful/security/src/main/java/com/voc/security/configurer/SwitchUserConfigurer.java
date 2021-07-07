@@ -6,7 +6,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
@@ -40,7 +39,7 @@ public class SwitchUserConfigurer<H extends HttpSecurityBuilder<H>> extends Abst
         switchUserFilter.setSuccessHandler(successHandler);
         switchUserFilter.setFailureHandler(failureHandler);
         switchUserFilter = postProcess(switchUserFilter);
-        http.addFilterAfter(switchUserFilter, FilterSecurityInterceptor.class);
+        http.addFilter(switchUserFilter);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.voc.security.core.authentication;
 
 import com.voc.restful.core.entity.IUser;
-import com.voc.restful.core.service.UserService;
+import com.voc.restful.core.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,15 +22,15 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DefaultUserDetailService implements UserDetailsService {
 
-    private final UserService<Serializable> userService;
+    private final AuthService<Serializable> authService;
 
-    public DefaultUserDetailService(UserService<Serializable> userService) {
-        this.userService = userService;
+    public DefaultUserDetailService(AuthService<Serializable> userService) {
+        this.authService = userService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        IUser<Serializable> user = userService.getUserByUsername(username);
+        IUser<Serializable> user = authService.getUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
@@ -45,7 +45,7 @@ public class DefaultUserDetailService implements UserDetailsService {
      * @return Collection<GrantedAuthority>
      */
     private Collection<GrantedAuthority> getAuthorities(Serializable uid) {
-        Set<String> authorities = userService.getAuthorities(uid);
+        Set<String> authorities = authService.getAuthorities(uid);
         return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
     }
 

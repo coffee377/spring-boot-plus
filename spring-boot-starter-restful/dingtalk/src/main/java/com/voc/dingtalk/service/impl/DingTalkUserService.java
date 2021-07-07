@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DingTalkUserService implements IDingTalkUserService {
 
     @Resource
-    private IDingTalkCredentialsService credentialsService;
+    private IDingTalkCredentialsService dingTalkCredentialsService;
 
     @Resource
     private IDingTalkService dingTalkService;
@@ -106,7 +106,7 @@ public class DingTalkUserService implements IDingTalkUserService {
 
     @Override
     public Map<String, Object> getUserDetailInfo(String appName, String tempAuthCode) {
-        String accessToken = credentialsService.getAccessTokenByAppName(appName);
+        String accessToken = dingTalkCredentialsService.getAccessTokenByAppName(appName);
         String unionid = this.getUnionid(appName, tempAuthCode);
         String uid = this.getUserIdByUnionId(accessToken, unionid);
         OapiV2UserGetResponse.UserGetResponse userInfo = this.getUserDetailInfo(accessToken, uid, "");
@@ -117,7 +117,7 @@ public class DingTalkUserService implements IDingTalkUserService {
 
     @Override
     public Object getUserDetailInfos(String accessKey, String accessSecret, String tempAuthCode) {
-        String accessToken = credentialsService.getAccessToken(accessKey, accessSecret);
+        String accessToken = dingTalkCredentialsService.getAccessToken(accessKey, accessSecret);
         String unionid = this.getUnionid(accessKey, accessSecret, tempAuthCode);
         String uid = this.getUserIdByUnionId(accessToken, unionid);
         OapiV2UserGetResponse.UserGetResponse userInfo = this.getUserDetailInfo(accessToken, uid, "");
@@ -138,7 +138,7 @@ public class DingTalkUserService implements IDingTalkUserService {
             throw new AuthorizationCodeException(e.getMessage());
         }
         String unionid = info.getUnionid();
-        String accessToken = credentialsService.getAccessToken(clientId, null);
+        String accessToken = dingTalkCredentialsService.getAccessToken(clientId, null);
         String uid = this.getUserIdByUnionId(accessToken, unionid);
         OapiV2UserGetResponse.UserGetResponse userDetailInfo = this.getUserDetailInfo(accessToken, uid, "");
         ThirdApp thirdApp = ThirdApp.of(getAppInfo(), unionid, info.getOpenid());

@@ -86,6 +86,15 @@ public class SpringUtils implements ApplicationContextAware, EnvironmentAware {
         return applicationContext.getBean(beanNames[0], type);
     }
 
+    public static <T> T getFirstBeanOrNull(Class<T> type) {
+        String[] beanNames = applicationContext.getBeanNamesForType(type);
+        if (beanNames.length == 0) {
+            return null;
+        }
+
+        return applicationContext.getBean(beanNames[0], type);
+    }
+
     /**
      * Return the property value associated with the given key,
      * or {@code null} if the key cannot be resolved.

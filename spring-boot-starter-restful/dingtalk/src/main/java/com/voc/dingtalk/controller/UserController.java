@@ -15,13 +15,13 @@ import javax.annotation.Resource;
 public class UserController {
 
     @Resource
-    private IDingTalkUserService userService;
+    private IDingTalkUserService dingTalkUserService;
 
     @GetMapping("/{appName}/scan")
     public Object login(@PathVariable(name = "appName") String appName,
                         @RequestParam("code") String code,
                         @RequestParam(required = false) String state) {
-        Object userInfo = userService.getUserDetailInfo(appName, code);
+        Object userInfo = dingTalkUserService.getUserDetailInfo(appName, code);
         return userInfo;
     }
 }

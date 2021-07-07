@@ -44,5 +44,6 @@ public class DingTalkLoginConfigurer<H extends HttpSecurityBuilder<H>> extends A
         authFilter = postProcess(authFilter);
 
         http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+
     }
 }
