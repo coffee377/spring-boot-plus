@@ -1,12 +1,16 @@
 package com.voc.system.controller;
 
+import com.voc.system.entity.impl.Menu;
 import com.voc.system.entity.impl.User;
+import com.voc.system.service.IMenuService;
 import com.voc.system.service.IUserService;
+import com.voc.system.vo.UserVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Wu Yujie
@@ -20,6 +24,9 @@ public class UserController {
     @Resource
     private IUserService userService;
 
+    @Resource
+    private IMenuService menuService;
+
     @PostMapping
     public String add(@RequestBody User user) {
         return userService.save(user);
@@ -32,9 +39,16 @@ public class UserController {
      */
     @GetMapping("/info")
     @PreAuthorize("isAuthenticated()")
-    public User userInfo(Authentication authentication) {
+    public UserVO userInfo(Authentication authentication) {
         String name = authentication.getName();
-        return userService.getUserByUsername(name);
+        User user = userService.getUserByUsername(name);
+        UserVO userVO = new UserVO();
+        userVO.setUsername(user.getUsername());
+        userVO.setRealName(user.getRealName());
+        userVO.setAvatar(user.getAvatar());
+        List<Menu> menus = menuService.findAll();
+        userVO.setMenus(menus);
+        return userVO;
     }
 
 //    @DeleteMapping("{uid}")

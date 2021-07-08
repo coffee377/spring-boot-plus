@@ -5,6 +5,7 @@ import com.voc.restful.core.service.AuthService;
 import com.voc.restful.core.third.ThirdApp;
 import com.voc.system.dao.impl.UserDao;
 import com.voc.system.entity.impl.User;
+import com.voc.system.vo.UserVO;
 
 import java.util.Set;
 
@@ -14,6 +15,24 @@ import java.util.Set;
  * @time 2021/07/06 16:50
  */
 public interface IUserService extends AuthService<String>, IMongoService<User, UserDao> {
+
+    /**
+     * 转换密码
+     *
+     * @param user      User
+     * @param plaintext 是否明文
+     * @return User
+     */
+    User convertPassword(User user, boolean plaintext);
+
+    /**
+     * 保存用户
+     *
+     * @param user      User
+     * @param plaintext boolean
+     * @return User
+     */
+    String save(User user, boolean plaintext);
 
     /**
      * 根据用户名获取用户
@@ -42,12 +61,19 @@ public interface IUserService extends AuthService<String>, IMongoService<User, U
     @Override
     Set<String> getAuthorities(String uid);
 
-    //    /**
+//        /**
 //     * 获取用户拥有的菜单
 //     *
 //     * @return Collection<Menu>
 //     */
 //    Collection<Menu> getMenus();
+
+    /**
+     * 获取当前用户信息
+     *
+     * @return UserVO
+     */
+    UserVO getUserInfo();
 
 //    /**
 //     * 添加用户

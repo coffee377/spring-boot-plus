@@ -15,6 +15,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "sys_user")
 public class User extends BaseUser<String> {
     /**
+     * 工号
+     */
+    private String jobNumber;
+
+    /**
      * 手机号
      */
     private String mobile;

@@ -33,6 +33,7 @@ public enum BaseBizStatus implements IBizStatus {
     BAD_CREDENTIALS("密钥凭证错误", HttpStatus.UNAUTHORIZED),
     INVALID_USERNAME_OR_PASSWORD("无效的用户名或密码", HttpStatus.UNAUTHORIZED),
     UNBOUND_USER("未绑定系统用户", HttpStatus.NOT_FOUND),
+    ALREADY_BOUND_USER("已绑定其他系统用户，请解绑后重新绑定", HttpStatus.BAD_REQUEST),
     INVALID_BEARER_TOKEN("无效的访问令牌", HttpStatus.UNAUTHORIZED),
 
     FORBIDDEN("没有访问权限", HttpStatus.FORBIDDEN),

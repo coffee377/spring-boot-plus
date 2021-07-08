@@ -3,7 +3,7 @@ dependencies {
   compileOnly "org.springframework.boot:spring-boot-starter-security"
   compileOnly 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-  implementation 'com.alibaba:sdk:20210421'
+  api 'com.alibaba:sdk:20210421'
 }
 
 dependencyManagement {

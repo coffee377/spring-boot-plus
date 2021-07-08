@@ -95,7 +95,7 @@ public class DingTalkUserService implements IDingTalkUserService {
     public OapiV2UserGetResponse.UserGetResponse getUserDetailInfo(String accessToken, String userid, String language) {
         OapiV2UserGetRequest reqGetRequest = new OapiV2UserGetRequest();
         reqGetRequest.setUserid(userid);
-        if (StringUtils.hasText(language)) {
+        if (!StringUtils.hasText(language)) {
             reqGetRequest.setLanguage("zh_CN");
         }
         AtomicReference<OapiV2UserGetResponse.UserGetResponse> reference = new AtomicReference<>();

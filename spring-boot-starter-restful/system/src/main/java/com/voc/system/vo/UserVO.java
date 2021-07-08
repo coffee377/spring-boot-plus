@@ -13,11 +13,20 @@ import java.util.List;
 @Data
 //@EqualsAndHashCode(callSuper = true)
 public class UserVO {
+    /**
+     * 用户名
+     */
     private String username;
-    private String realName;
-    private String avatar;
 
-//    private List<String> auty;
+    /**
+     * 真实姓名
+     */
+    private String realName;
+
+    /**
+     * 头像
+     */
+    private String avatar;
 
     private List<Menu> menus;
 }
