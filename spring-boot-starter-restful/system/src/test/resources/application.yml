@@ -7,6 +7,25 @@ spring:
       username: backend
       password: backend
       authentication-database: admin
+  security:
+    oauth2:
+      client:
+        registration:
+          dingtalk:
+            provider: dingtalk
+            client-id: dingopfniakkw72klkjv
+            client-secret: 6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR
+            authorization-grant-type: authorization_code
+            redirect-uri: http://127.0.0.1:8080/login/oauth2/code/dingtalk
+            scope: snsapi_login
+            client-name: DingTalk
+        provider:
+          dingtalk:
+            authorization-uri: https://oapi.dingtalk.com/connect/qrconnect
+            token-uri: no_need_token
+            user-info-uri: https://oapi.dingtalk.com/sns/getuserinfo_bycode
+            user-name-attribute: unionid
+            user-info-authentication-method: form
 logging:
   level:
     root: warn

@@ -1,6 +1,7 @@
 package com.voc.system.entity;
 
 import com.voc.restful.core.entity.BaseEntity;
+import com.voc.system.constant.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,8 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @time 2021/07/08 12:42
  */
 @Data
-@Document(collection = "sys_social")
 @EqualsAndHashCode(callSuper = true)
+@Document(collection = TableName.SOCIAL)
 public class Social extends BaseEntity<String> {
     /**
      * 系统用户ID

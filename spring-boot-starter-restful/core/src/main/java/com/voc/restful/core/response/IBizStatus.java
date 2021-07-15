@@ -12,6 +12,15 @@ import org.springframework.http.HttpStatus;
 public interface IBizStatus {
 
     /**
+     * 模块编码
+     *
+     * @return int
+     */
+    default int getModule() {
+        return 1;
+    }
+
+    /**
      * 业务状态编码
      *
      * @return Long

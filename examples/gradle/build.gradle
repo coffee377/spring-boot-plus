@@ -51,3 +51,7 @@ bootJar {
 jar {
   enabled(false)
 }
+
+//smartdoc {
+//  configFile = file("src/main/resources/smart-doc.json")
+//}

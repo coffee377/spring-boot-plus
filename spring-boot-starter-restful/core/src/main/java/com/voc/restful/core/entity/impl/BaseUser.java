@@ -16,11 +16,34 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements IUser<ID> {
 
+    /**
+     * 用户名
+     */
     private String username;
+
+    /**
+     * 密码
+     */
     private String password;
+
+    /**
+     * 账户是否过期
+     */
     private boolean accountExpired;
+
+    /**
+     * 账户是否锁定
+     */
     private boolean accountLocked;
+
+    /**
+     * 密码是否过期
+     */
     private boolean credentialsExpired;
+
+    /**
+     * 是否禁用
+     */
     private boolean disabled;
 
     public BaseUser(ID id, String username, String password, boolean accountExpired, boolean accountLocked,

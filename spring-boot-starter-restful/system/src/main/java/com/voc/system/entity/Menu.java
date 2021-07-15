@@ -1,9 +1,9 @@
-package com.voc.system.entity.impl;
+package com.voc.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.ITreeEntity;
+import com.voc.system.constant.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,8 +15,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = "sys_menu")
-public class Menu extends BaseEntity<String> implements ITreeEntity<String> {
+@Document(collection = TableName.MENU)
+public class Menu extends Component implements ITreeEntity<String> {
 
     /**
      * 父菜单ID
@@ -63,20 +63,5 @@ public class Menu extends BaseEntity<String> implements ITreeEntity<String> {
      * 'before' | 'after' | 'all'
      */
     private String divider;
-
-    /**
-     * 组件目录类型 layout | page | path
-     */
-    private String type;
-
-    /**
-     * 组件名称
-     */
-    private String component;
-
-    /**
-     * 组件属性配置
-     */
-    private Object props;
 
 }

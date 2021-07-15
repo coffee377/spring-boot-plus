@@ -18,7 +18,7 @@ public abstract class BaseEntity<ID extends Serializable> extends JsonEntity imp
     /**
      * 主键 ID
      */
-    private ID id;
+    protected ID id;
 
     /**
      * 创建人

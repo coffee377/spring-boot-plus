@@ -2,7 +2,7 @@ package com.voc.system.dao.impl;
 
 import com.voc.restful.core.persist.mongo.impl.BaseMongoDao;
 import com.voc.system.dao.IMenuDao;
-import com.voc.system.entity.impl.Menu;
+import com.voc.system.entity.Menu;
 import org.springframework.stereotype.Repository;
 
 /**

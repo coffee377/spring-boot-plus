@@ -3,6 +3,7 @@ import java.util.concurrent.TimeUnit
 plugins {
   id 'org.springframework.boot' apply(false)
   id 'io.spring.dependency-management'
+  id "com.github.shalousun.smart-doc" apply(false)
 //  id 'com.voc.devtools'
 }
 
@@ -25,8 +26,17 @@ allprojects {
 
 subprojects {
   apply plugin: 'java-library'
+  apply plugin: 'com.github.shalousun.smart-doc'
 //  apply plugin: 'com.voc.devtools'
 
+  smartdoc {
+    configFile = file("src/main/resources/smart-doc.json")
+//    exclude 'org.springframework.boot:spring-boot-starter-tomcat'
+    // exclude artifact use pattern
+//    exclude 'org.springframework.boot.*'
+//    include 'com.voc.*'
+    include 'com.voc.*'
+  }
 
   if (path.startsWith(":spring-boot") || path.startsWith(":examples")) {
     apply plugin: 'org.springframework.boot'
@@ -44,7 +54,7 @@ subprojects {
 
   repositories {
     /* Local */
-    maven { url "file://D:/SoftWare/Maven/repository" }
+//    maven { url "file://D:/SoftWare/Maven/repository" }
     /* Ali Yun central仓和jcenter仓的聚合仓 */
     maven { url 'https://maven.aliyun.com/repository/public/' }
     maven {
@@ -64,6 +74,7 @@ subprojects {
   }
 
   dependencies {
+    testImplementation 'com.github.shalousun:smart-doc:2.2.2'
 //    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
     annotationProcessor "org.projectlombok:lombok:1.18.4"
     testAnnotationProcessor "org.projectlombok:lombok:1.18.4"

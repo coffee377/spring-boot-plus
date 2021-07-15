@@ -10,5 +10,4 @@ import java.io.Serializable;
  * @time 2021/02/05 09:12
  */
 public interface IAction<ID extends Serializable> extends IEntity<ID>, IMask {
-
 }

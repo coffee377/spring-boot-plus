@@ -1,15 +1,19 @@
 package com.voc.system.entity;
 
-import com.voc.restful.core.bean.IBean;
+import com.voc.restful.core.entity.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
+ * 前端组件属性
+ *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2021/06/07 13:57
  */
 @Data
-public class Component implements IBean {
+@EqualsAndHashCode(callSuper = true)
+public class Component extends BaseEntity<String> {
 
     /**
      * 组件目录类型 layout | page | path

@@ -14,6 +14,7 @@ pluginManagement {
 //    id 'org.springframework.boot' version '2.3.5'
     id 'org.asciidoctor.jvm.convert' version '3.1.0'
     id 'org.asciidoctor.jvm.pdf' version '3.1.0'
+    id "com.github.shalousun.smart-doc" version "2.2.2"
   }
 }
 

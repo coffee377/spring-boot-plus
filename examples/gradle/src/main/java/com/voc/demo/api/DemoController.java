@@ -4,7 +4,7 @@ import com.dingtalk.api.response.OapiV2UserGetResponse;
 import com.voc.dingtalk.service.IDingTalkCredentialsService;
 import com.voc.dingtalk.service.IDingTalkService;
 import com.voc.dingtalk.service.IDingTalkUserService;
-import com.voc.system.entity.impl.User;
+import com.voc.system.entity.User;
 import com.voc.system.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;

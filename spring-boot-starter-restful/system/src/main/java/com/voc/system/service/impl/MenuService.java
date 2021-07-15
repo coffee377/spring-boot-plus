@@ -2,7 +2,7 @@ package com.voc.system.service.impl;
 
 import com.voc.restful.core.persist.mongo.impl.BaseMongoService;
 import com.voc.system.dao.impl.MenuDao;
-import com.voc.system.entity.impl.Menu;
+import com.voc.system.entity.Menu;
 import com.voc.system.service.IMenuService;
 import org.springframework.stereotype.Service;
 

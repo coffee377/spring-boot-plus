@@ -129,7 +129,7 @@ public interface IMongoService<T, D> {
     Optional<T> findOne(Query condition);
 
     /**
-     * 分页从查询
+     * 分页查询
      *
      * @param condition 查询条件
      * @param pageable  分页属性

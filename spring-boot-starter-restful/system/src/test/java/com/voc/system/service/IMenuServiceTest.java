@@ -2,7 +2,7 @@ package com.voc.system.service;
 
 import com.voc.restful.core.response.impl.BaseBizStatus;
 import com.voc.restful.core.response.BizException;
-import com.voc.system.entity.impl.Menu;
+import com.voc.system.entity.Menu;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

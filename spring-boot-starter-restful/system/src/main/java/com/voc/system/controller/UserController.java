@@ -1,7 +1,7 @@
 package com.voc.system.controller;
 
-import com.voc.system.entity.impl.Menu;
-import com.voc.system.entity.impl.User;
+import com.voc.system.entity.Menu;
+import com.voc.system.entity.User;
 import com.voc.system.service.IMenuService;
 import com.voc.system.service.IUserService;
 import com.voc.system.vo.UserVO;

@@ -50,8 +50,7 @@ public enum BaseBizStatus implements IBizStatus {
 //    DELETE_DATA_ERROR(1004, "删除数据异常"),
 //
 
-
-    //    RECORD_EXISTS(10005, "已存在该条记录相关数据"),
+    RECORD_EXISTS("已存在该条记录相关数据", HttpStatus.NOT_FOUND),
     RECORD_NOT_EXISTS("指定记录不存在", HttpStatus.NOT_FOUND),
 //    AREA_NOT_FIND(10007, "地区匹配不存在"),
 //    ORGAN_NOT_FIND(10008, "机构匹配不存在"),
@@ -70,7 +69,7 @@ public enum BaseBizStatus implements IBizStatus {
     @Override
     public long getCode() {
         /* 模块编码 */
-        long module = BitUtil.multiply(1, 1000);
+        long module = BitUtil.multiply(this.getModule(), 1000);
         return BitUtil.add(module, this.ordinal());
     }
 

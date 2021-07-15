@@ -1,6 +1,6 @@
 package com.voc.system.controller;
 
-import com.voc.system.entity.impl.Menu;
+import com.voc.system.entity.Menu;
 import com.voc.system.service.IMenuService;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,12 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 菜单管理
+ *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2021/04/26 15:52
  */
 @RestController
-@RequestMapping({"${api.system.prefix:}/menu"})
+@RequestMapping("${api.system.prefix:}/menu")
 public class MenuController {
 
     @Resource

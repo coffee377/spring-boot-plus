@@ -1,6 +1,6 @@
 package com.voc.system.vo;
 
-import com.voc.system.entity.impl.Menu;
+import com.voc.system.entity.Menu;
 import lombok.Data;
 
 import java.util.List;

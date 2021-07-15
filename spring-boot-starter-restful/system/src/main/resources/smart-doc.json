@@ -1,0 +1,6 @@
+{
+  "outPath": "src/main/resources/static/doc",
+  "packageFilters": "com.voc.system.controller.*",
+  "allInOneDocFileName":"index.html",
+  "displayActualType": true
+}

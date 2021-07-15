@@ -1,7 +1,7 @@
 package com.voc.system.dao;
 
 import com.voc.restful.core.persist.mongo.IMongoDao;
-import com.voc.system.entity.impl.Menu;
+import com.voc.system.entity.Menu;
 import org.springframework.data.repository.NoRepositoryBean;
 
 /**

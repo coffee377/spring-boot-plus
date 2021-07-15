@@ -15,6 +15,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.mapping.BasicMongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -105,12 +107,14 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     public void deleteById(ID id) {
         Assert.notNull(id, "The given id must not be null!");
         DeleteResult deleteResult = mongoOperations.remove(getIdQuery(id), entityInformation.getJavaType(), entityInformation.getCollectionName());
-//        if (entityInformation.isVersioned() && deleteResult.wasAcknowledged() && deleteResult.getDeletedCount() == 0) {
-//            throw new OptimisticLockingFailureException(String.format(
-//                    "The entity with id %s with version %s in %s cannot be deleted! Was it modified or deleted in the meantime?",
-//                    id, entityInformation.getVersion(entity),
-//                    entityInformation.getCollectionName()));
-//        }
+        if (entityInformation.isVersioned() && deleteResult.wasAcknowledged() && deleteResult.getDeletedCount() == 0) {
+            T entity = this.findOne(getIdQuery(id)).orElse(null);
+            assert entity != null;
+            throw new OptimisticLockingFailureException(String.format(
+                    "The entity with id %s with version %s in %s cannot be deleted! Was it modified or deleted in the meantime?",
+                    id, entityInformation.getVersion(entity),
+                    entityInformation.getCollectionName()));
+        }
     }
 
     @Override
@@ -220,6 +224,14 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
         Query query = Query.query(where(entityInformation.getIdAttribute()).in(idList));
         return find(query);
     }
+
+    @Override
+    public <O> List<O> findByAggregation(Aggregation aggregation, Class<O> outputType) {
+//        mongoOperations.
+        AggregationResults<O> aggregate = mongoOperations.aggregate(aggregation, entityInformation.getJavaType(), outputType);
+        return aggregate.getMappedResults();
+    }
+
 
     private Query getIdQuery(Object id) {
         return new Query(getIdCriteria(id));

@@ -3,6 +3,7 @@ package com.voc.restful.core.persist.mongo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -103,5 +104,7 @@ public interface IMongoDao<T, ID> extends PagingAndSortingRepository<T, ID> {
      * @return List<T>
      */
     List<T> findById(Iterable<ID> ids);
+
+    <O> List<O> findByAggregation(Aggregation aggregation, Class<O> outputType);
 
 }
