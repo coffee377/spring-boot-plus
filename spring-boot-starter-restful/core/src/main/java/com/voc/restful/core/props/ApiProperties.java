@@ -17,11 +17,17 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public class ApiProperties {
 
     private String prefix = "/api";
-    
+
     /**
      * json 配置
      */
     @NestedConfigurationProperty
     private JsonProperties json = new JsonProperties();
+
+    /**
+     * ping 接口配置
+     */
+    @NestedConfigurationProperty
+    private PingPongProperties ping = new PingPongProperties();
 
 }

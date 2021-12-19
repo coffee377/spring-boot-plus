@@ -1,0 +1,12 @@
+#server:
+#  servlet:
+#    context-path: /test
+#  port: 8081
+#spring:
+#  application:
+#    name: core-demo
+#    version: 1.0.0
+#api:
+#  ping:
+#    enable: true
+#    path: pingpath

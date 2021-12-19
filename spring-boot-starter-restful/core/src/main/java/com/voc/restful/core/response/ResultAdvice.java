@@ -73,36 +73,30 @@ public class ResultAdvice implements ResponseBodyAdvice<Object> {
         AnnotatedElement element = methodParameter.getAnnotatedElement();
         /* 前置条件，必须是 annotations 中指定注解的方法 */
         boolean preCondition = Arrays.stream(annotations).filter(Class::isAnnotation).anyMatch(element::isAnnotationPresent);
-        return preCondition && this.allMethodWrapper(method) && this.methodWrapper(method);
-    }
-
-
-    /**
-     * 类上所有方法是否包装响应结果
-     *
-     * @return boolean
-     */
-    private boolean allMethodWrapper(Method method) {
-        Class<?> clazz = method.getDeclaringClass();
-        ResponseResult annotation = AnnotationUtils.getAnnotation(clazz, ResponseResult.class);
-        if (annotation != null) {
-            log.debug("类上注解 value：{} wrapped：{}", annotation.value(), annotation.wrapped());
-            return annotation.value();
-        }
-        return true;
+        return preCondition && this.methodWrapper(method);
     }
 
     /**
-     * 类上所有方法是否包装响应结果
+     * 类上指定方法是否包装响应结果
      *
      * @return boolean
      */
     private boolean methodWrapper(Method method) {
-        ResponseResult annotation = AnnotationUtils.getAnnotation(method, ResponseResult.class);
-        if (annotation != null) {
-            log.debug("方法上注解 value：{} wrapped：{}", annotation.value(), annotation.wrapped());
-            return annotation.value();
+        /* 1. 方法上的注解优先 */
+        ResponseResult methodAnnotation = AnnotationUtils.getAnnotation(method, ResponseResult.class);
+        if (methodAnnotation != null) {
+            log.debug("方法上注解 value：{} wrapped：{}", methodAnnotation.value(), methodAnnotation.wrapped());
+            return methodAnnotation.value();
         }
+
+        /* 2. 方法上不存在注解时使用类上注解 */
+        Class<?> clazz = method.getDeclaringClass();
+        ResponseResult classAnnotation = AnnotationUtils.getAnnotation(clazz, ResponseResult.class);
+        if (classAnnotation != null) {
+            log.debug("类上注解 value：{} wrapped：{}", classAnnotation.value(), classAnnotation.wrapped());
+            return classAnnotation.value();
+        }
+        /* 3. 都不存在时返回 true */
         return true;
     }
 }

@@ -1,5 +1,6 @@
-package com.voc.restful.core.banner;
+package com.voc.restful.core.listener;
 
+import com.voc.restful.core.banner.VocBanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.SpringApplicationEvent;
 import org.springframework.context.ApplicationListener;

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.voc.restful.core.response.Result;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -14,7 +13,7 @@ import java.io.IOException;
  * @email coffee377@dingtalk.com
  * @time 2021/04/25 13:29
  */
-@Component
+//@Component
 public class ResultDeserializer extends JsonDeserializer<Result> {
     @Override
     public Result deserialize(JsonParser p, DeserializationContext context) throws IOException, JsonProcessingException {

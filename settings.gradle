@@ -8,10 +8,6 @@ pluginManagement {
   }
   /* 插件版本管理 */
   plugins {
-//    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-//    id 'org.springframework.boot' version '2.5.0'
-    /* 公司目前使用版本 */
-//    id 'org.springframework.boot' version '2.3.5'
     id 'org.asciidoctor.jvm.convert' version '3.1.0'
     id 'org.asciidoctor.jvm.pdf' version '3.1.0'
     id "com.github.shalousun.smart-doc" version "2.2.2"
@@ -23,7 +19,7 @@ plugins {
 }
 
 /* 根项目名称 */
-rootProject.name = 'tvoc-boot'
+rootProject.name = 'spring-boot-plus'
 
 /* 自动引入项目及模块 */
 fileTree(rootDir) {
@@ -41,9 +37,11 @@ fileTree(rootDir) {
         .collect(Collectors.toList())
         .each {
 //          println "${projectPath(it)} => ${projectName(it)} => ${it.parentFile}"
-          include projectPath(it)
-          project(projectPath(it)).projectDir = it.parentFile
-          project(projectPath(it)).name = projectName(it)
+          if (projectPath(it).equals(":spring-boot-starter-restful:core")) {
+            include projectPath(it)
+            project(projectPath(it)).projectDir = it.parentFile
+            project(projectPath(it)).name = projectName(it)
+          }
         }
 
 /**

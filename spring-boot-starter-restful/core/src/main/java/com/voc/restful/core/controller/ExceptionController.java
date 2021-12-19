@@ -1,5 +1,8 @@
-package com.voc.restful.core.response;
+package com.voc.restful.core.controller;
 
+import com.voc.restful.core.response.BizException;
+import com.voc.restful.core.response.IBizStatus;
+import com.voc.restful.core.response.Result;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -33,17 +36,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("${server.error.path:${error.path:/error}}")
 @ConditionalOnProperty(prefix = "api.json", name = "exception-result", havingValue = "json", matchIfMissing = true)
-public class ErrorHandlerController extends AbstractErrorController implements ErrorController {
+public class ExceptionController extends AbstractErrorController implements ErrorController {
 
     private final ErrorProperties errorProperties;
 
     /**
-     * Create a new {@link ErrorHandlerController} instance.
+     * Create a new {@link ExceptionController} instance.
      *
      * @param errorAttributes  the error attributes
      * @param serverProperties configuration properties
      */
-    public ErrorHandlerController(ErrorAttributes errorAttributes, ServerProperties serverProperties) {
+    public ExceptionController(ErrorAttributes errorAttributes, ServerProperties serverProperties) {
         super(errorAttributes);
         this.errorProperties = serverProperties.getError();
     }

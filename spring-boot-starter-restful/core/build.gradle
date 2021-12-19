@@ -1,60 +1,18 @@
 plugins {
-
+  id("idea")
+  id("com.voc.app.info")
 }
 
 dependencies {
-  api 'org.springframework.boot:spring-boot-starter-web'
-  api 'org.springframework.boot:spring-boot-starter-cache'
-  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  api "org.springframework.boot:spring-boot-starter-web"
+  api "org.springframework.boot:spring-boot-starter-cache"
+  implementation "org.springframework.boot:spring-boot-starter-actuator"
 
   /* caffeine 缓存依赖 */
-  compileOnly 'com.github.ben-manes.caffeine:caffeine'
+  compileOnly "com.github.ben-manes.caffeine:caffeine"
   /* redis 缓存依赖 */
-  compileOnly 'org.springframework.boot:spring-boot-starter-data-redis'
-  compileOnly 'org.springframework.boot:spring-boot-starter-data-mongodb'
-  compileOnly 'com.google.code.gson:gson:2.8.6'
+  compileOnly "org.springframework.boot:spring-boot-starter-data-redis"
+  compileOnly "org.springframework.boot:spring-boot-starter-data-mongodb"
+  compileOnly "com.google.code.gson:gson:2.8.6"
   compileOnly "org.springframework.boot:spring-boot-starter-security"
 }
-
-//publishing {
-//  publications {
-//    mavenJava(MavenPublication) {
-//      from components.java
-//      versionMapping {
-//        usage('java-api') {
-//          fromResolutionOf('runtimeClasspath')
-//        }
-//        usage('java-runtime') {
-//          fromResolutionResult()
-//        }
-//      }
-//      pom {
-//        developers {
-//          developer {
-//            id = 'coffee377'
-//            name = 'Wu Yujie'
-//            email = 'coffee377@dingtalk.com'
-//          }
-//        }
-//      }
-//    }
-//
-//  }
-//  /* 声明要发布到的存储库 */
-//  repositories {
-//    /* 阿里云效个人仓库 */
-//    maven {
-//      // change to point to your repo, e.g. http://my.org/repo
-//      def repo = 'https://packages.aliyun.com/maven/repository/2038604'
-//      def snapshotsRepo = "${repo}-snapshot-XNRePo/"
-//      def releaseRepo = "${repo}-release-0bMxsA/"
-//      name "AliYun"
-//      credentials {
-//        username '5f4ba059fa82bfeb805a1e09'
-//        password 'a3XkZLNApybs'
-//      }
-//      url = version.endsWith('SNAPSHOT') ? snapshotsRepo : releaseRepo
-//    }
-//  }
-//
-//}

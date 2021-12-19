@@ -23,7 +23,7 @@ public interface AuthService<ID extends Serializable> {
     IUser<ID> getUserByUsername(String username);
 
     /**
-     * 获取与第三方应用关联的用户
+     * 获取与第三方应用绑定的用户
      *
      * @param app 第三方应用信息
      * @return IUser<ID>
@@ -31,7 +31,7 @@ public interface AuthService<ID extends Serializable> {
     IUser<ID> getUserByThirdApp(ThirdApp app);
 
     /**
-     * 根据用户名获取用户拥有的权限信息（包含角色信息等）
+     * 根据唯一标识获取用户拥有的权限信息（包含角色信息等）
      *
      * @param uid 用户唯一标识
      * @return 权限集合

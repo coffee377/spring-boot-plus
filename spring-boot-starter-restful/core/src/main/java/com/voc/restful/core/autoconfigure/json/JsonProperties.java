@@ -24,6 +24,7 @@ public class JsonProperties {
     /**
      * 响应结果是否自动包装全局控制开关
      * 局部控制请使用 ResponseResult 注解
+     *
      * @see com.voc.restful.core.response.ResponseResult
      */
     private Boolean automaticWrapped;
@@ -49,6 +50,7 @@ public class JsonProperties {
      */
     @NestedConfigurationProperty
     private ResultFieldName result = new ResultFieldName();
+
 }
 
 

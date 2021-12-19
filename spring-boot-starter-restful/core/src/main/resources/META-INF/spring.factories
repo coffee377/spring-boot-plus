@@ -1,12 +1,17 @@
 # Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.springframework.boot.autoconfigure.EnableAutoConfiguration                        = \
+com.voc.restful.core.autoconfigure.AutoConfiguration,\
 com.voc.restful.core.autoconfigure.cache.CacheAutoConfiguration,\
 com.voc.restful.core.autoconfigure.json.JsonAutoConfiguration,\
 com.voc.restful.core.autoconfigure.result.ResultAutoConfiguration,\
 com.voc.restful.core.autoconfigure.util.UtilsAutoConfiguration
 
-org.springframework.context.ApplicationListener=\
-com.voc.restful.core.banner.BannerListener
+org.springframework.context.ApplicationListener                                       = \
+com.voc.restful.core.listener.BannerListener,\
+com.voc.restful.core.listener.AppStartedListener
 
-org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer=\
+org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer = \
 com.voc.security.core.authentication.QRAuthenticationProviderConfigurer
+
+org.springframework.boot.env.EnvironmentPostProcessor                                 = \
+com.voc.restful.core.listener.AppInfoEnvironmentPostProcessor

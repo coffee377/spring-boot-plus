@@ -2,7 +2,6 @@ package com.voc.restful.core.autoconfigure.json;
 
 import com.voc.restful.core.autoconfigure.json.gson.GsonAutoConfigurationPlus;
 import com.voc.restful.core.autoconfigure.json.jackson.JacksonAutoConfigurationPlus;
-import com.voc.restful.core.props.ApiProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -18,7 +17,7 @@ import org.springframework.core.env.Environment;
  */
 @Configuration
 @Import({JacksonAutoConfigurationPlus.class, GsonAutoConfigurationPlus.class})
-@EnableConfigurationProperties({ApiProperties.class})
+@EnableConfigurationProperties({JsonProperties.class})
 public class JsonAutoConfiguration {
 
     @Bean("json")

@@ -1,6 +1,6 @@
 package com.voc.restful.core.autoconfigure.result;
 
-import com.voc.restful.core.response.ErrorHandlerController;
+import com.voc.restful.core.controller.ExceptionController;
 import com.voc.restful.core.response.ResultAdvice;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -15,12 +15,12 @@ import org.springframework.context.annotation.Import;
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/09/23 12:38
- * @see ErrorHandlerController
+ * @see ExceptionController
  * @see ResultAdvice
  * @see ErrorMvcAutoConfiguration#basicErrorController(ErrorAttributes, ObjectProvider)
  */
 @Configuration
-@Import({ErrorHandlerController.class, ResultAdvice.class})
+@Import({ExceptionController.class, ResultAdvice.class})
 @AutoConfigureBefore(ErrorMvcAutoConfiguration.class)
 public class ResultAutoConfiguration {
 

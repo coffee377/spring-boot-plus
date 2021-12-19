@@ -3,7 +3,7 @@ plugins {
 
 dependencyManagement {
   dependencies {
-    dependencySet(group:'com.voc', version: "$version") {
+    dependencySet(group: 'com.voc', version: "$version") {
       entry 'spring-boot-starter-restful-core'
       entry 'spring-boot-starter-restful-dingtalk'
       entry 'spring-boot-starter-restful-security'

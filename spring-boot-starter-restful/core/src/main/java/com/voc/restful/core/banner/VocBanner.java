@@ -27,6 +27,8 @@ public class VocBanner implements Banner {
     private static final String PADDING_CHAR = " ";
     private static final String DEFAULT_BANNER = "banner.txt";
     private final Resource resource;
+    private boolean configuringAppVersion;
+    private boolean configuringAppName;
 
     public VocBanner() {
         this.resource = new ClassPathResource(DEFAULT_BANNER);
@@ -35,15 +37,16 @@ public class VocBanner implements Banner {
     @Override
     public void printBanner(Environment environment, Class<?> sourceClass, PrintStream printStream) {
         String banner = null;
+        this.ensureConfiguring(environment);
+
         try {
             banner = StreamUtils.copyToString(this.resource.getInputStream(), environment.getProperty("spring.banner.charset", Charset.class, StandardCharsets.UTF_8));
         } catch (Exception ex) {
             List<String> bannerList = new ArrayList<>();
             bannerList.add("${AnsiColor.BRIGHT_RED}");
             bannerList.addAll(Arrays.asList(BANNER));
-            bannerList.add("${AnsiColor.YELLOW}Application Name:${application.name}  Application Version:${application.formatted-version}");
+            bannerList.add(getVersionInfo(configuringAppVersion, configuringAppName));
             banner = StringUtils.arrayToDelimitedString(bannerList.toArray(), "\n");
-
         } finally {
             PropertyResolver resolver;
             for (Iterator<PropertyResolver> iterator = this.getPropertyResolvers(environment, sourceClass).iterator(); iterator.hasNext(); banner = resolver.resolvePlaceholders(Objects.requireNonNull(banner))) {
@@ -52,6 +55,26 @@ public class VocBanner implements Banner {
             printStream.println(banner);
             printStream.println();
         }
+    }
+
+    /**
+     * 获取版本信息
+     *
+     * @param appVersion 是否配置了应用版本
+     * @param appName    是否配置了应用名称
+     * @return String
+     */
+    private String getVersionInfo(boolean appVersion, boolean appName) {
+        StringBuilder info = new StringBuilder();
+        info.append("${AnsiColor.YELLOW}");
+        info.append("Spring Boot Version: ${spring-boot.formatted-version}\t");
+        if (appVersion) {
+            info.append("Application Version: ${application.formatted-version}\t");
+        }
+        if (appName) {
+            info.append("Application Name: ${application.name}\t");
+        }
+        return info.toString();
     }
 
     private List<PropertyResolver> getPropertyResolvers(Environment environment, Class<?> sourceClass) {
@@ -74,29 +97,64 @@ public class VocBanner implements Banner {
         return new PropertySourcesPropertyResolver(sources);
     }
 
-    private Map<String, Object> getInfoMap(Environment environment) {
+    /**
+     * 确保 APP 配置信息是否存在
+     *
+     * @param environment Environment
+     */
+    private void ensureConfiguring(Environment environment) {
         String appVersion = environment.getProperty("spring.application.version");
         String appName = environment.getProperty("spring.application.name");
+        if (StringUtils.hasLength(appName)) {
+            configuringAppName = true;
+        }
+        if (StringUtils.hasLength(appVersion)) {
+            configuringAppVersion = true;
+        }
+    }
+
+    private Map<String, Object> getInfoMap(Environment environment) {
         String bootVersion = this.getBootVersion();
+        String appVersion = environment.getProperty("spring.application.version");
+        String appName = environment.getProperty("spring.application.name");
+
         Map<String, Object> versions = new HashMap<>(0);
-        versions.put("application.name", appName);
-        versions.put("application.version", appVersion);
-        versions.put("spring-boot.version", this.getVersionString(bootVersion, false));
-        versions.put("application.formatted-version", this.getVersionString(appVersion, true));
-        versions.put("spring-boot.formatted-version", this.getVersionString(bootVersion, true));
+        versions.put("spring-boot.version", this.getAppVersion(bootVersion, false));
+        versions.put("spring-boot.formatted-version", this.getAppVersion(bootVersion, true));
+
+        if (configuringAppName) {
+            versions.put("application.name", appName);
+        }
+
+        if (configuringAppVersion) {
+            versions.put("application.version", appVersion);
+            versions.put("application.formatted-version", this.getAppVersion(appVersion, true));
+        }
+
         return versions;
     }
 
+    /**
+     * 获取 Spring Boot 版本
+     *
+     * @return 版本号
+     */
     private String getBootVersion() {
         return SpringBootVersion.getVersion();
     }
 
-    private String getVersionString(String version, boolean format) {
-        if (version == null) {
-            return "";
-        } else {
-            return format ? String.format(" v %s ", version) : version;
+    /**
+     * 获取应用版本
+     *
+     * @param version 版本号
+     * @param format  是否格式化
+     * @return 版本号
+     */
+    private String getAppVersion(String version, boolean format) {
+        if (StringUtils.hasLength(version)) {
+            return format ? String.format("v%s ", version) : version;
         }
+        return "";
     }
 
 }

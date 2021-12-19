@@ -17,10 +17,11 @@ dependencies {
 //  implementation(gradleApi())
   /* groovy sdk */
 //  compileOnly localGroovy()
-/* 公司目前使用版本 */
+  /* 公司目前使用版本 */
   api('org.springframework.boot:spring-boot-gradle-plugin:2.3.5.RELEASE')
   api('io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE')
   annotationProcessor 'org.projectlombok:lombok:1.18.16'
+  testImplementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
 }
 
 configurations {
@@ -33,8 +34,10 @@ configurations {
   }
 }
 
-tasks.withType(org.gradle.jvm.tasks.Jar) {
+tasks.withType(Jar) {
   archiveBaseName.set("gradle-plugin")
+  /* 重复文件策略，排除 */
+  setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }
 
 gradlePlugin {
@@ -42,6 +45,10 @@ gradlePlugin {
     devtools {
       id = "com.voc.devtools"
       implementationClass = "com.voc.gradle.plugin.DevToolsPlugin"
+    }
+    appinfo {
+      id = "com.voc.app.info"
+      implementationClass = "com.voc.gradle.plugin.AppInfoPlugin"
     }
   }
 

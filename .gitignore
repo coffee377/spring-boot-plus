@@ -75,5 +75,8 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
-**/*/application-*.yml
-**/*/rebel.xml
+**/application-*.local.yml
+**/rebel.xml
+**/META-INF/app-info.yml
+/spring-boot-starter-restful/system/src/test/resources/application-dev.yml
+/docker/
