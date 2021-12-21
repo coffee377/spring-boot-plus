@@ -73,15 +73,15 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
         ExtensionContainer extensions = project.getExtensions();
         extensions.create(DEV_TOOL_EXTENSION_NAME, DevToolsExtension.class, project);
         project.afterEvaluate(p ->
-                extensions.configure(DevToolsExtension.class, devToolExtension -> {
-                    if (devToolExtension.isAliMaven()) {
+                        extensions.configure(DevToolsExtension.class, devToolExtension -> {
+                            if (devToolExtension.isAliMaven()) {
 //                        INNER_ALI_MAVEN.forEach(
 //                                (name, url) -> devToolExtension.getMaven().create(name, mavenRepositories ->
 //                                        mavenRepositories.setUrl(url)
 //                                )
 //                        );
-                    }
-                })
+                            }
+                        })
         );
 
     }
@@ -174,7 +174,7 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
      */
     public void configureClean(Project project) {
         /* 清理任务增加删除目录 */
-        project.getTasks().withType(Delete.class, delete -> delete.delete("out"));
+        project.getTasks().withType(Delete.class, delete -> delete.delete("out", "build"));
     }
 
 
