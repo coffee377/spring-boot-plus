@@ -37,28 +37,11 @@ subprojects {
 
   publishing {
     publications {
-      mavenJava(MavenPublication) {
-        from components.java
-      }
+//      mavenJava(MavenPublication) {
+//        from components.java
+//      }
 
     }
-    /* 声明要发布到的存储库 */
-    repositories {
-      /* 阿里云效个人仓库 */
-      maven {
-        // change to point to your repo, e.g. http://my.org/repo
-        def repo = 'https://packages.aliyun.com/maven/repository/2038604'
-        def snapshotsRepo = "${repo}-snapshot-XNRePo/"
-        def releaseRepo = "${repo}-release-0bMxsA/"
-        name "AliYun"
-        credentials {
-          username '5f4ba059fa82bfeb805a1e09'
-          password 'a3XkZLNApybs'
-        }
-        url = version.endsWith('SNAPSHOT') ? snapshotsRepo : releaseRepo
-      }
-    }
-
   }
 
 }
