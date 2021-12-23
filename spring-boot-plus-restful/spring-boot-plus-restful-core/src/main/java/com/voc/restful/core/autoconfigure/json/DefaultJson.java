@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.voc.restful.core.autoconfigure.json.exception.JsonDeserializeException;
 import com.voc.restful.core.autoconfigure.json.exception.JsonSerializeException;
-import com.voc.restful.core.response.impl.BaseBizStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 
@@ -40,7 +39,7 @@ public class DefaultJson implements IJson {
                 try {
                     return mapper.writeValueAsString(obj);
                 } catch (JsonProcessingException e) {
-                    throw new JsonSerializeException(BaseBizStatus.JSON_SERIALIZE_EXCEPTION);
+                    throw new JsonSerializeException();
                 }
         }
     }
@@ -57,7 +56,7 @@ public class DefaultJson implements IJson {
                 try {
                     return mapper.readValue(jsonSting, targetType);
                 } catch (IOException e) {
-                    throw new JsonDeserializeException(BaseBizStatus.JSON_DESERIALIZE_EXCEPTION);
+                    throw new JsonDeserializeException();
                 }
         }
     }

@@ -10,13 +10,10 @@ import org.gradle.api.provider.Property;
  */
 public class BootExtension {
 
-    private final Project project;
-
     private final Property<Boolean> library;
 
     public BootExtension(Project project) {
-        this.project = project;
-        this.library = this.project.getObjects().property(Boolean.class);
+        this.library = project.getObjects().property(Boolean.class);
     }
 
     public Property<Boolean> getLibrary() {

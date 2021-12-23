@@ -1,0 +1,17 @@
+def restful = parent.name
+
+dependencies {
+  implementation project(":$restful:$restful-core")
+  implementation project(":$restful:$restful-dingtalk")
+//  implementation project(":$restful:$restful-system")
+  implementation project(":$restful:$restful-security")
+  implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-security'
+
+  compileOnly project(":${restful}:${restful}-security")
+
+  api project(":${restful}:${restful}-core")
+
+}
+

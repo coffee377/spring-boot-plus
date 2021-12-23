@@ -78,5 +78,5 @@ gradle-app.setting
 **/application-*.local.yml
 **/rebel.xml
 **/META-INF/app-info.yml
-/spring-boot-starter-restful/system/src/test/resources/application-dev.yml
 /docker/
+/test

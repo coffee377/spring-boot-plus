@@ -32,7 +32,7 @@ public class AppInfoTask extends BaseTask {
         JavaPluginExtension javaExtension = project.getExtensions().getByType(JavaPluginExtension.class);
 
         SourceSetContainer sourceSets = javaExtension.getSourceSets();
-        SourceSet main = sourceSets.getByName("main");
+        SourceSet main = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME);
         String resourcesPath = main.getResources().getSourceDirectories().getAsPath();
         File metaInfoDir = new File(new File(resourcesPath), "META-INF");
         this.getProject().mkdir(metaInfoDir);

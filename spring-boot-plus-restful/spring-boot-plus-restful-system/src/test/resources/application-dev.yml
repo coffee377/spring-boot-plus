@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      host: tvoc.site
+      port: 8189
+  redis:
+    database: 7
+    host: tvoc.site
+    password: tvoc.redis
+    port: 8188

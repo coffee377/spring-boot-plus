@@ -16,7 +16,7 @@ public enum ExtraProps {
     JUNIT_VERSION("junit.version", "5.5.2"),
     SLF4J_VERSION("org.slf4j.version", "1.7.25"),
     JAVA_CRACK_VERSION("com.voc.crack.version", "2.0.2-RELEASE"),
-    LOMBOK_VERSION("lombok.version", "1.18.4"),
+    LOMBOK_VERSION("lombok.version", "1.18.20"),
     LOGBACK_VERSION("logback.version", "1.2.3"),
     FAST_JSON_VERSION("fastjson.version", "1.2.58"),
     GOOGLE_AUTO_SERVICE_VERSION("com.google.auto.service.version", "1.0-rc4"),

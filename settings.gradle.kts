@@ -1,12 +1,13 @@
-import java.net.URI
-import java.util.function.Predicate
-import java.util.stream.Collectors
+/* 根项目名称 */
+rootProject.name = "spring-boot-plus"
 
+/* 插件管理 */
 pluginManagement {
+  /* 插件仓库 */
   repositories {
     gradlePluginPortal()
     maven {
-      setUrl("https://repo.spring.io/plugins-release")
+      url = uri("https://repo.spring.io/plugins-release")
     }
   }
 
@@ -15,59 +16,54 @@ pluginManagement {
     id("org.asciidoctor.jvm.convert") version "3.1.0"
     id("org.asciidoctor.jvm.convert") version "3.1.0"
     id("com.github.shalousun.smart-doc") version "2.2.2"
-    id("org.springframework.boot") version "2.3.5.RELEASE"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+//    id("org.springframework.boot") version "2.3.5.RELEASE"
+//    id("io.spring.dependency-management") version "1.0.11.RELEASE"
   }
 }
 
-plugins {
+fileTree(rootDir) {
+  include("**/*.gradle", "**/*.gradle.kts")
+  exclude("**/settings.gradle", "**/settings.gradle.kts", "**/buildSrc")
+}.files.stream()
+  /* 非根项目 */
+  .filter { file -> !file.parentFile.relativeTo(rootDir).name.isNullOrEmpty() }
+  .map { file -> ProjectInfo(rootDir, file) }
+  .collect(java.util.stream.Collectors.toList())
+//  .filter { info -> Regex(".*(examples|restful)$").matches(info.name) }
+  .forEach {
+//    println("====> $it")
+//    include(it.path)
+//    project(it.path).projectDir = it.dir
+//    project(it.path).name = it.name
+  }
 
-}
+include(":examples")
+include(":spring-boot-plus-restful")
+include(":spring-boot-plus-restful:spring-boot-plus-restful-core")
+include(":spring-boot-plus-restful:spring-boot-plus-restful-dingtalk")
+include(":spring-boot-plus-restful:spring-boot-plus-restful-security")
+include(":spring-boot-plus-restful:spring-boot-plus-restful-system")
 
-/* 根项目名称 */
-rootProject.name = "spring-boot-plus"
 
-/* 自动引入项目及模块 */
-//fileTree(rootDir) {
-//  include '**/*.gradle'
-//  exclude '**/settings.gradle'
-//  exclude '**/buildSrc'
-//}.files.stream()
-//        .filter(new Predicate<File>() {
-//          @Override
-//          boolean test(File file) {
-//            String relativeName = rootDir.relativePath(file.parentFile)
-//            return "" != relativeName
-//          }
-//        })
-//        .collect(Collectors.toList())
-//        .each {
-////          println "${projectPath(it)} => ${projectName(it)} => ${it.parentFile}"
-//          if (projectPath(it).equals(":spring-boot-starter-restful:core")) {
-////            include projectPath(it)
-////            project(projectPath(it)).projectDir = it.parentFile
-////            project(projectPath(it)).name = projectName(it)
-//          }
-//        }
-
-///**
-// * 项目路径
-// * @param file
-// * @return String
-// */
-//String projectPath(File file) {
-//  return ":${rootDir.relativePath(file.parentFile).replace("/", ":")}"
-//}
+val projectReg = arrayListOf(".*(examples|restful)$", "restful-(core|dingtalk)$")
 
 /**
- * 项目名称
- * @param file
- * @return String
+ * 项目详细实体类
  */
-//String projectName(File file) {
-//  String[] paths = "${rootDir.relativePath(file.parentFile)}".split("/").reverse()
-//  if (paths.length > 1) {
-//    return "${paths[1]}-${paths[0]}"
-//  }
-//  return paths[0]
-//}
+private class ProjectInfo(rootFile: File, buildFile: File) {
+  val dir: File
+  val path: String
+  val name: String
+
+  init {
+    dir = buildFile.parentFile
+    val paths = dir.relativeTo(rootFile).path.split(File.separator)
+    path = ":${java.lang.String.join(":", paths)}"
+    name = "${rootFile.name}-${java.lang.String.join("-", paths)}"
+  }
+
+  override fun toString(): String {
+    return "Project Name\t-> [${name}]\nProject Path\t-> [${path}]\nProject Dir\t\t-> [${dir.absolutePath}]\n"
+  }
+}
+

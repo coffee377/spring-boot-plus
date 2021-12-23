@@ -2,7 +2,7 @@ plugins {
 //  id "com.voc.devtools"
 }
 
-def restful = "spring-boot-starter-restful"
+def restful = "spring-boot-plus-restful"
 
 dependencies {
 

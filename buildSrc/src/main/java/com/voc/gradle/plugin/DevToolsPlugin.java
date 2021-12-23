@@ -18,6 +18,8 @@ import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.PluginContainer;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.api.tasks.Delete;
+import org.gradle.api.tasks.compile.CompileOptions;
+import org.gradle.api.tasks.compile.JavaCompile;
 import org.gradle.ide.visualstudio.plugins.VisualStudioPlugin;
 import org.gradle.ide.xcode.plugins.XcodePlugin;
 import org.gradle.jvm.tasks.Jar;
@@ -54,14 +56,24 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
 
     @Override
     public void onApply(Project project) {
+        this.applyPlugins(project);
         this.configureExtension(project);
         this.configureConfigurations(project);
-        this.applyPlugins(project);
         this.configureJar(project);
         this.configureConfigurations(project);
         this.configureClean(project);
         this.configureRepositories(project);
         this.configureDependencies(project);
+        this.configureJavaCompile(project);
+    }
+
+    public void configureJavaCompile(Project project) {
+        /* Java 编译 */
+        project.getTasks().withType(JavaCompile.class, javaCompile -> {
+                    CompileOptions options = javaCompile.getOptions();
+//                    options.setCompilerArgs(Arrays.asList("-Xlint:deprecation", "-Xlint:unchecked"));
+                }
+        );
     }
 
     /**
@@ -73,15 +85,15 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
         ExtensionContainer extensions = project.getExtensions();
         extensions.create(DEV_TOOL_EXTENSION_NAME, DevToolsExtension.class, project);
         project.afterEvaluate(p ->
-                        extensions.configure(DevToolsExtension.class, devToolExtension -> {
-                            if (devToolExtension.isAliMaven()) {
-//                        INNER_ALI_MAVEN.forEach(
-//                                (name, url) -> devToolExtension.getMaven().create(name, mavenRepositories ->
-//                                        mavenRepositories.setUrl(url)
-//                                )
-//                        );
-                            }
-                        })
+                extensions.configure(DevToolsExtension.class, devToolExtension -> {
+                    if (devToolExtension.isAliMaven()) {
+                        INNER_ALI_MAVEN.forEach(
+                                (name, url) -> devToolExtension.getMaven().create(name, mavenRepositories ->
+                                        mavenRepositories.setUrl(url)
+                                )
+                        );
+                    }
+                })
         );
 
     }
@@ -106,6 +118,7 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
 
         /* 4.依赖管理插件 */
         plugins.apply("io.spring.dependency-management");
+
     }
 
     /**
@@ -153,17 +166,31 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
      */
     public void configureConfigurations(Project project) {
         ConfigurationContainer configurations = project.getConfigurations();
+
+        Configuration annotationProcessor = configurations.getByName(JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME);
+        Configuration testAnnotationProcessor = configurations.getByName(JavaPlugin.TEST_ANNOTATION_PROCESSOR_CONFIGURATION_NAME);
+
         Configuration compileOnly = configurations.getByName(JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME);
         Configuration testCompileOnly = configurations.getByName(JavaPlugin.TEST_COMPILE_ONLY_CONFIGURATION_NAME);
-        Configuration annotationProcessor = configurations.getByName(JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME);
+
+        Configuration runtimeOnly = configurations.getByName(JavaPlugin.RUNTIME_ONLY_CONFIGURATION_NAME);
+        Configuration testRuntimeOnly = configurations.getByName(JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_NAME);
+
+        Configuration runtimeClasspath = configurations.getByName(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME);
+        Configuration testRuntimeClasspath = configurations.getByName(JavaPlugin.TEST_RUNTIME_CLASSPATH_CONFIGURATION_NAME);
+
+        testAnnotationProcessor.extendsFrom(annotationProcessor);
         compileOnly.extendsFrom(annotationProcessor);
-        testCompileOnly.extendsFrom(annotationProcessor);
+        testCompileOnly.extendsFrom(compileOnly, testAnnotationProcessor);
+        runtimeClasspath.extendsFrom(annotationProcessor);
+        testRuntimeClasspath.extendsFrom(runtimeClasspath);
+        testRuntimeOnly.extendsFrom(runtimeOnly);
 
         configurations.all(configuration -> configuration.resolutionStrategy(resolutionStrategy -> {
             /* 动态版本依赖缓存 10 minutes */
             resolutionStrategy.cacheDynamicVersionsFor(10, TimeUnit.MINUTES);
             /* SNAPSHOT版本依赖缓存 0 seconds */
-            resolutionStrategy.cacheChangingModulesFor(0, TimeUnit.SECONDS);
+            resolutionStrategy.cacheChangingModulesFor(10, TimeUnit.SECONDS);
         }));
     }
 
@@ -192,13 +219,13 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
 
             /* Ali 云效 */
             extension.getAli().all(aliYun -> {
-                project.getLogger().warn("aliYun: " + aliYun.toString());
+                project.getLogger().debug("aliYun: " + aliYun);
                 this.addMavenRepository(aliYun.getUrl(), aliYun.getUsername(), aliYun.getPassword());
             });
 
             /* 公共仓库 */
             extension.getMaven().all(maven -> {
-                project.getLogger().warn("maven: " + maven.toString());
+                project.getLogger().debug("maven: " + maven);
                 this.addMavenRepository(maven.getUrl(), maven.getUsername(), maven.getPassword());
             });
         });
@@ -238,4 +265,6 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
 
         });
     }
+
+
 }
