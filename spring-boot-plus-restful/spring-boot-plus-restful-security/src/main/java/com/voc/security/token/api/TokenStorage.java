@@ -1,5 +1,6 @@
-package com.voc.security.token;
+package com.voc.security.token.api;
 
+import com.voc.security.token.model.OnlineUser;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 
 import java.time.Instant;

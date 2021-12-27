@@ -1,4 +1,4 @@
-package com.voc.security.token;
+package com.voc.security.token.model;
 
 import com.voc.restful.core.entity.JsonEntity;
 import lombok.Data;
@@ -33,6 +33,4 @@ public class TokenResult extends JsonEntity {
         this(accessToken, null);
     }
 
-    public TokenResult() {
-    }
 }

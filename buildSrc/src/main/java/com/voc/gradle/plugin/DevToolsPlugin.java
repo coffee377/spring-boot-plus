@@ -39,7 +39,8 @@ import java.util.regex.Pattern;
  */
 @Getter
 public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDependency {
-
+    public static final String ID = "com.voc.devtools";
+    public static final String DEPENDENCY_MANAGEMENT_PLUGIN_ID = "io.spring.dependency-management";
     public static final String DEV_TOOL_EXTENSION_NAME = "devtools";
     private static final Pattern JUNIT_4_PATTERN = Pattern.compile("^4.*");
     private static final Pattern JUNIT_5_PATTERN = Pattern.compile("^5.*");
@@ -47,10 +48,12 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
     public final Map<String, String> INNER_ALI_MAVEN = Collections.unmodifiableMap(
             new HashMap<String, String>() {{
                 put("Public", "https://maven.aliyun.com/repository/public/");
-                put("Google", "https://maven.aliyun.com/repository/google");
+//                put("Central", "https://maven.aliyun.com/repository/central/");
+//                put("Jcenter", "https://maven.aliyun.com/repository/jcenter/");
                 put("GradlePlugin", "https://maven.aliyun.com/repository/gradle-plugin");
                 put("Spring", "https://maven.aliyun.com/repository/spring");
                 put("SpringPlugin", "https://maven.aliyun.com/repository/spring-plugin");
+                put("Google", "https://maven.aliyun.com/repository/google");
             }}
     );
 
@@ -117,7 +120,7 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
         plugins.apply(MavenPublishPlugin.class);
 
         /* 4.依赖管理插件 */
-        plugins.apply("io.spring.dependency-management");
+        plugins.apply(DEPENDENCY_MANAGEMENT_PLUGIN_ID);
 
     }
 
@@ -216,6 +219,7 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
 
             /* 本地仓库地址 */
             this.addMavenLocal(extension.getLocalMavenRepository());
+            this.addMavenCentral();
 
             /* Ali 云效 */
             extension.getAli().all(aliYun -> {
@@ -223,7 +227,7 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
                 this.addMavenRepository(aliYun.getUrl(), aliYun.getUsername(), aliYun.getPassword());
             });
 
-            /* 公共仓库 */
+            /* 自定义配置的仓库 */
             extension.getMaven().all(maven -> {
                 project.getLogger().debug("maven: " + maven);
                 this.addMavenRepository(maven.getUrl(), maven.getUsername(), maven.getPassword());
@@ -255,14 +259,16 @@ public class DevToolsPlugin extends AbstractPlugin implements IRepository, IDepe
                 this.addAnnotationProcessor(DepEnum.GOOGLE_AUTO_SERVICE);
             }
 
-            /* junit */
+            /* Junit */
             String junitVersion = ExtraPropsUtils.getStringValue(project, ExtraProps.JUNIT_VERSION);
             if (JUNIT_4_PATTERN.matcher(junitVersion).matches()) {
                 this.addTestImplementation(DepEnum.JUNIT_4);
             } else if (JUNIT_5_PATTERN.matcher(junitVersion).matches()) {
                 this.addTestImplementation(DepEnum.JUNIT_5);
             }
+            if (project.getPluginManager().hasPlugin("")) {
 
+            }
         });
     }
 

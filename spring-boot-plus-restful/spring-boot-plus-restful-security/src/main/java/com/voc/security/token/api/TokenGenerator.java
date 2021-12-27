@@ -1,5 +1,6 @@
-package com.voc.security.token;
+package com.voc.security.token.api;
 
+import com.voc.security.token.model.TokenResult;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

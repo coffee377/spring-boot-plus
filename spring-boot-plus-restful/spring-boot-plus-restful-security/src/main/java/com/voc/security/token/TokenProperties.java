@@ -73,4 +73,11 @@ public class TokenProperties {
         EVICT_LATEST
     }
 
+    /**
+     * TOKEN 类型
+     */
+    enum TokenType {
+        JWT, OPAQUE
+    }
+
 }

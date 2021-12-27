@@ -30,8 +30,8 @@ public class RestfulAuthenticationEntryPoint extends ResponseHandler implements 
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-        if (log.isErrorEnabled()) {
-            log.info("访问资源 {} 需要用户身份认证", request.getRequestURL().toString());
+        if (log.isDebugEnabled()) {
+            log.debug("访问资源 {} 需要用户身份认证", request.getRequestURL().toString());
         }
 
         this.setBizStatus(BaseBizStatus.UNAUTHORIZED);

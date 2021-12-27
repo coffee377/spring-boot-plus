@@ -21,6 +21,10 @@ public class SecurityProperties {
      */
     private List<String> ignore;
 
+    private boolean ss;
+
+    private boolean res;
+
     /**
      * 用户名密码登陆处理地址，默认 /login
      */

@@ -1,7 +1,6 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.voc.security.autoconfigure.SecurityPlusAutoConfiguration
+com.voc.security.core.authentication.autoconfigure.SecurityPlusAutoConfiguration
 
-org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer=\
-com.voc.security.configurer.RestfulLoginConfigurer,\
-com.voc.security.configurer.SwitchUserConfigurer
+#org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer=\
+

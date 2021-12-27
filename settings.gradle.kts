@@ -38,11 +38,12 @@ fileTree(rootDir) {
   }
 
 include(":examples")
+include(":examples:gradle")
 include(":spring-boot-plus-restful")
 include(":spring-boot-plus-restful:spring-boot-plus-restful-core")
-include(":spring-boot-plus-restful:spring-boot-plus-restful-dingtalk")
-include(":spring-boot-plus-restful:spring-boot-plus-restful-security")
-include(":spring-boot-plus-restful:spring-boot-plus-restful-system")
+//include(":spring-boot-plus-restful:spring-boot-plus-restful-dingtalk")
+//include(":spring-boot-plus-restful:spring-boot-plus-restful-security")
+//include(":spring-boot-plus-restful:spring-boot-plus-restful-system")
 
 
 val projectReg = arrayListOf(".*(examples|restful)$", "restful-(core|dingtalk)$")

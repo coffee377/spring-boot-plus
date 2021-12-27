@@ -10,8 +10,8 @@ org.springframework.context.ApplicationListener                                 
 com.voc.restful.core.listener.BannerListener,\
 com.voc.restful.core.listener.AppStartedListener
 
-org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer = \
-com.voc.security.core.authentication.QRAuthenticationProviderConfigurer
+#org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer = \
+#com.voc.security.core.authentication.QRAuthenticationProviderConfigurer
 
 org.springframework.boot.env.EnvironmentPostProcessor                                 = \
 com.voc.restful.core.listener.AppInfoEnvironmentPostProcessor

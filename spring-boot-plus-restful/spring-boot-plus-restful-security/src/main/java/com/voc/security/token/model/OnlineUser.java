@@ -1,4 +1,4 @@
-package com.voc.security.token;
+package com.voc.security.token.model;
 
 import lombok.Data;
 

@@ -17,7 +17,7 @@ public interface IDependency extends IProject {
     /**
      * 添加依赖
      *
-     * @param configurationName  配置面名称
+     * @param configurationName  配置名称
      * @param dependencyNotation 依赖
      */
     default void addDependency(String configurationName, Object dependencyNotation) {
@@ -29,7 +29,7 @@ public interface IDependency extends IProject {
     /**
      * 添加依赖
      *
-     * @param configurationName 配置面名称
+     * @param configurationName 配置名称
      * @param dependency        依赖
      */
     default void addDependency(String configurationName, DepEnum dependency) {
