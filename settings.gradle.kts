@@ -37,10 +37,10 @@ fileTree(rootDir) {
 //    project(it.path).name = it.name
   }
 
-include(":examples")
+//include(":examples")
 include(":examples:gradle")
-include(":spring-boot-plus-restful")
-include(":spring-boot-plus-restful:spring-boot-plus-restful-core")
+//include(":spring-boot-plus-restful")
+//include(":spring-boot-plus-restful:spring-boot-plus-restful-core")
 //include(":spring-boot-plus-restful:spring-boot-plus-restful-dingtalk")
 //include(":spring-boot-plus-restful:spring-boot-plus-restful-security")
 //include(":spring-boot-plus-restful:spring-boot-plus-restful-system")

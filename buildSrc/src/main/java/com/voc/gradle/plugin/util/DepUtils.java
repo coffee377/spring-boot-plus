@@ -148,6 +148,16 @@ public class DepUtils {
         return of(dependency, version, true, null);
     }
 
+    /**
+     * 创建依赖
+     *
+     * @param dependency 内部依赖枚举
+     * @return DefaultExternalModuleDependency
+     */
+    public static DefaultExternalModuleDependency withoutVersion(DepEnum dependency) {
+        return of(dependency, null);
+    }
+
 
     /**
      * 创建依赖

@@ -38,6 +38,16 @@ public interface IDependency extends IProject {
     }
 
     /**
+     * 添加依赖
+     *
+     * @param configurationName 配置名称
+     * @param dependency        依赖
+     */
+    default void addDependencyWithoutVersion(String configurationName, DepEnum dependency) {
+        this.addDependency(configurationName, DepUtils.withoutVersion(dependency));
+    }
+
+    /**
      * 添加 annotationProcessor 依赖
      *
      * @param dependency 依赖
@@ -47,6 +57,15 @@ public interface IDependency extends IProject {
         this.addDependency(JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME, dependency);
     }
 
+    /**
+     * 添加 annotationProcessor 依赖
+     *
+     * @param dependency 依赖
+     * @see JavaPlugin#ANNOTATION_PROCESSOR_CONFIGURATION_NAME
+     */
+    default void addAnnotationProcessorWithoutVersion(DepEnum dependency) {
+        this.addDependencyWithoutVersion(JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME, dependency);
+    }
 
     /**
      * 添加 implementation 依赖
@@ -56,6 +75,16 @@ public interface IDependency extends IProject {
      */
     default void addImplementation(DepEnum dependency) {
         this.addDependency(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME, dependency);
+    }
+
+    /**
+     * 添加 implementation 依赖
+     *
+     * @param dependency Dependency
+     * @see JavaPlugin#IMPLEMENTATION_CONFIGURATION_NAME
+     */
+    default void addImplementationWithoutVersion(DepEnum dependency) {
+        this.addDependencyWithoutVersion(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME, dependency);
     }
 
     /**
@@ -69,6 +98,36 @@ public interface IDependency extends IProject {
     }
 
     /**
+     * 添加 testImplementation 依赖
+     *
+     * @param dependency Dependency
+     * @see JavaPlugin#TEST_IMPLEMENTATION_CONFIGURATION_NAME
+     */
+    default void addTestImplementationWithoutVersion(DepEnum dependency) {
+        this.addDependencyWithoutVersion(JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME, dependency);
+    }
+
+    /**
+     * 添加 testRuntimeOnly 依赖
+     *
+     * @param dependency Dependency
+     * @see JavaPlugin#TEST_RUNTIME_ONLY_CONFIGURATION_NAME
+     */
+    default void addTestRuntimeOnly(DepEnum dependency) {
+        this.addDependency(JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_NAME, dependency);
+    }
+
+    /**
+     * 添加 testRuntimeOnly 依赖
+     *
+     * @param dependency Dependency
+     * @see JavaPlugin#TEST_RUNTIME_ONLY_CONFIGURATION_NAME
+     */
+    default void addTestRuntimeOnlyWithoutVersion(DepEnum dependency) {
+        this.addDependencyWithoutVersion(JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_NAME, dependency);
+    }
+
+    /**
      * 添加 compileOnly 依赖
      *
      * @param dependency Dependency
@@ -79,6 +138,16 @@ public interface IDependency extends IProject {
     }
 
     /**
+     * 添加 compileOnly 依赖
+     *
+     * @param dependency Dependency
+     * @see JavaPlugin#COMPILE_ONLY_CONFIGURATION_NAME
+     */
+    default void addCompileOnlyWithoutVersion(DepEnum dependency) {
+        this.addDependencyWithoutVersion(JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME, dependency);
+    }
+
+    /**
      * 添加 api 依赖
      *
      * @param dependency Dependency
@@ -86,6 +155,16 @@ public interface IDependency extends IProject {
      */
     default void addApi(DepEnum dependency) {
         this.addDependency(JavaPlugin.API_CONFIGURATION_NAME, dependency);
+    }
+
+    /**
+     * 添加 api 依赖
+     *
+     * @param dependency Dependency
+     * @see JavaPlugin#API_CONFIGURATION_NAME
+     */
+    default void addApiWithoutVersion(DepEnum dependency) {
+        this.addDependencyWithoutVersion(JavaPlugin.API_CONFIGURATION_NAME, dependency);
     }
 
 }

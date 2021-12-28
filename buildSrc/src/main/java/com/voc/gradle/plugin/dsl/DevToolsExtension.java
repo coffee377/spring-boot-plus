@@ -1,7 +1,7 @@
-package com.voc.gradle.plugin.extension;
+package com.voc.gradle.plugin.dsl;
 
-import com.voc.gradle.plugin.repository.AliYunMavenRepository;
 import com.voc.gradle.plugin.repository.MavenRepository;
+import com.voc.gradle.plugin.repository.aliyun.AliYunMavenRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.gradle.api.Action;
@@ -21,7 +21,7 @@ public class DevToolsExtension {
     private final NamedDomainObjectContainer<AliYunMavenRepository> ali;
 
     /**
-     * 使用阿里代理的仓库 {@link "https://maven.aliyun.com/mvn/guide"}
+     * 使用阿里云代理的仓库服务 {@link "https://maven.aliyun.com/mvn/guide"}
      */
     private boolean aliMaven = true;
 
@@ -51,13 +51,18 @@ public class DevToolsExtension {
     private boolean javaTools;
 
     /**
-     * 是否使用 lombok，默认使用
+     * 是否使用 lombok
      */
-    private boolean lombok = true;
+    private boolean lombok;
+
+    /**
+     * 是否开启单元测试
+     */
+    private boolean junit;
 
     public DevToolsExtension(Project project) {
-        this.maven = project.container(MavenRepository.class);
-        this.ali = project.container(AliYunMavenRepository.class);
+        maven = project.container(MavenRepository.class);
+        ali = project.container(AliYunMavenRepository.class);
     }
 
     public void maven(Action<? super NamedDomainObjectContainer<MavenRepository>> action) {

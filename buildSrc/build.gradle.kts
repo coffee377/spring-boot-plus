@@ -40,13 +40,16 @@ configurations {
   runtimeClasspath {
     extendsFrom(annotationProcessor)
   }
-
-  runtimeOnly {
-//    extendsFrom(annotationProcessor)
-  }
-
+  
   testRuntimeOnly {
     extendsFrom(runtimeOnly)
+  }
+
+  all {
+    resolutionStrategy {
+      cacheDynamicVersionsFor(10, TimeUnit.MINUTES)
+      cacheChangingModulesFor(10, TimeUnit.SECONDS)
+    }
   }
 
 }
@@ -73,7 +76,8 @@ dependencies {
   annotationProcessor("org.projectlombok:lombok:1.18.20")
 
   /*  Use JUnit Jupiter for testing. */
-  testImplementation("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
 }
 
 tasks {

@@ -15,7 +15,8 @@ public enum DepEnum {
      * 内置依赖
      */
     JUNIT_4("junit", "junit", ExtraProps.JUNIT_VERSION),
-    JUNIT_5("org.junit.jupiter", "junit-jupiter-engine", ExtraProps.JUNIT_VERSION),
+    JUNIT_5_API("org.junit.jupiter", "junit-jupiter-engine", ExtraProps.JUNIT_VERSION),
+    JUNIT_5_ENGINE("org.junit.jupiter", "junit-jupiter-engine", ExtraProps.JUNIT_VERSION),
     SLF4J_API("org.slf4j", "slf4j-api", ExtraProps.SLF4J_VERSION),
 
     JAVA_CRACK("com.voc", "JCrack", ExtraProps.JAVA_CRACK_VERSION),
