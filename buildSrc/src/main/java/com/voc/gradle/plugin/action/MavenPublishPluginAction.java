@@ -130,7 +130,6 @@ public class MavenPublishPluginAction implements IPluginAction {
     private void resolvePublishRepository(Project project, RepositoryHandler publishingRepositories) {
         project.afterEvaluate(evaluated -> {
             IDevToolsExtension devToolsExtension = evaluated.getExtensions().getByType(IDevToolsExtension.class);
-            // TODO: 2021/12/30 10:28
             List<RepositoryInfo> mavenRepositories = devToolsExtension.mavenRepository().stream()
                     .filter((Predicate<RepositoryInfo>) RepositoryInfo::isAllowPublish).collect(Collectors.toList());
             List<AliYunRepositoryInfo> aliYunMavenRepositories = devToolsExtension.aliMavenRepository().stream()

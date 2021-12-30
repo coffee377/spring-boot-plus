@@ -21,3 +21,7 @@ dependencies {
   compileOnly("org.springframework.boot:spring-boot-starter-security")
 }
 
+springBoot {
+
+}
+

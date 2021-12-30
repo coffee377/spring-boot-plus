@@ -2,7 +2,6 @@ package com.voc.gradle.plugin.repository;
 
 import com.voc.gradle.plugin.api.IProject;
 import org.gradle.api.Named;
-import org.gradle.api.provider.Property;
 
 import java.io.Serializable;
 
@@ -116,47 +115,33 @@ public interface RepositoryInfo extends IProject, Named, Serializable {
      */
     void publish(boolean allowed);
 
+    /**
+     * 启用发布
+     *
+     * @since 0.0.3
+     */
+    void enablePublish();
 
     /**
-     * 构建仓库允许发布到此仓库
+     * 禁用发布
      *
-     * @return Property<Boolean>
-     * @since 0.0.2
-     * @deprecated
+     * @since 0.0.3
      */
-    default Property<Boolean> publish() {
-        return null;
-    }
+    void disablePublish();
 
     /**
-     * 仓库地址
+     * 从环境变量获取用户名
      *
-     * @return Property<String>
-     * @since 0.0.2
-     * @deprecated
+     * @param key 环境变量
+     * @since 0.0.3
      */
-    default Property<String> url() {
-        return null;
-    }
+    void usernameFromEnvironment(String key);
 
     /**
-     * 用户名
+     * 从环境变量获取密码
      *
-     * @return Property<String>
-     * @since 0.0.2
+     * @param key 环境变量
+     * @since 0.0.3
      */
-    default Property<String> username() {
-        return null;
-    }
-
-    /**
-     * 密码
-     *
-     * @return Property<String>
-     * @since 0.0.2
-     * @deprecated
-     */
-    default Property<String> password() {
-        return null;
-    }
+    void passwordFromEnvironment(String key);
 }

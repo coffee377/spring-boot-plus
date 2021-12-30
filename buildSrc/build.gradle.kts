@@ -40,7 +40,7 @@ configurations {
   runtimeClasspath {
     extendsFrom(annotationProcessor)
   }
-  
+
   testRuntimeOnly {
     extendsFrom(runtimeOnly)
   }
@@ -111,6 +111,10 @@ gradlePlugin {
     create("app-info") {
       id = "com.voc.app.info"
       implementationClass = "com.voc.gradle.plugin.AppInfoPlugin"
+    }
+    create("boot") {
+      id = "com.voc.boot"
+      implementationClass = "com.voc.gradle.plugin.BootPlugin"
     }
   }
 

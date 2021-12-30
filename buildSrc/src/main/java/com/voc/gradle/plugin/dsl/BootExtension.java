@@ -8,17 +8,21 @@ import org.gradle.api.provider.Property;
  * @email coffee377@dingtalk.com
  * @time 2020/12/17 09:17
  */
-public class BootExtension {
+public class BootExtension implements IBootExtension {
 
     private final Property<Boolean> library;
 
     public BootExtension(Project project) {
-        this.library = project.getObjects().property(Boolean.class);
+        this.library = project.getObjects().property(Boolean.class).value(false);
     }
 
-    public Property<Boolean> getLibrary() {
-        return library;
+    @Override
+    public boolean isLibrary() {
+        return this.library.get();
     }
 
-
+    @Override
+    public void library(boolean enabled) {
+        this.library.set(enabled);
+    }
 }

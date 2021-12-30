@@ -1,4 +1,3 @@
-import org.springframework.boot.gradle.tasks.bundling.BootJar
 import com.voc.gradle.plugin.core.DevType
 
 description = "Spring Boot Plus Restful Dependencies"
@@ -42,7 +41,7 @@ devtools {
 }
 
 subprojects {
-  apply(plugin = "org.springframework.boot")
+  apply(plugin = "com.voc.boot")
 
   dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -51,15 +50,6 @@ subprojects {
     }
   }
 
-  tasks {
-    withType<Jar> {
-      enabled = true
-    }
-
-    withType<BootJar> {
-      enabled = false
-    }
-  }
 }
 
 

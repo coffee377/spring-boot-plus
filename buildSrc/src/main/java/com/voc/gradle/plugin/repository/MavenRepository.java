@@ -98,6 +98,26 @@ public class MavenRepository extends ProjectBase implements RepositoryInfo {
     }
 
     @Override
+    public void enablePublish() {
+        this.publish.set(true);
+    }
+
+    @Override
+    public void disablePublish() {
+        this.publish.set(false);
+    }
+
+    @Override
+    public void usernameFromEnvironment(String key) {
+        this.username.set(System.getenv(key));
+    }
+
+    @Override
+    public void passwordFromEnvironment(String key) {
+        this.password.set(System.getenv(key));
+    }
+
+    @Override
     public int hashCode() {
         return name.hashCode() + url.hashCode() + username.hashCode() + password.hashCode();
     }

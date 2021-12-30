@@ -20,8 +20,7 @@ public enum DevType {
     BOM("pom", "Pom"),
     LIB("jar", "Lib"),
     APP("jar", "App"),
-    APP_JAR("jar", "AppJar"),
-    APP_WAR("war", "AppWar"),
+    WAR("war", "War"),
     ;
 
     /**
