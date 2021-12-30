@@ -3,12 +3,9 @@ package com.voc.gradle.plugin.util;
 import com.voc.gradle.plugin.repository.RepositoryInfo;
 import com.voc.gradle.plugin.repository.aliyun.AliYunRepositoryInfo;
 import org.gradle.api.artifacts.dsl.RepositoryHandler;
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.gradle.internal.impldep.org.eclipse.jgit.annotations.NonNull;
 import org.gradle.internal.impldep.org.eclipse.jgit.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,7 +27,7 @@ public class RepositoryUtil {
     }
 
     /**
-     * 添加仓库
+     * 添加依赖仓库
      *
      * @param repositoryHandler RepositoryHandler
      * @param repositoryInfo    RepositoryInfo
@@ -40,7 +37,7 @@ public class RepositoryUtil {
     }
 
     /**
-     * 添加仓库
+     * 添加依赖仓库
      *
      * @param repositoryHandler RepositoryHandler
      * @param repositoryInfo    RepositoryInfo
@@ -51,7 +48,7 @@ public class RepositoryUtil {
         Optional.ofNullable(repositoryInfo).ifPresent(info -> {
             String realUrl = StringUtils.isNotEmpty(url) ? url : info.getUrl();
             if (StringUtils.isNotEmpty(realUrl)) {
-                MavenArtifactRepository maven = repositoryHandler.maven(mavenArtifactRepository -> {
+                repositoryHandler.maven(mavenArtifactRepository -> {
                     Optional.of(info.getName()).ifPresent(mavenArtifactRepository::setName);
                     mavenArtifactRepository.setUrl(realUrl);
                     mavenArtifactRepository.credentials(credentials -> {
@@ -59,14 +56,12 @@ public class RepositoryUtil {
                         Optional.ofNullable(info.getPassword()).ifPresent(credentials::setPassword);
                     });
                 });
-                repositoryHandler.add(maven);
             }
         });
-
     }
 
     /**
-     * 添加阿里云效仓库
+     * 添加依赖仓库（阿里云效）
      *
      * @param repositoryHandler    RepositoryHandler
      * @param aliYunRepositoryInfo AliYunRepositoryInfo
@@ -74,9 +69,9 @@ public class RepositoryUtil {
     public static void addAliYunRepository(@NonNull RepositoryHandler repositoryHandler,
                                            @Nullable AliYunRepositoryInfo aliYunRepositoryInfo) {
         Optional.ofNullable(aliYunRepositoryInfo).ifPresent(info -> {
-            List<String> urls = Arrays.asList(info.getReleaseUrl(), info.getSnapshotUrl());
-            urls.forEach(url -> RepositoryUtil.addRepository(repositoryHandler, info, url));
+            info.getValidUrl().forEach(url -> RepositoryUtil.addRepository(repositoryHandler, info, url));
         });
 
     }
+
 }

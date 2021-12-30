@@ -52,7 +52,7 @@ public interface IRepository extends IProject {
      * @param repositoryInfoAction Action<RepositoryInfo>
      */
     default void addMavenRepository(Action<RepositoryInfo> repositoryInfoAction) {
-        RepositoryInfo repositoryInfo = new MavenRepository();
+        RepositoryInfo repositoryInfo = new MavenRepository(getProject());
         repositoryInfoAction.execute(repositoryInfo);
         addMavenRepository(repositoryInfo);
     }

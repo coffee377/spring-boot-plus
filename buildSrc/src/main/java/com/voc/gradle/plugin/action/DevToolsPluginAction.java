@@ -4,7 +4,7 @@ import com.voc.gradle.plugin.DevToolsPlugin;
 import com.voc.gradle.plugin.api.IDependency;
 import com.voc.gradle.plugin.api.IPluginAction;
 import com.voc.gradle.plugin.api.IRepository;
-import com.voc.gradle.plugin.dsl.DevToolsExtension;
+import com.voc.gradle.plugin.dsl.IDevToolsExtension;
 import com.voc.gradle.plugin.embedded.DepEnum;
 import com.voc.gradle.plugin.embedded.ExtraProps;
 import com.voc.gradle.plugin.util.ExtraPropsUtils;
@@ -67,7 +67,7 @@ public class DevToolsPluginAction implements IPluginAction, IRepository, IDepend
      */
     private void configureRepositories(Project project) {
         project.afterEvaluate(evaluated -> {
-            DevToolsExtension extension = evaluated.getExtensions().getByType(DevToolsExtension.class);
+            IDevToolsExtension extension = evaluated.getExtensions().getByType(IDevToolsExtension.class);
 
             /* 本地仓库地址 */
             this.addMavenLocal(extension.getLocalMavenRepository());
@@ -76,23 +76,23 @@ public class DevToolsPluginAction implements IPluginAction, IRepository, IDepend
             this.addMavenCentral();
 
             /* 阿里云代理的仓库服务 */
-            if (extension.isAliMaven()) {
-                INNER_ALI_MAVEN.forEach(
-                        (name, url) -> extension.getMaven().create(name, mavenRepositories -> mavenRepositories.setUrl(url))
+            if (extension.isAliMavenProxy()) {
+                INNER_ALI_MAVEN.forEach((name, url) ->
+                        extension.mavenRepository().create(name, mavenRepositories -> mavenRepositories.setUrl(url))
                 );
             }
 
             /* 自定义配置的仓库 */
-            extension.getMaven().all(maven -> {
-                String url = maven.toString();
+            extension.mavenRepository().all(repositoryInfo -> {
+                String url = repositoryInfo.toString();
                 if (StringUtils.isNotEmpty(url)) {
                     project.getLogger().warn("maven: " + url);
                 }
-                addMavenRepository(maven);
+                addMavenRepository(repositoryInfo);
             });
 
             /* Ali 云效 */
-            extension.getAli().all(aliYun -> {
+            extension.aliMavenRepository().all(aliYun -> {
                 String url = aliYun.toString();
                 if (StringUtils.isNotEmpty(url)) {
                     project.getLogger().warn("maven: " + url);
@@ -111,25 +111,25 @@ public class DevToolsPluginAction implements IPluginAction, IRepository, IDepend
      */
     private void configureDependencies(Project project) {
         project.afterEvaluate(evaluated -> {
-            DevToolsExtension extension = evaluated.getExtensions().getByType(DevToolsExtension.class);
+            IDevToolsExtension extension = evaluated.getExtensions().getByType(IDevToolsExtension.class);
             /* lombok */
-            if (extension.isLombok()) {
+            if (extension.useLombok()) {
                 this.addAnnotationProcessor(DepEnum.LOMBOK);
             }
 
             /* java tools */
-            if (extension.isJavaTools()) {
+            if (extension.useJavaTools()) {
                 String tools = System.getProperty("java.home").replace("jre", "") + "/lib/tools.jar";
                 this.addDependency(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME, project.files(tools));
             }
 
             /* Google Auto Service */
-            if (extension.isGoogleAutoService()) {
+            if (extension.useAutoService()) {
                 this.addAnnotationProcessor(DepEnum.GOOGLE_AUTO_SERVICE);
             }
 
             /* 单元测试 */
-            if (extension.isJunit()) {
+            if (extension.useJunit()) {
                 String junitVersion = ExtraPropsUtils.getStringValue(project, ExtraProps.JUNIT_VERSION);
                 if (JUNIT_4_PATTERN.matcher(junitVersion).matches()) {
                     this.addTestImplementation(DepEnum.JUNIT_4);
@@ -138,7 +138,6 @@ public class DevToolsPluginAction implements IPluginAction, IRepository, IDepend
                     this.addTestRuntimeOnly(DepEnum.JUNIT_5_ENGINE);
                 }
             }
-
 
         });
     }

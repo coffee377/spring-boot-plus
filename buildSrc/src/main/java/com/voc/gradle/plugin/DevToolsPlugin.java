@@ -5,6 +5,7 @@ import com.voc.gradle.plugin.action.JavaPluginAction;
 import com.voc.gradle.plugin.action.MavenPublishPluginAction;
 import com.voc.gradle.plugin.api.IPluginAction;
 import com.voc.gradle.plugin.dsl.DevToolsExtension;
+import com.voc.gradle.plugin.dsl.IDevToolsExtension;
 import com.voc.gradle.plugin.embedded.IDE;
 import com.voc.gradle.plugin.util.ExtraPropsUtils;
 import lombok.Getter;
@@ -77,7 +78,8 @@ public class DevToolsPlugin implements Plugin<Project> {
      */
     private void createExtension(Project project) {
         ExtensionContainer extensions = project.getExtensions();
-        extensions.create(DEV_TOOL_EXTENSION_NAME, DevToolsExtension.class, project);
+        extensions.create(IDevToolsExtension.class, DEV_TOOL_EXTENSION_NAME, DevToolsExtension.class, project);
+//        extensions.create(DEV_TOOL_EXTENSION_NAME, IDevToolsExtension.class, project);
     }
 
     /**
@@ -99,9 +101,7 @@ public class DevToolsPlugin implements Plugin<Project> {
         plugins.apply(MavenPublishPlugin.class);
 
         /* 4.依赖管理插件 */
-        if (plugins.hasPlugin(DEPENDENCY_MANAGEMENT_PLUGIN_ID)) {
-            plugins.apply(DEPENDENCY_MANAGEMENT_PLUGIN_ID);
-        }
+        plugins.apply(DEPENDENCY_MANAGEMENT_PLUGIN_ID);
 
     }
 

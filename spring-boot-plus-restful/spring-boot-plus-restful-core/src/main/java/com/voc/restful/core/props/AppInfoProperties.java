@@ -4,7 +4,6 @@ import com.voc.restful.core.banner.YamlPropertySourceFactory;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
@@ -15,7 +14,7 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Getter
 @Setter
-@Configuration
+//@Configuration
 @PropertySource(name = AppInfoProperties.NAME, value = "classpath:META-INF/app-info.yml", ignoreResourceNotFound = true,
         encoding = "utf-8", factory = YamlPropertySourceFactory.class)
 @ConfigurationProperties(prefix = "spring.application")

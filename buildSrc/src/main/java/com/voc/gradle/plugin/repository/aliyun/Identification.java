@@ -1,5 +1,7 @@
 package com.voc.gradle.plugin.repository.aliyun;
 
+import com.voc.gradle.plugin.util.StringUtils;
+import lombok.Data;
 import org.gradle.api.Named;
 
 import java.io.Serializable;
@@ -9,7 +11,7 @@ import java.io.Serializable;
  * @email coffee377@dingtalk.com
  * @time 2021/12/28 19:36
  */
-
+@Data
 public class Identification implements Named, Serializable {
     private String name;
     private String id;
@@ -36,36 +38,27 @@ public class Identification implements Named, Serializable {
         this(name, null, type, null);
     }
 
-    public void setName(String name) {
+    public void name(String name) {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
+    public void id(String id) {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
+    public void type(String type) {
         this.type = type;
     }
 
-    public String getHash() {
-        return hash;
-    }
-
-    public void setHash(String hash) {
+    public void hash(String hash) {
         this.hash = hash;
     }
 
     @Override
     public String toString() {
-        return String.format("%s-%s-%s", id, type, hash);
+        if (StringUtils.isNotEmpty(id) && StringUtils.isNotEmpty(type) && StringUtils.isNotEmpty(hash)) {
+            return String.format("%s-%s-%s", id, type, hash);
+        }
+        return null;
     }
 }

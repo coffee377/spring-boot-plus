@@ -1,6 +1,9 @@
 package com.voc.gradle.plugin.repository.aliyun;
 
 import com.voc.gradle.plugin.repository.RepositoryInfo;
+import org.gradle.api.Action;
+
+import java.util.List;
 
 /**
  * @author Wu Yujie
@@ -10,29 +13,85 @@ import com.voc.gradle.plugin.repository.RepositoryInfo;
 public interface AliYunRepositoryInfo extends RepositoryInfo {
 
     /**
-     * 仓库地址
+     * 云效仓库前缀
      *
-     * @param repositoryType RepositoryType
      * @return String
+     * @since 0.0.1
      */
-    String getUrl(RepositoryType repositoryType);
+    String getPrefix();
 
+    /**
+     * 设置云效仓库前缀
+     *
+     * @param prefix String
+     * @since 0.0.2
+     */
+    default void prefix(String prefix) {
+    }
 
-//    void release(Action<Identification> action);
-//
-//    void snapshot(Action<Identification> action);
+    /**
+     * 云效仓库 ID
+     *
+     * @return String
+     * @since 0.0.1
+     */
+    String getId();
+
+    /**
+     * 设置云效仓库 ID
+     *
+     * @param id String
+     * @since 0.0.2
+     */
+    default void id(String id) {
+    }
+
+    /**
+     * 正式库配置
+     *
+     * @param action Action<Identification>
+     * @since 0.0.1
+     */
+    void release(Action<Identification> action);
+
+    /**
+     * 快照库配置
+     *
+     * @param action Action<Identification>
+     * @since 0.0.1
+     */
+    void snapshot(Action<Identification> action);
 
     /**
      * 正式版地址
      *
      * @return String
+     * @see #getValidUrl()
+     * @since 0.0.1
+     * @deprecated
      */
-    String getReleaseUrl();
+    default String getReleaseUrl() {
+        return null;
+    }
 
     /**
      * 快照版地址
      *
      * @return String
+     * @see #getValidUrl()
+     * @since 0.0.1
+     * @deprecated
      */
-    String getSnapshotUrl();
+    default String getSnapshotUrl() {
+        return null;
+    }
+
+    /**
+     * 获取依赖有效仓库地址
+     *
+     * @return List<String>
+     * @since 0.0.2
+     */
+    List<String> getValidUrl();
+
 }
