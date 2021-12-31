@@ -2,6 +2,7 @@ package com.voc.restful.core.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Wu Yujie
@@ -10,5 +11,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConfigurationPropertiesScan("com.voc.restful.core")
+@Import(RestfulCoreImportSelector.class)
 public class AutoConfiguration {
 }

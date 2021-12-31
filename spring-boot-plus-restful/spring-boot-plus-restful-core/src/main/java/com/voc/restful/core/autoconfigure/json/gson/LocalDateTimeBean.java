@@ -4,7 +4,8 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.voc.restful.core.autoconfigure.json.JsonProperties;
-import org.springframework.stereotype.Component;
+import com.voc.restful.core.autoconfigure.json.JsonType;
+import com.voc.restful.core.autoconfigure.json.annotation.Temporal;
 
 import java.lang.reflect.Type;
 import java.time.Instant;
@@ -16,7 +17,7 @@ import java.time.ZoneId;
  * @email coffee377@dingtalk.com
  * @time 2020/09/27 17:25
  */
-@Component
+@Temporal(JsonType.GSON)
 public class LocalDateTimeBean extends TemporalBase<LocalDateTime> {
 
     public LocalDateTimeBean(JsonProperties jsonProperties) {

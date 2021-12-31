@@ -1,7 +1,7 @@
 package com.voc.restful.core.autoconfigure.json.jackson.deser;
 
 import com.voc.restful.core.autoconfigure.json.JsonProperties;
-import org.springframework.stereotype.Component;
+import com.voc.restful.core.autoconfigure.json.annotation.Temporal;
 
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -11,7 +11,7 @@ import java.util.Date;
  * @email coffee377@dingtalk.com
  * @time 2020/09/28 10:16
  */
-@Component
+@Temporal
 public class DateDeserializerPlus extends BaseTemporalDeserializer<Date> {
 
     public DateDeserializerPlus(JsonProperties jsonProperties) {

@@ -76,4 +76,7 @@ logging:
     root: info
     com:
       voc: debug
-
+#api:
+#  ping:
+#    enable: true
+#    path: ping

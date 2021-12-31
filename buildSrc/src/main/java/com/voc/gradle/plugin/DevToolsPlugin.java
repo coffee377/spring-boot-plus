@@ -14,7 +14,7 @@ import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.ExtensionContainer;
-import org.gradle.api.plugins.JavaPlugin;
+import org.gradle.api.plugins.JavaLibraryPlugin;
 import org.gradle.api.plugins.PluginContainer;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.ide.visualstudio.plugins.VisualStudioPlugin;
@@ -83,7 +83,6 @@ public class DevToolsPlugin implements Plugin<Project> {
     private void createExtension(Project project) {
         ExtensionContainer extensions = project.getExtensions();
         extensions.create(IDevToolsExtension.class, DEV_TOOL_EXTENSION_NAME, DevToolsExtension.class, project);
-//        extensions.create(DEV_TOOL_EXTENSION_NAME, IDevToolsExtension.class, project);
     }
 
     /**
@@ -98,8 +97,8 @@ public class DevToolsPlugin implements Plugin<Project> {
         String ide = ExtraPropsUtils.getStringValue(project, "ide", "idea");
         this.applyIdePlugin(plugins, IDE.of(ide));
 
-        /* 2.应用 Java 插件 */
-        plugins.apply(JavaPlugin.class);
+        /* 2.应用 Java Library 插件 */
+        plugins.apply(JavaLibraryPlugin.class);
 
         /* 3.应用 MavenPublish 插件 */
         plugins.apply(MavenPublishPlugin.class);

@@ -3,7 +3,7 @@ package com.voc.restful.core.autoconfigure.json.jackson.ser;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.voc.restful.core.autoconfigure.json.JsonProperties;
-import org.springframework.stereotype.Component;
+import com.voc.restful.core.autoconfigure.json.annotation.Temporal;
 
 import java.time.LocalTime;
 
@@ -12,7 +12,7 @@ import java.time.LocalTime;
  * @email coffee377@dingtalk.com
  * @time 2020/09/28 11:35
  */
-@Component
+@Temporal
 public class LocalTimeSerializerPlus extends BaseTemporalSerializer<LocalTime> {
 
     public LocalTimeSerializerPlus(JsonProperties jsonProperties) {

@@ -18,26 +18,25 @@
       <dependency>
         <groupId>com.voc</groupId>
         <artifactId>spring-boot-plus-restful</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
-<!--      <dependency>-->
-<!--        <groupId>org.springframework.boot</groupId>-->
-<!--        <artifactId>spring-boot-dependencies</artifactId>-->
-<!--        <version>2.3.5.RELEASE</version>-->
-<!--        <scope>import</scope>-->
-<!--        <type>pom</type>-->
-<!--      </dependency>-->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.3.5.RELEASE</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
-<!--    <dependency>-->
-<!--      <groupId>com.voc</groupId>-->
-<!--      <artifactId>spring-boot-plus-restful-core</artifactId>-->
-<!--      <version>0.0.1-SNAPSHOT</version>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>com.voc</groupId>
+      <artifactId>spring-boot-plus-restful-core</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

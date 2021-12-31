@@ -1,7 +1,7 @@
 package com.voc.restful.core.autoconfigure.json.jackson.deser;
 
 import com.voc.restful.core.autoconfigure.json.JsonProperties;
-import org.springframework.stereotype.Component;
+import com.voc.restful.core.autoconfigure.json.annotation.Temporal;
 
 import java.lang.reflect.Type;
 import java.time.LocalTime;
@@ -11,7 +11,7 @@ import java.time.LocalTime;
  * @email coffee377@dingtalk.com
  * @time 2020/09/28 22:45
  */
-@Component
+@Temporal
 public class LocalTimeDeserializerPlus extends BaseTemporalDeserializer<LocalTime> {
 
     public LocalTimeDeserializerPlus(JsonProperties jsonProperties) {

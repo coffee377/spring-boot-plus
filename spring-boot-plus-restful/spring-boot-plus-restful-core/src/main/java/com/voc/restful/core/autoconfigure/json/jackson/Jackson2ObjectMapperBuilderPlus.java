@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.voc.restful.core.autoconfigure.json.JsonProperties;
 import com.voc.restful.core.autoconfigure.json.jackson.deser.BaseTemporalDeserializer;
 import com.voc.restful.core.autoconfigure.json.jackson.ser.BaseTemporalSerializer;
+import com.voc.restful.core.autoconfigure.json.jackson.ser.ResultSerializer;
+import com.voc.restful.core.response.Result;
 import lombok.Getter;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
@@ -57,10 +60,10 @@ public class Jackson2ObjectMapperBuilderPlus implements Jackson2ObjectMapperBuil
         }
 
         /* 注册转换器 */
-//        SimpleModule resultModule = new SimpleModule();
-//        ResultSerializer resultSerializer = applicationContext.getBean(ResultSerializer.class);
-//        resultModule.addSerializer(Result.class, resultSerializer);
-//        builder.modules(resultModule);
+        SimpleModule resultModule = new SimpleModule();
+        ResultSerializer resultSerializer = applicationContext.getBean(ResultSerializer.class);
+        resultModule.addSerializer(Result.class, resultSerializer);
+        builder.modules(resultModule);
 
         configureSerializer(builder);
 

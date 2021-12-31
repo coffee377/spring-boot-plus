@@ -21,7 +21,7 @@ dependencies {
 
   testImplementation("org.springframework.security:spring-security-test")
   testImplementation("org.springframework.boot:spring-boot-starter-cache")
+
+  compileOnly("javax.servlet:javax.servlet-api")
 }
-
-
 

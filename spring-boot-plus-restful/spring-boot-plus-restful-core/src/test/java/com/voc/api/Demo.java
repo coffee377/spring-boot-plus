@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+import java.time.LocalDate;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -29,5 +32,11 @@ public class Demo {
     public String ddd() {
         return "直接返回相应的数据";
     }
+
+    @GetMapping("/user")
+    public User user() {
+        return new User("吴玉杰", 32, LocalDate.now(), Instant.now(), null);
+    }
+
 
 }

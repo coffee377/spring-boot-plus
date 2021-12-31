@@ -2,17 +2,15 @@ package com.voc.restful.core.autoconfigure.json.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.voc.restful.core.autoconfigure.json.JsonType;
+import com.voc.restful.core.autoconfigure.json.annotation.ConditionalOnJsonType;
+import com.voc.restful.core.autoconfigure.json.annotation.Temporal;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.*;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Wu Yujie
@@ -21,18 +19,17 @@ import org.springframework.stereotype.Component;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({Gson.class})
-@ConditionalOnProperty(
-        prefix = "api.json",
-        name = "type",
-        havingValue = "gson"
-)
+@ConditionalOnJsonType(JsonType.GSON)
 @ComponentScan(
         useDefaultFilters = false,
         includeFilters = {
-                @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Component.class),
+                @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Temporal.class)
         }
 )
 public class GsonAutoConfigurationPlus {
+
+    public GsonAutoConfigurationPlus() {
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -49,15 +46,9 @@ public class GsonAutoConfigurationPlus {
         return converter;
     }
 
-    @Configuration(proxyBeanMethods = false)
+    @Bean
     @ConditionalOnClass(GsonBuilder.class)
-    static class GsonBuilderCustomizerConfiguration {
-
-        @Bean
-        GsonBuilderCustomizerPlus gsonBuilderCustomizerPlus(ApplicationContext applicationContext) {
-            return new GsonBuilderCustomizerPlus(applicationContext);
-        }
-
+    GsonBuilderCustomizerPlus gsonBuilderCustomizerPlus(ApplicationContext applicationContext) {
+        return new GsonBuilderCustomizerPlus(applicationContext);
     }
-
 }

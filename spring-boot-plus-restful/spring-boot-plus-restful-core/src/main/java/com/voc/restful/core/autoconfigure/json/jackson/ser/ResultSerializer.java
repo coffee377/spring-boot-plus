@@ -7,7 +7,6 @@ import com.voc.restful.core.autoconfigure.json.ResultFieldName;
 import com.voc.restful.core.props.ApiProperties;
 import com.voc.restful.core.response.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
@@ -17,7 +16,6 @@ import java.io.IOException;
  * @email coffee377@dingtalk.com
  * @time 2021/04/25 13:27
  */
-@Component
 @Slf4j
 public class ResultSerializer extends JsonSerializer<Result> {
 

@@ -3,10 +3,9 @@ package com.voc.demo.service;
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
- * @time 2021/12/29 10:32
+ * @time 2021/12/31 15:46
  */
 public interface IDemoService {
-
     /**
      * 输出问候语
      *
@@ -14,5 +13,4 @@ public interface IDemoService {
      * @return String
      */
     String hello(String content);
-
 }

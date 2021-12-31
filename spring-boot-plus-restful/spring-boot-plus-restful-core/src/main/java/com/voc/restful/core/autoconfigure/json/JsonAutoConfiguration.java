@@ -20,6 +20,9 @@ import org.springframework.core.env.Environment;
 @EnableConfigurationProperties({JsonProperties.class})
 public class JsonAutoConfiguration {
 
+    public JsonAutoConfiguration() {
+    }
+
     @Bean("json")
     @ConditionalOnMissingBean
     IJson json(ApplicationContext applicationContext, Environment environment) {

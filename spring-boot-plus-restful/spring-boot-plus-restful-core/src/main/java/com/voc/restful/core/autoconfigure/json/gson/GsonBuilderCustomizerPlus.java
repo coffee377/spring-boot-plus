@@ -27,10 +27,11 @@ public class GsonBuilderCustomizerPlus implements GsonBuilderCustomizer, Ordered
         Map<String, TemporalBase> temporal = applicationContext.getBeansOfType(TemporalBase.class);
         temporal.values().forEach(temporalBase -> {
             Class type = temporalBase.getGenericType();
-            log.debug("{} => {} ", type, temporalBase);
+            if (log.isDebugEnabled()) {
+                log.debug("{} => {} ", type, temporalBase);
+            }
             builder.registerTypeAdapter(type, temporalBase);
         });
-//        builder.registerTypeAdapter(Date.class,)
     }
 
     @Override
