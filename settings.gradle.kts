@@ -48,13 +48,13 @@ fileTree(rootDir) {
 //    project(it.path).name = it.name
   }
 
-include(":examples")
-include(":examples:gradle")
-include(":spring-boot-plus-restful")
-include(":spring-boot-plus-restful:spring-boot-plus-restful-core")
-//include(":spring-boot-plus-restful:spring-boot-plus-restful-dingtalk")
-include(":spring-boot-plus-restful:spring-boot-plus-restful-security")
-//include(":spring-boot-plus-restful:spring-boot-plus-restful-system")
+//include(":examples")
+//include(":examples:gradle")
+include(":restful")
+include(":restful:restful-core")
+//include(":restful:restful-dingtalk")
+//include(":restful:restful-security")
+//include(":restful:restful-system")
 
 
 val projectReg = arrayListOf(".*(examples|restful)$", "restful-(core|dingtalk)$")

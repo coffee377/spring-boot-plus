@@ -7,7 +7,7 @@ group = "com.voc"
 /* 子项目配置 */
 subprojects {
 
-  group = "com.voc"
+  group = "com.voc.boot"
 
   apply(plugin = "com.voc.devtools")
 
