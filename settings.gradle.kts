@@ -11,6 +11,17 @@ pluginManagement {
     }
   }
 
+  resolutionStrategy {
+    eachPlugin {
+//      println(">>>>>>>>>>>> ${requested.id.id} ")
+//      println(">>>>>>>>>>>> ${requested.id.namespace} ")
+//      println(">>>>>>>>>>>> ${requested.id.name} ")
+//      if (requested.id.namespace == "com.example") {
+//        useModule("com.example:sample-plugins:1.0.0")
+//      }
+    }
+  }
+
   /* 插件版本管理 */
   plugins {
     id("org.asciidoctor.jvm.convert") version "3.1.0"

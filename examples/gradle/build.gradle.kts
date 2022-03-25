@@ -5,20 +5,17 @@ plugins {
 
 val restful = "spring-boot-plus-restful"
 
+println("gradle examples version => $version")
+
 dependencyManagement {
+  resolutionStrategy {
+    cacheChangingModulesFor(0, TimeUnit.SECONDS)
+  }
+
   imports {
     mavenBom("com.voc:spring-boot-plus-restful:$version")
   }
 
-//  dependencies {
-//    dependencySet("com.voc:$version") {
-//      entry("${restful}-core")
-////      entry("${name}-dingtalk")
-////      entry("${name}-security")
-////      entry("${name}-system")
-//    }
-//
-//  }
 
 }
 
@@ -31,11 +28,8 @@ repositories {
 
 dependencies {
 //  implementation(project(":$restful:$restful-core"))
-  implementation("com.voc:spring-boot-plus-restful-core:0.0.3-SNAPSHOT")
+  implementation("com.voc:spring-boot-plus-restful-core")
   implementation("org.springframework.boot:spring-boot-starter-web")
-//  implementation("org.springframework.boot:spring-boot-starter-web")
-//  implementation("org.springframework.boot:spring-boot-starter-cache")
-//  implementation("org.springframework.boot:spring-boot-starter-actuator")
 
   annotationProcessor("org.projectlombok:lombok")
   annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -44,12 +38,16 @@ dependencies {
   }
 }
 
-//tasks {
-//  withType<Jar> {
-//    enabled = false
-//  }
-//
-//  withType<org.springframework.boot.gradle.tasks.bundling.BootJar> {
-//    enabled = true
-//  }
-//}
+configurations {
+  all {
+    resolutionStrategy {
+      eachDependency {
+        /* 对于本地项目，DependencyManagementPlugin 版本解析不生效，所以此处手动配置 */
+        /* local project dependency. dependency management has not been applied */
+        if (requested.group == "com.voc" && requested.name.startsWith(restful)) {
+          useVersion("$version")
+        }
+      }
+    }
+  }
+}

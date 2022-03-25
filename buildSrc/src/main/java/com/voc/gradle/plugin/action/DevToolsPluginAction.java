@@ -84,22 +84,25 @@ public class DevToolsPluginAction implements IPluginAction, IRepository, IDepend
 
             /* 自定义配置的仓库 */
             extension.mavenRepository().all(repositoryInfo -> {
-                String url = repositoryInfo.toString();
-                if (StringUtils.isNotEmpty(url)) {
-                    project.getLogger().warn("maven: " + url);
+                if (project.getLogger().isDebugEnabled()) {
+                    String url = repositoryInfo.toString();
+                    if (StringUtils.isNotEmpty(url)) {
+                        project.getLogger().debug("maven: " + url);
+                    }
                 }
                 addMavenRepository(repositoryInfo);
             });
 
             /* Ali 云效 */
             extension.aliMavenRepository().all(aliYun -> {
-                String url = aliYun.toString();
-                if (StringUtils.isNotEmpty(url)) {
-                    project.getLogger().warn("maven: " + url);
+                if (project.getLogger().isDebugEnabled()) {
+                    String url = aliYun.toString();
+                    if (StringUtils.isNotEmpty(url)) {
+                        project.getLogger().debug("maven: " + url);
+                    }
                 }
                 addAliYunMavenRepository(aliYun);
             });
-
 
         });
     }

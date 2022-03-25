@@ -18,7 +18,7 @@ public class BootPluginAction implements IPluginAction {
 
     @Override
     public void execute(Project project) {
-        project.getLogger().error("=============");
-
+//        project.getLogger().error("=============");
+        /* 1. j*/
     }
 }

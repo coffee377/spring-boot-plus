@@ -34,3 +34,6 @@ logging:
 api:
   system:
     prefix: system
+  json:
+    result:
+      success: succeeed

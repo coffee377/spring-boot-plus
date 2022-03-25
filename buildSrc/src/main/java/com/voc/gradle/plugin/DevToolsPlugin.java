@@ -1,9 +1,6 @@
 package com.voc.gradle.plugin;
 
-import com.voc.gradle.plugin.action.BootPluginAction;
-import com.voc.gradle.plugin.action.DevToolsPluginAction;
-import com.voc.gradle.plugin.action.JavaPluginAction;
-import com.voc.gradle.plugin.action.MavenPublishPluginAction;
+import com.voc.gradle.plugin.action.*;
 import com.voc.gradle.plugin.api.IPluginAction;
 import com.voc.gradle.plugin.dsl.DevToolsExtension;
 import com.voc.gradle.plugin.dsl.IDevToolsExtension;
@@ -57,7 +54,10 @@ public class DevToolsPlugin implements Plugin<Project> {
 
     private void registerPluginActions(Project project) {
         List<IPluginAction> actions = Arrays.asList(
-                new JavaPluginAction(), new DevToolsPluginAction(), new MavenPublishPluginAction(),
+                new JavaPluginAction(),
+                new DevToolsPluginAction(),
+                new MavenPublishPluginAction(),
+                new DependencyManagementPluginAction(),
                 new BootPluginAction()
         );
         for (IPluginAction pluginAction : actions) {
