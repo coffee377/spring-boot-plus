@@ -8,7 +8,10 @@ repositories {
 dependencies {
   annotationProcessor("org.projectlombok:lombok")
 
-  implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.boot:spring-boot-starter-web") {
+    exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
+  }
+  implementation("org.springframework.boot:spring-boot-starter-undertow")
   implementation("org.springframework.boot:spring-boot-starter-cache")
   implementation("org.springframework.boot:spring-boot-starter-actuator")
 
@@ -21,5 +24,5 @@ dependencies {
   compileOnly("org.springframework.boot:spring-boot-starter-security")
 }
 
-springBoot{
+springBoot {
 }

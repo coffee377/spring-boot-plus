@@ -1,18 +1,17 @@
 package com.voc.gradle.plugin;
 
+import com.voc.gradle.plugin.action.BootPluginAction;
 import com.voc.gradle.plugin.api.IDependency;
-import com.voc.gradle.plugin.core.DevType;
+import com.voc.gradle.plugin.api.IPluginAction;
 import com.voc.gradle.plugin.dsl.BootExtension;
 import com.voc.gradle.plugin.dsl.IBootExtension;
-import com.voc.gradle.plugin.dsl.IDevToolsExtension;
 import com.voc.gradle.plugin.util.DepUtils;
 import org.gradle.api.Project;
 import org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency;
 import org.gradle.api.plugins.PluginContainer;
-import org.gradle.api.tasks.TaskContainer;
-import org.gradle.api.tasks.bundling.Jar;
-import org.springframework.boot.gradle.tasks.bundling.BootJar;
-import org.springframework.boot.gradle.tasks.bundling.BootWar;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Wu Yujie
@@ -31,27 +30,11 @@ public class BootPlugin extends AbstractPlugin implements IDependency {
         if (!plugins.hasPlugin(DevToolsPlugin.ID)) {
             plugins.apply(DevToolsPlugin.DEPENDENCY_MANAGEMENT_PLUGIN_ID);
         }
-        this.configureBoot(project);
     }
 
-    private void configureBoot(Project project) {
-        project.afterEvaluate(evaluated -> {
-            DevType devType = evaluated.getExtensions().getByType(IDevToolsExtension.class).getType();
-            IBootExtension bootExtension = evaluated.getExtensions().getByType(IBootExtension.class);
-            if (DevType.LIB.equals(devType)) {
-                bootExtension.library(true);
-            }
-
-            TaskContainer tasks = evaluated.getTasks();
-            if (DevType.isJar(devType)) {
-                tasks.withType(BootJar.class, bootJar -> bootJar.setEnabled(!bootExtension.isLibrary()));
-                tasks.withType(Jar.class, jar -> jar.setEnabled(bootExtension.isLibrary()));
-            } else {
-                tasks.withType(BootWar.class, war -> {
-                });
-            }
-
-        });
+    @Override
+    public List<IPluginAction> getPluginActions() {
+        return Collections.singletonList(new BootPluginAction());
     }
 
     /**

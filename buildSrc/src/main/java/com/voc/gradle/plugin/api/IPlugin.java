@@ -3,6 +3,8 @@ package com.voc.gradle.plugin.api;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
+import java.util.List;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -19,6 +21,7 @@ public interface IPlugin extends Plugin<Project>, IProject {
     default void apply(Project project) {
         this.setProject(project);
         this.onApply(project);
+        this.registerPluginActions(project);
     }
 
     /**
@@ -28,4 +31,31 @@ public interface IPlugin extends Plugin<Project>, IProject {
      */
     void onApply(Project project);
 
+    /**
+     * 注册插件 Action
+     *
+     * @param project Project
+     */
+    default void registerPluginActions(Project project) {
+        List<IPluginAction> actions = this.getPluginActions();
+        if (actions == null) {
+            return;
+        }
+
+        for (IPluginAction pluginAction : actions) {
+            try {
+                project.getPlugins().withType(pluginAction.getPluginClass(), plugin -> pluginAction.execute(project));
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    /**
+     * 获取插件 Action 集合
+     *
+     * @return List<IPluginAction>
+     */
+    default List<IPluginAction> getPluginActions() {
+        return null;
+    }
 }

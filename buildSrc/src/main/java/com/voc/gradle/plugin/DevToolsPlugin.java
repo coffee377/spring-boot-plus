@@ -56,9 +56,9 @@ public class DevToolsPlugin implements Plugin<Project> {
         List<IPluginAction> actions = Arrays.asList(
                 new JavaPluginAction(),
                 new DevToolsPluginAction(),
-                new MavenPublishPluginAction(),
                 new DependencyManagementPluginAction(),
-                new BootPluginAction()
+                new BootPluginAction(),
+                new MavenPublishPluginAction()
         );
         for (IPluginAction pluginAction : actions) {
             withPluginClassOfAction(pluginAction, (pluginClass) ->

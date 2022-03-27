@@ -66,7 +66,6 @@ public class ExceptionController extends AbstractErrorController implements Erro
         return Result.builder().failure(exceptionData).data(model).build();
     }
 
-    @Override
     public String getErrorPath() {
         return null;
     }
@@ -95,13 +94,11 @@ public class ExceptionController extends AbstractErrorController implements Erro
      * @param produces the media type produced (or {@code MediaType.ALL})
      * @return if the stacktrace attribute should be included
      */
-    @SuppressWarnings("deprecation")
     protected boolean isIncludeStackTrace(HttpServletRequest request, MediaType produces) {
         switch (this.errorProperties.getIncludeStacktrace()) {
             case ALWAYS:
                 return true;
             case ON_PARAM:
-            case ON_TRACE_PARAM:
                 return getTraceParameter(request);
             default:
                 return false;

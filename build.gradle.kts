@@ -29,6 +29,11 @@ subprojects {
     }
   }
 
+  dependencies {
+    /* spring boot 版本升级工具*/
+//    compileOnly("org.springframework.boot:spring-boot-properties-migrator")
+  }
+
 }
 
 tasks.wrapper {

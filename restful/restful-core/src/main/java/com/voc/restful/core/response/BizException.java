@@ -15,8 +15,13 @@ public class BizException extends RuntimeException {
     private long code;
     private HttpStatus httpStatus;
 
+    /**
+     * @param code 错误编码
+     * @param message 错误信息
+     * @since 0.0.4
+     */
     public BizException(long code, String message) {
-        this(code, message, HttpStatus.OK);
+        this(code, message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public BizException(IBizStatus bizStatus) {

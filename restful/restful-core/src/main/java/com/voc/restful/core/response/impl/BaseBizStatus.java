@@ -21,40 +21,38 @@ public enum BaseBizStatus implements IBizStatus {
         }
     },
 
-    BAD_REQUEST("错误的请求", HttpStatus.BAD_REQUEST),
-    INCORRECT_TEMPORARY_AUTHORIZATION_CODE("错误的临时授权码", HttpStatus.BAD_REQUEST),
-    UN_SUPPORTED_METHOD("不支持的请求方法", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED("未经认证的用户", HttpStatus.UNAUTHORIZED),
-    ACCOUNT_EXPIRED("账户密钥已过期", HttpStatus.UNAUTHORIZED),
-    ACCOUNT_DISABLED("账户已被禁用", HttpStatus.UNAUTHORIZED),
-    ACCOUNT_LOCKED("账户已被锁定", HttpStatus.UNAUTHORIZED),
-    ACCOUNT_EXISTS("用户已存在", HttpStatus.UNAUTHORIZED),
-    USERNAME_NOT_FOUND("用户不存在", HttpStatus.UNAUTHORIZED),
-    BAD_CREDENTIALS("密钥凭证错误", HttpStatus.UNAUTHORIZED),
-    INVALID_USERNAME_OR_PASSWORD("无效的用户名或密码", HttpStatus.UNAUTHORIZED),
-    UNBOUND_USER("未绑定系统用户", HttpStatus.NOT_FOUND),
-    ALREADY_BOUND_USER("已绑定其他系统用户，请解绑后重新绑定", HttpStatus.BAD_REQUEST),
     INVALID_BEARER_TOKEN("无效的访问令牌", HttpStatus.PRECONDITION_FAILED),
 
+    ACCOUNT_EXPIRED("账户密钥已过期"),
+    ACCOUNT_DISABLED("账户已被禁用"),
+    ACCOUNT_LOCKED("账户已被锁定"),
+    ACCOUNT_EXISTS("用户已存在"),
+    USERNAME_NOT_FOUND("用户不存在"),
+    BAD_CREDENTIALS("密钥凭证错误", HttpStatus.BAD_REQUEST),
+    INVALID_USERNAME_OR_PASSWORD("无效的用户名或密码", HttpStatus.BAD_REQUEST),
+    UNBOUND_USER("未绑定系统用户"),
+    ALREADY_BOUND_USER("已绑定其他系统用户，请解绑后重新绑定"),
     FORBIDDEN("没有访问权限", HttpStatus.FORBIDDEN),
+    NOT_FOUND("请求接口地址不存在", HttpStatus.NOT_FOUND),
 
-    AUTHENTICATION_PROVIDER_NOT_FOUND("未找到相应的认证处理器", HttpStatus.INTERNAL_SERVER_ERROR),
-    INTERNAL_SERVER_ERROR("服务器内部错误", HttpStatus.INTERNAL_SERVER_ERROR),
-    JSON_SERIALIZE_EXCEPTION("序列化异常", HttpStatus.INTERNAL_SERVER_ERROR),
-    JSON_DESERIALIZE_EXCEPTION("反序列化异常", HttpStatus.INTERNAL_SERVER_ERROR),
+    BAD_REQUEST("错误的请求", HttpStatus.BAD_REQUEST),
+    INCORRECT_TEMPORARY_AUTHORIZATION_CODE("错误的临时授权码", HttpStatus.BAD_REQUEST),
+    UN_SUPPORTED_METHOD("不支持的请求方法", HttpStatus.METHOD_NOT_ALLOWED),
+
+    AUTHENTICATION_PROVIDER_NOT_FOUND("未找到相应的认证处理器"),
+    INTERNAL_SERVER_ERROR("服务器内部错误"),
+    JSON_SERIALIZE_EXCEPTION("序列化异常"),
+    JSON_DESERIALIZE_EXCEPTION("反序列化异常"),
 
     ENTITY_VALIDATED_ERROR("实体属性校验错误", HttpStatus.BAD_REQUEST),
-//    REQUEST_ADDRESS_NOT_MATCH(1001, "请求地址与实体ID不一致"),
-//    INSERT_DATA_ERROR(1002, "插入数据异常"),
-//    UPDATE_DATA_ERROR(1003, "更新数据异常"),
-//    DELETE_DATA_ERROR(1004, "删除数据异常"),
-//
+    REQUEST_ADDRESS_NOT_MATCH( "请求地址与实体ID不一致"),
+    INSERT_DATA_ERROR( "新增数据异常"),
+    UPDATE_DATA_ERROR( "更新数据异常"),
+    DELETE_DATA_ERROR( "删除数据异常"),
 
-    RECORD_EXISTS("已存在该条记录相关数据", HttpStatus.NOT_FOUND),
-    RECORD_NOT_EXISTS("指定记录不存在", HttpStatus.NOT_FOUND),
-//    AREA_NOT_FIND(10007, "地区匹配不存在"),
-//    ORGAN_NOT_FIND(10008, "机构匹配不存在"),
-//    DATA_NOT_FIND(10009, "数据查询错误");
+    RECORD_EXISTS("已存在该条记录相关数据"),
+    RECORD_NOT_EXISTS("指定记录不存在"),
 
     ;
     private String message;
@@ -64,6 +62,10 @@ public enum BaseBizStatus implements IBizStatus {
     BaseBizStatus(String message, HttpStatus status) {
         this.message = message;
         this.status = status;
+    }
+
+    BaseBizStatus(String message) {
+        this(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

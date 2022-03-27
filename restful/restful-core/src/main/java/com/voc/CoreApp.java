@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
- * @time 2021/12/16 14:52
+ * @time 2022/03/25 22:58
  */
-@SpringBootApplication(exclude = {})
+@SpringBootApplication
 public class CoreApp {
     public static void main(String[] args) {
         SpringApplication.run(CoreApp.class, args);

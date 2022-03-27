@@ -21,11 +21,9 @@ devtools {
 }
 
 subprojects {
-  apply(plugin = "com.voc.boot")
+  group = "com.voc.boot.restful"
 
-  devtools {
-    type(DevType.LIB)
-  }
+  apply(plugin = "com.voc.boot")
 
   dependencies {
     annotationProcessor("org.projectlombok:lombok")

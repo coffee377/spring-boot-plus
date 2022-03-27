@@ -8,6 +8,7 @@ import com.voc.gradle.plugin.repository.aliyun.AliYunRepositoryInfo;
 import com.voc.gradle.plugin.util.RepositoryUtil;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.Task;
 import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.attributes.Usage;
 import org.gradle.api.plugins.ExtensionContainer;
@@ -18,7 +19,7 @@ import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.VariantVersionMappingStrategy;
 import org.gradle.api.publish.maven.*;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
-import org.gradle.api.tasks.bundling.Jar;
+import org.springframework.boot.gradle.plugin.SpringBootPlugin;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -59,14 +60,12 @@ public class MavenPublishPluginAction implements IPluginAction {
             MavenPublication mavenPublication = publishing.getPublications().create(devType.getPubName(), MavenPublication.class);
             if (DevType.isJar(devType)) {
                 PluginContainer plugins = evaluated.getPlugins();
-                plugins.withType(JavaPlugin.class).all(javaPlugin -> {
-                    evaluated.getTasks().withType(Jar.class).all(jar -> {
-                        if (jar.getEnabled()) {
-                            evaluated.getComponents().matching(component -> "java".equals(component.getName()))
-                                    .all(mavenPublication::from);
-                        }
-                    });
-                });
+                List<Task> tasks =
+                        evaluated.getTasks().stream().filter(task -> task.getName().equals(JavaPlugin.JAR_TASK_NAME) || task.getName().equals(SpringBootPlugin.BOOT_JAR_TASK_NAME)).collect(Collectors.toList());
+                for (Task task : tasks) {
+                    mavenPublication.artifact(task);
+                }
+
                 plugins.withType(JavaPlatformPlugin.class)
                         .all((javaPlugin) -> evaluated.getComponents()
                                 .matching((component) -> "javaPlatform".equals(component.getName()))
