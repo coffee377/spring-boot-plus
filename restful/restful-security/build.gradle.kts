@@ -5,7 +5,7 @@ plugins {
 dependencyManagement {
 
   dependencies {
-    dependency("org.springframework.security:spring-security-oauth2-authorization-server:0.2.1")
+    dependency("org.springframework.security:spring-security-oauth2-authorization-server:0.2.3")
   }
 
 }
@@ -14,10 +14,14 @@ dependencies {
   api(project(":${parent!!.name}:${parent!!.name}-core"))
   api("org.springframework.boot:spring-boot-starter-security")
 
+  implementation("org.springframework.boot:spring-boot-starter-jdbc")
+  implementation("mysql:mysql-connector-java")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
-  implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-  implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+  /* 认证服务器 */
   implementation("org.springframework.security:spring-security-oauth2-authorization-server")
+  implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+  /* 资源服务器 */
+  implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
   testImplementation("org.springframework.security:spring-security-test")
   testImplementation("org.springframework.boot:spring-boot-starter-cache")

@@ -1,0 +1,39 @@
+# 1. 授权码流程
+# 1.1 获取授权码 浏览器打开以下地址
+http://localhost:9000/oauth2/authorize?client_id=csdn&response_type=code&scope=message.read
+
+###
+# 1.2 根据授权码获取 token &redirect_uri=https://www.baidu.com&
+POST http://localhost:9000/oauth2/token
+Authorization: Basic Y3Nkbjpjc2RuMTIz
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_codecode=m7LXJwvHO3Sv5JIORPR-Q9kKGFVFoIqEi7gqOnZpkN73vieH9rQA3pgSXyAZgs6sMSk39HqD7iYN9lqNSGykmoiK_TwWbjrtRwIhrGKEMk15VJHBeAc_hSTU7233NU7p
+
+
+###
+# 2. 根据刷新令牌获取token
+POST http://localhost:9000/oauth2/token
+Authorization: Basic Y3Nkbjpjc2RuMTIz
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token&refresh_token=g87MYZQcp8VqU1ZJTHacyj1k1VAZ3BitrboMt6CzxrdAKsT4qABElYSp2p-PhazH2FkXAJqL5GuKWeeuA7f5uitYchr7UqY4K8C9xUSTU8LLggVcgqdrmGnYyxJjz7Wr
+
+###
+# 3. 客户端模式(此模式下，没有用户的参与，只有客户端和授权服务器之间的参与)
+POST http://localhost:9000/oauth2/token?grant_type=client_credentials
+Authorization: Basic Y3Nkbjpjc2RuMTIz
+Content-Type: application/json
+
+###
+# 4. 撤销令牌
+POST http://localhost:9000/oauth2/revoke?token=令牌
+
+###
+# 5. 查看token 的信息
+POST http://localhost:9000/oauth2/introspect?token=eyJraWQiOiJmNmYxY2JmMC0yY2RhLTQzNjEtYWE4Yi1mYjg1YmI2YTYxZTgiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJkZW1vIiwiYXVkIjoiY3NkbiIsIm5iZiI6MTY0ODM5MzM0OSwic2NvcGUiOlsidXNlci5waG90b3MiLCJ1c2VyLnVzZXJJbmZvIl0sImlzcyI6Imh0dHA6XC9cL2xvY2FsaG9zdDo5MDAwIiwiZXhwIjoxNjQ4Mzk2OTQ5LCJpYXQiOjE2NDgzOTMzNDl9.WIfM-2lVtUWz2Ae2eBlLMQe0x2eGV7YioPButzEkBMWLb3JZ6I8BNMgZlM_eaGbsIKZJCVIbYXJ5sWx86DTxfb5tv5z5wjVmeeytul8NwCeIo2C-WQKpi7ZOkx0NHtuFN0EjB3hNLk3t3DtMOst6XN-oGpNA8SC9tnFHAvoZnOPtEY6Q5JDZRNo7jNd9XfiX6Jt1yBoSTEfsa15yFQOdbWuxphJByWLmiWn5f-74_1sYFUO2cJgxRVeChG58AKh5Fv03cRP6e96_t_OpVn1HNA4OgRwqkeEeuDiLzQzpMRtO8wu-vFoZs4J_YiJLlukcCTRXxALnBysxrNQyHRc3kQ
+Authorization: Basic Y3Nkbjpjc2RuMTIz
+
+###
+# 6. 查看JWK信息
+GET http://localhost:9000/oauth2/jwks

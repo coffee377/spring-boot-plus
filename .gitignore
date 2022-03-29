@@ -80,3 +80,5 @@ gradle-app.setting
 **/META-INF/app-info.yml
 /docker/
 /test
+pri.key
+pub.key

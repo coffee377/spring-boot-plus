@@ -52,8 +52,12 @@ fileTree(rootDir) {
 //include(":examples:gradle")
 include(":restful")
 include(":restful:restful-core")
+include(":restful:restful-authorization-server")
+include(":restful:restful-resource-server")
+//findProject(":restful:restful-authorization-server")?.name = "restful-authorization-server"
+
 //include(":restful:restful-dingtalk")
-//include(":restful:restful-security")
+include(":restful:restful-security")
 //include(":restful:restful-system")
 
 
@@ -78,4 +82,3 @@ private class ProjectInfo(rootFile: File, buildFile: File) {
     return "Project Name\t-> [${name}]\nProject Path\t-> [${path}]\nProject Dir\t\t-> [${dir.absolutePath}]\n"
   }
 }
-

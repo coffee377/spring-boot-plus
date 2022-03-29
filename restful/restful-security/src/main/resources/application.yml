@@ -1,0 +1,27 @@
+server:
+  port: 9000
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/voc_backend
+    username: root
+    password: root!@@&
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  #    数据库初始化配置
+  sql:
+    init:
+      enabled: false # 首次执行时通过 -Dsql.init.enabled=true 来开启
+      encoding: utf-8
+      schema-locations:
+        - classpath:org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql
+        - classpath:org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql
+        - classpath:org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql
+  redis:
+    password: tvoc.site.redis
+logging:
+  level:
+    root: info
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+    #    org.springframework.boot.autoconfigure: DEBUG

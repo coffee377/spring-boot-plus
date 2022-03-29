@@ -2,7 +2,7 @@ package com.voc.dingtalk.security.authentication;
 
 import com.voc.restful.core.third.AppName;
 import com.voc.restful.core.third.ThirdApp;
-import com.voc.security.core.authentication.qrcode.QRAuthenticationFilter;
+import com.voc.restful.security.core.authentication.qrcode.QRAuthenticationFilter;
 
 /**
  * @author Wu Yujie

@@ -15,7 +15,7 @@ import com.voc.restful.core.autoconfigure.json.IJson;
 import com.voc.restful.core.third.AppName;
 import com.voc.restful.core.third.ThirdApp;
 import com.voc.restful.core.util.SpringUtils;
-import com.voc.security.core.expection.AuthorizationCodeException;
+import com.voc.restful.security.core.expection.AuthorizationCodeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
