@@ -36,7 +36,6 @@ public class DingTalkCredentialsService implements IDingTalkCredentialsService, 
         String secret = dingTalkService.ensureAppSecret(appKey, appSecret);
         OapiGettokenRequest request = new OapiGettokenRequest();
         request.setAppkey(appKey);
-        request.setAppsecret(appSecret);
         request.setAppsecret(secret);
         request.setHttpMethod("GET");
 

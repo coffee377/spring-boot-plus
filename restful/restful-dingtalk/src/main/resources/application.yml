@@ -1,0 +1,6 @@
+spring:
+  dingtalk:
+    app:
+      - demo:
+          app-key: dingopfniakkw72klkjv
+          app-secret: 6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR

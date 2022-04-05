@@ -9,7 +9,13 @@ spring:
         opaquetoken:
           introspection-uri: http://127.0.0.1:9000/oauth2/introspect
           client-id: csdn
-          client-secret: '{noop}csdn123'
+          client-secret: csdn123
+api:
+  security:
+    res-server:
+      # 不需要验证权限的地址
+      ignore:
+        - /demo
 logging:
   level:
     root: INFO

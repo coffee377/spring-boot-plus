@@ -1,13 +1,12 @@
 package com.voc.restful.security.config;
 
-import com.voc.restful.security.authentication.RestfulAuthenticationEntryPoint;
 import com.voc.restful.security.web.configurers.BearerTokenAuthenticationFilterConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -23,19 +22,16 @@ import javax.annotation.Resource;
 public class ResourceServerConfiguration {
 
     @Resource
-    private RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint;
+    private AuthenticationEntryPoint restfulAuthenticationEntryPoint;
 
     @Resource
     private AccessDeniedHandler restfulAccessDeniedHandler;
 
     @Resource
-    private BearerTokenResolver bearerTokenResolver;
-
-    @Resource
     private AuthenticationFailureHandler restfulAuthenticationFailureHandler;
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain restfulSecurityFilterChain(HttpSecurity http) throws Exception {
         /* 1. 禁用 session */
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -51,8 +47,8 @@ public class ResourceServerConfiguration {
         http.oauth2ResourceServer(configurer -> {
             configurer.authenticationEntryPoint(restfulAuthenticationEntryPoint);
             configurer.accessDeniedHandler(restfulAccessDeniedHandler);
-            configurer.jwt();
-//            configurer.opaqueToken();
+//            configurer.jwt();
+            configurer.opaqueToken();
         });
 
         /* 权限配置 */

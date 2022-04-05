@@ -1,4 +1,4 @@
-//package com.voc.security.configurer;
+package com.voc.restful.security.core.configurer;//package com.voc.security.configurer;
 //
 //import com.voc.api.Constants;
 //import com.voc.api.utils.CommonUtil;

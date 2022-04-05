@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,8 +20,10 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2TokenFormat;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwsEncoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
@@ -34,9 +35,10 @@ import org.springframework.security.oauth2.server.authorization.config.ClientSet
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import java.nio.charset.StandardCharsets;
+import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.Collections;
 
@@ -49,6 +51,11 @@ import java.util.Collections;
 @Configuration
 public class AuthorizationServerConfiguration {
 
+    @Resource
+    private AuthenticationFailureHandler restfulAuthenticationFailureHandler ;
+
+//    OAuth2TokenGenerator tokenGenerator;
+
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -56,80 +63,75 @@ public class AuthorizationServerConfiguration {
         OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer =
                 new OAuth2AuthorizationServerConfigurer<>();
 
+//        authorizationServerConfigurer.tokenGenerator(tokenGenerator);
+
         /* 授权端点 */
         authorizationServerConfigurer.authorizationEndpoint(config -> {
-            config.errorResponseHandler((request, response, exception) -> {
-                OAuth2AuthenticationException oAuth2AuthenticationException = (OAuth2AuthenticationException) exception;
-                OAuth2Error error = oAuth2AuthenticationException.getError();
-                log.error("错误原因:[{}]", error);
-
-                log.info("认证异常", exception);
-                response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-                response.setContentType(MediaType.APPLICATION_JSON.toString());
-                response.getWriter().write("{\"code\":-1,\"msg\":\"认证失败\"}");
-            });
+//            ApplicationContext context = http.getSharedObject(ApplicationContext.class);
+//            RegisteredClientRepository registeredClientRepository = context.getBean(RegisteredClientRepository.class);
+//            OAuth2AuthorizationService authorizationService = context.getBean(OAuth2AuthorizationService.class);
+//            OAuth2AuthorizationConsentService authorizationConsentService = context.getBean(OAuth2AuthorizationConsentService.class);
+//            OAuth2AuthorizationCodeRequestAuthenticationProvider authorizationCodeRequestAuthenticationProvider
+//                    = new OAuth2AuthorizationCodeRequestAuthenticationProvider(registeredClientRepository,
+//                    authorizationService, authorizationConsentService);
+            /* 自定义临时授权码生成规则 */
+//            authorizationCodeRequestAuthenticationProvider.setAuthorizationCodeGenerator(new TempAuthorizationCodeGenerator());
+//            config.authenticationProvider(authorizationCodeRequestAuthenticationProvider); // 自定义 AuthenticationProvider
+            config.errorResponseHandler(restfulAuthenticationFailureHandler);
         });
 
 
         /* token 端点 */
         authorizationServerConfigurer.tokenEndpoint(config -> {
-            config.errorResponseHandler((request, response, exception) -> {
-                OAuth2AuthenticationException oAuth2AuthenticationException = (OAuth2AuthenticationException) exception;
-                OAuth2Error error = oAuth2AuthenticationException.getError();
-                log.error("错误原因:[{}]", error);
-
-                log.info("认证异常", exception);
-                response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-                response.setContentType(MediaType.APPLICATION_JSON.toString());
-                response.getWriter().write("{\"code\":-1,\"msg\":\"认证失败\"}");
-            });
+            config.errorResponseHandler(restfulAuthenticationFailureHandler);
         });
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
 
-        http.oauth2Login();
+//        http.oauth2ResourceServer(cu -> cu.jwt());
 
-        return http
+
+        http
                 .requestMatcher(endpointsMatcher)
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests.anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
                 .apply(authorizationServerConfigurer)
-                .and()
-                .formLogin()
-                .and()
-                .build();
-
+                .and().formLogin();
+        return http.build();
     }
 
-//    @Bean
-//    public ClientRegistrationRepository dd(){
-//        return null;
-//    }
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
-        RegisteredClient registeredClient = RegisteredClient.withId("csdn")
+        RegisteredClient registeredClient = RegisteredClient.withId("1")
                 // 客户端id 需要唯一
                 .clientId("csdn")
+                .clientName("csdn测试客户端")
                 // 客户端密码
                 .clientSecret("{noop}csdn123")
                 // 可以基于 basic 的方式和授权服务器进行认证
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_JWT)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.PRIVATE_KEY_JWT)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
                 // 授权码
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                // 刷新 token
+                // 如果需要支持双令牌，则需要添加此授权类型
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 // 客户端模式
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .authorizationGrantType(AuthorizationGrantType.PASSWORD)
                 //
                 .authorizationGrantType(AuthorizationGrantType.JWT_BEARER)
-                // 重定向url
-                .redirectUri("https://www.baidu.com")
+                // 授权码模式重定向url
+                .redirectUri("http://localhost:8090/callback")
+                .redirectUri("http://127.0.0.1:8090/callback")
+                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/csdn")
                 // 客户端申请的作用域，也可以理解这个客户端申请访问用户的哪些信息，比如：获取用户信息，获取用户照片等
+                .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
                 .scope("message.read")
                 .clientSettings(
                         ClientSettings.builder()
@@ -142,6 +144,7 @@ public class AuthorizationServerConfiguration {
                         TokenSettings.builder()
                                 // accessToken 的有效期
                                 .accessTokenTimeToLive(Duration.ofHours(2))
+                                .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
                                 // refreshToken 的有效期
                                 .refreshTokenTimeToLive(Duration.ofDays(7))
                                 // 是否可重用刷新令牌
@@ -151,9 +154,7 @@ public class AuthorizationServerConfiguration {
                 .build();
 
         JdbcRegisteredClientRepository jdbcRegisteredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
-        if (null == jdbcRegisteredClientRepository.findByClientId("csdn")) {
-            jdbcRegisteredClientRepository.save(registeredClient);
-        }
+        jdbcRegisteredClientRepository.save(registeredClient);
 
         return jdbcRegisteredClientRepository;
     }
@@ -217,11 +218,13 @@ public class AuthorizationServerConfiguration {
     }
 
     @Bean
+    public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource){
+        return new NimbusJwsEncoder(jwkSource);
+    }
+
+    @Bean
     public ProviderSettings providerSettings() {
-        return ProviderSettings.builder()
-                // 发布者的url地址,一般是本系统访问的根路径
-                .issuer("http://127.0.0.1:9000")
-                .build();
+        return ProviderSettings.builder().build();
     }
 
 }

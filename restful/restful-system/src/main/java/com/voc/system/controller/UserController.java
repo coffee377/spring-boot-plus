@@ -5,8 +5,6 @@ import com.voc.system.entity.User;
 import com.voc.system.service.IMenuService;
 import com.voc.system.service.IUserService;
 import com.voc.system.vo.UserVO;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +16,7 @@ import java.util.List;
  * @time 2021/04/25 12:01
  */
 @RestController
-@RequestMapping({"${api.system.prefix:}/user"})
+@RequestMapping({"/user"})
 public class UserController {
 
     @Resource
@@ -38,16 +36,16 @@ public class UserController {
      * @return User
      */
     @GetMapping("/info")
-    @PreAuthorize("isAuthenticated()")
-    public UserVO userInfo(Authentication authentication) {
-        String name = authentication.getName();
-        User user = userService.getUserByUsername(name);
+//    @PreAuthorize("isAuthenticated()")
+    public UserVO userInfo() {
+//        String name = authentication.getName();
+//        User user = userService.getUserByUsername(name);
         UserVO userVO = new UserVO();
-        userVO.setUsername(user.getUsername());
-        userVO.setRealName(user.getRealName());
-        userVO.setAvatar(user.getAvatar());
+//        userVO.setUsername(user.getUsername());
+//        userVO.setRealName(user.getRealName());
+//        userVO.setAvatar(user.getAvatar());
         List<Menu> menus = menuService.findAll();
-        userVO.setMenus(menus);
+//        userVO.setMenus(menus);
         return userVO;
     }
 

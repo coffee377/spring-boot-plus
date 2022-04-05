@@ -7,14 +7,14 @@ GET http://localhost:9000/oauth2/authorize?client_id=csdn&response_type=code&sco
 POST http://localhost:9000/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=csdn&client_secret=csdn123&grant_type=authorization_code&code=ABC&redirect_uri=http://127.0.0.1:8090/callback
+client_id=csdn&client_secret=csdn123&grant_type=authorization_code&code=zZE9awMTlTUuJw7EaoUPTtIqei9z1gyqCVEnC39FI0fCTap16kpxEMm_1oU-oOw8YILyYvLrmxhQs5Ale6bjdjm273fmgZuLntD4AxkJrRYHcmFLtcmauBgg1zFHfCV3&redirect_uri=http://127.0.0.1:8090/callback
 
 ###
 # 2. 根据刷新令牌获取token
 POST http://localhost:9000/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=csdn&client_secret=csdn123&grant_type=refresh_token&refresh_token=3LhQ3h0rjIXsKRJt3DsQomOiL-EpooEp0hWU1dIycbn0l4evykx1FZaPxh-8IJNGUuKbEWx0S2eey4Lsi_KaLyHWn2s99wTnEo-qRK_2osVhutUTxf-78qjip8ghH--f
+client_id=csdn&client_secret=csdn123&grant_type=refresh_token&refresh_token=1e82dec49250af4b8a0d041144770e1e750c122663a576dd3c751ff1996268c7
 
 ###
 # 3. 客户端凭证(此模式下，没有用户的参与，只有客户端和授权服务器之间的参与)
@@ -36,7 +36,7 @@ POST http://localhost:9000/oauth2/revoke
 Authorization: Basic Y3Nkbjpjc2RuMTIz
 Content-Type: application/x-www-form-urlencoded
 
-token=hghQ9o-Q3gEKgvwebJDGhda3By2xBdnm1uyolrfQlQtcssDqKyFkt0RvHudvJ2btt6U8A4eDZcTtzpzH4MMKA6qimCJAu03nl-MbTxcFtZMsyqKwbyQNdgMwtEQB7P5Y
+token=1e82dec49250af4b8a0d041144770e1e750c122663a576dd3c751ff1996268c7
 
 ###
 # 5. 查看 token 的信息（令牌内省）
@@ -44,7 +44,7 @@ POST http://localhost:9000/oauth2/introspect
 Authorization: Basic Y3Nkbjpjc2RuMTIz
 Content-Type: application/x-www-form-urlencoded
 
-token=UbOR-_mORrQZti78MCU6b7HQrxk8lOMfkqwK0hgIZqU_af2G024JMVmsbUU-BG_jsM4yqhZ3lIxbQTVUu8MKLOAa2BQCvAmrGK5L7iFaDmf78mf8Y4v28adq96eAefYU
+token=1e82dec49250af4b8a0d041144770e1e750c122663a576dd3c751ff1996268c7
 
 
 ###

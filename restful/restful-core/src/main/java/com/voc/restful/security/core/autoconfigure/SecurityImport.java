@@ -1,4 +1,4 @@
-package com.voc.restful.security.core.authentication.autoconfigure;
+package com.voc.restful.security.core.autoconfigure;
 
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;

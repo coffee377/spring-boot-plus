@@ -1,7 +1,7 @@
 package com.voc.restful.security.web.configurers;
 
-import com.voc.restful.security.authentication.RestfulAuthenticationEntryPoint;
-import com.voc.restful.security.authentication.RestfulAuthenticationFailureHandler;
+import com.voc.restful.security.core.authentication.RestfulAuthenticationEntryPoint;
+import com.voc.restful.security.core.authentication.RestfulAuthenticationFailureHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;

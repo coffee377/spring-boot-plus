@@ -10,7 +10,6 @@ import com.voc.system.service.IUserService;
 import com.voc.system.vo.UserVO;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.Resource;
 import java.util.Collections;
@@ -24,8 +23,8 @@ import java.util.Set;
  */
 public class UserService extends BaseMongoService<User, UserDao> implements IUserService {
 
-    @Resource
-    private PasswordEncoder passwordEncoder;
+//    @Resource
+//    private PasswordEncoder passwordEncoder;
 
     @Resource
     private ISocialDao socialDao;
@@ -33,16 +32,17 @@ public class UserService extends BaseMongoService<User, UserDao> implements IUse
     @Override
     public User convertPassword(User user, boolean plaintext) {
         String password = user.getPassword();
-        if (plaintext) {
-            password = "{noop}" + password;
-        } else {
-            password = passwordEncoder.encode(user.getPassword());
-        }
-        user.setPassword(password);
+//        if (plaintext) {
+//            password = "{noop}" + password;
+//        } else {
+//            password = passwordEncoder.encode(user.getPassword());
+//        }
+//        user.setPassword(password);
 
         return user;
     }
 
+    @Override
     public String save(User entity, boolean plaintext) {
         User user = this.convertPassword(entity, plaintext);
         return super.save(user);

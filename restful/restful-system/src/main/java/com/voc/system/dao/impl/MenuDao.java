@@ -12,5 +12,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class MenuDao extends BaseMongoDao<Menu, String> implements IMenuDao {
-
 }

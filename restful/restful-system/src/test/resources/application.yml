@@ -31,9 +31,3 @@ logging:
     root: warn
     com:
       voc: info
-api:
-  system:
-    prefix: system
-  json:
-    result:
-      success: succeeed

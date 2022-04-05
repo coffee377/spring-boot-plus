@@ -1,4 +1,4 @@
-package com.voc.restful.security.core.authentication.restful;
+package com.voc.restful.security.core.authentication;
 
 import com.voc.restful.core.response.Result;
 import com.voc.restful.core.response.impl.BaseBizStatus;

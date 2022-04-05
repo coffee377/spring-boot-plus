@@ -1,4 +1,4 @@
-package com.voc.restful.security.authentication;
+package com.voc.restful.security.core.authentication;
 
 import com.voc.restful.core.response.Result;
 import com.voc.restful.core.response.impl.BaseBizStatus;
@@ -34,6 +34,9 @@ public class RestfulAuthenticationFailureHandler extends ResponseHandler impleme
             log.error("用户登录失败 - {}", exception.getMessage());
         }
 
+        String canonicalName = exception.getClass().getCanonicalName();
+        log.warn("onAuthenticationFailure AuthenticationException is => {}", canonicalName);
+
         if (exception instanceof ProviderNotFoundException) {
             setBizStatus(BaseBizStatus.AUTHENTICATION_PROVIDER_NOT_FOUND);
         } else if (exception instanceof UnboundUserException) {
@@ -46,6 +49,9 @@ public class RestfulAuthenticationFailureHandler extends ResponseHandler impleme
             setBizStatus(BaseBizStatus.USERNAME_NOT_FOUND);
         } else if (exception instanceof BadCredentialsException) {
             setBizStatus(BaseBizStatus.INVALID_USERNAME_OR_PASSWORD);
+//        } else if (exception instanceof OAuth2AuthenticationException) {
+//            ((OAuth2AuthenticationException) exception).getError().
+//            setBizStatus(BaseBizStatus.OAUTH2.message(""));
         } else {
             setResult(Result.failure(exception));
         }

@@ -1,4 +1,4 @@
-package com.voc.restful.security.configurer;
+package com.voc.restful.security.core.configurer;
 
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;

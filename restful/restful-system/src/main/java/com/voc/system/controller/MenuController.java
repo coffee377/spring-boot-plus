@@ -16,7 +16,7 @@ import java.util.Map;
  * @time 2021/04/26 15:52
  */
 @RestController
-@RequestMapping("${api.system.prefix:}/menu")
+@RequestMapping("/menu")
 public class MenuController {
 
     @Resource

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @time 2021/02/05 09:04
  */
 //@RestController
-@RequestMapping({"${api.system.prefix:}/page/action"})
+@RequestMapping({"/page/action"})
 public class PageActionController {
 
 //    @Resource

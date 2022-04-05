@@ -3,7 +3,8 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
 com.voc.restful.core.autoconfigure.AutoConfiguration,\
 com.voc.restful.core.autoconfigure.cache.CacheAutoConfiguration,\
 com.voc.restful.core.autoconfigure.json.JsonAutoConfiguration,\
-com.voc.restful.core.autoconfigure.result.ResultAutoConfiguration
+com.voc.restful.core.autoconfigure.result.ResultAutoConfiguration,\
+com.voc.restful.security.core.autoconfigure.SecurityCoreAutoConfiguration
 
 org.springframework.context.ApplicationListener                = \
 com.voc.restful.core.listener.BannerListener,\

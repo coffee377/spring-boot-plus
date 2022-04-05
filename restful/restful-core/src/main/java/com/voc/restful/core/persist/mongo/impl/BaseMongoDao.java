@@ -130,6 +130,11 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     }
 
     @Override
+    public void deleteAllById(Iterable<? extends ID> iterable) {
+
+    }
+
+    @Override
     public void deleteAll(Iterable<? extends T> entities) {
         Assert.notNull(entities, "The given Iterable of entities not be null!");
         entities.forEach(this::delete);

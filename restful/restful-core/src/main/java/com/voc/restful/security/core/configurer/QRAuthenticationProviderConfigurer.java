@@ -1,4 +1,4 @@
-package com.voc.restful.security.core.authentication;
+package com.voc.restful.security.core.configurer;
 
 import com.voc.restful.core.third.ThirdAppService;
 import com.voc.restful.security.core.authentication.qrcode.QRAuthenticationProvider;

@@ -35,6 +35,8 @@ public class Menu extends Component implements ITreeEntity<String> {
      */
     private String icon;
 
+    private String routeName;
+
     /**
      * 菜单排序
      */
