@@ -14,7 +14,7 @@ client_id=csdn&client_secret=csdn123&grant_type=authorization_code&code=zZE9awMT
 POST http://localhost:9000/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=csdn&client_secret=csdn123&grant_type=refresh_token&refresh_token=1e82dec49250af4b8a0d041144770e1e750c122663a576dd3c751ff1996268c7
+client_id=csdn&client_secret=csdn123&grant_type=refresh_token&refresh_token=22403a300a2219f8402294dc98183967e1b6b97d334180b1ef76c4aecfe15375
 
 ###
 # 3. 客户端凭证(此模式下，没有用户的参与，只有客户端和授权服务器之间的参与)
@@ -44,7 +44,7 @@ POST http://localhost:9000/oauth2/introspect
 Authorization: Basic Y3Nkbjpjc2RuMTIz
 Content-Type: application/x-www-form-urlencoded
 
-token=1e82dec49250af4b8a0d041144770e1e750c122663a576dd3c751ff1996268c7
+token=91b3003c1d5baa7716b1823a34657ff8cd154c13c3f593de7b8a236aaaa6095d
 
 
 ###

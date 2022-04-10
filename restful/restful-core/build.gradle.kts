@@ -24,6 +24,7 @@ dependencies {
   compileOnly("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   compileOnly("com.google.code.gson:gson")
   compileOnly("org.springframework.boot:spring-boot-starter-security")
+  compileOnly("org.springframework.security:spring-security-oauth2-authorization-server")
 }
 
 springBoot {

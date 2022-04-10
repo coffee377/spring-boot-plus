@@ -23,8 +23,6 @@ public enum BaseBizStatus implements IBizStatus {
 
     UNAUTHORIZED("未经认证的用户", HttpStatus.UNAUTHORIZED),
     INVALID_BEARER_TOKEN("无效的令牌", HttpStatus.PRECONDITION_FAILED),
-//    INVALID_ACCESS_TOKEN("无效的访问令牌", HttpStatus.PRECONDITION_FAILED),
-//    INVALID_REFRESH_TOKEN("刷新令牌已过期", HttpStatus.PRECONDITION_FAILED),
 
     ACCOUNT_EXPIRED("账户密钥已过期"),
     ACCOUNT_DISABLED("账户已被禁用"),
@@ -33,6 +31,7 @@ public enum BaseBizStatus implements IBizStatus {
     USERNAME_NOT_FOUND("用户不存在"),
     BAD_CREDENTIALS("密钥凭证错误", HttpStatus.BAD_REQUEST),
     INVALID_USERNAME_OR_PASSWORD("无效的用户名或密码", HttpStatus.BAD_REQUEST),
+    OAUTH2_AUTHENTICATION_EXCEPTION("OAuth2 认证异常", HttpStatus.BAD_REQUEST),
     UNBOUND_USER("未绑定系统用户"),
     ALREADY_BOUND_USER("已绑定其他系统用户，请解绑后重新绑定"),
     FORBIDDEN("没有访问权限", HttpStatus.FORBIDDEN),

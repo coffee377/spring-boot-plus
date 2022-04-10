@@ -1,4 +1,4 @@
-package com.voc.restful.security.event;
+package com.voc.restful.security.core.event;
 
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;

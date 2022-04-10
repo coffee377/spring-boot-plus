@@ -25,6 +25,13 @@ subprojects {
 
   apply(plugin = "com.voc.boot")
 
+  dependencyManagement {
+    val authorizationServerVersion = ext.get("spring.security.oauth2.authorization.server.version")
+    dependencies {
+      dependency("org.springframework.security:spring-security-oauth2-authorization-server:$authorizationServerVersion")
+    }
+  }
+
   dependencies {
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

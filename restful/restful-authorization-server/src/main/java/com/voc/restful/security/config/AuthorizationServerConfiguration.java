@@ -36,6 +36,7 @@ import org.springframework.security.oauth2.server.authorization.config.ProviderS
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.annotation.Resource;
@@ -52,9 +53,11 @@ import java.util.Collections;
 public class AuthorizationServerConfiguration {
 
     @Resource
-    private AuthenticationFailureHandler restfulAuthenticationFailureHandler ;
+    private AuthenticationSuccessHandler restfulAuthenticationSuccessHandler;
 
-//    OAuth2TokenGenerator tokenGenerator;
+    @Resource
+    private AuthenticationFailureHandler restfulAuthenticationFailureHandler;
+
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -63,32 +66,17 @@ public class AuthorizationServerConfiguration {
         OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer =
                 new OAuth2AuthorizationServerConfigurer<>();
 
-//        authorizationServerConfigurer.tokenGenerator(tokenGenerator);
-
         /* 授权端点 */
         authorizationServerConfigurer.authorizationEndpoint(config -> {
-//            ApplicationContext context = http.getSharedObject(ApplicationContext.class);
-//            RegisteredClientRepository registeredClientRepository = context.getBean(RegisteredClientRepository.class);
-//            OAuth2AuthorizationService authorizationService = context.getBean(OAuth2AuthorizationService.class);
-//            OAuth2AuthorizationConsentService authorizationConsentService = context.getBean(OAuth2AuthorizationConsentService.class);
-//            OAuth2AuthorizationCodeRequestAuthenticationProvider authorizationCodeRequestAuthenticationProvider
-//                    = new OAuth2AuthorizationCodeRequestAuthenticationProvider(registeredClientRepository,
-//                    authorizationService, authorizationConsentService);
-            /* 自定义临时授权码生成规则 */
-//            authorizationCodeRequestAuthenticationProvider.setAuthorizationCodeGenerator(new TempAuthorizationCodeGenerator());
-//            config.authenticationProvider(authorizationCodeRequestAuthenticationProvider); // 自定义 AuthenticationProvider
             config.errorResponseHandler(restfulAuthenticationFailureHandler);
         });
-
 
         /* token 端点 */
         authorizationServerConfigurer.tokenEndpoint(config -> {
+            config.accessTokenResponseHandler(restfulAuthenticationSuccessHandler);
             config.errorResponseHandler(restfulAuthenticationFailureHandler);
         });
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
-
-//        http.oauth2ResourceServer(cu -> cu.jwt());
-
 
         http
                 .requestMatcher(endpointsMatcher)
@@ -218,7 +206,7 @@ public class AuthorizationServerConfiguration {
     }
 
     @Bean
-    public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource){
+    public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
         return new NimbusJwsEncoder(jwkSource);
     }
 

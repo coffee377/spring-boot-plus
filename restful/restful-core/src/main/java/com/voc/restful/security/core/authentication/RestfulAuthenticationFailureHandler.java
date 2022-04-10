@@ -10,6 +10,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ProviderNotFoundException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -49,9 +51,10 @@ public class RestfulAuthenticationFailureHandler extends ResponseHandler impleme
             setBizStatus(BaseBizStatus.USERNAME_NOT_FOUND);
         } else if (exception instanceof BadCredentialsException) {
             setBizStatus(BaseBizStatus.INVALID_USERNAME_OR_PASSWORD);
-//        } else if (exception instanceof OAuth2AuthenticationException) {
-//            ((OAuth2AuthenticationException) exception).getError().
-//            setBizStatus(BaseBizStatus.OAUTH2.message(""));
+        } else if (exception instanceof OAuth2AuthenticationException) {
+            OAuth2Error error = ((OAuth2AuthenticationException) exception).getError();
+            String msg = error.toString();
+            setBizStatus(BaseBizStatus.OAUTH2_AUTHENTICATION_EXCEPTION.message(msg));
         } else {
             setResult(Result.failure(exception));
         }
