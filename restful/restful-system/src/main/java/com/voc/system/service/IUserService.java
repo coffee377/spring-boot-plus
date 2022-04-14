@@ -5,7 +5,7 @@ import com.voc.restful.core.service.AuthService;
 import com.voc.restful.core.third.ThirdApp;
 import com.voc.system.dao.impl.UserDao;
 import com.voc.system.entity.User;
-import com.voc.system.vo.UserVO;
+import com.voc.system.vo.user.UserVO;
 
 import java.util.Set;
 

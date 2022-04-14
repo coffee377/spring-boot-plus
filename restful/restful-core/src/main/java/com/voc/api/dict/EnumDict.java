@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * @email coffee377@dingtalk.com
  * @time 2018/06/27 22:37
  */
-public interface EnumDict extends ItemDefine<String> {
+public interface EnumDict<Value> extends IDictItem<Value>, IMask {
 
     /**
      * {@link Enum#ordinal()}
@@ -29,17 +29,18 @@ public interface EnumDict extends ItemDefine<String> {
         return ordinal();
     }
 
-    /**
-     * 枚举选项的值,通常由字母或者数字组成,
-     * 并且在同一个枚举中值唯一;对应数据库中的值通常也为此值
-     *
-     * @return 枚举的值
-     * @see ItemDefine#getValue()
-     */
-    @Override
-    default String getValue() {
-        return this.getMask().toString();
-    }
+
+//    /**
+//     * 枚举选项的值,通常由字母或者数字组成,
+//     * 并且在同一个枚举中值唯一;对应数据库中的值通常也为此值
+//     *
+//     * @return 枚举的值
+//     * @see ItemDefine#getValue()
+//     */
+//    @Override
+//    default Value getValue() {
+//        return this.getMask().toString();
+//    }
 
     /**
      * 枚举字典选项的文本,通常为中文
@@ -60,23 +61,35 @@ public interface EnumDict extends ItemDefine<String> {
         return getText();
     }
 
+//    /**
+//     * 下级字典项
+//     *
+//     * @return List<ItemDefine < BigInteger>>
+//     */
+//    @Override
+//    default List<ItemDefine<Value>> getChildren() {
+//        return null;
+//    }
+
     /**
-     * 下级字典项
+     * 掩码值
      *
-     * @return List<ItemDefine < BigInteger>>
+     * @return BigInteger
      */
     @Override
-    default List<ItemDefine<String>> getChildren() {
-        return null;
+    default BigInteger get() {
+        return BigInteger.ONE.shiftLeft(this.ordinal());
     }
 
     /**
      * 掩码值
      *
      * @return long
+     * @deprecated use get() instead
      */
+    @Deprecated
     default BigInteger getMask() {
-        return BigInteger.ONE.shiftLeft(this.ordinal());
+        return this.get();
     }
 
     /**
@@ -130,7 +143,7 @@ public interface EnumDict extends ItemDefine<String> {
      * @param <T>   枚举类型
      * @return List<T>
      */
-    static <T extends EnumDict> List<T> contains(Class<T> type, IMasks masks) {
+    static <T extends EnumDict> List<T> contains(Class<T> type, IMask masks) {
         BigInteger maskSum = masks.get();
         if (maskSum != null) {
             return new ArrayList<>(findByCondition(type, item -> item.getMask().or(maskSum).equals(maskSum)));

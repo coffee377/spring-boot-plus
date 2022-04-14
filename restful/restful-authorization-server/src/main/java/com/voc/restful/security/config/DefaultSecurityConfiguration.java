@@ -17,21 +17,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class DefaultSecurityConfiguration {
     private final PasswordEncoder passwordEncoder;
-//    @Bean
-//    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-//        /* 访问权限控制 */
-//        http.authorizeRequests(
-//                        requests -> {
-//                            requests
-//                                    .antMatchers(HttpMethod.OPTIONS).permitAll()
-//                                    .anyRequest().authenticated();
-//                        }
-//                )
-//                .formLogin();
-//
-//        return http.build();
-//    }
-
 
     public DefaultSecurityConfiguration(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;

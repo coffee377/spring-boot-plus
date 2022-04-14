@@ -1,5 +1,6 @@
 package com.voc.restful.security.core.event;
 
+import com.voc.restful.security.core.authentication.token.model.TokenResult;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.security.core.Authentication;
@@ -18,9 +19,20 @@ public class LoginSuccessEvent extends ApplicationEvent {
 
     private final Authentication authentication;
 
-    public LoginSuccessEvent(Authentication authentication, String msg) {
+    private TokenResult tokenResult;
+
+    public LoginSuccessEvent(String msg,Authentication authentication) {
+        this(msg, authentication, null);
+    }
+
+    public LoginSuccessEvent(String msg, Authentication authentication, TokenResult tokenResult) {
         super(authentication);
-        this.authentication = authentication;
         this.msg = msg;
+        this.authentication = authentication;
+        this.tokenResult = tokenResult;
+    }
+
+    public void setTokenResult(TokenResult tokenResult) {
+        this.tokenResult = tokenResult;
     }
 }

@@ -7,7 +7,7 @@ import com.voc.system.dao.impl.UserDao;
 import com.voc.system.entity.Social;
 import com.voc.system.entity.User;
 import com.voc.system.service.IUserService;
-import com.voc.system.vo.UserVO;
+import com.voc.system.vo.user.UserVO;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 

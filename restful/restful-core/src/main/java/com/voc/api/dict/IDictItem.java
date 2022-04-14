@@ -1,7 +1,5 @@
 package com.voc.api.dict;
 
-import java.util.List;
-
 /**
  * 数据字典项接口
  *
@@ -10,8 +8,7 @@ import java.util.List;
  * @email coffee377@dingtalk.com
  * @time 2018/06/27 22:48
  */
-@Deprecated
-public interface ItemDefine<Value> {
+public interface IDictItem<Value> {
     /**
      * 索引
      *
@@ -39,11 +36,5 @@ public interface ItemDefine<Value> {
      * @return String
      */
     String getComments();
-
-    /**
-     * 下级字典项
-     *
-     * @return List<ItemDefine>
-     */
-    List<ItemDefine<Value>> getChildren();
+    
 }

@@ -50,7 +50,12 @@ spring:
 logging:
   level:
     root: warn
-    org.springframework.web: trace
-    org.springframework.security: trace
+#    org.springframework.web: trace
+    org.springframework.security: debug
     org.springframework.security.oauth2: debug
+api:
+  json:
+    result:
+      success: succesed
+      message: msg
 #    org.springframework.boot.autoconfigure: DEBUG
