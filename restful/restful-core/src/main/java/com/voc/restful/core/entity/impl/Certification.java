@@ -1,6 +1,6 @@
 package com.voc.restful.core.entity.impl;
 
-import com.voc.restful.core.entity.JsonEntity;
+import com.voc.restful.core.entity.BaseJsonEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 @Getter
 @Setter
-public class Certification extends JsonEntity {
+public class Certification extends BaseJsonEntity {
 
     /**
      * 用户名

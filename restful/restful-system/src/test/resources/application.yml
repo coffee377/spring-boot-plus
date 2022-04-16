@@ -31,3 +31,5 @@ logging:
     root: warn
     com:
       voc: info
+#mybatis-plus:
+#  type-enums-package:

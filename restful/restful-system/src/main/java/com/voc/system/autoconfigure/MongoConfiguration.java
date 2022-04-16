@@ -3,7 +3,6 @@ package com.voc.system.autoconfigure;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.convert.*;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
@@ -13,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
  * @email coffee377@dingtalk.com
  * @time 2021/02/05 16:22
  */
-@Configuration
 public class MongoConfiguration {
 
     @Bean

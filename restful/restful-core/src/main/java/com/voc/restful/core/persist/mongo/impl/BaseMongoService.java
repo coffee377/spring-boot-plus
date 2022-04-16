@@ -1,9 +1,9 @@
 package com.voc.restful.core.persist.mongo.impl;
 
-import com.voc.restful.core.entity.IEntity;
+import com.voc.restful.core.entity.IJsonEntity;
 import com.voc.restful.core.persist.mongo.IMongoService;
-import com.voc.restful.core.response.impl.BaseBizStatus;
 import com.voc.restful.core.response.BizException;
+import com.voc.restful.core.response.impl.BaseBizStatus;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @time 2021/04/26 17:42
  */
 @SuppressWarnings({"unchecked"})
-public abstract class BaseMongoService<E extends IEntity, D extends BaseMongoDao>
+public abstract class BaseMongoService<E extends IJsonEntity, D extends BaseMongoDao>
         implements IMongoService<E, D>, ApplicationContextAware {
 
     private D mongoDao;

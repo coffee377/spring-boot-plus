@@ -9,6 +9,7 @@ package com.voc.api.dict;
  * @time 2018/06/27 22:48
  */
 public interface IDictItem<Value> {
+
     /**
      * 索引
      *
@@ -36,5 +37,5 @@ public interface IDictItem<Value> {
      * @return String
      */
     String getComments();
-    
+
 }

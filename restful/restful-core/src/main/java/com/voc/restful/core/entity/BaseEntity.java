@@ -1,7 +1,6 @@
 package com.voc.restful.core.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -12,8 +11,7 @@ import java.time.Instant;
  * @time 2021/06/07 16:15
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public abstract class BaseEntity<ID extends Serializable> extends JsonEntity implements IEntity<ID> {
+public abstract class BaseEntity<ID extends Serializable> implements IEntity<ID> {
 
     /**
      * 主键 ID

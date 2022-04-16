@@ -1,6 +1,6 @@
 package com.voc.restful.core.entity;
 
-import com.voc.restful.core.bean.IJsonBean;
+import com.voc.restful.core.bean.IBean;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @email coffee377@dingtalk.com
  * @time 2021/02/07 16:34
  */
-public interface IEntity<ID extends Serializable> extends IJsonBean, ICreateInfo, IUpdateInfo {
+public interface IEntity<ID extends Serializable> extends IBean, ICreateInfo, IUpdateInfo {
     /**
      * 获取 id
      *

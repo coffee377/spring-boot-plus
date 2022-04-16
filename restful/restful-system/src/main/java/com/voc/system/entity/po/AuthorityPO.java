@@ -1,0 +1,37 @@
+package com.voc.system.entity.po;
+
+import com.voc.restful.core.entity.BaseEntity;
+import com.voc.restful.core.entity.IEntity;
+import com.voc.system.constant.Table;
+import com.voc.system.entity.enums.AuthorityType;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+/**
+ * 持久化对象 - 权限
+ *
+ * @author Wu Yujie
+ * @email coffee377@dingtalk.com
+ * @time 2021/07/14 15:45
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@Document(collection = Table.AUTHORITY)
+public class AuthorityPO extends BaseEntity<String> implements IEntity<String> {
+
+    /**
+     * 权限类型
+     */
+    AuthorityType type;
+
+    /**
+     * 相关资源 id
+     */
+    private String resourceId;
+
+    /**
+     * 相关父级资源 id
+     */
+    private String parentResourceId;
+}

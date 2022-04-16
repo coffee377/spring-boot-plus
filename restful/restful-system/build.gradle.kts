@@ -8,6 +8,8 @@ dependencies {
 //  implementation(project(":$restful:$restful-dingtalk"))
 //  implementation(project(":$restful:$restful-security"))
   implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+  implementation("com.baomidou:mybatis-plus-boot-starter:3.5.1")
+
 //  compileOnly("org.springframework.boot:spring-boot-starter-security")
 //  testImplementation("org.springframework.boot:spring-boot-starter-security")
 }

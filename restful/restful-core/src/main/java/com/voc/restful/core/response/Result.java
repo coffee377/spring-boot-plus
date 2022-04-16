@@ -1,7 +1,7 @@
 package com.voc.restful.core.response;
 
 import com.voc.restful.core.bean.IBean;
-import com.voc.restful.core.entity.JsonEntity;
+import com.voc.restful.core.entity.BaseJsonEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
  */
 @Getter
 @SuppressWarnings("unchecked")
-public class Result<T> extends JsonEntity {
+public class Result<T> extends BaseJsonEntity {
 
     /**
      * 是否成功

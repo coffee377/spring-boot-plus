@@ -2,7 +2,7 @@ package com.voc.restful.core.persist.mongo.impl;
 
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import com.voc.restful.core.entity.IEntity;
+import com.voc.restful.core.entity.IJsonEntity;
 import com.voc.restful.core.persist.mongo.IMongoDao;
 import org.bson.Document;
 import org.springframework.beans.BeansException;
@@ -40,11 +40,11 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * @email coffee377@dingtalk.com
  * @time 2021/02/07 10:28
  */
-public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T, ID>, ApplicationContextAware {
+public abstract class BaseMongoDao<E extends IJsonEntity, ID> implements IMongoDao<E, ID>, ApplicationContextAware {
 
     protected MongoOperations mongoOperations;
 
-    protected MongoEntityInformation<T, ID> entityInformation;
+    protected MongoEntityInformation<E, ID> entityInformation;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -55,16 +55,16 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     @SuppressWarnings({"unchecked"})
     protected void resolveEntityInformation(ApplicationContext applicationContext) {
         ResolvableType resolvableType = ResolvableType.forClass(IMongoDao.class, this.getClass());
-        Class<T> entityClazz = (Class<T>) resolvableType.getGeneric(0).toClass();
+        Class<E> entityClazz = (Class<E>) resolvableType.getGeneric(0).toClass();
         Class<ID> idClazz = (Class<ID>) resolvableType.getGeneric(1).toClass();
         MongoMappingContext mongoMappingContext = applicationContext.getBean(MongoMappingContext.class);
-        BasicMongoPersistentEntity<T> persistentEntity = (BasicMongoPersistentEntity<T>) mongoMappingContext.getPersistentEntity(entityClazz);
+        BasicMongoPersistentEntity<E> persistentEntity = (BasicMongoPersistentEntity<E>) mongoMappingContext.getPersistentEntity(entityClazz);
         assert persistentEntity != null;
         this.entityInformation = new MappingMongoEntityInformation<>(persistentEntity, idClazz);
     }
 
     @Override
-    public <S extends T> S save(S entity) {
+    public <S extends E> S save(S entity) {
         Assert.notNull(entity, "Entity must not be null!");
         if (entityInformation.isNew(entity)) {
             return mongoOperations.insert(entity, entityInformation.getCollectionName());
@@ -73,7 +73,7 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     }
 
     @Override
-    public <S extends T> List<S> saveAll(Iterable<S> entities) {
+    public <S extends E> List<S> saveAll(Iterable<S> entities) {
         Assert.notNull(entities, "The given Iterable of entities not be null!");
         Streamable<S> source = Streamable.of(entities);
         boolean allNew = source.stream().allMatch(entityInformation::isNew);
@@ -85,7 +85,7 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     }
 
     @Override
-    public Optional<T> findById(ID id) {
+    public Optional<E> findById(ID id) {
         Assert.notNull(id, "The given id must not be null!");
         return Optional.ofNullable(
                 mongoOperations.findById(id, entityInformation.getJavaType(), entityInformation.getCollectionName()));
@@ -108,7 +108,7 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
         Assert.notNull(id, "The given id must not be null!");
         DeleteResult deleteResult = mongoOperations.remove(getIdQuery(id), entityInformation.getJavaType(), entityInformation.getCollectionName());
         if (entityInformation.isVersioned() && deleteResult.wasAcknowledged() && deleteResult.getDeletedCount() == 0) {
-            T entity = this.findOne(getIdQuery(id)).orElse(null);
+            E entity = this.findOne(getIdQuery(id)).orElse(null);
             assert entity != null;
             throw new OptimisticLockingFailureException(String.format(
                     "The entity with id %s with version %s in %s cannot be deleted! Was it modified or deleted in the meantime?",
@@ -118,7 +118,7 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     }
 
     @Override
-    public void delete(T entity) {
+    public void delete(E entity) {
         Assert.notNull(entity, "The given entity must not be null!");
         DeleteResult deleteResult = mongoOperations.remove(entity, entityInformation.getCollectionName());
         if (entityInformation.isVersioned() && deleteResult.wasAcknowledged() && deleteResult.getDeletedCount() == 0) {
@@ -135,7 +135,7 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     }
 
     @Override
-    public void deleteAll(Iterable<? extends T> entities) {
+    public void deleteAll(Iterable<? extends E> entities) {
         Assert.notNull(entities, "The given Iterable of entities not be null!");
         entities.forEach(this::delete);
     }
@@ -146,44 +146,44 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     }
 
     @Override
-    public List<T> findAll() {
+    public List<E> findAll() {
         return findAll(new Query());
     }
 
     @Override
-    public List<T> findAllById(Iterable<ID> ids) {
+    public List<E> findAllById(Iterable<ID> ids) {
         Assert.notNull(ids, "The given Ids of entities not be null!");
         return findAll(new Query(new Criteria(entityInformation.getIdAttribute())
                 .in(Streamable.of(ids).stream().collect(StreamUtils.toUnmodifiableList()))));
     }
 
     @Override
-    public Page<T> findAll(Pageable pageable) {
+    public Page<E> findAll(Pageable pageable) {
         Assert.notNull(pageable, "Pageable must not be null!");
         long count = count();
-        List<T> list = findAll(new Query().with(pageable));
+        List<E> list = findAll(new Query().with(pageable));
         return new PageImpl<>(list, pageable, count);
     }
 
     @Override
-    public List<T> findAll(Sort sort) {
+    public List<E> findAll(Sort sort) {
         Assert.notNull(sort, "Sort must not be null!");
         return findAll(new Query().with(sort));
     }
 
     @Override
-    public T updateById(ID id, Map<String, Object> updateFieldMap) {
+    public E updateById(ID id, Map<String, Object> updateFieldMap) {
         return this.innerUpdate(id, updateFieldMap);
     }
 
     @Override
-    public T update(T entity) {
+    public E update(E entity) {
         Assert.notNull(entity.getId(), "The Entity id must not be null!");
         Document document = Document.parse(entity.toJson());
         return this.innerUpdate(entity.getId(), document);
     }
 
-    protected T innerUpdate(Object id, Map<String, Object> updateFieldMap) {
+    protected E innerUpdate(Object id, Map<String, Object> updateFieldMap) {
         Query idQuery = getIdQuery(id);
         Update update = new Update();
         updateFieldMap.entrySet().stream()
@@ -191,7 +191,7 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
                 .forEach(entry -> update.set(entry.getKey(), entry.getValue()));
         UpdateResult updateResult = mongoOperations.updateFirst(idQuery, update, entityInformation.getJavaType(), entityInformation.getCollectionName());
         if (updateResult.getModifiedCount() > 0) {
-            Optional<T> one = this.findOne(idQuery);
+            Optional<E> one = this.findOne(idQuery);
             return one.orElse(null);
         }
         return null;
@@ -203,27 +203,27 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
     }
 
     @Override
-    public List<T> find(Query condition) {
+    public List<E> find(Query condition) {
         return mongoOperations.find(ensureQuery(condition), entityInformation.getJavaType(), entityInformation.getCollectionName());
     }
 
     @Override
-    public Page<T> findPage(Query condition, Pageable pageable) {
+    public Page<E> findPage(Query condition, Pageable pageable) {
         Assert.notNull(pageable, "Pageable must not be null!");
         Query query = ensureQuery(condition).with(pageable);
-        List<T> list = find(query);
+        List<E> list = find(query);
         long total = total(query);
         return new PageImpl<>(list, pageable, total);
     }
 
     @Override
-    public Optional<T> findOne(Query condition) {
-        T one = mongoOperations.findOne(ensureQuery(condition), entityInformation.getJavaType(), entityInformation.getCollectionName());
+    public Optional<E> findOne(Query condition) {
+        E one = mongoOperations.findOne(ensureQuery(condition), entityInformation.getJavaType(), entityInformation.getCollectionName());
         return Optional.ofNullable(one);
     }
 
     @Override
-    public List<T> findById(Iterable<ID> ids) {
+    public List<E> findById(Iterable<ID> ids) {
         Assert.notNull(ids, "The given Ids of entities not be null!");
         List<ID> idList = Streamable.of(ids).stream().collect(StreamUtils.toUnmodifiableList());
         Query query = Query.query(where(entityInformation.getIdAttribute()).in(idList));
@@ -250,7 +250,7 @@ public abstract class BaseMongoDao<T extends IEntity, ID> implements IMongoDao<T
         return Optional.ofNullable(query).orElse(new Query());
     }
 
-    private List<T> findAll(@Nullable Query query) {
+    private List<E> findAll(@Nullable Query query) {
         if (query == null) {
             return Collections.emptyList();
         }

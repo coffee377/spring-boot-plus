@@ -1,7 +1,7 @@
 package com.voc.restful.security.core.authentication.token.model;
 
 
-import com.voc.restful.core.entity.JsonEntity;
+import com.voc.restful.core.entity.BaseJsonEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public  class TokenResult extends JsonEntity {
+public  class TokenResult extends BaseJsonEntity {
 
     /**
      * 访问令牌
