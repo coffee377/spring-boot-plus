@@ -1,3 +1,7 @@
+plugins {
+  id("com.voc.app.info")
+}
+
 val restful = parent!!.name
 
 dependencies {
@@ -7,6 +11,7 @@ dependencies {
   }
 //  implementation(project(":$restful:$restful-dingtalk"))
 //  implementation(project(":$restful:$restful-security"))
+  implementation("mysql:mysql-connector-java")
   implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
   implementation("com.baomidou:mybatis-plus-boot-starter")
 
@@ -14,3 +19,8 @@ dependencies {
 //  testImplementation("org.springframework.boot:spring-boot-starter-security")
 }
 
+tasks {
+  test {
+    useJUnitPlatform()
+  }
+}

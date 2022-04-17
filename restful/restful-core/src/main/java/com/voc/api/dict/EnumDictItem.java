@@ -142,7 +142,7 @@ public interface EnumDictItem<Value> extends IDictItem<Value>, IAuthorityDescrip
      * @return 查找到的结果
      * @see this#findByCondition(Class, Predicate)
      */
-    static <T extends EnumDictItem> Optional<T> findByValue(Class<T> type, String value) {
+    static <T extends EnumDictItem> Optional<T> findByValue(Class<T> type, Object value) {
         return findByCondition(type, item -> item.getValue().equals(value)).stream().findFirst();
     }
 

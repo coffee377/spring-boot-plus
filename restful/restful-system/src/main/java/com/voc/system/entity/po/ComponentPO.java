@@ -1,5 +1,6 @@
 package com.voc.system.entity.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.IEntity;
 import com.voc.system.constant.Table;
@@ -7,7 +8,6 @@ import com.voc.system.entity.enums.ComponentFileSuffix;
 import com.voc.system.entity.enums.ComponentPosition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = Table.COMPONENT)
+@TableName(value = Table.COMPONENT)
 public class ComponentPO extends BaseEntity<String> implements IEntity<String> {
 
     /**

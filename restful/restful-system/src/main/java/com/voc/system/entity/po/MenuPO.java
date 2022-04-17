@@ -1,5 +1,6 @@
 package com.voc.system.entity.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.api.authority.IAuthorityDescriptor;
 import com.voc.restful.core.entity.BaseTreeEntity;
 import com.voc.restful.core.entity.ITreeEntity;
@@ -19,7 +20,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = Table.MENU)
+@TableName(value = Table.MENU)
 public class MenuPO extends BaseTreeEntity<String> implements ITreeEntity<String>, IAuthorityDescriptor {
 
     /**
@@ -62,8 +63,9 @@ public class MenuPO extends BaseTreeEntity<String> implements ITreeEntity<String
      */
     private String target;
 
-    @Override
-    public Integer getMask() {
-        return null;
-    }
+    /**
+     * 权限掩码
+     */
+    private Integer mask;
+
 }

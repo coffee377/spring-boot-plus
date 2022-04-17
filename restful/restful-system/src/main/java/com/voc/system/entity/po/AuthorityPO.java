@@ -1,12 +1,12 @@
 package com.voc.system.entity.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.IEntity;
 import com.voc.system.constant.Table;
 import com.voc.system.entity.enums.AuthorityType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 持久化对象 - 权限
@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = Table.AUTHORITY)
+@TableName(value = Table.AUTHORITY)
 public class AuthorityPO extends BaseEntity<String> implements IEntity<String> {
 
     /**

@@ -1,14 +1,11 @@
 package com.voc.system.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.voc.api.enums.UsingStatus;
-import com.voc.restful.core.entity.IEntity;
+import com.voc.restful.core.entity.IUser;
 import com.voc.restful.core.entity.impl.BaseUser;
-import com.voc.restful.core.persist.PO;
 import com.voc.system.constant.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 持久化对象 - 用户
@@ -19,9 +16,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = Table.USER)
-@TableName(Table.USER)
-public class UserPO extends BaseUser<String> implements IEntity<String> {
+@TableName(value = Table.USER)
+public class UserPO extends BaseUser<String> implements IUser<String> {
 
     /**
      * 工号
@@ -48,18 +44,4 @@ public class UserPO extends BaseUser<String> implements IEntity<String> {
      */
     private String avatar;
 
-    /**
-     * 用户状态
-     */
-    private UsingStatus status;
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return !UsingStatus.LOCK.equals(status);
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UsingStatus.NORMAL.equals(status);
-    }
 }

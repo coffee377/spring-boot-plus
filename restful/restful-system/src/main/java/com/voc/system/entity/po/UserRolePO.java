@@ -7,7 +7,6 @@ import com.voc.restful.core.persist.PO;
 import com.voc.system.constant.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 持久化对象 - 用户角色
@@ -18,9 +17,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = Table.USE_ROLE_RELATION)
 @TableName(Table.USER)
-public class UserRolePO extends BaseEntity<String> implements IEntity<String>, PO {
+public class UserRolePO extends BaseEntity<String> implements IEntity<String> {
 
     /**
      * 用户 ID

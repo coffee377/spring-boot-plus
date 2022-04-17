@@ -22,7 +22,7 @@ public interface IAuthorityDescriptor extends Supplier<BigInteger> {
     /**
      * 权限掩码
      *
-     * @return int
+     * @return Integer
      */
     Integer getMask();
 

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 使用状态枚举类
+ * 使用状态
  * Created with IntelliJ IDEA.
  *
  * @author Wu Yujie

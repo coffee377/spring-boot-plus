@@ -1,6 +1,5 @@
-package com.voc;
+package com.voc.system;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @email coffee377@dingtalk.com
  * @time 2021/06/08 10:58
  */
-@MapperScan
 @SpringBootApplication
 public class App {
 

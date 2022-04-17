@@ -30,6 +30,14 @@ logging:
   level:
     root: warn
     com:
-      voc: info
-#mybatis-plus:
-#  type-enums-package:
+      voc:
+       system:
+         dao: debug
+mybatis-plus:
+  type-handlers-package: com.voc.system.autoconfigure,com.voc.mybatis.handler
+  type-enums-package: com.voc.system.entity.enums
+#  global-config:
+#    db-config:
+#      logic-delete-field: flag # 逻辑删除标记字段
+#      logic-delete-value: -1 # 删除时值
+#      logic-not-delete-value: 0 # 未删除时值

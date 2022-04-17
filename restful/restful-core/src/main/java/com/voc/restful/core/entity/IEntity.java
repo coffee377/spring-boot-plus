@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @email coffee377@dingtalk.com
  * @time 2021/02/07 16:34
  */
-public interface IEntity<ID extends Serializable> extends IBean, ICreateInfo, IUpdateInfo {
+public interface IEntity<ID extends Serializable> extends IBean, ICreateInfo, IUpdateInfo, IFlagEntity, IStatusEntity {
     /**
      * 获取 id
      *

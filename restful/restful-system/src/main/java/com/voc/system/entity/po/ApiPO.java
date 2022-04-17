@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(Table.API)
+@TableName(value = Table.API)
 public class ApiPO extends BaseEntity<String> implements IEntity<String>, IAuthorityDescriptor {
 
     /**

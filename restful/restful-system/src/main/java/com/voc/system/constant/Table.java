@@ -25,5 +25,7 @@ public interface Table {
     String API = "sys_api";
     String OPERATION = "sys_operation";
     String DATA = "sys_data";
+    String DICT = "sys_dict";
+    String DICT_ITEM = "sys_dict_item";
 
 }

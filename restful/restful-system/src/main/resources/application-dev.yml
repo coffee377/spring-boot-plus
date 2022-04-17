@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      username: admin
+      password: admin!@@&
+      database: teamwork
+      authentication-database: admin
+  redis:
+    database: 7
+    password: tvoc.site.redis
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/voc_base?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root!@@&
+    driver-class-name: com.mysql.cj.jdbc.Driver

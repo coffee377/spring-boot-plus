@@ -1,5 +1,6 @@
 package com.voc.system.entity.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.api.authority.IAuthorityDescriptor;
 import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.IEntity;
@@ -17,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = Table.DATA)
+@TableName(value = Table.DATA)
 public class DataPO extends BaseEntity<String> implements IEntity<String>, IAuthorityDescriptor {
 
     /**
@@ -33,5 +34,7 @@ public class DataPO extends BaseEntity<String> implements IEntity<String>, IAuth
     /**
      * 权限掩码
      */
-    private int mask;
+    private Integer mask;
+
+
 }

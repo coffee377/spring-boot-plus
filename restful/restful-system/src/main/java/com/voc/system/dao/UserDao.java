@@ -1,6 +1,7 @@
 package com.voc.system.dao;
 
 import com.voc.system.entity.po.UserPO;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Wu Yujie

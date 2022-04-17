@@ -1,5 +1,6 @@
 package com.voc.restful.core.entity.impl;
 
+import com.voc.api.enums.UsingStatus;
 import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.IUser;
 import lombok.Data;
@@ -26,39 +27,10 @@ public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements
      */
     private String password;
 
-    /**
-     * 账户是否过期
-     */
-    private boolean accountExpired;
-
-    /**
-     * 账户是否锁定
-     */
-    private boolean accountLocked;
-
-    /**
-     * 密码是否过期
-     */
-    private boolean credentialsExpired;
-
-    /**
-     * 是否禁用
-     */
-    private boolean disabled;
-
-    public BaseUser(ID id, String username, String password, boolean accountExpired, boolean accountLocked,
-                    boolean credentialsExpired, boolean disabled) {
-        this.setId(id);
+    public BaseUser(ID id, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
-        this.accountExpired = accountExpired;
-        this.accountLocked = accountLocked;
-        this.credentialsExpired = credentialsExpired;
-        this.disabled = disabled;
-    }
-
-    public BaseUser(ID id, String username, String password) {
-        this(id, username, password, false, false, false, false);
     }
 
     public BaseUser() {
@@ -76,21 +48,21 @@ public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements
 
     @Override
     public boolean isAccountNonExpired() {
-        return !accountExpired;
+        return false;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !accountLocked;
+        return !UsingStatus.LOCK.equals(getStatus());
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return !credentialsExpired;
+        return false;
     }
 
     @Override
     public boolean isEnabled() {
-        return !disabled;
+        return UsingStatus.NORMAL.equals(getStatus());
     }
 }

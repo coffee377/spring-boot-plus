@@ -1,5 +1,6 @@
 package com.voc.system.entity.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.IEntity;
 import com.voc.system.constant.Table;
@@ -16,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = Table.ROLE_AUTHORITY_RELATION)
+@TableName(value = Table.ROLE_AUTHORITY_RELATION)
 public class RoleAuthorityPO extends BaseEntity<String> implements IEntity<String> {
 
     /**

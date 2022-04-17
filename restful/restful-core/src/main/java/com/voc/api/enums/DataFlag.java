@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * 数据标识（增删改标识）
+ *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/10/12 08:56
