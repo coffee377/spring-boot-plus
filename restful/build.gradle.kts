@@ -27,8 +27,10 @@ subprojects {
 
   dependencyManagement {
     val authorizationServerVersion = ext.get("spring.security.oauth2.authorization.server.version")
+    val mybatisPlusVersion = ext.get("mybatis.plus.version")
     dependencies {
       dependency("org.springframework.security:spring-security-oauth2-authorization-server:$authorizationServerVersion")
+      dependency("com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion")
     }
   }
 
