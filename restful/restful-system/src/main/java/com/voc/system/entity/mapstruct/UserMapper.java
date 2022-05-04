@@ -17,8 +17,20 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+    /**
+     * 业务对象转持久化对象
+     *
+     * @param userBO UserBO
+     * @return UserPO
+     */
     UserPO convertBO2PO(UserBO userBO);
 
-    @Mapping(target = "uid",source = "id")
+    /**
+     * 持久化对象转视图对象
+     *
+     * @param userPO UserPO
+     * @return UserVO
+     */
+    @Mapping(target = "uid", source = "id")
     UserVO convertPO2VO(UserPO userPO);
 }

@@ -1,13 +1,7 @@
 package com.voc.restful.security.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 /**
  * @author Wu Yujie
@@ -75,20 +69,20 @@ public class DefaultSecurityConfiguration {
 //        return http.build();
 //    }
 
-    @Bean
-    @ConditionalOnMissingBean
-    UserDetailsService users() {
-        UserDetails demo = User.builder()
-                .username("demo")
-                .password(passwordEncoder.encode("123456"))
-                .roles("DEMO")
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("123456"))
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(demo, admin);
-    }
+//    @Bean
+//    @ConditionalOnMissingBean
+//    UserDetailsService users() {
+//        UserDetails demo = User.builder()
+//                .username("demo")
+//                .password(passwordEncoder.encode("123456"))
+//                .roles("DEMO")
+//                .build();
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password(passwordEncoder.encode("123456"))
+//                .roles("ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(demo, admin);
+//    }
 
 }

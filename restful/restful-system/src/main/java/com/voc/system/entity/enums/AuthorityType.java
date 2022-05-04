@@ -19,7 +19,7 @@ public enum AuthorityType implements EnumDictItem<Integer> {
     ACTION(2, "操作", "操作权限"),
     DATA(3, "数据", "数据权限");
 
-    private Integer value;
+    private final Integer value;
     private final String text;
     private final String comments;
 

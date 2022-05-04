@@ -1,7 +1,7 @@
-package com.voc.mybatis.handler;
+package com.voc.persist.mybatis.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.voc.api.IAccount;
+import com.voc.persist.IAccountInfo;
 import com.voc.api.enums.DataFlag;
 import com.voc.api.enums.UsingStatus;
 import com.voc.restful.core.entity.TableCommonFieldConstant;
@@ -25,9 +25,9 @@ public class TableFieldMetaObjectHandler implements MetaObjectHandler, TableComm
     /**
      * 注入当前登录用户账户信息
      */
-    private final IAccount account;
+    private final IAccountInfo account;
 
-    public TableFieldMetaObjectHandler(IAccount account) {
+    public TableFieldMetaObjectHandler(IAccountInfo account) {
         this.account = account;
     }
 
@@ -38,10 +38,10 @@ public class TableFieldMetaObjectHandler implements MetaObjectHandler, TableComm
         if (fieldValByName == null) {
             Serializable uid = account.getUserId();
             setFieldValByName(CREATED_BY, uid, metaObject);
-            setFieldValByName(UPDATED_BY, uid, metaObject);
+//            setFieldValByName(UPDATED_BY, uid, metaObject);
             if (log.isDebugEnabled()) {
                 log.debug("公共字段插入增强处理");
-                log.debug("创建人：{} 修改人：{}", uid, uid);
+                log.debug("创建人：{}", uid);
             }
         }
 
@@ -50,9 +50,9 @@ public class TableFieldMetaObjectHandler implements MetaObjectHandler, TableComm
         if (fieldValByName == null) {
             Instant insertTime = Instant.now();
             setFieldValByName(CREATED_AT, insertTime, metaObject);
-            setFieldValByName(UPDATED_AT, insertTime, metaObject);
+//            setFieldValByName(UPDATED_AT, insertTime, metaObject);
             if (log.isDebugEnabled()) {
-                log.debug("创建时间：{} 修改时间：{}", insertTime, insertTime);
+                log.debug("创建时间：{}", insertTime);
             }
 
         }

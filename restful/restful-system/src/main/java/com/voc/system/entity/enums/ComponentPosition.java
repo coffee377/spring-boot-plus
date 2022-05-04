@@ -19,8 +19,8 @@ public enum ComponentPosition implements EnumDictItem<Integer> {
     LAYOUT(2, "布局", "src/layouts 目录下布局组件"),
     PAGE(3, "页面", "src/pages 目录下页面组件");
 
-    private Integer value;
-    private String text;
+    private final Integer value;
+    private final String text;
     private final String comments;
 
 }

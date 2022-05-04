@@ -20,7 +20,7 @@ public enum MenuHiddenType implements EnumDictItem<Integer> {
     SELF(3, "SELF", "隐藏自己，并将子节点提升到与自己平级"),
     ;
 
-    private Integer value;
-    private String text;
+    private final Integer value;
+    private final String text;
     private final String comments;
 }

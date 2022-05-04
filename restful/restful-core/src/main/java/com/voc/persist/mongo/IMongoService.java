@@ -1,4 +1,4 @@
-package com.voc.restful.core.persist.mongo;
+package com.voc.persist.mongo;
 
 import com.voc.restful.core.response.BizException;
 import org.springframework.data.domain.Page;

@@ -1,7 +1,7 @@
-package com.voc.restful.core.persist.mybatis;
+package com.voc.persist.mybatis;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.voc.restful.core.persist.entity.PersistEntity;
+import com.voc.persist.PersistEntity;
 
 /**
  * @author Wu Yujie

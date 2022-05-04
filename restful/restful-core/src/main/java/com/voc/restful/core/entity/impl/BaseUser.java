@@ -23,7 +23,7 @@ public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements
     private String username;
 
     /**
-     * 密码
+     * 密码(加密后的密码串)
      */
     private String password;
 

@@ -1,9 +1,9 @@
-package com.voc.restful.core.persist.mongo.impl;
+package com.voc.persist.mongo.impl;
 
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
+import com.voc.persist.mongo.IMongoDao;
 import com.voc.restful.core.entity.IJsonEntity;
-import com.voc.restful.core.persist.mongo.IMongoDao;
 import org.bson.Document;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

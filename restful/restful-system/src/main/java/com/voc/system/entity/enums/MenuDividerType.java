@@ -20,7 +20,7 @@ public enum MenuDividerType implements EnumDictItem<Integer> {
     ALL(3, "ALL", "两者均含"),
     ;
 
-    private Integer value;
-    private String text;
+    private final Integer value;
+    private final String text;
     private final String comments;
 }

@@ -1,10 +1,14 @@
 package com.voc.restful.security.core.config;
 
+import com.voc.restful.core.service.AuthService;
+import com.voc.restful.core.service.impl.DefaultAuthService;
+import com.voc.restful.security.core.authentication.DefaultUserDetailService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.io.Serializable;
 
 /**
  * @author Wu Yujie
@@ -15,22 +19,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class CommonBeanConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(PasswordEncoder.class)
-    PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    @ConditionalOnMissingBean
+    AuthService authService() {
+        return new DefaultAuthService();
     }
 
-//    @Bean
-//    @ConditionalOnMissingBean
-//    AuthService authService() {
-//        return new DefaultAuthService();
-//    }
-
-//    @Bean
-//    @ConditionalOnMissingBean
-//    UserDetailsService userDetailsService(AuthService<Serializable> authService) {
-//        return new DefaultUserDetailService(authService);
-//    }
+    @Bean
+    @ConditionalOnMissingBean
+    UserDetailsService userDetailsService(AuthService<Serializable> authService) {
+        return new DefaultUserDetailService(authService);
+    }
 
 //    @Bean
 //    @ConditionalOnMissingBean

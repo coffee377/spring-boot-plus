@@ -1,5 +1,8 @@
-package com.voc.restful.core.persist.mybatis;
+package com.voc.persist.mybatis;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import com.voc.persist.PersistEntity;
 import com.voc.restful.core.persist.entity.BizEntity;
 
 import java.io.Serializable;
@@ -10,21 +13,37 @@ import java.util.Collection;
  * @email coffee377@dingtalk.com
  * @time 2022/04/17 00:10
  */
-public interface IBaseService<ID extends Serializable, D extends IBaseDao, BO extends BizEntity> {
+@SuppressWarnings({"unchecked"})
+public interface IBaseService<ID extends Serializable, Dao extends IBaseDao, PO extends PersistEntity, BO extends BizEntity> {
 
     /**
      * 获取 Dao 层接口
      *
      * @return D
      */
-    D getDao();
+    Dao getDao();
 
     /**
      * 获取持久化对象类
      *
+     * @return Class<PO>
+     */
+    Class<PO> getPersistEntityClass();
+
+    /**
+     * 获取业务对象类
+     *
      * @return Class<BO>
      */
-    Class<BO> getPersistEntityClass();
+    Class<BO> getBizEntityClass();
+
+    /**
+     * 业务对象转持久化对象
+     *
+     * @param bo 业务对象
+     * @return 持久化对象
+     */
+    PO convert(BO bo);
 
     /**
      * 添加单个实体
@@ -53,28 +72,48 @@ public interface IBaseService<ID extends Serializable, D extends IBaseDao, BO ex
      */
     boolean saveBatch(Collection<BO> entities, int batchSize);
 
-//
-//    /**
-//     * 根据 ID 删除记录
-//     *
-//     * @param id 主键
-//     */
-//    void deleteById(Object id);
-//
-//    /**
-//     * 批量删除数据
-//     *
-//     * @param ids 主键集合
-//     */
-//    void deleteByIds(Iterable<Object> ids);
-//
-//    /**
-//     * 更新实体
-//     *
-//     * @param entity 实体对象
-//     * @return 修改成功后的数据
-//     */
-//    T update(T entity);
+    /**
+     * 根据 ID 删除记录
+     *
+     * @param id 主键
+     * @return boolean
+     */
+    boolean deleteById(ID id);
+
+    /**
+     * 批量删除数据
+     *
+     * @param ids 主键集合
+     * @return boolean
+     */
+    boolean deleteByIds(Collection<? extends Serializable> ids);
+
+//    default boolean deleteByMap(Map<String, Object> columnMap) {
+//        Assert.notEmpty(columnMap, "error: columnMap must not be empty");
+//        return SqlHelper.retBool(this.getDao().deleteByMap(columnMap));
+//    }
+
+    /**
+     * 条件删除
+     *
+     * @param queryWrapper Wrapper<PO>
+     * @return boolean
+     */
+    default boolean delete(Wrapper<PO> queryWrapper) {
+        return SqlHelper.retBool(this.getDao().delete(queryWrapper));
+    }
+
+    /**
+     * 根据 id 更新实体
+     * @param id 主键 id
+     * @param entity 更新信息
+     * @return boolean
+     */
+    default boolean updateById(ID id, BO entity) {
+        PO persist = this.convert(entity);
+        persist.setId(id);
+        return SqlHelper.retBool(this.getDao().updateById(persist));
+    }
 //
 //    /**
 //     * 根据ID更新指定字段信息

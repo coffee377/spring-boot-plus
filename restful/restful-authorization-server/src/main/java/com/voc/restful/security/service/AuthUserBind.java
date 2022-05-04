@@ -1,7 +1,7 @@
 package com.voc.restful.security.service;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.voc.restful.core.entity.impl.BaseUser;
+import com.voc.restful.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,6 +12,14 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "auth_user")
-public class AuthUser extends BaseUser<String> {
+@TableName(value = "auth_user_bind")
+public class AuthUserBind extends BaseEntity<String> {
+
+    private String userId;
+
+    private String type;
+
+    private String unionId;
+
+    private String openId;
 }

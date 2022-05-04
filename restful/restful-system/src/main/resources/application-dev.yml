@@ -1,10 +1,10 @@
 spring:
-  data:
-    mongodb:
-      username: admin
-      password: admin!@@&
-      database: teamwork
-      authentication-database: admin
+#  data:
+#    mongodb:
+#      username: admin
+#      password: admin!@@&
+#      database: teamwork
+#      authentication-database: admin
   redis:
     database: 7
     password: tvoc.site.redis

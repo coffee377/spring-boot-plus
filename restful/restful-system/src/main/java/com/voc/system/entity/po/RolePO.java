@@ -3,7 +3,7 @@ package com.voc.system.entity.po;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.restful.core.entity.BaseTreeEntity;
 import com.voc.restful.core.entity.ITreeEntity;
-import com.voc.restful.core.persist.entity.PersistEntity;
+import com.voc.persist.PersistEntity;
 import com.voc.system.constant.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = Table.ROLE)
-public class RolePO extends BaseTreeEntity<String> implements ITreeEntity<String>, PersistEntity {
+public class RolePO extends BaseTreeEntity<String> implements ITreeEntity<String>, PersistEntity<String> {
 
     /**
      * 编码

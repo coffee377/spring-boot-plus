@@ -1,4 +1,4 @@
-package com.voc.restful.core.persist.mongo;
+package com.voc.persist.mongo;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

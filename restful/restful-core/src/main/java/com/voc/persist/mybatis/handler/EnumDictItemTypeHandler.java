@@ -1,4 +1,4 @@
-package com.voc.mybatis.handler;
+package com.voc.persist.mybatis.handler;
 
 import com.voc.api.dict.EnumDictItem;
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -15,7 +15,7 @@ import java.util.Optional;
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2022/04/17 14:31
- * @see com.voc.api.dict.EnumDictItem
+ * @see EnumDictItem
  */
 @MappedTypes(EnumDictItem.class)
 public class EnumDictItemTypeHandler<Dict extends EnumDictItem> extends BaseTypeHandler<Dict> {
