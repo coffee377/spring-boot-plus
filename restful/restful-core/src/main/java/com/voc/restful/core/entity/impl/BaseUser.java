@@ -47,22 +47,28 @@ public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements
     }
 
     @Override
-    public boolean isAccountNonExpired() {
+    public boolean isAccountExpired() {
         return false;
     }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return !UsingStatus.LOCK.equals(getStatus());
+    public boolean isAccountLocked() {
+        if (getStatus() != null) {
+            return UsingStatus.LOCK.equals(getStatus());
+        }
+        return false;
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {
+    public boolean isCredentialsExpired() {
         return false;
     }
 
     @Override
     public boolean isEnabled() {
-        return UsingStatus.NORMAL.equals(getStatus());
+        if (getStatus() != null) {
+            return UsingStatus.NORMAL.equals(getStatus());
+        }
+        return true;
     }
 }

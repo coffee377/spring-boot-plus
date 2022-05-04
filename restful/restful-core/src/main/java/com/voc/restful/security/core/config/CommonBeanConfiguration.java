@@ -22,6 +22,18 @@ public class CommonBeanConfiguration {
 
 //    @Bean
 //    @ConditionalOnMissingBean
+//    AuthService authService() {
+//        return new DefaultAuthService();
+//    }
+
+//    @Bean
+//    @ConditionalOnMissingBean
+//    UserDetailsService userDetailsService(AuthService<Serializable> authService) {
+//        return new DefaultUserDetailService(authService);
+//    }
+
+//    @Bean
+//    @ConditionalOnMissingBean
 //    AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
 //        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 //        daoAuthenticationProvider.setUserDetailsService(userDetailsService);

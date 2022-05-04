@@ -21,8 +21,6 @@ public class ResourceServerProperties {
      */
     private List<String> ignore;
 
-    private String ii;
-
     /**
      * OAuth 2.0 endpoint through which token introspection is accomplished.
      */
@@ -37,5 +35,6 @@ public class ResourceServerProperties {
      * Client secret used to authenticate with the token introspection endpoint.
      */
     private String clientSecret;
+
 
 }

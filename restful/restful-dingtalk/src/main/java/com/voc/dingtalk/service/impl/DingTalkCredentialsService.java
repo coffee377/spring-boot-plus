@@ -5,8 +5,8 @@ import com.dingtalk.api.request.OapiGettokenRequest;
 import com.voc.dingtalk.UrlConst;
 import com.voc.dingtalk.cache.DingTalkCache;
 import com.voc.dingtalk.exception.DingTalkApiException;
-import com.voc.dingtalk.properties.App;
-import com.voc.dingtalk.service.IDingTalkCredentialsService;
+import com.voc.dingtalk.properties.DingTalkApp;
+import com.voc.dingtalk.service.ICredentialsService;
 import com.voc.dingtalk.service.IDingTalkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -22,10 +22,10 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Slf4j
 @Service("dingTalkCredentialsService")
-public class DingTalkCredentialsService implements IDingTalkCredentialsService, DingTalkCache {
+public class DingTalkCredentialsService implements ICredentialsService, DingTalkCache {
 
     @Resource
-    private IDingTalkCredentialsService credentialsService;
+    private ICredentialsService credentialsService;
 
     @Resource
     private IDingTalkService dingTalkService;
@@ -47,7 +47,7 @@ public class DingTalkCredentialsService implements IDingTalkCredentialsService, 
     @Override
     @Cacheable(cacheNames = DingTalkCache.ACCESS_TOKEN, keyGenerator = "appKeyGenerator")
     public String getAccessTokenByAppName(String appName) throws DingTalkApiException {
-        App app = dingTalkService.getAppByName(appName);
+        DingTalkApp app = dingTalkService.getAppByName(appName);
         return credentialsService.getAccessToken(app.getAppKey(), app.getAppSecret());
     }
 
@@ -67,7 +67,7 @@ public class DingTalkCredentialsService implements IDingTalkCredentialsService, 
     @Override
     @Cacheable(cacheNames = DingTalkCache.JS_TICKET, keyGenerator = "appKeyGenerator")
     public String getJsApiTicketByAppName(String appName) throws DingTalkApiException {
-        App app = dingTalkService.getAppByName(appName);
+        DingTalkApp app = dingTalkService.getAppByName(appName);
         return credentialsService.getJsApiTicketByAppName(app.getAppKey(), app.getAppSecret());
     }
 }

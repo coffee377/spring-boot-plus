@@ -36,7 +36,7 @@ public class TokenConfiguration {
         return new KeyGenerator(snowflakeHelper);
     }
 
-    @Bean
+//    @Bean
     public OAuth2TokenGenerator tokenGenerator(@Autowired(required = false) JwtGenerator jwtGenerator,
                                                @Autowired(required = false) OAuth2TokenCustomizer<OAuth2TokenClaimsContext> tokenCustomizer) {
         OAuth2TokenGenerator tokenGenerator;

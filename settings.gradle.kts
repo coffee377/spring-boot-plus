@@ -32,21 +32,21 @@ pluginManagement {
   }
 }
 
-fileTree(rootDir) {
-  include("**/*.gradle", "**/*.gradle.kts")
-  exclude("**/settings.gradle", "**/settings.gradle.kts", "**/buildSrc")
-}.files.stream()
-  /* 非根项目 */
-  .filter { file -> !file.parentFile.relativeTo(rootDir).name.isNullOrEmpty() }
-  .map { file -> ProjectInfo(rootDir, file) }
-  .collect(java.util.stream.Collectors.toList())
-//  .filter { info -> Regex(".*(examples|restful)$").matches(info.name) }
-  .forEach {
-//    println("====> $it")
-//    include(it.path)
-//    project(it.path).projectDir = it.dir
-//    project(it.path).name = it.name
-  }
+//fileTree(rootDir) {
+//  include("**/*.gradle", "**/*.gradle.kts")
+//  exclude("**/settings.gradle", "**/settings.gradle.kts", "**/buildSrc")
+//}.files.stream()
+//  /* 非根项目 */
+//  .filter { file -> !file.parentFile.relativeTo(rootDir).name.isNullOrEmpty() }
+//  .map { file -> ProjectInfo(rootDir, file) }
+//  .collect(java.util.stream.Collectors.toList())
+////  .filter { info -> Regex(".*(examples|restful)$").matches(info.name) }
+//  .forEach {
+////    println("====> $it")
+////    include(it.path)
+////    project(it.path).projectDir = it.dir
+////    project(it.path).name = it.name
+//  }
 
 //include(":examples")
 //include(":examples:gradle")
@@ -55,28 +55,27 @@ include(":restful:restful-core")
 include(":restful:restful-authorization-server")
 include(":restful:restful-resource-server")
 include(":restful:restful-dingtalk")
-//include(":restful:restful-security")
 include(":restful:restful-system")
 
 
-val projectReg = arrayListOf(".*(examples|restful)$", "restful-(core|dingtalk)$")
-
-/**
- * 项目详细实体类
- */
-private class ProjectInfo(rootFile: File, buildFile: File) {
-  val dir: File
-  val path: String
-  val name: String
-
-  init {
-    dir = buildFile.parentFile
-    val paths = dir.relativeTo(rootFile).path.split(File.separator)
-    path = ":${java.lang.String.join(":", paths)}"
-    name = "${rootFile.name}-${java.lang.String.join("-", paths)}"
-  }
-
-  override fun toString(): String {
-    return "Project Name\t-> [${name}]\nProject Path\t-> [${path}]\nProject Dir\t\t-> [${dir.absolutePath}]\n"
-  }
-}
+//val projectReg = arrayListOf(".*(examples|restful)$", "restful-(core|dingtalk)$")
+//
+///**
+// * 项目详细实体类
+// */
+//private class ProjectInfo(rootFile: File, buildFile: File) {
+//  val dir: File
+//  val path: String
+//  val name: String
+//
+//  init {
+//    dir = buildFile.parentFile
+//    val paths = dir.relativeTo(rootFile).path.split(File.separator)
+//    path = ":${java.lang.String.join(":", paths)}"
+//    name = "${rootFile.name}-${java.lang.String.join("-", paths)}"
+//  }
+//
+//  override fun toString(): String {
+//    return "Project Name\t-> [${name}]\nProject Path\t-> [${path}]\nProject Dir\t\t-> [${dir.absolutePath}]\n"
+//  }
+//}

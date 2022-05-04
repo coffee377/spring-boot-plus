@@ -54,4 +54,5 @@ public class DefaultAuthService implements AuthService<String> {
     public Set<String> getAuthorities(String uid) {
         return authorities.get(uid);
     }
+
 }

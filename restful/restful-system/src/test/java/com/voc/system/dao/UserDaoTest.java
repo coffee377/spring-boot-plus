@@ -49,7 +49,7 @@ class UserDaoTest {
     public void update(){
         UserPO userPO = new UserPO();
         userPO.setEmail("coffee377@dingtalk.com");
-        userPO.setJobNumber("0604");
+        userPO.setJobNumber("0634");
         userPO.setMobile("13956945898");
         userDao.update(userPO, new QueryWrapper<UserPO>().eq("USERNAME", "coffee377"));
     }

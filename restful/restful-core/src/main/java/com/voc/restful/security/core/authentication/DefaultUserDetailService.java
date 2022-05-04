@@ -24,8 +24,8 @@ public class DefaultUserDetailService implements UserDetailsService {
 
     private final AuthService<Serializable> authService;
 
-    public DefaultUserDetailService(AuthService<Serializable> userService) {
-        this.authService = userService;
+    public DefaultUserDetailService(AuthService<Serializable> authService) {
+        this.authService = authService;
     }
 
     @Override

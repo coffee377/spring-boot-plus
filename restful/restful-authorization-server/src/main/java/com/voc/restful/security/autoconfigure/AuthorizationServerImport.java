@@ -1,6 +1,6 @@
 package com.voc.restful.security.autoconfigure;
 
-import com.voc.restful.security.DemoController;
+import com.voc.restful.security.controller.DemoController;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
@@ -22,8 +22,6 @@ public class AuthorizationServerImport implements ImportSelector {
     Class<?>[] classes() {
         return (Class<?>[]) new Class[]{
                 DemoController.class
-//                AnnotationListener.class,
-//                TokenController.class,
         };
     }
 }

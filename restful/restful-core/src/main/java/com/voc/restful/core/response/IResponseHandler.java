@@ -46,7 +46,7 @@ public interface IResponseHandler {
      */
     default void write(HttpServletResponse response) throws IOException {
         this.beforeWrite(response);
-        response.getWriter().write(getResult().toString());
+        response.getWriter().write(getResult().toJson());
     }
 
 }

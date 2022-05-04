@@ -6,9 +6,11 @@ dependencies {
   api(project(":${parent!!.name}:${parent!!.name}-core"))
   api("org.springframework.boot:spring-boot-starter-security")
 
-  implementation("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("mysql:mysql-connector-java")
+  implementation("org.springframework.boot:spring-boot-starter-jdbc")
+//  implementation("org.springframework.boot:spring-boot-starter-jpa")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
+  implementation("com.baomidou:mybatis-plus-boot-starter")
 
   /* 认证服务器 */
   implementation("org.springframework.security:spring-security-oauth2-authorization-server")

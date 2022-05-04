@@ -10,50 +10,44 @@ import java.io.Serializable;
 public interface IUser<ID extends Serializable> extends IEntity<ID> {
 
     /**
-     * Returns the username used to authenticate the user. Cannot return <code>null</code>.
+     * 认证用户的用户名
      *
      * @return the username (never <code>null</code>)
      */
     String getUsername();
 
     /**
-     * Returns the password used to authenticate the user.
+     * 认证用户的密码
      *
      * @return the password
      */
     String getPassword();
 
     /**
-     * Indicates whether the user's account has expired. An expired account cannot be
-     * authenticated.
+     * 指示用户的账户是否已过期。已过期的账号不允许身份验证
      *
-     * @return <code>true</code> if the user's account is valid (ie non-expired),
-     * <code>false</code> if no longer valid (ie expired)
+     * @return boolean
      */
-    boolean isAccountNonExpired();
+    boolean isAccountExpired();
 
     /**
-     * Indicates whether the user is locked or unlocked. A locked user cannot be
-     * authenticated.
+     * 指示用户的账号是否被锁定。锁定的账号不允许身份验证
      *
-     * @return <code>true</code> if the user is not locked, <code>false</code> otherwise
+     * @return boolean
      */
-    boolean isAccountNonLocked();
+    boolean isAccountLocked();
 
     /**
-     * Indicates whether the user's credentials (password) has expired. Expired
-     * credentials prevent authentication.
+     * 指示用户的凭据(密码)是否已过期。过期的凭据不允许身份验证
      *
-     * @return <code>true</code> if the user's credentials are valid (ie non-expired),
-     * <code>false</code> if no longer valid (ie expired)
+     * @return boolean
      */
-    boolean isCredentialsNonExpired();
+    boolean isCredentialsExpired();
 
     /**
-     * Indicates whether the user is enabled or disabled. A disabled user cannot be
-     * authenticated.
+     * 指示启用或禁用用户。被禁用的用户不能进行身份验证
      *
-     * @return <code>true</code> if the user is enabled, <code>false</code> otherwise
+     * @return boolean
      */
     boolean isEnabled();
 

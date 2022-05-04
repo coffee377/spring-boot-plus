@@ -1,5 +1,7 @@
 package com.voc.system.dao;
 
+
+import com.voc.restful.core.persist.mybatis.IBaseDao;
 import com.voc.system.entity.po.RolePO;
 
 /**

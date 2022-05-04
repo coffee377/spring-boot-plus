@@ -45,7 +45,7 @@ public class ResponseHandler implements IResponseHandler {
     public void beforeWrite(HttpServletResponse response) throws IOException {
         Assert.notNull(bizStatus, "bizStatus must be set");
         if (log.isDebugEnabled()) {
-            log.debug("响应 JSON 数据为：{}", getResult());
+            log.debug("响应 JSON 数据为：{}", getResult().toJson());
         }
         IResponseHandler.super.beforeWrite(response);
     }

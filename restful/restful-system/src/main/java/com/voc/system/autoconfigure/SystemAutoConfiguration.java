@@ -29,12 +29,6 @@ import java.util.Optional;
 @AutoConfigureBefore({SecurityAutoConfiguration.class})
 public class SystemAutoConfiguration {
 
-//    @Bean
-//    @ConditionalOnMissingBean
-//    IUserService userService() {
-//        return new UserService();
-//    }
-
     @Bean
     @ConditionalOnMissingBean
     IAccount account() {

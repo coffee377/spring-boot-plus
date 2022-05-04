@@ -1,13 +1,13 @@
 package com.voc.dingtalk.controller;
 
-import com.voc.dingtalk.service.IDingTalkCredentialsService;
+import com.voc.dingtalk.service.ICredentialsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 /**
- * 获取凭证接口
+ * 获取凭证
  *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 public class CredentialsController {
 
     @Resource
-    private IDingTalkCredentialsService credentialsService;
+    private ICredentialsService credentialsService;
 
     @GetMapping("/{appName}/access_token")
     public String getAccessToken(@PathVariable("appName") String appName) {

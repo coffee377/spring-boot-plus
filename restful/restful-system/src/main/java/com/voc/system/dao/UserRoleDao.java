@@ -1,7 +1,7 @@
 package com.voc.system.dao;
 
+import com.voc.restful.core.persist.mybatis.IBaseDao;
 import com.voc.system.entity.po.UserRolePO;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Wu Yujie

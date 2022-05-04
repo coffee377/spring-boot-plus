@@ -31,7 +31,7 @@ public interface AuthService<ID extends Serializable> {
     IUser<ID> getUserByThirdApp(ThirdApp app);
 
     /**
-     * 根据唯一标识获取用户拥有的权限信息（包含角色信息等）
+     * 根据用户标识获取用户拥有的权限信息
      *
      * @param uid 用户唯一标识
      * @return 权限集合

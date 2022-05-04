@@ -1,6 +1,6 @@
 package com.voc.dingtalk.service;
 
-import com.voc.dingtalk.properties.App;
+import com.voc.dingtalk.properties.DingTalkApp;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -25,7 +25,7 @@ public interface IDingTalkService extends IApiExecutor {
      *
      * @return App
      */
-    List<App> getApps();
+    List<DingTalkApp> getApps();
 
     /**
      * 根据名称获取应用配置信息
@@ -33,7 +33,7 @@ public interface IDingTalkService extends IApiExecutor {
      * @param appName 应用名称
      * @return App
      */
-    App getAppByName(String appName);
+    DingTalkApp getAppByName(String appName);
 
     /**
      * 根据应用ID获取应用配置信息
@@ -41,7 +41,7 @@ public interface IDingTalkService extends IApiExecutor {
      * @param appId 应用唯一标识 key
      * @return App
      */
-    App getAppById(String appId);
+    DingTalkApp getAppById(String appId);
 
     /**
      * 返回应用密钥

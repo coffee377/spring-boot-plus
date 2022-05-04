@@ -18,44 +18,6 @@ spring:
         - classpath:org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql
   redis:
     password: tvoc.site.redis
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          csdn:
-#            provider: custom
-#            client-id: csdn
-#            client-secret: '{noop}csdn123'
-#            client-authentication-method: POST
-#            authorization-grant-type: authorization_code
-#            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
-#            scope: profile
-#          gitee:
-#            client-id: 96e5747bd3ba7792345f60d8812e1c579cee9c6557ef9bd377f3391d2cc9930c
-#            client-secret: 8b510df64b605a2cd9c2904c5d1738635ba4d5a3c44759e1a342fc86640f3e73
-#            authorization-grant-type: authorization_code
-#            redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
-#            client-authentication-method: POST
-#            scope: user_info
-#        provider:
-#          custom:
-#            authorization-uri: http:localhost:9000/oauth2/authorize
-#            token-uri: http:localhost:9000/oauth2/token
-#            user-info-uri: http:localhost:9000/oauth2/token/api/v5/user
-#          gitee:
-#            authorization-uri: https://gitee.com/oauth/authorize
-#            token-uri: https://gitee.com/oauth/token
-#            user-info-uri: https://gitee.com/api/v5/user
-#            user-name-attribute: name
 logging:
   level:
     root: warn
-#    org.springframework.web: trace
-    org.springframework.security: debug
-    org.springframework.security.oauth2: debug
-api:
-  json:
-    result:
-      success: succesed
-      message: msg
-#    org.springframework.boot.autoconfigure: DEBUG

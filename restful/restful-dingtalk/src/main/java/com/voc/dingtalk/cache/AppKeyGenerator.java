@@ -1,6 +1,6 @@
 package com.voc.dingtalk.cache;
 
-import com.voc.dingtalk.properties.App;
+import com.voc.dingtalk.properties.DingTalkApp;
 import com.voc.dingtalk.service.IDingTalkService;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class AppKeyGenerator implements KeyGenerator {
 
     @Override
     public Object generate(Object o, Method method, Object... objects) {
-        App app;
+        DingTalkApp app;
         if (objects.length == 1) {
             app = dingTalkService.getAppByName(objects[0].toString());
         } else {

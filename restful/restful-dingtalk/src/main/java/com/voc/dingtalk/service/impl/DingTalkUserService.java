@@ -7,8 +7,8 @@ import com.dingtalk.api.response.OapiSnsGetuserinfoBycodeResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
 import com.voc.dingtalk.UrlConst;
 import com.voc.dingtalk.exception.DingTalkApiException;
-import com.voc.dingtalk.properties.App;
-import com.voc.dingtalk.service.IDingTalkCredentialsService;
+import com.voc.dingtalk.properties.DingTalkApp;
+import com.voc.dingtalk.service.ICredentialsService;
 import com.voc.dingtalk.service.IDingTalkService;
 import com.voc.dingtalk.service.IDingTalkUserService;
 import com.voc.restful.core.autoconfigure.json.IJson;
@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DingTalkUserService implements IDingTalkUserService {
 
     @Resource
-    private IDingTalkCredentialsService dingTalkCredentialsService;
+    private ICredentialsService dingTalkCredentialsService;
 
     @Resource
     private IDingTalkService dingTalkService;
@@ -54,7 +54,7 @@ public class DingTalkUserService implements IDingTalkUserService {
 
     @Override
     public OapiSnsGetuserinfoBycodeResponse.UserInfo getUserOpenInfoByClientIdAndTmpAuthCode(String clientId, String tmpAuthCode) {
-        App app = dingTalkService.getAppById(clientId);
+        DingTalkApp app = dingTalkService.getAppById(clientId);
         String appKey = app.getAppKey();
         String appSecret = app.getAppSecret();
         return this.getUserOpenInfoByCode(appKey, appSecret, tmpAuthCode);
@@ -62,7 +62,7 @@ public class DingTalkUserService implements IDingTalkUserService {
 
     @Override
     public OapiSnsGetuserinfoBycodeResponse.UserInfo getUserOpenInfoByCode(String appName, String tempAuthCode) {
-        App app = dingTalkService.getAppByName(appName);
+        DingTalkApp app = dingTalkService.getAppByName(appName);
         String appKey = app.getAppKey();
         String appSecret = app.getAppSecret();
         return this.getUserOpenInfoByCode(appKey, appSecret, tempAuthCode);

@@ -1,7 +1,14 @@
 package com.voc.system.controller;
 
+import com.voc.system.entity.bo.UserBO;
+import com.voc.system.service.IUserService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.io.Serializable;
 
 /**
  * @author Wu Yujie
@@ -12,17 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping({"/user"})
 public class UserController {
 
-//    @Resource
-//    private IUserService userService;
-//
-////    @Resource
-////    private IMenuService menuService;
-//
-//    @PostMapping
-//    public String add(@RequestBody UserPO user) {
-//        return userService.save(user);
-//    }
-//
+    @Resource
+    private IUserService userService;
+
+    @PostMapping
+    public Serializable add(@RequestBody UserBO user) {
+        return userService.save(user);
+    }
+
 //    /**
 //     * 获取当前登录用户信息（菜单、角色、权限等）
 //     *

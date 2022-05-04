@@ -72,9 +72,9 @@ public class AuthorizationServerConfiguration {
         });
 
         /* token 端点 */
-        authorizationServerConfigurer.tokenEndpoint(config -> {
-            config.accessTokenResponseHandler(restfulAuthenticationSuccessHandler);
-            config.errorResponseHandler(restfulAuthenticationFailureHandler);
+        authorizationServerConfigurer.tokenEndpoint(tokenEndpoint -> {
+            tokenEndpoint.accessTokenResponseHandler(restfulAuthenticationSuccessHandler);
+            tokenEndpoint.errorResponseHandler(restfulAuthenticationFailureHandler);
         });
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
 
@@ -86,41 +86,70 @@ public class AuthorizationServerConfiguration {
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
                 .apply(authorizationServerConfigurer)
                 .and().formLogin();
+
         return http.build();
     }
 
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
-        RegisteredClient registeredClient = RegisteredClient.withId("1")
-                // 客户端id 需要唯一
-                .clientId("csdn")
-                .clientName("csdn测试客户端")
-                // 客户端密码
-                .clientSecret("{noop}csdn123")
-                // 可以基于 basic 的方式和授权服务器进行认证
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//        RegisteredClient registeredClient = RegisteredClient.withId("1")
+//                // 客户端id 需要唯一
+//                .clientId("test")
+//                .clientName("测试客户端")
+//                // 客户端密码
+//                .clientSecret("{noop}test123")
+//                // 可以基于 basic 的方式和授权服务器进行认证
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_JWT)
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.PRIVATE_KEY_JWT)
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+//                // 授权码
+//                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+//                // 如果需要支持双令牌，则需要添加此授权类型
+//                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//                // 客户端模式
+//                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+//                .authorizationGrantType(AuthorizationGrantType.JWT_BEARER)
+//                // 授权码模式重定向url
+//                .redirectUri("http://localhost:8090/callback")
+//                .redirectUri("http://127.0.0.1:8090/callback")
+//                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/csdn")
+//                // 客户端申请的作用域，也可以理解这个客户端申请访问用户的哪些信息，比如：获取用户信息，获取用户照片等
+//                .scope(OidcScopes.OPENID)
+//                .scope(OidcScopes.PROFILE)
+//                .clientSettings(
+//                        ClientSettings.builder()
+//                                // 是否需要用户确认一下客户端需要获取用户的哪些权限
+//                                // 比如：客户端需要获取用户的 用户信息、用户照片 但是此处用户可以控制只给客户端授权获取 用户信息。
+//                                .requireAuthorizationConsent(true)
+//                                .build()
+//                )
+//                .tokenSettings(
+//                        TokenSettings.builder()
+//                                // accessToken 的有效期
+//                                .accessTokenTimeToLive(Duration.ofHours(2))
+//                                .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
+//                                // refreshToken 的有效期
+//                                .refreshTokenTimeToLive(Duration.ofDays(7))
+//                                // 是否可重用刷新令牌
+//                                .reuseRefreshTokens(false)
+//                                .build()
+//                )
+//                .build();
+
+        RegisteredClient demoClient = RegisteredClient.withId("2")
+                .clientId("demo")
+                .clientName("演示客户端")
+                .clientSecret("{noop}123456")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_JWT)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.PRIVATE_KEY_JWT)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
-                // 授权码
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                // 如果需要支持双令牌，则需要添加此授权类型
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                // 客户端模式
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .authorizationGrantType(AuthorizationGrantType.PASSWORD)
-                //
-                .authorizationGrantType(AuthorizationGrantType.JWT_BEARER)
-                // 授权码模式重定向url
-                .redirectUri("http://localhost:8090/callback")
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/dingtalk")
                 .redirectUri("http://127.0.0.1:8090/callback")
-                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/csdn")
-                // 客户端申请的作用域，也可以理解这个客户端申请访问用户的哪些信息，比如：获取用户信息，获取用户照片等
                 .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .scope("message.read")
                 .clientSettings(
                         ClientSettings.builder()
                                 // 是否需要用户确认一下客户端需要获取用户的哪些权限
@@ -132,6 +161,7 @@ public class AuthorizationServerConfiguration {
                         TokenSettings.builder()
                                 // accessToken 的有效期
                                 .accessTokenTimeToLive(Duration.ofHours(2))
+                                // 访问令牌格式
                                 .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
                                 // refreshToken 的有效期
                                 .refreshTokenTimeToLive(Duration.ofDays(7))
@@ -142,7 +172,8 @@ public class AuthorizationServerConfiguration {
                 .build();
 
         JdbcRegisteredClientRepository jdbcRegisteredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
-        jdbcRegisteredClientRepository.save(registeredClient);
+//        jdbcRegisteredClientRepository.save(registeredClient);
+        jdbcRegisteredClientRepository.save(demoClient);
 
         return jdbcRegisteredClientRepository;
     }
@@ -155,6 +186,7 @@ public class AuthorizationServerConfiguration {
      * @return OAuth2AuthorizationConsentService
      */
     @Bean
+    @ConditionalOnMissingBean
     public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
         JdbcOAuth2AuthorizationService authorizationService = new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
         class CustomOAuth2AuthorizationRowMapper extends JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper {
@@ -183,10 +215,16 @@ public class AuthorizationServerConfiguration {
      * @return OAuth2AuthorizationConsentService
      */
     @Bean
+    @ConditionalOnMissingBean
     public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
         return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
     }
 
+    /**
+     * 授权服务器公私钥配置
+     *
+     * @return RSAKey
+     */
     @Bean
     @ConditionalOnMissingBean
     public RSAKey rsaKey() {

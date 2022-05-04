@@ -38,7 +38,7 @@ public class DingTalkProperties implements InitializingBean {
     /**
      * APP 配置
      */
-    private Map<String, App> app = new HashMap<>();
+    private Map<String, DingTalkApp> app = new HashMap<>();
 
     @Override
     public void afterPropertiesSet() {
@@ -49,7 +49,7 @@ public class DingTalkProperties implements InitializingBean {
         this.getApp().values().forEach(this::validateApp);
     }
 
-    private void validateApp(App app) {
+    private void validateApp(DingTalkApp app) {
         if (!StringUtils.hasText(app.getAppKey())) {
             throw new IllegalStateException("appKey must not be empty.");
         }

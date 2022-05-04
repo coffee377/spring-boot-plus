@@ -1,6 +1,8 @@
 package com.voc.dingtalk.cache;
 
 /**
+ * 钉钉缓存
+ *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/11/18 18:24

@@ -1,7 +1,7 @@
 package com.voc.dingtalk.service.impl;
 
 import com.voc.dingtalk.cache.DingTalkCache;
-import com.voc.dingtalk.properties.App;
+import com.voc.dingtalk.properties.DingTalkApp;
 import com.voc.dingtalk.properties.DingTalkProperties;
 import com.voc.dingtalk.service.IDingTalkService;
 import com.voc.restful.core.response.impl.BaseBizStatus;
@@ -43,10 +43,10 @@ public class DingTalkService implements IDingTalkService {
      */
     @Override
     @Cacheable(cacheNames = DingTalkCache.APP_INFO, key = "'apps'")
-    public List<App> getApps() {
+    public List<DingTalkApp> getApps() {
         return dingTalkProperties.getApp().entrySet().stream().map(entry -> {
             String name = entry.getKey();
-            App app = entry.getValue();
+            DingTalkApp app = entry.getValue();
             if (!StringUtils.hasText(app.getName())) {
                 app.setName(name);
             }
@@ -56,7 +56,7 @@ public class DingTalkService implements IDingTalkService {
 
     @Override
     @Cacheable(cacheNames = DingTalkCache.APP_INFO)
-    public App getAppByName(String appName) {
+    public DingTalkApp getAppByName(String appName) {
         return dingTalkService.getApps().stream()
                 .filter(app -> app.getName().equals(appName))
                 .findFirst()
@@ -69,7 +69,7 @@ public class DingTalkService implements IDingTalkService {
 
     @Override
     @Cacheable(cacheNames = DingTalkCache.APP_INFO)
-    public App getAppById(String appId) {
+    public DingTalkApp getAppById(String appId) {
         return dingTalkService.getApps().stream()
                 .filter(app -> app.getAppKey().equals(appId))
                 .findFirst()

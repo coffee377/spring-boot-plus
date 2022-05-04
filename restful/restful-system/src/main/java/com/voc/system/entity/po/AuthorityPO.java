@@ -3,6 +3,7 @@ package com.voc.system.entity.po;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.IEntity;
+import com.voc.restful.core.persist.entity.PersistEntity;
 import com.voc.system.constant.Table;
 import com.voc.system.entity.enums.AuthorityType;
 import lombok.Data;
@@ -18,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = Table.AUTHORITY)
-public class AuthorityPO extends BaseEntity<String> implements IEntity<String> {
+public class AuthorityPO extends BaseEntity<String> implements IEntity<String>, PersistEntity {
 
     /**
      * 权限类型

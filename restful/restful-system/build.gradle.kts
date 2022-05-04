@@ -14,6 +14,10 @@ dependencies {
   implementation("mysql:mysql-connector-java")
   implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
   implementation("com.baomidou:mybatis-plus-boot-starter")
+  implementation("org.mapstruct:mapstruct")
+
+  annotationProcessor("org.mapstruct:mapstruct-processor")
+  annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 
 //  compileOnly("org.springframework.boot:spring-boot-starter-security")
 //  testImplementation("org.springframework.boot:spring-boot-starter-security")

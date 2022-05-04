@@ -10,5 +10,8 @@ import java.io.Serializable;
  * @time 2018/11/09 15:49
  */
 public abstract class BaseJsonEntity<ID extends Serializable> extends BaseEntity<ID> implements IJsonEntity<ID> {
-
+    @Override
+    public String toString() {
+        return this.toJson();
+    }
 }

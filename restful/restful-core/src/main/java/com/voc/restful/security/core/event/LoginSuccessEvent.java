@@ -1,9 +1,9 @@
 package com.voc.restful.security.core.event;
 
-import com.voc.restful.security.core.authentication.token.model.TokenResult;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 
 /**
  * 用户登录成功事件
@@ -19,20 +19,20 @@ public class LoginSuccessEvent extends ApplicationEvent {
 
     private final Authentication authentication;
 
-    private TokenResult tokenResult;
+    private OAuth2AccessTokenResponse tokenResult;
 
     public LoginSuccessEvent(String msg,Authentication authentication) {
         this(msg, authentication, null);
     }
 
-    public LoginSuccessEvent(String msg, Authentication authentication, TokenResult tokenResult) {
+    public LoginSuccessEvent(String msg, Authentication authentication, OAuth2AccessTokenResponse tokenResult) {
         super(authentication);
         this.msg = msg;
         this.authentication = authentication;
         this.tokenResult = tokenResult;
     }
 
-    public void setTokenResult(TokenResult tokenResult) {
+    public void setTokenResult(OAuth2AccessTokenResponse tokenResult) {
         this.tokenResult = tokenResult;
     }
 }

@@ -15,8 +15,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum AuthorityType implements EnumDictItem<Integer> {
     MENU(0, "菜单", "菜单权限"),
-    API(1, "接口", "接口权限"),
-    OPERATION(2, "操作", "操作权限"),
+    INTERFACE(1, "接口", "接口权限"),
+    ACTION(2, "操作", "操作权限"),
     DATA(3, "数据", "数据权限");
 
     private Integer value;
