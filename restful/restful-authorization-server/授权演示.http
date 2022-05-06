@@ -14,21 +14,21 @@ client_id=demo&client_secret=123456&grant_type=authorization_code&code=QB-wYllFK
 POST http://localhost:9000/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=csdn&client_secret=csdn123&grant_type=refresh_token&refresh_token=d28afc761c070b4ea93ec50419547c462f15b48594c3a887c939856b1511d2bb
+client_id=demo&client_secret=123456&grant_type=refresh_token&refresh_token=61OqTQucWsE9zTsLOr4tNFTTaatnfqkfBILMgNQif9HSLvUwkLrAdq6Qetea5zZX69bOk9454cbgM0nz6rWdb0eARkOOyxqac_9qmaJai-EpCn1ZhLfYssvBNsk1yDK3
 
 ###
 # 3. 客户端凭证(此模式下，没有用户的参与，只有客户端和授权服务器之间的参与)
 POST http://localhost:9000/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=csdn&client_secret=csdn123&grant_type=client_credentials
+client_id=demo&client_secret=123456&grant_type=client_credentials
 
 ###
 # 4. 密码式
 POST http://localhost:9000/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
-client_id=csdn&grant_type=password&username=demo&password=123456
+client_id=demo&client_secret=123456&grant_type=password&username=demo&password=123456
 
 ###
 # 4. 撤销令牌
@@ -39,13 +39,12 @@ Content-Type: application/x-www-form-urlencoded
 token=dff9d0434829d7639eb839024450349dccc484af94a899b994f7c36a9afa3e3e
 
 ###
-# 5. 查看 token 的信息（令牌内省）
+# 5. 查看 token 的信息（令牌内省） (client_secret_basic)
 POST http://localhost:9000/oauth2/introspect
-Authorization: Basic Y3Nkbjpjc2RuMTIz
+#Authorization: Basic ZGVtbzoxMjM0NTY=
 Content-Type: application/x-www-form-urlencoded
 
-token=dff9d0434829d7639eb839024450349dccc484af94a899b994f7c36a9afa3e3e
-
+client_id=demo&client_secret=123456&token=61OqTQucWsE9zTsLOr4tNFTTaatnfqkfBILMgNQif9HSLvUwkLrAdq6Qetea5zZX69bOk9454cbgM0nz6rWdb0eARkOOyxqac_9qmaJai-EpCn1ZhLfYssvBNsk1yDK3
 
 ###
 # 6. 查看JWK信息

@@ -58,7 +58,6 @@ public class AuthorizationServerConfiguration {
     @Resource
     private AuthenticationFailureHandler restfulAuthenticationFailureHandler;
 
-
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -144,6 +143,7 @@ public class AuthorizationServerConfiguration {
                 .clientName("演示客户端")
                 .clientSecret("{noop}123456")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
