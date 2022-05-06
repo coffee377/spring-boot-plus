@@ -26,8 +26,18 @@ public class JsonProperties {
      * 局部控制请使用 ResponseResult 注解
      *
      * @see com.voc.restful.core.response.ResponseResult
+     * @deprecated use instead
      */
+    @Deprecated
     private Boolean automaticWrapped;
+
+    public void setAutomaticWrapped(Boolean automaticWrapped) {
+        this.automaticWrapped = automaticWrapped;
+        this.wrapper.setEnable(automaticWrapped);
+    }
+
+    @NestedConfigurationProperty
+    private JsonWrapper wrapper = new JsonWrapper();
 
     /**
      * json 类型

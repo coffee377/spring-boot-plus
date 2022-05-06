@@ -1,9 +1,13 @@
 package com.voc.restful.core.response;
 
+import com.voc.restful.core.autoconfigure.json.JsonWrapper;
 import com.voc.restful.core.autoconfigure.json.exception.JsonSerializeException;
 import com.voc.restful.core.response.impl.BaseBizStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
@@ -16,6 +20,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 接口响应数据统一包装为 Result {@code com.voc.restful.core.response.Result}
@@ -27,8 +34,10 @@ import java.util.Arrays;
  */
 @Slf4j
 @RestControllerAdvice
-@ConditionalOnProperty(prefix = "api.json", name = "automatic-wrapped", havingValue = "true", matchIfMissing = true)
-public class ResultAdvice implements ResponseBodyAdvice<Object> {
+@ConditionalOnProperty(prefix = "api.json.wrapper", name = "enable", havingValue = "true", matchIfMissing = true)
+public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationContextAware {
+
+    private final Set<String> ignoredClassName = new HashSet<>();
 
     private final Class[] annotations = new Class[]{
             RequestMapping.class,
@@ -40,8 +49,22 @@ public class ResultAdvice implements ResponseBodyAdvice<Object> {
     };
 
     @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        JsonWrapper jsonWrapper = applicationContext.getBean(JsonWrapper.class);
+        List<String> ignoredClass = jsonWrapper.getIgnoredClass();
+        if (ignoredClass != null) {
+            ignoredClassName.addAll(ignoredClass);
+        }
+    }
+
+    @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> converterType) {
-        return this.validateMethod(methodParameter);
+        return !this.isOpenApi(methodParameter) && this.supports(methodParameter);
+    }
+
+    private boolean isOpenApi(MethodParameter methodParameter){
+        String canonicalName = methodParameter.getDeclaringClass().getCanonicalName();
+        return ignoredClassName.stream().anyMatch(clazz -> clazz.equals(canonicalName));
     }
 
     @Override
@@ -67,7 +90,7 @@ public class ResultAdvice implements ResponseBodyAdvice<Object> {
         return out;
     }
 
-    private boolean validateMethod(MethodParameter methodParameter) {
+    private boolean supports(MethodParameter methodParameter) {
         Method method = methodParameter.getMethod();
         assert method != null;
         AnnotatedElement element = methodParameter.getAnnotatedElement();
