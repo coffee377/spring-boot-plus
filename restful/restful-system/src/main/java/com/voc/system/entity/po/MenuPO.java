@@ -9,7 +9,6 @@ import com.voc.system.entity.enums.MenuDividerType;
 import com.voc.system.entity.enums.MenuHiddenType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 持久化对象 - 菜单

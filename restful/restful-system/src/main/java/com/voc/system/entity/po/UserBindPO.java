@@ -6,7 +6,6 @@ import com.voc.restful.core.entity.IEntity;
 import com.voc.system.constant.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 持久化对象 - 用户绑定

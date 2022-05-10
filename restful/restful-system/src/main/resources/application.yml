@@ -33,14 +33,28 @@ logging:
   level:
     root: warn
     com:
-      voc:
-       system:
-         dao: debug
-#mybatis-plus:
-#  type-handlers-package: com.voc.persist.mybatis.handler
-#  type-enums-package: com.voc.system.entity.enums
-#  global-config:
-#    db-config:
-#      logic-delete-field: flag # 逻辑删除标记字段
-#      logic-delete-value: -1 # 删除时值
-#      logic-not-delete-value: 0 # 未删除时值
+      voc: info
+    org:
+      springdoc: trace
+springdoc:
+  swagger-ui:
+#    display-request-duration: true
+#    groups-order: DESC
+#    operationsSorter: method
+#    disable-swagger-default-url: true
+#    use-root-path: true
+#    path: /api-doc.html
+    enabled: true
+  api-docs:
+    enabled: true
+    path: /v3/api-docs.json
+  packages-to-scan: com.voc.system
+#  show-actuator: true
+#  group-configs:
+#    - group: user
+#      paths-to-match: /user/**
+api:
+  json:
+    wrapper:
+      enable: true
+      springdoc: true

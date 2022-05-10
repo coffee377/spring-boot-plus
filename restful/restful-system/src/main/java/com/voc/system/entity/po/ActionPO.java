@@ -17,8 +17,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = Table.OPERATION)
-public class OperationPO extends BaseEntity<String> implements IEntity<String>, IAuthorityDescriptor {
+@TableName(value = Table.ACTION)
+public class ActionPO extends BaseEntity<String> implements IEntity<String>, IAuthorityDescriptor {
 
     /**
      * 编码

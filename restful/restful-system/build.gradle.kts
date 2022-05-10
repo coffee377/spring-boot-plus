@@ -1,5 +1,6 @@
 plugins {
   id("com.voc.app.info")
+  id("org.springdoc.openapi-gradle-plugin") version "1.3.4"
 }
 
 val restful = parent!!.name
@@ -17,6 +18,7 @@ dependencies {
   implementation("org.mapstruct:mapstruct")
   implementation("org.springframework.security:spring-security-crypto")
 
+  implementation("org.springdoc:springdoc-openapi-ui:1.6.8")
 
   annotationProcessor("org.mapstruct:mapstruct-processor")
   annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")

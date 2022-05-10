@@ -23,7 +23,7 @@ public interface Table {
     String MENU = "sys_menu";
     String COMPONENT = "sys_component";
     String API = "sys_api";
-    String OPERATION = "sys_operation";
+    String ACTION = "sys_action";
     String DATA = "sys_data";
     String DICT = "sys_dict";
     String DICT_ITEM = "sys_dict_item";

@@ -4,6 +4,10 @@ import com.voc.system.entity.bo.UserBO;
 import com.voc.system.entity.vo.UserVO;
 import com.voc.system.entity.vo.menu.MenuVO;
 import com.voc.system.service.IUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -14,6 +18,7 @@ import java.util.List;
  * @email coffee377@dingtalk.com
  * @time 2021/04/25 12:01
  */
+@Tag(name = "用户", description = "用户操作")
 @RestController
 @RequestMapping({"/user"})
 public class UserController {
@@ -27,6 +32,7 @@ public class UserController {
      *
      * @param user UserBO
      */
+    @Operation(summary = "添加用户", description = "需要认证后访问")
     @PostMapping
     public void add(@RequestBody UserBO user) {
         userService.save(user);
@@ -37,6 +43,7 @@ public class UserController {
      *
      * @param users List<UserBO>
      */
+    @Operation(summary = "批量添加用户", description = "需要认证后访问")
     @PostMapping("/batch")
     public void addBatch(@RequestBody List<UserBO> users) {
         userService.saveBatch(users);
@@ -47,8 +54,9 @@ public class UserController {
      *
      * @param uid 用户标识
      */
+    @Operation(summary = "删除用户", description = "需要认证后访问")
     @DeleteMapping("/{uid}")
-    public void delete(@PathVariable String uid) {
+    public void delete(@PathVariable @Parameter(description = "用户标识", in = ParameterIn.PATH) String uid) {
         userService.deleteById(uid);
     }
 
