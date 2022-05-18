@@ -38,7 +38,7 @@ subprojects {
 
 tasks.wrapper {
   /* gradle wrapper 版本 */
-  gradleVersion = "7.3.2"
+  gradleVersion = "7.4.2"
 }
 
 
