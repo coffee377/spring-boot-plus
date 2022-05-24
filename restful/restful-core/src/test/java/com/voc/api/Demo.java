@@ -1,7 +1,7 @@
 package com.voc.api;
 
 import com.voc.restful.core.response.Result;
-import com.voc.restful.core.response.impl.BaseBizStatus;
+import com.voc.restful.core.response.impl.InternalBizStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +25,7 @@ public class Demo {
 
     @GetMapping("/failure")
     public Result<String> failure() {
-        return Result.failure(BaseBizStatus.ACCOUNT_EXISTS);
+        return Result.failure(InternalBizStatus.ACCOUNT_EXISTS);
     }
 
     @GetMapping("/")

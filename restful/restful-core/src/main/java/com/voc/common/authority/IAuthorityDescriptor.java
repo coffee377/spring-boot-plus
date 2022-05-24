@@ -1,4 +1,4 @@
-package com.voc.api.authority;
+package com.voc.common.authority;
 
 import java.math.BigInteger;
 import java.util.function.Supplier;

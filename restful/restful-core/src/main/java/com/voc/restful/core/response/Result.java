@@ -1,6 +1,8 @@
 package com.voc.restful.core.response;
 
-import com.voc.restful.core.bean.IBean;
+import com.voc.common.IBizStatus;
+import com.voc.common.bean.IBean;
+import com.voc.common.exception.BizException;
 import com.voc.restful.core.entity.BaseJsonEntity;
 import lombok.Getter;
 import lombok.Setter;

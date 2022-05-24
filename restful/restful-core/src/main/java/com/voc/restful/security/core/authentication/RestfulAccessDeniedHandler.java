@@ -1,7 +1,7 @@
 package com.voc.restful.security.core.authentication;
 
 import com.voc.restful.core.response.Result;
-import com.voc.restful.core.response.impl.BaseBizStatus;
+import com.voc.restful.core.response.impl.InternalBizStatus;
 import com.voc.restful.core.response.impl.ResponseHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -40,7 +40,7 @@ public class RestfulAccessDeniedHandler extends ResponseHandler implements Acces
                     log.info("{} attempted to access the protected URL: {}", auth.getName(), request.getRequestURI());
                 }
             }
-            setBizStatus(BaseBizStatus.FORBIDDEN);
+            setBizStatus(InternalBizStatus.FORBIDDEN);
         } else {
             setResult(Result.failure(e));
         }

@@ -2,7 +2,7 @@ package com.voc.restful.core.response;
 
 import com.voc.restful.core.autoconfigure.json.JsonWrapper;
 import com.voc.restful.core.autoconfigure.json.exception.JsonSerializeException;
-import com.voc.restful.core.response.impl.BaseBizStatus;
+import com.voc.restful.core.response.impl.InternalBizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -82,7 +82,7 @@ public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationCont
                 out = result.toJson();
             } catch (JsonSerializeException e) {
                 log.error(e.getMessage(), e);
-                out = Result.failure(BaseBizStatus.JSON_SERIALIZE_EXCEPTION).toJson();
+                out = Result.failure(InternalBizStatus.JSON_SERIALIZE_EXCEPTION).toJson();
             }
         } else {
             out = Result.builder().success(body).build();

@@ -1,6 +1,6 @@
 package com.voc.restful.core.controller;
 
-import com.voc.restful.core.response.impl.BaseBizStatus;
+import com.voc.restful.core.response.impl.InternalBizStatus;
 import com.voc.restful.core.vo.ErrorMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +25,6 @@ public class ErrorMappingController {
      */
     @GetMapping
     public List<ErrorMapping> mapping(){
-        return Arrays.stream(BaseBizStatus.values()).map(baseBizStatus -> new ErrorMapping(baseBizStatus.getCode(), baseBizStatus.getMessage(), baseBizStatus.getHttpStatus())).collect(Collectors.toList());
+        return Arrays.stream(InternalBizStatus.values()).map(baseBizStatus -> new ErrorMapping(baseBizStatus.getCode(), baseBizStatus.getMessage(), baseBizStatus.getHttpStatus())).collect(Collectors.toList());
     }
 }

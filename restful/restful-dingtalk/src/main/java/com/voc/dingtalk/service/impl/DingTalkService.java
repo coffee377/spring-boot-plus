@@ -4,8 +4,8 @@ import com.voc.dingtalk.cache.DingTalkCache;
 import com.voc.dingtalk.properties.DingTalkApp;
 import com.voc.dingtalk.properties.DingTalkProperties;
 import com.voc.dingtalk.service.IDingTalkService;
-import com.voc.restful.core.response.impl.BaseBizStatus;
-import com.voc.restful.core.response.BizException;
+import com.voc.restful.core.response.impl.InternalBizStatus;
+import com.voc.common.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class DingTalkService implements IDingTalkService {
                 .filter(app -> app.getName().equals(appName))
                 .findFirst()
                 .orElseThrow(() -> {
-                    BizException exception = new BizException(BaseBizStatus.RECORD_NOT_EXISTS.message("相关应用配置信息不存在"));
+                    BizException exception = new BizException(InternalBizStatus.RECORD_NOT_EXISTS.message("相关应用配置信息不存在"));
                     log.error("appName = {} 的配置信息不存在", appName, exception);
                     return exception;
                 });
@@ -74,7 +74,7 @@ public class DingTalkService implements IDingTalkService {
                 .filter(app -> app.getAppKey().equals(appId))
                 .findFirst()
                 .orElseThrow(() -> {
-                    BizException exception = new BizException(BaseBizStatus.RECORD_NOT_EXISTS.message("相关应用配置信息不存在"));
+                    BizException exception = new BizException(InternalBizStatus.RECORD_NOT_EXISTS.message("相关应用配置信息不存在"));
                     log.error("appKey = {} 的配置信息不存在", appId, exception);
                     return exception;
                 });

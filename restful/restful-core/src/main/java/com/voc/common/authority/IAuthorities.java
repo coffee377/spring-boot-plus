@@ -1,4 +1,4 @@
-package com.voc.api.authority;
+package com.voc.common.authority;
 
 import java.math.BigInteger;
 import java.util.function.Supplier;
@@ -11,5 +11,5 @@ import java.util.function.Supplier;
  * @time 2022/04/16 11:38
  */
 public interface IAuthorities extends Supplier<BigInteger> {
-
+    
 }

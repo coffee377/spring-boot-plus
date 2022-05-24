@@ -1,6 +1,6 @@
 package com.voc.persist.mybatis.handler;
 
-import com.voc.api.dict.EnumDictItem;
+import com.voc.common.dict.EnumDictItem;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;

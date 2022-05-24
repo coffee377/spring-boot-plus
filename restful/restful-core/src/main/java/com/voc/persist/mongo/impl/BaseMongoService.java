@@ -2,8 +2,8 @@ package com.voc.persist.mongo.impl;
 
 import com.voc.persist.mongo.IMongoService;
 import com.voc.restful.core.entity.IJsonEntity;
-import com.voc.restful.core.response.BizException;
-import com.voc.restful.core.response.impl.BaseBizStatus;
+import com.voc.common.exception.BizException;
+import com.voc.restful.core.response.impl.InternalBizStatus;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -102,7 +102,7 @@ public abstract class BaseMongoService<E extends IJsonEntity, D extends BaseMong
     @Override
     public E findById(Object id) {
         Optional<E> optional = mongoDao.findById(id);
-        return optional.orElseThrow(() -> new BizException(BaseBizStatus.RECORD_NOT_EXISTS));
+        return optional.orElseThrow(() -> new BizException(InternalBizStatus.RECORD_NOT_EXISTS));
     }
 
     @Override

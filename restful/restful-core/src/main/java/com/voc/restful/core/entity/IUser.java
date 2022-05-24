@@ -1,5 +1,7 @@
 package com.voc.restful.core.entity;
 
+import com.voc.persist.entity.IEntity;
+
 import java.io.Serializable;
 
 /**

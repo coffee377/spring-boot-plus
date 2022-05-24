@@ -1,4 +1,4 @@
-package com.voc.restful.core.bean;
+package com.voc.common.bean;
 
 import java.io.Serializable;
 

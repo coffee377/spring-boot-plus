@@ -1,6 +1,6 @@
 package com.voc.persist;
 
-import com.voc.restful.core.entity.Identify;
+import com.voc.persist.entity.Identify;
 
 import java.io.Serializable;
 

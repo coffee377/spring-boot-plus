@@ -1,7 +1,7 @@
 package com.voc.restful.security.core.authentication;
 
 import com.voc.restful.core.response.Result;
-import com.voc.restful.core.response.impl.BaseBizStatus;
+import com.voc.restful.core.response.impl.InternalBizStatus;
 import com.voc.restful.core.response.impl.ResponseHandler;
 import com.voc.restful.security.core.expection.AuthorizationCodeException;
 import com.voc.restful.security.core.expection.UnboundUserException;
@@ -40,21 +40,21 @@ public class RestfulAuthenticationFailureHandler extends ResponseHandler impleme
         log.warn("onAuthenticationFailure AuthenticationException is => {}", canonicalName);
 
         if (exception instanceof ProviderNotFoundException) {
-            setBizStatus(BaseBizStatus.AUTHENTICATION_PROVIDER_NOT_FOUND);
+            setBizStatus(InternalBizStatus.AUTHENTICATION_PROVIDER_NOT_FOUND);
         } else if (exception instanceof UnboundUserException) {
-            setBizStatus(BaseBizStatus.UNBOUND_USER);
+            setBizStatus(InternalBizStatus.UNBOUND_USER);
         } else if (exception instanceof AuthorizationCodeException) {
-            setBizStatus(BaseBizStatus.INCORRECT_TEMPORARY_AUTHORIZATION_CODE);
+            setBizStatus(InternalBizStatus.INCORRECT_TEMPORARY_AUTHORIZATION_CODE);
         } else if (exception instanceof InvalidBearerTokenException) {
-            setBizStatus(BaseBizStatus.INVALID_BEARER_TOKEN);
+            setBizStatus(InternalBizStatus.INVALID_BEARER_TOKEN);
         } else if (exception instanceof UsernameNotFoundException) {
-            setBizStatus(BaseBizStatus.USERNAME_NOT_FOUND);
+            setBizStatus(InternalBizStatus.USERNAME_NOT_FOUND);
         } else if (exception instanceof BadCredentialsException) {
-            setBizStatus(BaseBizStatus.INVALID_USERNAME_OR_PASSWORD);
+            setBizStatus(InternalBizStatus.INVALID_USERNAME_OR_PASSWORD);
         } else if (exception instanceof OAuth2AuthenticationException) {
             OAuth2Error error = ((OAuth2AuthenticationException) exception).getError();
             String msg = error.toString();
-            setBizStatus(BaseBizStatus.OAUTH2_AUTHENTICATION_EXCEPTION.message(msg));
+            setBizStatus(InternalBizStatus.OAUTH2_AUTHENTICATION_EXCEPTION.message(msg));
         } else {
             setResult(Result.failure(exception));
         }

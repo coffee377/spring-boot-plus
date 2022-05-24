@@ -1,7 +1,7 @@
 package com.voc.restful.core.controller;
 
-import com.voc.restful.core.response.BizException;
-import com.voc.restful.core.response.IBizStatus;
+import com.voc.common.exception.BizException;
+import com.voc.common.IBizStatus;
 import com.voc.restful.core.response.Result;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -151,6 +151,21 @@ public class ExceptionController extends AbstractErrorController implements Erro
         public ExceptionData(Exception exception, Map<String, Object> model) {
             this.exception = exception;
             this.model = model;
+        }
+
+        @Override
+        public boolean internal() {
+            return true;
+        }
+
+        @Override
+        public int getModule() {
+            return 1;
+        }
+
+        @Override
+        public int getMask() {
+            return 0;
         }
 
         @Override

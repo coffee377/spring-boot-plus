@@ -1,7 +1,7 @@
 package com.voc.system.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.voc.api.authority.IAuthorityDescriptor;
+import com.voc.common.authority.IAuthorityDescriptor;
 import com.voc.restful.core.entity.BaseTreeEntity;
 import com.voc.restful.core.entity.ITreeEntity;
 import com.voc.system.constant.Table;

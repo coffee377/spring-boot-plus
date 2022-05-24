@@ -1,6 +1,6 @@
 package com.voc.api.response;
 
-import com.voc.restful.core.response.impl.BaseBizStatus;
+import com.voc.restful.core.response.impl.InternalBizStatus;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -12,8 +12,8 @@ class BaseBizErrorTest {
 
     @Test
     void getCode() {
-        BaseBizStatus[] values = BaseBizStatus.values();
-        for (BaseBizStatus value : values) {
+        InternalBizStatus[] values = InternalBizStatus.values();
+        for (InternalBizStatus value : values) {
             System.out.println(value.getCode() + " ==== " + value.getMessage());
         }
     }

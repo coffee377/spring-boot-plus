@@ -1,8 +1,8 @@
 package com.voc.restful.core.autoconfigure.json.exception;
 
-import com.voc.restful.core.response.BizException;
-import com.voc.restful.core.response.IBizStatus;
-import com.voc.restful.core.response.impl.BaseBizStatus;
+import com.voc.common.exception.BizException;
+import com.voc.common.IBizStatus;
+import com.voc.restful.core.response.impl.InternalBizStatus;
 
 /**
  * JSON 反序列号异常
@@ -19,7 +19,7 @@ public class JsonDeserializeException extends BizException {
     }
 
     public JsonDeserializeException() {
-        super(BaseBizStatus.JSON_DESERIALIZE_EXCEPTION);
+        super(InternalBizStatus.JSON_DESERIALIZE_EXCEPTION);
     }
 
 }

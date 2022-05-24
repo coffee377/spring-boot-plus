@@ -1,4 +1,4 @@
-package com.voc.restful.core.entity;
+package com.voc.persist.entity;
 
 import java.io.Serializable;
 

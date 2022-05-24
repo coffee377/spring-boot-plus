@@ -1,6 +1,6 @@
-package com.voc.restful.core.entity;
+package com.voc.persist.entity;
 
-import com.voc.api.enums.DataFlag;
+import com.voc.common.enums.DataFlag;
 
 /**
  * Created with IntelliJ IDEA.

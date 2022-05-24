@@ -1,6 +1,6 @@
 package com.voc.dingtalk.exception;
 
-import com.voc.restful.core.response.BizException;
+import com.voc.common.exception.BizException;
 
 /**
  * @author Wu Yujie

@@ -1,7 +1,7 @@
-package com.voc.api.dict;
+package com.voc.common.dict;
 
-import com.voc.api.authority.IAuthorities;
-import com.voc.api.authority.IAuthorityDescriptor;
+import com.voc.common.authority.IAuthorities;
+import com.voc.common.authority.IAuthorityDescriptor;
 
 import java.math.BigInteger;
 import java.util.*;

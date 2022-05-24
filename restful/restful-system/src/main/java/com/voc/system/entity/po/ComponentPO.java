@@ -2,7 +2,7 @@ package com.voc.system.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.restful.core.entity.BaseEntity;
-import com.voc.restful.core.entity.IEntity;
+import com.voc.persist.entity.IEntity;
 import com.voc.system.constant.Table;
 import com.voc.system.entity.enums.ComponentFileSuffix;
 import com.voc.system.entity.enums.ComponentPosition;

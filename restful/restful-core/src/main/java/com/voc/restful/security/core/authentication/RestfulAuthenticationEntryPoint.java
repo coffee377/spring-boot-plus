@@ -1,6 +1,6 @@
 package com.voc.restful.security.core.authentication;
 
-import com.voc.restful.core.response.impl.BaseBizStatus;
+import com.voc.restful.core.response.impl.InternalBizStatus;
 import com.voc.restful.core.response.impl.ResponseHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -34,7 +34,7 @@ public class RestfulAuthenticationEntryPoint extends ResponseHandler implements 
             log.debug("访问资源 {} 需要用户身份认证", request.getRequestURL().toString());
         }
 
-        this.setBizStatus(BaseBizStatus.UNAUTHORIZED);
+        this.setBizStatus(InternalBizStatus.UNAUTHORIZED);
         this.write(response);
     }
 

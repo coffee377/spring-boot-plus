@@ -1,6 +1,6 @@
 package com.voc.restful.core.response.impl;
 
-import com.voc.restful.core.response.IBizStatus;
+import com.voc.common.IBizStatus;
 import com.voc.restful.core.response.IResponseHandler;
 import com.voc.restful.core.response.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.io.IOException;
 @Slf4j
 public class ResponseHandler implements IResponseHandler {
     private Result result;
-    private IBizStatus bizStatus = BaseBizStatus.OK;
+    private IBizStatus bizStatus = InternalBizStatus.OK;
 
     @Override
     public Result getResult() {

@@ -1,5 +1,6 @@
 plugins {
   id("com.voc.devtools")
+  id("org.jetbrains.changelog") version "1.3.1"
 }
 
 group = "com.voc"

@@ -1,6 +1,6 @@
 package com.voc.restful.security.core.authentication;
 
-import com.voc.restful.core.response.impl.BaseBizStatus;
+import com.voc.restful.core.response.impl.InternalBizStatus;
 import com.voc.restful.core.response.impl.ResponseHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -25,6 +25,6 @@ public class RestfulLogoutSuccessHandler extends ResponseHandler implements Logo
             log.debug("{} - 退出系统", authentication);
         }
 
-        this.setBizStatus(BaseBizStatus.OK);
+        this.setBizStatus(InternalBizStatus.OK);
     }
 }

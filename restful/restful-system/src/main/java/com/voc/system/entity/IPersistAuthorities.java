@@ -1,6 +1,6 @@
 package com.voc.system.entity;
 
-import com.voc.api.authority.IAuthorities;
+import com.voc.common.authority.IAuthorities;
 import com.voc.system.entity.enums.AuthorityType;
 
 /**

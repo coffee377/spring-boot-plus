@@ -1,6 +1,6 @@
 package com.voc.persist.mongo;
 
-import com.voc.restful.core.response.BizException;
+import com.voc.common.exception.BizException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

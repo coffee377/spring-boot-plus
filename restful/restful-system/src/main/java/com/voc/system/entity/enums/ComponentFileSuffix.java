@@ -1,6 +1,6 @@
 package com.voc.system.entity.enums;
 
-import com.voc.api.dict.EnumDictItem;
+import com.voc.common.dict.EnumDictItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

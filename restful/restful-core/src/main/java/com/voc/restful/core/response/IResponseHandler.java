@@ -1,5 +1,6 @@
 package com.voc.restful.core.response;
 
+import com.voc.common.IBizStatus;
 import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletResponse;

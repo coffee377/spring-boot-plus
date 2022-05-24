@@ -1,6 +1,6 @@
 package com.voc.restful.core.vo;
 
-import com.voc.restful.core.bean.JsonBean;
+import com.voc.common.bean.JsonBean;
 import com.voc.restful.core.persist.entity.ViewEntity;
 
 /**

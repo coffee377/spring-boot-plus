@@ -1,6 +1,6 @@
 package com.voc.restful.core.entity.impl;
 
-import com.voc.api.enums.UsingStatus;
+import com.voc.common.enums.UsingStatus;
 import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.IUser;
 import lombok.Data;

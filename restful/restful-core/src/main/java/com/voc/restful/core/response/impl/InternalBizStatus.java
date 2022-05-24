@@ -1,7 +1,6 @@
 package com.voc.restful.core.response.impl;
 
-import com.voc.api.utils.BitUtil;
-import com.voc.restful.core.response.IBizStatus;
+import com.voc.common.IBizStatus;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -9,7 +8,7 @@ import org.springframework.http.HttpStatus;
  * @email coffee377@dingtalk.com
  * @time 2018/03/22 17:01
  */
-public enum BaseBizStatus implements IBizStatus {
+public enum InternalBizStatus implements IBizStatus {
 
     /**
      * 操作成功返回值
@@ -20,6 +19,9 @@ public enum BaseBizStatus implements IBizStatus {
             return 0L;
         }
     },
+
+    OUT_OF_MODULE_CODE_RANGE("%s 超出模块编码范围 %s", HttpStatus.INTERNAL_SERVER_ERROR),
+    OUT_OF_ERROR_CODE_RANGE("%s 超出错误编码范围 %s", HttpStatus.INTERNAL_SERVER_ERROR),
 
     UNAUTHORIZED("未经认证的用户", HttpStatus.UNAUTHORIZED),
     INVALID_BEARER_TOKEN("无效的令牌", HttpStatus.PRECONDITION_FAILED),
@@ -47,10 +49,10 @@ public enum BaseBizStatus implements IBizStatus {
     JSON_DESERIALIZE_EXCEPTION("反序列化异常"),
 
     ENTITY_VALIDATED_ERROR("实体属性校验错误", HttpStatus.BAD_REQUEST),
-    REQUEST_ADDRESS_NOT_MATCH( "请求地址与实体ID不一致"),
-    INSERT_DATA_ERROR( "新增数据异常"),
-    UPDATE_DATA_ERROR( "更新数据异常"),
-    DELETE_DATA_ERROR( "删除数据异常"),
+    REQUEST_ADDRESS_NOT_MATCH("请求地址与实体ID不一致"),
+    INSERT_DATA_ERROR("新增数据异常"),
+    UPDATE_DATA_ERROR("更新数据异常"),
+    DELETE_DATA_ERROR("删除数据异常"),
 
     RECORD_EXISTS("已存在该条记录相关数据"),
     RECORD_NOT_EXISTS("指定记录不存在"),
@@ -60,20 +62,29 @@ public enum BaseBizStatus implements IBizStatus {
 
     private final HttpStatus status;
 
-    BaseBizStatus(String message, HttpStatus status) {
+    InternalBizStatus(String message, HttpStatus status) {
         this.message = message;
         this.status = status;
     }
 
-    BaseBizStatus(String message) {
+    InternalBizStatus(String message) {
         this(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+
     @Override
-    public long getCode() {
-        /* 模块编码 */
-        long module = BitUtil.multiply(this.getModule(), 1000);
-        return BitUtil.add(module, this.ordinal());
+    public boolean internal() {
+        return true;
+    }
+
+    @Override
+    public int getModule() {
+        return 0;
+    }
+
+    @Override
+    public int getMask() {
+        return this.ordinal();
     }
 
     @Override
@@ -82,7 +93,7 @@ public enum BaseBizStatus implements IBizStatus {
     }
 
     @Override
-    public BaseBizStatus message(String message) {
+    public InternalBizStatus message(String message) {
         this.message = message;
         return this;
     }

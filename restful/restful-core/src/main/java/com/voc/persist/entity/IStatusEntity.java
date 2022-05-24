@@ -1,7 +1,7 @@
-package com.voc.restful.core.entity;
+package com.voc.persist.entity;
 
 
-import com.voc.api.enums.UsingStatus;
+import com.voc.common.enums.UsingStatus;
 
 /**
  * Created with IntelliJ IDEA.

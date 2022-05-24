@@ -1,6 +1,7 @@
 package com.voc.restful.core.entity;
 
-import com.voc.restful.core.bean.IJsonBean;
+import com.voc.persist.entity.IEntity;
+import com.voc.common.bean.IJsonBean;
 
 import java.io.Serializable;
 

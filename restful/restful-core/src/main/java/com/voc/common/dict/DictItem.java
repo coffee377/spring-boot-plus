@@ -1,4 +1,4 @@
-package com.voc.api.dict;
+package com.voc.common.dict;
 
 import lombok.Data;
 
