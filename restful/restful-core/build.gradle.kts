@@ -36,3 +36,9 @@ dependencies {
 
 springBoot {
 }
+
+tasks {
+  test {
+    useJUnitPlatform()
+  }
+}

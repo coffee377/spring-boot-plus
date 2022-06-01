@@ -1,4 +1,4 @@
-package com.voc.api.utils;
+package com.voc.common.util;
 
 /**
  * @author Wu Yujie

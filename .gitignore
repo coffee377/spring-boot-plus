@@ -82,3 +82,6 @@ gradle-app.setting
 /test
 pri.key
 pub.key
+
+CHANGELOG.md
+microservice

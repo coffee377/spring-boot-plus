@@ -1,5 +1,6 @@
 package com.voc.api.utils;
 
+import com.voc.common.util.BitUtil;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -20,7 +20,7 @@ public interface IAuthorityDescriptor extends Supplier<BigInteger> {
     String getName();
 
     /**
-     * 权限掩码
+     * 权限掩码(正负数均表示同一权限对象)
      *
      * @return Integer
      */
@@ -35,8 +35,9 @@ public interface IAuthorityDescriptor extends Supplier<BigInteger> {
     default BigInteger get() {
         Integer mask = getMask();
         if (mask == null) {
-            return BigInteger.ONE;
+            return BigInteger.ZERO;
         }
-        return BigInteger.ONE.shiftLeft(mask);
+        return BigInteger.ONE.shiftLeft(Math.abs(mask) - 1);
     }
+    
 }
