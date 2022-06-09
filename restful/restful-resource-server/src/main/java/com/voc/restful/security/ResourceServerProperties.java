@@ -18,7 +18,9 @@ public class ResourceServerProperties {
 
     /**
      * 不需要验证权限的地址
+     * @deprecated  use api.security.ignore instead
      */
+    @Deprecated
     private List<String> ignore;
 
     /**

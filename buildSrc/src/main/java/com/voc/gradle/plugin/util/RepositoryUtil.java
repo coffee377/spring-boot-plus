@@ -22,6 +22,7 @@ public class RepositoryUtil {
      * @param repositoryInfo    RepositoryInfo
      * @deprecated
      */
+    @Deprecated
     public static void add(RepositoryHandler repositoryHandler, RepositoryInfo repositoryInfo) {
         RepositoryUtil.addRepository(repositoryHandler, repositoryInfo);
     }

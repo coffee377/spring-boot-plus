@@ -70,6 +70,7 @@ public interface AliYunRepositoryInfo extends RepositoryInfo {
      * @since 0.0.1
      * @deprecated
      */
+    @Deprecated
     default String getReleaseUrl() {
         return null;
     }
@@ -82,7 +83,7 @@ public interface AliYunRepositoryInfo extends RepositoryInfo {
      * @since 0.0.1
      * @deprecated
      */
-    default String getSnapshotUrl() {
+    @Deprecated default String getSnapshotUrl() {
         return null;
     }
 

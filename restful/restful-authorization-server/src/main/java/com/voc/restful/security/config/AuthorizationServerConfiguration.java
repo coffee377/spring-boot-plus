@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwsEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
@@ -88,7 +88,6 @@ public class AuthorizationServerConfiguration {
 
         return http.build();
     }
-
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
@@ -245,8 +244,14 @@ public class AuthorizationServerConfiguration {
 
     @Bean
     public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
-        return new NimbusJwsEncoder(jwkSource);
+        return new NimbusJwtEncoder(jwkSource);
     }
+
+//    @Bean
+//    JwtGenerator jwtGenerator(JwtEncoder jwtEncoder) {
+//        return new JwtGenerator(jwtEncoder);
+//    }
+
 
     @Bean
     public ProviderSettings providerSettings() {

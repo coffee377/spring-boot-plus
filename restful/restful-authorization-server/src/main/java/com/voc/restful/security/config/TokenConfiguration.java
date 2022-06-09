@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.server.authorization.OAuth2TokenCustomizer;
 import org.springframework.security.oauth2.server.authorization.token.*;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -36,7 +35,6 @@ public class TokenConfiguration {
         return new KeyGenerator(snowflakeHelper);
     }
 
-//    @Bean
     public OAuth2TokenGenerator tokenGenerator(@Autowired(required = false) JwtGenerator jwtGenerator,
                                                @Autowired(required = false) OAuth2TokenCustomizer<OAuth2TokenClaimsContext> tokenCustomizer) {
         OAuth2TokenGenerator tokenGenerator;

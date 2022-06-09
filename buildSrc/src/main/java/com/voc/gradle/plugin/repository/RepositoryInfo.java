@@ -27,6 +27,7 @@ public interface RepositoryInfo extends IProject, Named, Serializable {
      * @since 0.0.1
      * @deprecated
      */
+    @Deprecated
     void setUrl(String url);
 
     /**
@@ -53,7 +54,7 @@ public interface RepositoryInfo extends IProject, Named, Serializable {
      * @since 0.0.1
      * @deprecated
      */
-    void setUsername(String username);
+    @Deprecated void setUsername(String username);
 
     /**
      * 设置用户名
@@ -79,7 +80,7 @@ public interface RepositoryInfo extends IProject, Named, Serializable {
      * @since 0.0.1
      * @deprecated
      */
-    void setPassword(String password);
+    @Deprecated void setPassword(String password);
 
     /**
      * 设置密码
@@ -105,7 +106,7 @@ public interface RepositoryInfo extends IProject, Named, Serializable {
      * @since 0.0.1
      * @deprecated
      */
-    void setAllowPublish(boolean allowPublish);
+    @Deprecated void setAllowPublish(boolean allowPublish);
 
     /**
      * 设置是否允许发布至此仓库

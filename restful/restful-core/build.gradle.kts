@@ -16,7 +16,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-actuator")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("io.reactivex.rxjava3:rxjava:3.1.4")
-
+  implementation("org.springframework.security:spring-security-crypto")
 
   /* caffeine 缓存依赖 */
   compileOnly("com.github.ben-manes.caffeine:caffeine")
@@ -26,6 +26,7 @@ dependencies {
   compileOnly("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
   compileOnly("com.google.code.gson:gson")
   compileOnly("org.springframework.boot:spring-boot-starter-security")
+
   compileOnly("com.baomidou:mybatis-plus-boot-starter")
   compileOnly("org.springframework.security:spring-security-oauth2-authorization-server")
   compileOnly("org.springframework.boot:spring-boot-starter-oauth2-client")

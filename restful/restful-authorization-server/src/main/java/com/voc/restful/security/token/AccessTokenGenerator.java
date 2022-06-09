@@ -6,12 +6,8 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
-import org.springframework.security.oauth2.server.authorization.OAuth2TokenContext;
-import org.springframework.security.oauth2.server.authorization.OAuth2TokenCustomizer;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenClaimsContext;
-import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenClaimsSet;
-import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
+import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -21,7 +17,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 /**
  * @author Wu Yujie
@@ -99,7 +94,7 @@ public class AccessTokenGenerator implements OAuth2TokenGenerator<OAuth2AccessTo
 
     /**
      * Sets the {@link OAuth2TokenCustomizer} that customizes the
-     * {@link OAuth2TokenClaimsContext.Builder#claims(Consumer) claims} for the {@link OAuth2AccessToken}.
+     * {@link OAuth2TokenClaimsContext#getClaims() claims} for the {@link OAuth2AccessToken}.
      *
      * @param accessTokenCustomizer the {@link OAuth2TokenCustomizer} that customizes the claims for the {@code OAuth2AccessToken}
      */

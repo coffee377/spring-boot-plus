@@ -1,5 +1,6 @@
 package com.voc.restful.security.core.autoconfigure;
 
+import com.voc.restful.security.core.IgnoreWebSecurityCustomizer;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
@@ -20,6 +21,7 @@ public class SecurityImport implements ImportSelector {
 
     Class<?>[] classes() {
         return (Class<?>[]) new Class[]{
+                IgnoreWebSecurityCustomizer.class
 //                AnnotationListener.class,
 //                TokenController.class,
         };
