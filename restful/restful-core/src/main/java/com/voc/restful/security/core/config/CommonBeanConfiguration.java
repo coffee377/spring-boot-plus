@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.io.Serializable;
-
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -26,7 +24,7 @@ public class CommonBeanConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    UserDetailsService userDetailsService(AuthService<Serializable> authService) {
+    UserDetailsService userDetailsService(AuthService authService) {
         return new DefaultUserDetailService(authService);
     }
 

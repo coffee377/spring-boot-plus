@@ -31,7 +31,8 @@ public class QRAuthenticationUserDetailsService implements AuthenticationUserDet
     public UserDetails loadUserDetails(QRAuthenticationToken token) throws UsernameNotFoundException {
         ThirdApp app = thirdAppService.getUserInfoByClientIdAndTmpAuthCode(token.getClientId(), token.getCode());
         AuthService userService = SpringUtils.getBean(AuthService.class);
-        IUser user = userService.getUserByThirdApp(app);
+//        IUser user = userService.getUserByThirdApp(app);
+        IUser user = null;
         if (user == null) {
             String message = String.format("the current app %s is not bound to the system user with unionid=%s and " +
                     "openid=%s", app.getType().get(), app.getUnionid(), app.getUnionid());

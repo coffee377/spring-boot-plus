@@ -3,6 +3,7 @@ package com.voc.restful.core.entity;
 import com.voc.persist.entity.IEntity;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author Wu Yujie
@@ -24,6 +25,20 @@ public interface IUser<ID extends Serializable> extends IEntity<ID> {
      * @return the password
      */
     String getPassword();
+
+    /**
+     * 用户权限标识
+     *
+     * @return Set<String>
+     */
+    Set<String> getAuthorities();
+
+    /**
+     * 设置用户权限标识
+     *
+     * @param authorities Set<String>
+     */
+    void setAuthorities(Set<String> authorities);
 
     /**
      * 指示用户的账户是否已过期。已过期的账号不允许身份验证
@@ -52,5 +67,4 @@ public interface IUser<ID extends Serializable> extends IEntity<ID> {
      * @return boolean
      */
     boolean isEnabled();
-
 }

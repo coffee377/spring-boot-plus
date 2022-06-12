@@ -7,6 +7,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Wu Yujie
@@ -27,12 +31,19 @@ public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements
      */
     private String password;
 
-    public BaseUser(ID id, String username, String password) {
+    private Set<String> authorities;
+
+    public BaseUser(ID id, String username, String password, Collection<String> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.authorities = new HashSet<>(authorities);
     }
 
+    public BaseUser(ID id, String username, String password, String... authorities) {
+        this(id, username, password, Arrays.asList(authorities));
+    }
+    
     public BaseUser() {
     }
 
@@ -44,6 +55,11 @@ public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements
     @Override
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public Set<String> getAuthorities() {
+        return authorities;
     }
 
     @Override

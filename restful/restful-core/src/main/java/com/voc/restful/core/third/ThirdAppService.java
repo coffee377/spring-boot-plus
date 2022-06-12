@@ -7,6 +7,7 @@ import org.springframework.security.core.AuthenticationException;
  * @email coffee377@dingtalk.com
  * @time 2021/06/25 11:25
  */
+@Deprecated
 public interface ThirdAppService {
 
     /**

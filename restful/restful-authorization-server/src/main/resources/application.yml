@@ -21,3 +21,17 @@ spring:
 logging:
   level:
     root: warn
+    org:
+      mybatis:
+        spring:
+          mapper: error
+      springframework:
+        security:
+          config:
+            annotation:
+              web:
+                builders: error
+    io:
+      undertow:
+        websockets:
+          jsr: error

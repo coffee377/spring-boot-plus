@@ -247,12 +247,6 @@ public class AuthorizationServerConfiguration {
         return new NimbusJwtEncoder(jwkSource);
     }
 
-//    @Bean
-//    JwtGenerator jwtGenerator(JwtEncoder jwtEncoder) {
-//        return new JwtGenerator(jwtEncoder);
-//    }
-
-
     @Bean
     public ProviderSettings providerSettings() {
         return ProviderSettings.builder().build();

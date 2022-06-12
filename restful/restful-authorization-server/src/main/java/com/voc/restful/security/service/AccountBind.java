@@ -12,14 +12,27 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "auth_user_bind")
-public class AuthUserBind extends BaseEntity<String> {
+@TableName(value = "oauth2_account_bind")
+public class AccountBind extends BaseEntity<String> {
 
-    private String userId;
+    /**
+     * 账号 ID
+     */
+    private String accountId;
 
-    private String type;
+    /**
+     * 第三方平台名称
+     */
+    private String name;
 
+    /**
+     * 用户在第三方平台唯一 ID
+     */
     private String unionId;
 
+    /**
+     * 用户在第三方平台应用的开放 ID
+     */
     private String openId;
+
 }

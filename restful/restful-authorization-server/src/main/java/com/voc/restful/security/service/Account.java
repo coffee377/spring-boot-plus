@@ -1,6 +1,7 @@
 package com.voc.restful.security.service;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.voc.restful.core.entity.IUser;
 import com.voc.restful.core.entity.impl.BaseUser;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +13,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "auth_user")
-public class AuthUser extends BaseUser<String> {
+@TableName(value = "oauth2_account", excludeProperty = "authorities")
+public class Account extends BaseUser<String> implements IUser<String> {
+
+    private String mobile;
 }

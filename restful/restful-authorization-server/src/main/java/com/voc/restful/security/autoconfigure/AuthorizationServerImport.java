@@ -1,10 +1,13 @@
 package com.voc.restful.security.autoconfigure;
 
-import com.voc.restful.security.controller.DemoController;
+import com.voc.restful.security.config.AuthorizationServerConfiguration;
+import com.voc.restful.security.config.DefaultSecurityConfiguration;
+import com.voc.restful.security.config.TokenConfiguration;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -15,13 +18,13 @@ import java.util.stream.Collectors;
 public class AuthorizationServerImport implements ImportSelector {
     @Override
     public String[] selectImports(AnnotationMetadata annotationMetadata) {
-        return Arrays.stream(classes()).map(Class::getCanonicalName)
-                .collect(Collectors.toList()).toArray(new String[]{});
+        List<Class> classNames = new ArrayList<>(4);
+
+        classNames.add(DefaultSecurityConfiguration.class);
+        classNames.add(AuthorizationServerConfiguration.class);
+        classNames.add(TokenConfiguration.class);
+
+        return classNames.stream().map(Class::getName).collect(Collectors.toSet()).toArray(new String[]{});
     }
 
-    Class<?>[] classes() {
-        return (Class<?>[]) new Class[]{
-                DemoController.class
-        };
-    }
 }

@@ -13,6 +13,7 @@ import java.util.Map;
  * @email coffee377@dingtalk.com
  * @time 2021/06/23 15:28
  */
+@Deprecated
 @Data
 @EqualsAndHashCode
 public class ThirdApp implements IBean {

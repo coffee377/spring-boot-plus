@@ -10,18 +10,15 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-web") {
 //    exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
   }
-//  implementation(project(":$restful:$restful-dingtalk"))
-//  implementation(project(":$restful:$restful-security"))
   implementation("mysql:mysql-connector-java")
-//  implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
   implementation("com.baomidou:mybatis-plus-boot-starter")
   implementation("org.mapstruct:mapstruct")
   implementation("org.springframework.security:spring-security-crypto")
 
-  implementation("org.springdoc:springdoc-openapi-ui:1.6.8")
+  implementation("org.springdoc:springdoc-openapi-ui")
 
   annotationProcessor("org.mapstruct:mapstruct-processor")
-  annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+  annotationProcessor("org.projectlombok:lombok-mapstruct-binding")
 
 //  compileOnly("org.springframework.boot:spring-boot-starter-security")
 //  testImplementation("org.springframework.boot:spring-boot-starter-security")

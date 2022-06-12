@@ -1,6 +1,5 @@
 package com.voc.restful.security.config;
 
-import com.voc.restful.security.helper.KeyGenerator;
 import com.voc.restful.security.helper.SnowflakeHelper;
 import com.voc.restful.security.token.AccessTokenGenerator;
 import com.voc.restful.security.token.RefreshTokenGenerator;
@@ -28,11 +27,6 @@ public class TokenConfiguration {
     @ConditionalOnMissingBean(SnowflakeHelper.class)
     public SnowflakeHelper snowflakeHelper() {
         return new SnowflakeHelper(RANDOM.nextInt(0, 1023));
-    }
-
-    @Bean
-    public KeyGenerator keyGenerator(SnowflakeHelper snowflakeHelper) {
-        return new KeyGenerator(snowflakeHelper);
     }
 
     public OAuth2TokenGenerator tokenGenerator(@Autowired(required = false) JwtGenerator jwtGenerator,
