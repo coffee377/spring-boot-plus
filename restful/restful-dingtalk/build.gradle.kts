@@ -1,9 +1,12 @@
+repositories {
+  mavenCentral()
+}
+
 dependencies {
   compileOnly("org.springframework.boot:spring-boot-starter-security")
   compileOnly("org.springframework.boot:spring-boot-starter-oauth2-client")
   compileOnly("javax.servlet:javax.servlet-api")
 
-//  api("com.alibaba:sdk:20210421")
   api(project(":${parent!!.name}:${parent!!.name}-core"))
 
   /* 旧版 SDK */
@@ -11,9 +14,8 @@ dependencies {
     exclude(group = "*")
   }
   /* 新版 SDK */
-  implementation("com.aliyun:dingtalk:1.3.46") {
+  implementation("com.aliyun:dingtalk:1.3.61") {
     exclude(group = "com.aliyun", module = "alibabacloud-gateway-spi")
-//    exclude(group = "*")
   }
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
 }
