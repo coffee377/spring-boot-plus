@@ -23,6 +23,6 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
 @AutoConfigureAfter(SecurityAutoConfiguration.class)
 @Import({AuthorizationServerImport.class})
 @ComponentScan("com.voc.restful.security")
-@MapperScan(basePackages = "com.voc.restful.security.dao",markerInterface = BaseMapper.class)
+@MapperScan(basePackages = "com.voc.restful.security.*.dao", markerInterface = BaseMapper.class)
 public class AuthorizationServerAutoConfiguration {
 }

@@ -1,4 +1,4 @@
-package com.voc.restful.security.service;
+package com.voc.restful.security.oauth2.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.restful.core.entity.BaseEntity;

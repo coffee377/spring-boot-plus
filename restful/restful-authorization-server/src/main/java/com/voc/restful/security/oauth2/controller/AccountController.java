@@ -1,8 +1,10 @@
-package com.voc.restful.security.service;
+package com.voc.restful.security.oauth2.controller;
 
+import com.voc.restful.security.oauth2.entity.Account;
+import com.voc.restful.security.oauth2.entity.OAuth2Client;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -10,21 +12,31 @@ import java.util.List;
  * @email coffee377@dingtalk.com
  * @time 2022/06/11 21:45
  */
+@Slf4j
 @RestController
 @RequestMapping("/account")
 public class AccountController {
 
-    @Resource
-    private AccountService accountService;
+//    @Resource
+//    private AccountService accountService;
+
+// ConverterFactory FormatterRegistry
+    @PostMapping("/upload")
+    public String upload(@RequestBody OAuth2Client client) {
+        log.warn("{}", client);
+        return "account";
+    }
 
     @GetMapping
     public List<Account> query() {
-        return accountService.accounts();
+//        return accountService.accounts();
+        return null;
     }
 
     @PostMapping
     public Account create(String mobile) {
-        return accountService.createByMobile(mobile);
+//        return accountService.createByMobile(mobile);
+        return null;
     }
 
     /**
@@ -34,7 +46,7 @@ public class AccountController {
      */
     @PutMapping("/{uid}/password/reset")
     public void resetPassword(@PathVariable("uid") String userId) {
-        accountService.resetPassword(userId);
+//        accountService.resetPassword(userId);
     }
 
     /**
@@ -44,7 +56,7 @@ public class AccountController {
      */
     @PutMapping("/{uid}/lock")
     public void lock(@PathVariable("uid") String userId) {
-        accountService.lock(userId);
+//        accountService.lock(userId);
     }
 
     /**
@@ -54,7 +66,7 @@ public class AccountController {
      */
     @PutMapping("/{uid}/disable")
     public void disable(@PathVariable("uid") String userId) {
-        accountService.disable(userId);
+//        accountService.disable(userId);
     }
 
     /**
@@ -64,7 +76,7 @@ public class AccountController {
      */
     @PutMapping("/{uid}/enable")
     public void enable(@PathVariable("uid") String userId) {
-        accountService.enable(userId);
+//        accountService.enable(userId);
     }
 
     /**
@@ -74,6 +86,6 @@ public class AccountController {
      */
     @DeleteMapping("/{uid}")
     public void close(@PathVariable("uid") String userId) {
-        accountService.close(userId);
+//        accountService.close(userId);
     }
 }

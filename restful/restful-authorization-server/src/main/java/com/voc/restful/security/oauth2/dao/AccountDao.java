@@ -1,15 +1,13 @@
-package com.voc.restful.security.dao;
+package com.voc.restful.security.oauth2.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.voc.restful.security.service.Account;
-import org.apache.ibatis.annotations.Mapper;
+import com.voc.restful.security.oauth2.entity.Account;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2022/04/21 13:10
  */
-@Mapper
 public interface AccountDao extends BaseMapper<Account> {
 
 

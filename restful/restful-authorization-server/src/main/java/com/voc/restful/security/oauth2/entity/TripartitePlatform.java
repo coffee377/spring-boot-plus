@@ -1,4 +1,4 @@
-package com.voc.restful.security.service;
+package com.voc.restful.security.oauth2.entity;
 
 import com.voc.common.bean.IBean;
 import lombok.EqualsAndHashCode;
@@ -17,6 +17,7 @@ public class TripartitePlatform implements IBean {
     public static TripartitePlatform ALIPAY = new TripartitePlatform("alipay");
     public static TripartitePlatform WECHAT = new TripartitePlatform("wechat");
     public static TripartitePlatform QQ = new TripartitePlatform("qq");
+    public static TripartitePlatform JQ = new TripartitePlatform("jqsoft");
 
     /**
      * 第三方平台名称

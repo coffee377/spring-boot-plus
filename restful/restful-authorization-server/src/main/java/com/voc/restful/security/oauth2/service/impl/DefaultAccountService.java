@@ -1,9 +1,12 @@
-package com.voc.restful.security.service;
+package com.voc.restful.security.oauth2.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.voc.common.exception.BizException;
 import com.voc.restful.security.core.expection.UnboundUserException;
-import com.voc.restful.security.dao.AccountDao;
+import com.voc.restful.security.oauth2.dao.AccountDao;
+import com.voc.restful.security.oauth2.entity.Account;
+import com.voc.restful.security.oauth2.entity.TripartitePlatform;
+import com.voc.restful.security.oauth2.service.AccountService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

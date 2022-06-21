@@ -1,7 +1,7 @@
-package com.voc.restful.security.dao;
+package com.voc.restful.security.oauth2.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.voc.restful.security.service.AccountBind;
+import com.voc.restful.security.oauth2.entity.AccountBind;
 
 /**
  * @author Wu Yujie
