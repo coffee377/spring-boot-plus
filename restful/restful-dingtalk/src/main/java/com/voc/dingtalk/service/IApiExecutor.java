@@ -6,6 +6,7 @@ import com.taobao.api.TaobaoResponse;
 import com.voc.dingtalk.exception.DingTalkApiException;
 import com.voc.dingtalk.url.UrlPath;
 import com.voc.dingtalk.util.ClientUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.function.Consumer;
 
@@ -114,6 +115,12 @@ public interface IApiExecutor {
                 /* 正常响应后再消费数据 */
                 consumer.accept(response);
             } else {
+                String subCode = response.getSubCode();
+
+                if (StringUtils.hasText(subCode)) {
+                    String msg = StringUtils.hasText(response.getSubMsg()) ? response.getSubMsg() : response.getSubMessage();
+                    throw new DingTalkApiException(Long.parseLong(subCode), msg);
+                }
                 throw new DingTalkApiException(Long.parseLong(response.getErrorCode()), response.getMsg());
             }
         } catch (ApiException e) {

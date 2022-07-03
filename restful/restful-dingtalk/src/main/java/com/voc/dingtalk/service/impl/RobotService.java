@@ -1,72 +1,65 @@
-//package com.voc.dingtalk.service.impl;
-//
-//import com.aliyun.teaopenapi.Client;
-//import com.aliyun.teaopenapi.models.Config;
-//import com.dingtalk.api.DefaultDingTalkClient;
-//import com.dingtalk.api.DingTalkClient;
-//import com.dingtalk.api.request.OapiRobotSendRequest;
-//import com.dingtalk.api.response.OapiRobotSendResponse;
-//import com.taobao.api.ApiException;
-//import com.voc.dingtalk.UrlConst;
-//import com.voc.dingtalk.service.IRobotService;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.Arrays;
-//
-///**
-// * @author Wu Yujie
-// * @email coffee377@dingtalk.com
-// * @time 2022/05/01 11:58
-// */
-//@Service
-//public class RobotService implements IRobotService {
-//    @Override
-//    public void send() {
-//        OapiRobotSendRequest request = new OapiRobotSendRequest();
-//        request.setMsgtype("text");
-//        this.execute(UrlConst.GET_JSAPI_TICKET, request, response -> {
-////                response.
-//        });
-//    }
-//
-//    @Override
-//    public <C extends Client> C getClient(Config config) {
-//        return null;
-//    }
-//
-//    public static void main(String[] args) throws ApiException {
-////        https://oapi.dingtalk.com/robot/send?access_token=ab67411f5c8bff25351a61783c9eb7595ac1f5ab227c2e09c1e4b83b206ec7d9
-//        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/robot/send?access_token=ab67411f5c8bff25351a61783c9eb7595ac1f5ab227c2e09c1e4b83b206ec7d9");
-//        OapiRobotSendRequest request = new OapiRobotSendRequest();
-//        request.setMsgtype("text");
-//        OapiRobotSendRequest.Text text = new OapiRobotSendRequest.Text();
-//        text.setContent("测试文本update消息");
-//        request.setText(text);
-//
-//        request.setMsgtype("link");
-//        OapiRobotSendRequest.Link link = new OapiRobotSendRequest.Link();
-//        link.setMessageUrl("https://www.dingtalk.com/");
-//        link.setPicUrl("");
-//        link.setTitle("时代的火车向前开");
-//        link.setText("update 这个即将发布的新版本，创始人xx称它为红树林。而在此之前，每当面临重大升级，产品经理们都会取一个应景的代号，这一次，为什么是红树林");
-//        request.setLink(link);
-//
-//        request.setMsgtype("markdown");
-//        OapiRobotSendRequest.Markdown markdown = new OapiRobotSendRequest.Markdown();
-//        markdown.setTitle("杭州天气");
-//        markdown.setText("#### 杭州天气 update @156xxxx8827\n" +
-//                "> 9度，西北风1级，空气良89，相对温度73%\n\n" +
-//                "> ![screenshot](https://gw.alicdn.com/tfs/TB1ut3xxbsrBKNjSZFpXXcXhFXa-846-786.png)\n"  +
-//                "> ###### 10点20分发布 [天气](http://www.thinkpage.cn/) \n");
-//        request.setMarkdown(markdown);
-//
-//        OapiRobotSendRequest.At at = new OapiRobotSendRequest.At();
-//        at.setAtMobiles(Arrays.asList("13956945898"));
-//// isAtAll类型如果不为Boolean，请升级至最新SDK
-//        at.setIsAtAll(false);
-////        at.setAtUserIds(Arrays.asList("109929","32099"));
-//        request.setAt(at);
-//
-//        OapiRobotSendResponse response = client.execute(request);
-//    }
-//}
+package com.voc.dingtalk.service.impl;
+
+import com.dingtalk.api.DefaultDingTalkClient;
+import com.dingtalk.api.DingTalkClient;
+import com.dingtalk.api.request.OapiRobotSendRequest;
+import com.dingtalk.api.response.OapiRobotSendResponse;
+import com.taobao.api.ApiException;
+import com.voc.dingtalk.service.IRobotService;
+import com.voc.dingtalk.url.Corp;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+
+/**
+ * @author Wu Yujie
+ * @email coffee377@dingtalk.com
+ * @time 2022/05/01 11:58
+ */
+@Service
+public class RobotService implements IRobotService {
+    @Override
+    public void send() {
+        OapiRobotSendRequest request = new OapiRobotSendRequest();
+        request.setMsgtype("text");
+        this.execute(Corp.GET_JSAPI_TICKET, request, response -> {
+        });
+    }
+
+
+    public static void main(String[] args) throws ApiException {
+//        https://oapi.dingtalk.com/robot/send?access_token=ab67411f5c8bff25351a61783c9eb7595ac1f5ab227c2e09c1e4b83b206ec7d9
+        DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/robot/send?access_token=ab67411f5c8bff25351a61783c9eb7595ac1f5ab227c2e09c1e4b83b206ec7d9");
+        OapiRobotSendRequest request = new OapiRobotSendRequest();
+        request.setMsgtype("text");
+        OapiRobotSendRequest.Text text = new OapiRobotSendRequest.Text();
+        text.setContent("测试文本update消息");
+        request.setText(text);
+
+        request.setMsgtype("link");
+        OapiRobotSendRequest.Link link = new OapiRobotSendRequest.Link();
+        link.setMessageUrl("https://www.dingtalk.com/");
+        link.setPicUrl("");
+        link.setTitle("时代的火车向前开");
+        link.setText("update 这个即将发布的新版本，创始人xx称它为红树林。而在此之前，每当面临重大升级，产品经理们都会取一个应景的代号，这一次，为什么是红树林");
+        request.setLink(link);
+
+        request.setMsgtype("markdown");
+        OapiRobotSendRequest.Markdown markdown = new OapiRobotSendRequest.Markdown();
+        markdown.setTitle("杭州天气");
+        markdown.setText("#### 杭州天气 update @156xxxx8827\n" +
+                "> 9度，西北风1级，空气良89，相对温度73%\n\n" +
+                "> ![screenshot](https://gw.alicdn.com/tfs/TB1ut3xxbsrBKNjSZFpXXcXhFXa-846-786.png)\n" +
+                "> ###### 10点20分发布 [天气](http://www.thinkpage.cn/) \n");
+        request.setMarkdown(markdown);
+
+        OapiRobotSendRequest.At at = new OapiRobotSendRequest.At();
+        at.setAtMobiles(Arrays.asList("13956945898"));
+        // isAtAll类型如果不为Boolean，请升级至最新SDK
+        at.setIsAtAll(false);
+        // at.setAtUserIds(Arrays.asList("109929","32099"));
+        request.setAt(at);
+
+        OapiRobotSendResponse response = client.execute(request);
+    }
+}

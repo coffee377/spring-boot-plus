@@ -2,6 +2,7 @@ package com.voc.dingtalk.service.impl;
 
 import com.dingtalk.api.request.OapiGettokenRequest;
 import com.voc.dingtalk.annotation.DingTalk;
+import com.voc.dingtalk.annotation.PrimaryApp;
 import com.voc.dingtalk.autoconfigure.App;
 import com.voc.dingtalk.cache.DingTalkCache;
 import com.voc.dingtalk.exception.DingTalkApiException;
@@ -10,8 +11,6 @@ import com.voc.dingtalk.url.Corp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -48,8 +47,16 @@ public class AppService implements IAppService {
 
     @Override
     @Cacheable(cacheNames = DingTalkCache.DING_TALK_APP_ACCESS_TOKEN, keyGenerator = "appKeyGenerator")
-    public String getAccessToken(String appNameOrAppId) throws DingTalkApiException {
+    public String getAccessToken(String appNameOrAppId) {
         App app = getByIdOrName(appNameOrAppId);
+        return getAppAccessToken(app.getAppKey(), app.getAppSecret());
+    }
+
+    @Override
+    @PrimaryApp
+    @Cacheable(cacheNames = DingTalkCache.DING_TALK_APP_ACCESS_TOKEN, keyGenerator = "appKeyGenerator")
+    public String getPrimaryAccessToken() {
+        App app = getPrimaryApp();
         return getAppAccessToken(app.getAppKey(), app.getAppSecret());
     }
 
@@ -71,13 +78,4 @@ public class AppService implements IAppService {
         return accessToken.get();
     }
 
-    @Override
-    public String ensureAppSecret(String appKey, String appSecret) {
-        Assert.hasText(appKey, "appKey must not be empty");
-        if (StringUtils.hasText(appSecret)) {
-            return appSecret;
-        } else {
-            return this.getByIdOrName(appKey).getAppSecret();
-        }
-    }
 }

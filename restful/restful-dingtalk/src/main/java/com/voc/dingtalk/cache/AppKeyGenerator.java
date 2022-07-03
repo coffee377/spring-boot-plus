@@ -1,5 +1,6 @@
 package com.voc.dingtalk.cache;
 
+import com.voc.dingtalk.annotation.PrimaryApp;
 import com.voc.dingtalk.autoconfigure.App;
 import com.voc.dingtalk.service.IAppService;
 import org.springframework.cache.interceptor.KeyGenerator;
@@ -27,15 +28,13 @@ public class AppKeyGenerator implements KeyGenerator {
     @Override
     public Object generate(Object o, Method method, Object... objects) {
         if (!ObjectUtils.isEmpty(objects)) {
-            App app = null;
-            try {
-                app = appService.getByIdOrName(objects[0].toString());
-            } catch (Exception ignored) {
-
-            }
+            App app = appService.getByIdOrName(objects[0].toString());
             if (app != null) {
                 return app.getName();
             }
+        }
+        if (method.isAnnotationPresent(PrimaryApp.class)) {
+            return appService.getPrimaryApp().getName();
         }
         return "";
     }

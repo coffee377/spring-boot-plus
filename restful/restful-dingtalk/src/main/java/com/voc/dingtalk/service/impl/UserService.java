@@ -8,7 +8,6 @@ import com.dingtalk.api.response.OapiV2UserGetResponse;
 import com.voc.dingtalk.autoconfigure.App;
 import com.voc.dingtalk.exception.DingTalkApiException;
 import com.voc.dingtalk.service.IAppService;
-import com.voc.dingtalk.service.ICredentialsService;
 import com.voc.dingtalk.service.IUserService;
 import com.voc.dingtalk.url.Corp;
 import com.voc.restful.core.autoconfigure.json.IJson;
@@ -34,9 +33,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @SuppressWarnings("unchecked")
 @Service("dingtalkUserService")
 public class UserService implements IUserService {
-
-    @Resource
-    private ICredentialsService dingTalkCredentialsService;
 
     @Resource
     private IAppService appService;
@@ -107,7 +103,7 @@ public class UserService implements IUserService {
 
     @Override
     public Map<String, Object> getUserDetailInfo(String appName, String tempAuthCode) {
-        String accessToken = dingTalkCredentialsService.getAccessTokenByAppName(appName);
+        String accessToken = appService.getAccessToken(appName);
         String unionid = this.getUnionid(appName, tempAuthCode);
         String uid = this.getUserIdByUnionId(accessToken, unionid);
         OapiV2UserGetResponse.UserGetResponse userInfo = this.getUserDetailInfo(accessToken, uid, "");
@@ -118,7 +114,7 @@ public class UserService implements IUserService {
 
     @Override
     public Object getUserDetailInfos(String accessKey, String accessSecret, String tempAuthCode) {
-        String accessToken = dingTalkCredentialsService.getAccessToken(accessKey, accessSecret);
+        String accessToken = appService.getAccessToken(accessKey);
         String unionid = this.getUnionid(accessKey, accessSecret, tempAuthCode);
         String uid = this.getUserIdByUnionId(accessToken, unionid);
         OapiV2UserGetResponse.UserGetResponse userInfo = this.getUserDetailInfo(accessToken, uid, "");
@@ -139,7 +135,7 @@ public class UserService implements IUserService {
             throw new AuthorizationCodeException(e.getMessage());
         }
         String unionid = info.getUnionid();
-        String accessToken = dingTalkCredentialsService.getAccessToken(clientId, null);
+        String accessToken = appService.getAccessToken(clientId);
         String uid = this.getUserIdByUnionId(accessToken, unionid);
         OapiV2UserGetResponse.UserGetResponse userDetailInfo = this.getUserDetailInfo(accessToken, uid, "");
         ThirdApp thirdApp = ThirdApp.of(getAppInfo(), unionid, info.getOpenid());

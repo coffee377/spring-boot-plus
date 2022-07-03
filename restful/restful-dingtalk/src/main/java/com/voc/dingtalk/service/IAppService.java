@@ -2,8 +2,6 @@ package com.voc.dingtalk.service;
 
 import com.voc.dingtalk.autoconfigure.App;
 import com.voc.dingtalk.exception.DingTalkApiException;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 /**
  * 钉钉应用服务
@@ -36,16 +34,13 @@ public interface IAppService extends IApiExecutor {
      * @return String
      * @throws DingTalkApiException API 异常
      */
-    String getAccessToken(String appNameOrAppId) throws DingTalkApiException;
+    String getAccessToken(String appNameOrAppId);
 
     /**
-     * 返回应用密钥
+     * 获取主应用访问令牌
      *
-     * @param appKey    应用唯一标识 key
-     * @param appSecret 应用密钥
      * @return String
      */
-    @Deprecated
-    String ensureAppSecret(@NonNull String appKey, @Nullable String appSecret);
+    String getPrimaryAccessToken();
 
 }

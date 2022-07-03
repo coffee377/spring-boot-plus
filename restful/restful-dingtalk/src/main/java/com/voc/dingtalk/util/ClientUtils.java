@@ -2,6 +2,7 @@ package com.voc.dingtalk.util;
 
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.voc.dingtalk.url.UrlPath;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -9,6 +10,7 @@ import com.voc.dingtalk.url.UrlPath;
  * @email coffee377@dingtalk.com
  * @time 2020/11/17 18:54
  */
+@Slf4j
 public class ClientUtils {
 
     /**
@@ -18,6 +20,7 @@ public class ClientUtils {
      * @return 旧版客户端
      */
     public static DefaultDingTalkClient of(UrlPath path) {
+        log.debug("request url：{}", path.get());
         return new DefaultDingTalkClient(path.get());
     }
 

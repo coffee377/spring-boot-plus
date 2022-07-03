@@ -1,11 +1,11 @@
 package com.voc.dingtalk.cache;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.Arrays;
 
@@ -17,8 +17,15 @@ import java.util.Arrays;
 @Component
 public class DingTalkCacheConfig implements RedisCacheManagerBuilderCustomizer {
 
-    @Resource(name = "redisCacheConfiguration")
-    private RedisCacheConfiguration cacheConfiguration;
+    private final RedisCacheConfiguration cacheConfiguration;
+
+    public DingTalkCacheConfig(@Autowired(required = false) RedisCacheConfiguration cacheConfiguration) {
+        if (cacheConfiguration == null) {
+            this.cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
+        } else {
+            this.cacheConfiguration = cacheConfiguration;
+        }
+    }
 
     @Override
     public void customize(RedisCacheManager.RedisCacheManagerBuilder builder) {

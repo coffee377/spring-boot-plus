@@ -1,13 +1,14 @@
 package com.voc.dingtalk.controller;
 
+import com.dingtalk.api.response.OapiV2DepartmentListsubResponse;
+import com.dingtalk.api.response.OapiV2UserGetResponse;
+import com.dingtalk.api.response.OapiV2UserListResponse;
 import com.voc.dingtalk.autoconfigure.App;
 import com.voc.dingtalk.service.IAppService;
+import com.voc.dingtalk.service.IContactsService;
 import com.voc.dingtalk.service.IDingTalkService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,6 +29,9 @@ public class DingTalkController {
     @Resource
     private IAppService appService;
 
+    @Resource
+    private IContactsService contactsService;
+
     @GetMapping("/app")
     public List<App> getApps() {
         return dingTalkService.getApps();
@@ -45,4 +49,46 @@ public class DingTalkController {
     }
 
 
+    /**
+     * 获取主应用访问令牌
+     *
+     * @return 应用访问令牌
+     */
+    @GetMapping("/app/primary")
+    public String getPrimaryAppAccessToken() {
+        return appService.getPrimaryAccessToken();
+    }
+
+    /**
+     * 显示子部门信息
+     *
+     * @param depId 钉钉父部门ID
+     * @return List<OapiV2DepartmentListsubResponse.DeptBaseResponse>
+     */
+    @GetMapping("/department")
+    public List<OapiV2DepartmentListsubResponse.DeptBaseResponse> querySubDepartment(@RequestParam(name = "id", required = false) Long depId) {
+        return contactsService.getSubDepartment(depId);
+    }
+
+    /**
+     * 显示部门成员信息
+     *
+     * @param depId 钉钉部门ID
+     * @return List<OapiV2UserListResponse.ListUserResponse>
+     */
+    @GetMapping("/department/{id}/user")
+    public List<OapiV2UserListResponse.ListUserResponse> queryDepartmentUser(@PathVariable(name = "id") Long depId) {
+        return contactsService.getDepartmentUserDetails(depId);
+    }
+
+    /**
+     * 获取用户详情
+     *
+     * @param userId 钉钉用户ID
+     * @return OapiV2UserGetResponse.UserGetResponse
+     */
+    @GetMapping("/department/user/{id}")
+    public OapiV2UserGetResponse.UserGetResponse queryUserDetails(@PathVariable(name = "id") String userId) {
+        return contactsService.getUserDetails(userId);
+    }
 }
