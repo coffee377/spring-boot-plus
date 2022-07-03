@@ -80,3 +80,7 @@ include(":restful:restful-system")
 //  }
 //}
 include("microservice")
+include("microservice:oss")
+findProject(":microservice:oss")?.name = "oss"
+include("microservice:dingtalk")
+findProject(":microservice:dingtalk")?.name = "dingtalk"

@@ -1,19 +1,18 @@
-package com.voc.dingtalk;
+package com.voc.dingtalk.url;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * 企业核心相关接口地址
+ *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
- * @time 2020/11/17 18:48
+ * @time 2022/07/03 10:40
  */
 @Getter
 @AllArgsConstructor
-public enum UrlConst {
-
-    /* ------- 获取凭证 ------- */
-
+public enum Corp implements UrlPath {
     /**
      * 获取调用企业接口凭证
      */
@@ -22,8 +21,6 @@ public enum UrlConst {
      * 获取 jsapi_ticket
      */
     GET_JSAPI_TICKET("/get_jsapi_ticket"),
-
-    /* ------- 获取凭证 ------- */
 
     /* ------- 身份验证 ------- */
     /**
@@ -54,12 +51,6 @@ public enum UrlConst {
     TOP_API_V2_USER_GET("/topapi/v2/user/get"),
     /* ------- 通讯录管理 - 用户管理 ------- */
 
-
-
     ;
-
-
-
-    private final String url;
-
+    private final String path;
 }

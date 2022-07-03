@@ -8,10 +8,14 @@ package com.voc.dingtalk.cache;
  * @time 2020/11/18 18:24
  */
 public interface DingTalkCache {
+    /**
+     * 钉钉缓存前缀
+     */
     String DING_TALK_CACHE_NAME = "dingtalk";
+    String DING_TALK_APP = DING_TALK_CACHE_NAME + ":app";
 
-    String ACCESS_TOKEN = DING_TALK_CACHE_NAME + ":access_token";
-    String JS_TICKET = DING_TALK_CACHE_NAME + ":jsapi_ticket";
-    String APP_INFO = DING_TALK_CACHE_NAME + ":app_info";
+    String DING_TALK_APP_ACCESS_TOKEN = DING_TALK_APP + ":access_token";
+    String DING_TALK_APP_JS_TICKET = DING_TALK_APP + ":jsapi_ticket";
+
     String APP_SECRET = DING_TALK_CACHE_NAME + ":appSecret";
 }

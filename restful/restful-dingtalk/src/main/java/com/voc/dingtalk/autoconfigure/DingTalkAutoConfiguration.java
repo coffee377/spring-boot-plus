@@ -4,6 +4,7 @@ import com.voc.restful.core.autoconfigure.cache.RedisCacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Configuration
 @AutoConfigureAfter(RedisCacheAutoConfiguration.class)
-@ConfigurationPropertiesScan("com.voc.dingtalk.properties")
+@EnableConfigurationProperties(DingTalkProperties.class)
 @ComponentScan(basePackages = "com.voc.dingtalk")
 @ConditionalOnProperty(prefix = "spring.dingtalk", name = "enable", havingValue = "true", matchIfMissing = true)
 public class DingTalkAutoConfiguration {

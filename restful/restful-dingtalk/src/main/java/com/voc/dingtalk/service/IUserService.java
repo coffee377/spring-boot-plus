@@ -9,7 +9,7 @@ import com.voc.restful.core.third.ThirdAppService;
  * @email coffee377@dingtalk.com
  * @time 2021/04/21 21:40
  */
-public interface IDingTalkUserService extends IApiExecutor, ThirdAppService {
+public interface IUserService extends IApiExecutor, ThirdAppService {
 
     /**
      * 根据临时授权码获取用户开放信息

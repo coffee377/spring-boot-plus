@@ -1,4 +1,4 @@
-package com.voc.dingtalk.properties;
+package com.voc.dingtalk.autoconfigure;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.voc.dingtalk.util;
 
 import com.dingtalk.api.DefaultDingTalkClient;
-import com.voc.dingtalk.UrlConst;
+import com.voc.dingtalk.url.UrlPath;
 
 
 /**
@@ -11,8 +11,14 @@ import com.voc.dingtalk.UrlConst;
  */
 public class ClientUtils {
 
-    public static DefaultDingTalkClient of(UrlConst url) {
-        return new DefaultDingTalkClient("https://oapi.dingtalk.com" + url.getUrl());
+    /**
+     * 快速创建旧版客户端
+     *
+     * @param path 接口路径
+     * @return 旧版客户端
+     */
+    public static DefaultDingTalkClient of(UrlPath path) {
+        return new DefaultDingTalkClient(path.get());
     }
 
 }

@@ -17,11 +17,10 @@ import java.util.List;
 @Setter
 @ConfigurationProperties(prefix = "api.json.wrapper")
 public class JsonWrapper {
+
     /**
-     * 是否启用响应结果自动包装，默认 true
-     * 局部控制请使用 ResponseResult 注解
-     *
-     * @see com.voc.restful.core.response.ResponseResult
+     * <p>是否启用响应结果自动包装，默认 true</p>
+     * <p>局部控制请使用 {@link com.voc.restful.core.response.ResponseResult} 注解</p>
      */
     private Boolean enable = true;
 

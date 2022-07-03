@@ -1,7 +1,6 @@
-package com.voc.dingtalk.properties;
+package com.voc.dingtalk.autoconfigure;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -17,10 +16,10 @@ import java.util.Map;
  * @time 2020/11/17 18:11
  */
 @Slf4j
-@Getter
-@Setter
+@Data
 @ConfigurationProperties(prefix = "spring.dingtalk")
 public class DingTalkProperties implements InitializingBean {
+    private int primaryAppCount;
 
     /**
      * 是否启用
@@ -38,7 +37,7 @@ public class DingTalkProperties implements InitializingBean {
     /**
      * APP 配置
      */
-    private Map<String, DingTalkApp> app = new HashMap<>();
+    private Map<String, App> app = new HashMap<>();
 
     @Override
     public void afterPropertiesSet() {
@@ -47,9 +46,16 @@ public class DingTalkProperties implements InitializingBean {
 
     public void validate() {
         this.getApp().values().forEach(this::validateApp);
+        this.validatePrimaryApp();
     }
 
-    private void validateApp(DingTalkApp app) {
+    private void validatePrimaryApp() {
+        if (this.primaryAppCount > 1) {
+            log.error("只允许一个主应用", new IllegalStateException("Only one active application is allowed"));
+        }
+    }
+
+    private void validateApp(App app) {
         if (!StringUtils.hasText(app.getAppKey())) {
             throw new IllegalStateException("appKey must not be empty.");
         }

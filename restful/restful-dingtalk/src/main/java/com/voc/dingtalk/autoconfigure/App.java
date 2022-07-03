@@ -1,18 +1,20 @@
-package com.voc.dingtalk.properties;
+package com.voc.dingtalk.autoconfigure;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2021/06/10 16:43
  */
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode
-public class DingTalkApp {
+public class App {
+    /**
+     * 是否为主应用
+     */
+    private boolean primary;
 
     /**
      * 应用名称

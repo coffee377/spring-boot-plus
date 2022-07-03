@@ -3,8 +3,8 @@ package com.voc.dingtalk.service;
 import com.taobao.api.ApiException;
 import com.taobao.api.TaobaoRequest;
 import com.taobao.api.TaobaoResponse;
-import com.voc.dingtalk.UrlConst;
 import com.voc.dingtalk.exception.DingTalkApiException;
+import com.voc.dingtalk.url.UrlPath;
 import com.voc.dingtalk.util.ClientUtils;
 
 import java.util.function.Consumer;
@@ -19,7 +19,7 @@ public interface IApiExecutor {
     /**
      * 钉钉接口请求统一封装
      *
-     * @param urlConst     接口地址
+     * @param path         接口路径
      * @param request      请求
      * @param accessKey    应用ID
      * @param accessSecret 应用密钥
@@ -29,13 +29,13 @@ public interface IApiExecutor {
      * @param <T>          响应
      * @throws DingTalkApiException API异常
      */
-    default <T extends TaobaoResponse> void execute(UrlConst urlConst, TaobaoRequest<T> request, String accessKey,
+    default <T extends TaobaoResponse> void execute(UrlPath path, TaobaoRequest<T> request, String accessKey,
                                                     String accessSecret, String suiteTicket, String corpId,
                                                     Consumer<T> consumer)
             throws DingTalkApiException {
         T response;
         try {
-            response = ClientUtils.of(urlConst).execute(request, accessKey, accessSecret, suiteTicket, corpId);
+            response = ClientUtils.of(path).execute(request, accessKey, accessSecret, suiteTicket, corpId);
             if (Long.parseLong(response.getErrorCode()) == 0L) {
                 /* 正常响应后再消费数据 */
                 consumer.accept(response);
@@ -50,7 +50,7 @@ public interface IApiExecutor {
     /**
      * 钉钉接口请求统一封装
      *
-     * @param urlConst     接口地址
+     * @param path         接口路径
      * @param request      请求
      * @param accessKey    应用ID
      * @param accessSecret 应用密钥
@@ -59,16 +59,15 @@ public interface IApiExecutor {
      * @param <T>          响应
      * @throws DingTalkApiException API异常
      */
-    default <T extends TaobaoResponse> void execute(UrlConst urlConst, TaobaoRequest<T> request, String accessKey,
+    default <T extends TaobaoResponse> void execute(UrlPath path, TaobaoRequest<T> request, String accessKey,
                                                     String accessSecret, String suiteTicket, Consumer<T> consumer) throws DingTalkApiException {
-        this.execute(urlConst, request, accessKey, accessSecret, suiteTicket, null, consumer);
-
+        this.execute(path, request, accessKey, accessSecret, suiteTicket, null, consumer);
     }
 
     /**
      * 钉钉接口请求统一封装
      *
-     * @param urlConst     接口地址
+     * @param path         接口路径
      * @param request      请求
      * @param accessKey    应用ID
      * @param accessSecret 应用密钥
@@ -76,40 +75,41 @@ public interface IApiExecutor {
      * @param <T>          响应
      * @throws DingTalkApiException API异常
      */
-    default <T extends TaobaoResponse> void execute(UrlConst urlConst, TaobaoRequest<T> request, String accessKey,
+    default <T extends TaobaoResponse> void execute(UrlPath path, TaobaoRequest<T> request, String accessKey,
                                                     String accessSecret, Consumer<T> consumer) throws DingTalkApiException {
-        this.execute(urlConst, request, accessKey, accessSecret, null, null, consumer);
+        this.execute(path, request, accessKey, accessSecret, null, null, consumer);
     }
 
     /**
      * 钉钉接口请求统一封装
      *
-     * @param urlConst 接口地址
+     * @param path     接口路径
      * @param request  请求
      * @param consumer Consumer<T>
      * @param <T>      响应
      * @throws DingTalkApiException API异常
      */
-    default <T extends TaobaoResponse> void execute(UrlConst urlConst, TaobaoRequest<T> request, Consumer<T> consumer)
+    default <T extends TaobaoResponse> void execute(UrlPath path, TaobaoRequest<T> request, Consumer<T> consumer)
             throws DingTalkApiException {
-        execute(urlConst, request, null, consumer);
+        execute(path, request, null, consumer);
     }
 
     /**
      * 钉钉接口请求统一封装
      *
-     * @param urlConst 接口地址
+     * @param path     接口路径
      * @param request  请求
      * @param session  session
      * @param consumer Consumer<T>
      * @param <T>      响应
      * @throws DingTalkApiException API异常
      */
-    default <T extends TaobaoResponse> void execute(UrlConst urlConst, TaobaoRequest<T> request, String session, Consumer<T> consumer)
+    default <T extends TaobaoResponse> void execute(UrlPath path, TaobaoRequest<T> request, String session,
+                                                    Consumer<T> consumer)
             throws DingTalkApiException {
         T response;
         try {
-            response = ClientUtils.of(urlConst).execute(request, session);
+            response = ClientUtils.of(path).execute(request, session);
             if (Long.parseLong(response.getErrorCode()) == 0L) {
                 /* 正常响应后再消费数据 */
                 consumer.accept(response);

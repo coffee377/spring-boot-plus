@@ -5,12 +5,12 @@ import com.dingtalk.api.request.OapiUserGetbyunionidRequest;
 import com.dingtalk.api.request.OapiV2UserGetRequest;
 import com.dingtalk.api.response.OapiSnsGetuserinfoBycodeResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
-import com.voc.dingtalk.UrlConst;
+import com.voc.dingtalk.autoconfigure.App;
 import com.voc.dingtalk.exception.DingTalkApiException;
-import com.voc.dingtalk.properties.DingTalkApp;
+import com.voc.dingtalk.service.IAppService;
 import com.voc.dingtalk.service.ICredentialsService;
-import com.voc.dingtalk.service.IDingTalkService;
-import com.voc.dingtalk.service.IDingTalkUserService;
+import com.voc.dingtalk.service.IUserService;
+import com.voc.dingtalk.url.Corp;
 import com.voc.restful.core.autoconfigure.json.IJson;
 import com.voc.restful.core.third.AppName;
 import com.voc.restful.core.third.ThirdApp;
@@ -33,13 +33,13 @@ import java.util.concurrent.atomic.AtomicReference;
 @Slf4j
 @SuppressWarnings("unchecked")
 @Service("dingtalkUserService")
-public class DingTalkUserService implements IDingTalkUserService {
+public class UserService implements IUserService {
 
     @Resource
     private ICredentialsService dingTalkCredentialsService;
 
     @Resource
-    private IDingTalkService dingTalkService;
+    private IAppService appService;
 
     @Override
     public OapiSnsGetuserinfoBycodeResponse.UserInfo getUserOpenInfoByCode(String accessKey, String accessSecret,
@@ -47,14 +47,14 @@ public class DingTalkUserService implements IDingTalkUserService {
         OapiSnsGetuserinfoBycodeRequest req = new OapiSnsGetuserinfoBycodeRequest();
         req.setTmpAuthCode(tmpAuthCode);
         AtomicReference<OapiSnsGetuserinfoBycodeResponse.UserInfo> userInfo = new AtomicReference<>();
-        this.execute(UrlConst.SNS_GET_USER_INFO_BY_CODE, req, accessKey, accessSecret,
+        this.execute(Corp.SNS_GET_USER_INFO_BY_CODE, req, accessKey, accessSecret,
                 response -> userInfo.set(response.getUserInfo()));
         return userInfo.get();
     }
 
     @Override
     public OapiSnsGetuserinfoBycodeResponse.UserInfo getUserOpenInfoByClientIdAndTmpAuthCode(String clientId, String tmpAuthCode) {
-        DingTalkApp app = dingTalkService.getAppById(clientId);
+        App app = appService.getByIdOrName(clientId);
         String appKey = app.getAppKey();
         String appSecret = app.getAppSecret();
         return this.getUserOpenInfoByCode(appKey, appSecret, tmpAuthCode);
@@ -62,7 +62,7 @@ public class DingTalkUserService implements IDingTalkUserService {
 
     @Override
     public OapiSnsGetuserinfoBycodeResponse.UserInfo getUserOpenInfoByCode(String appName, String tempAuthCode) {
-        DingTalkApp app = dingTalkService.getAppByName(appName);
+        App app = appService.getByIdOrName(appName);
         String appKey = app.getAppKey();
         String appSecret = app.getAppSecret();
         return this.getUserOpenInfoByCode(appKey, appSecret, tempAuthCode);
@@ -85,7 +85,7 @@ public class DingTalkUserService implements IDingTalkUserService {
         OapiUserGetbyunionidRequest request = new OapiUserGetbyunionidRequest();
         request.setUnionid(unionId);
         AtomicReference<String> uid = new AtomicReference<>();
-        this.execute(UrlConst.TOP_API_USER_GET_BY_UNION_ID, request, accessToken,
+        this.execute(Corp.TOP_API_USER_GET_BY_UNION_ID, request, accessToken,
                 response -> uid.set(response.getResult().getUserid()));
 
         return uid.get();
@@ -99,7 +99,8 @@ public class DingTalkUserService implements IDingTalkUserService {
             reqGetRequest.setLanguage("zh_CN");
         }
         AtomicReference<OapiV2UserGetResponse.UserGetResponse> reference = new AtomicReference<>();
-        this.execute(UrlConst.TOP_API_V2_USER_GET, reqGetRequest, accessToken, response -> reference.set(response.getResult()));
+        this.execute(Corp.TOP_API_V2_USER_GET, reqGetRequest, accessToken,
+                response -> reference.set(response.getResult()));
 
         return reference.get();
     }

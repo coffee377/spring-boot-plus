@@ -6,6 +6,8 @@ import org.springframework.util.Assert;
 import java.time.Duration;
 
 /**
+ * 钉钉缓存配置
+ *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/11/18 18:16

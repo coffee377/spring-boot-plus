@@ -22,10 +22,9 @@ public class JsonProperties {
     private ExceptionResult exceptionResult;
 
     /**
-     * 响应结果是否自动包装全局控制开关
-     * 局部控制请使用 ResponseResult 注解
+     * <p>响应结果是否自动包装全局控制开关</p>
+     * <p>局部控制请使用 {@link com.voc.restful.core.response.ResponseResult} 注解</p>
      *
-     * @see com.voc.restful.core.response.ResponseResult
      * @deprecated use instead
      */
     @Deprecated

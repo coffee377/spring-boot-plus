@@ -1,6 +1,6 @@
 package com.voc.dingtalk.oauth2.userinfo;
 
-import com.voc.dingtalk.service.IDingTalkUserService;
+import com.voc.dingtalk.service.IUserService;
 import com.voc.restful.core.autoconfigure.json.IJson;
 import lombok.SneakyThrows;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,10 +24,10 @@ import java.util.Set;
 @Component
 public class DingTalkOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final IDingTalkUserService dingtalkUserService;
+    private final IUserService dingtalkUserService;
     private final IJson json;
 
-    public DingTalkOAuth2UserService(IDingTalkUserService dingtalkUserService, IJson json) {
+    public DingTalkOAuth2UserService(IUserService dingtalkUserService, IJson json) {
         this.dingtalkUserService = dingtalkUserService;
         this.json = json;
     }

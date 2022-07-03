@@ -4,11 +4,9 @@ import com.aliyun.dingtalkoauth2_1_0.Client;
 import com.aliyun.dingtalkoauth2_1_0.models.GetAccessTokenRequest;
 import com.aliyun.tea.TeaException;
 import com.aliyun.teaopenapi.models.Config;
-import com.voc.dingtalk.service.IRobotService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,9 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/robot")
 public class RobotController {
-
-    @Resource
-    private IRobotService robotService;
 
     /**
      * 使用 Token 初始化账号Client
@@ -44,8 +39,8 @@ public class RobotController {
         List<String> args = Arrays.asList(args_);
         Client client = RobotController.createClient();
         GetAccessTokenRequest accessTokenRequest = new GetAccessTokenRequest();
-//        accessTokenRequest.setAppKey("");
-//        accessTokenRequest.setAppSecret("");
+        accessTokenRequest.setAppKey("");
+        accessTokenRequest.setAppSecret("");
         try {
             client.getAccessToken(accessTokenRequest);
         } catch (TeaException err) {

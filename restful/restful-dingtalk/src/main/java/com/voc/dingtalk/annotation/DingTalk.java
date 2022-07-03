@@ -16,7 +16,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-public @interface DingTalkService {
+public @interface DingTalk {
 
     /**
      * The value may indicate a suggestion for a logical component name,

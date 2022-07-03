@@ -25,7 +25,7 @@ public class CacheInitListener implements ApplicationListener<ApplicationReadyEv
         ConfigurableApplicationContext applicationContext = event.getApplicationContext();
         Map<String, CacheManager> beansOfType = applicationContext.getBeansOfType(CacheManager.class);
         beansOfType.values().forEach(cacheManager -> {
-            Cache cache = cacheManager.getCache(DingTalkCache.APP_INFO);
+            Cache cache = cacheManager.getCache(DingTalkCache.DING_TALK_APP);
             if (cache != null) {
                 cache.clear();
             }
