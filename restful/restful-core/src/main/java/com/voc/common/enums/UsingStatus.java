@@ -16,11 +16,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum UsingStatus implements EnumDictItem<Integer> {
 
-    NORMAL(1, "正常"),
-    LOCK(0, "锁定"), // 临时不使用账号
-    DISABLE(-1, "禁用"); // 长期不使用账号
+    NORMAL(1, "正常", ""),
+    LOCK(0, "锁定", "临时不使用账号"),
+    DISABLE(-1, "禁用", "长期不使用账号");
 
     private final Integer value;
     private final String text;
+    private final String description;
 
 }

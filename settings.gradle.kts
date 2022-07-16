@@ -84,3 +84,8 @@ include("microservice:oss")
 findProject(":microservice:oss")?.name = "oss"
 include("microservice:dingtalk")
 findProject(":microservice:dingtalk")?.name = "dingtalk"
+include("starter")
+include("starter:dingtalk")
+findProject(":starter:dingtalk")?.name = "dingtalk"
+include("starter:oss")
+findProject(":starter:oss")?.name = "oss"

@@ -1,6 +1,5 @@
 package com.voc.restful.security.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,7 +19,6 @@ public class DefaultSecurityConfiguration {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Bean
     @Order(10)
     public SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -28,8 +26,10 @@ public class DefaultSecurityConfiguration {
                     requests
                             .antMatchers("/account/**").permitAll()
                             .anyRequest().authenticated();
-                });
-        http.csrf().disable();
+                })
+                .formLogin().and()
+                .httpBasic().and()
+                .csrf().disable();
         return http.build();
     }
 

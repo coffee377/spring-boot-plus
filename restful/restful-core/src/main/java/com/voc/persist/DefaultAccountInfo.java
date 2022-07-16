@@ -31,7 +31,9 @@ public class DefaultAccountInfo implements IAccountInfo<String, IUser<String>> {
 
     @Override
     public Optional<IUser<String>> getUserInfo() {
-        BaseUser<String> admin = new BaseUser<>("1", "admin", "123456");
+        // TODO: 2022/7/12 8:49 从配置获取超级管理员用户
+        BaseUser<String> admin = new BaseUser<>("root", "admin", "123456");
+//        admin.setAuthorities();
         return Optional.of(admin);
     }
 }
