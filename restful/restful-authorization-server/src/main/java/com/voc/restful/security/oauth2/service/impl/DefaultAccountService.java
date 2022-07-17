@@ -1,7 +1,7 @@
 package com.voc.restful.security.oauth2.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.voc.common.exception.BizException;
+import com.voc.common.biz.BizException;
 import com.voc.restful.security.core.expection.UnboundUserException;
 import com.voc.restful.security.oauth2.dao.AccountDao;
 import com.voc.restful.security.oauth2.entity.Account;

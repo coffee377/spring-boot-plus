@@ -3,12 +3,12 @@ package com.voc.common.dict;
 /**
  * 数据字典项接口
  *
- * @param <Value> 字典值泛型
+ * @param <V> 字典值泛型
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2018/06/27 22:48
  */
-public interface IDictItem<Value> {
+public interface IDictItem<V> {
 
     /**
      * 索引
@@ -22,7 +22,7 @@ public interface IDictItem<Value> {
      *
      * @return Value
      */
-    Value getValue();
+    V getValue();
 
     /**
      * 字典显示值
@@ -36,6 +36,6 @@ public interface IDictItem<Value> {
      *
      * @return String
      */
-    String getComments();
+    String getDescription();
 
 }

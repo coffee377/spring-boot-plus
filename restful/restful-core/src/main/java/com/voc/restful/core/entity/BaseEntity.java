@@ -2,8 +2,8 @@ package com.voc.restful.core.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.voc.common.enums.DataFlag;
-import com.voc.common.enums.UsingStatus;
+import com.voc.common.dict.enumeration.DataFlag;
+import com.voc.common.dict.enumeration.UsingStatus;
 import com.voc.persist.entity.IEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

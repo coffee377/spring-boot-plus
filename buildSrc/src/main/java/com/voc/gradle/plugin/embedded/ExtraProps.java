@@ -13,7 +13,7 @@ public enum ExtraProps {
     /**
      * 扩展配置属性
      */
-    JUNIT_VERSION("junit.version", "5.5.2"),
+    JUNIT_VERSION("junit.version", "5.8.2"),
     SLF4J_VERSION("org.slf4j.version", "1.7.25"),
     JAVA_CRACK_VERSION("com.voc.crack.version", "2.0.2-RELEASE"),
     LOMBOK_VERSION("lombok.version", "1.18.20"),

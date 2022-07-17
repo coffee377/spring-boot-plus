@@ -1,6 +1,6 @@
 package com.voc.restful.core.response.impl;
 
-import com.voc.common.IBizStatus;
+import com.voc.common.biz.IBizStatus;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -79,7 +79,7 @@ public enum InternalBizStatus implements IBizStatus {
 
     @Override
     public int getModule() {
-        return 0;
+        return 1;
     }
 
     @Override

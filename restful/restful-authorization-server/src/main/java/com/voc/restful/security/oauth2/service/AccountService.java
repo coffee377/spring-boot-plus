@@ -1,6 +1,6 @@
 package com.voc.restful.security.oauth2.service;
 
-import com.voc.common.exception.BizException;
+import com.voc.common.biz.BizException;
 import com.voc.restful.security.oauth2.entity.Account;
 import com.voc.restful.security.oauth2.entity.TripartitePlatform;
 import org.apache.ibatis.annotations.Param;

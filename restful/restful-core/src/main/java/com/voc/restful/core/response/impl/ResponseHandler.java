@@ -1,6 +1,6 @@
 package com.voc.restful.core.response.impl;
 
-import com.voc.common.IBizStatus;
+import com.voc.common.biz.IBizStatus;
 import com.voc.restful.core.response.IResponseHandler;
 import com.voc.restful.core.response.Result;
 import lombok.extern.slf4j.Slf4j;

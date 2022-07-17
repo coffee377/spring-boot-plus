@@ -1,7 +1,7 @@
 package com.voc.restful.core.controller;
 
-import com.voc.common.exception.BizException;
-import com.voc.common.IBizStatus;
+import com.voc.common.biz.BizException;
+import com.voc.common.biz.IBizStatus;
 import com.voc.restful.core.response.Result;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

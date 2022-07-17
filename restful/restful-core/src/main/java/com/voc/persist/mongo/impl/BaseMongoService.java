@@ -2,7 +2,7 @@ package com.voc.persist.mongo.impl;
 
 import com.voc.persist.mongo.IMongoService;
 import com.voc.restful.core.entity.IJsonEntity;
-import com.voc.common.exception.BizException;
+import com.voc.common.biz.BizException;
 import com.voc.restful.core.response.impl.InternalBizStatus;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

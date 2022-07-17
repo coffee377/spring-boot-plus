@@ -4,18 +4,14 @@ plugins {
   id("com.voc.devtools")
 }
 
-group  = "com.voc.boot.stater"
+group = "com.voc.boot"
 description = "Spring Boot Plus Starter Dependencies"
-
-repositories {
-    mavenCentral()
-}
 
 dependencyManagement {
   dependencies {
     dependencySet("$group:$version") {
-//      entry("${name}-core")
-//      entry("${name}-security")
+      entry("spring-boot-starter-dingtalk")
+      entry("spring-boot-starter-oss")
     }
   }
 }
@@ -25,7 +21,7 @@ devtools {
 }
 
 subprojects {
-  group = "com.voc.boot.restful"
+  group = "com.voc.boot"
 
   apply(plugin = "com.voc.boot")
 

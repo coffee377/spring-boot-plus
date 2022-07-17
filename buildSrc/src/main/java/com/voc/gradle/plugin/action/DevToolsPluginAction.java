@@ -9,9 +9,11 @@ import com.voc.gradle.plugin.embedded.DepEnum;
 import com.voc.gradle.plugin.embedded.ExtraProps;
 import com.voc.gradle.plugin.util.ExtraPropsUtils;
 import com.voc.gradle.plugin.util.StringUtils;
+import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaPlugin;
+import org.gradle.api.tasks.testing.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -139,6 +141,12 @@ public class DevToolsPluginAction implements IPluginAction, IRepository, IDepend
                 } else if (JUNIT_5_PATTERN.matcher(junitVersion).matches()) {
                     this.addTestImplementation(DepEnum.JUNIT_5_API);
                     this.addTestRuntimeOnly(DepEnum.JUNIT_5_ENGINE);
+                    project.getTasks().withType(Test.class, new Action<Test>() {
+                        @Override
+                        public void execute(Test test) {
+                            test.useJUnitPlatform();
+                        }
+                    });
                 }
             }
 

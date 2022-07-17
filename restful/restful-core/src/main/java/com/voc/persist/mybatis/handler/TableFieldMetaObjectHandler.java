@@ -2,8 +2,8 @@ package com.voc.persist.mybatis.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.voc.persist.IAccountInfo;
-import com.voc.common.enums.DataFlag;
-import com.voc.common.enums.UsingStatus;
+import com.voc.common.dict.enumeration.DataFlag;
+import com.voc.common.dict.enumeration.UsingStatus;
 import com.voc.restful.core.entity.TableCommonFieldConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;

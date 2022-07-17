@@ -1,6 +1,6 @@
 package com.voc.restful.security.oauth2;
 
-import com.voc.common.dict.EnumDictItem;
+import com.voc.common.dict.enumeration.EnumDictItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

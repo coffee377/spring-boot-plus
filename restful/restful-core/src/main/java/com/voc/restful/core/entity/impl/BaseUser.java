@@ -1,6 +1,6 @@
 package com.voc.restful.core.entity.impl;
 
-import com.voc.common.enums.UsingStatus;
+import com.voc.common.dict.enumeration.UsingStatus;
 import com.voc.restful.core.entity.BaseEntity;
 import com.voc.restful.core.entity.IUser;
 import lombok.Data;
@@ -43,7 +43,7 @@ public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements
     public BaseUser(ID id, String username, String password, String... authorities) {
         this(id, username, password, Arrays.asList(authorities));
     }
-    
+
     public BaseUser() {
     }
 
