@@ -1,7 +1,7 @@
 package authority;
 
-import api.authority.AuthorityDescriptor;
-import api.authority.IAuthorityDescriptor;
+import com.voc.common.api.authority.AuthorityDescriptor;
+import com.voc.common.api.authority.IAuthorityDescriptor;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
