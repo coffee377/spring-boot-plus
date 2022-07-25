@@ -1,6 +1,17 @@
 /* 根项目名称 */
 rootProject.name = "spring-boot-plus"
 
+//enableFeaturePreview("VERSION_CATALOGS")
+
+dependencyResolutionManagement {
+  versionCatalogs {
+
+    create("libs") {
+      library("spring-boot", "org.springframework.boot", "spring-boot-gradle-plugin").version("2.5.0")
+    }
+  }
+}
+
 /* 插件管理 */
 pluginManagement {
   /* 插件仓库 */
@@ -32,17 +43,8 @@ pluginManagement {
   }
 }
 
-val buildFiles = fileTree(rootDir) {
-  val excludes = gradle.startParameter.projectProperties["excludeProjects"]?.split(",")
-  include("**/*.gradle", "**/*.gradle.kts")
-//  exclude("build", "**/gradle", "**/settings.gradle", "**/settings.gradle.kts", "**/buildSrc")
-  exclude("build", "**/gradle", "settings.gradle", "buildSrc", "/build.gradle", ".*", "out")
-//  if (excludes) {
-//    exclude(excludes)
-//  }
-}
-
 fileTree(rootDir) {
+  val excludes = gradle.startParameter.projectProperties["excludeProjects"]?.split(",")
   include("**/*.gradle", "**/*.gradle.kts")
 //  exclude("**/settings.gradle", "**/settings.gradle.kts", "**/buildSrc")
   exclude("build", "**/gradle", "settings.gradle", "buildSrc", "/build.gradle", ".*", "out")
@@ -66,17 +68,6 @@ fileTree(rootDir) {
 
   }
 
-//include(":examples")
-//include(":examples:gradle")
-//include(":restful")
-//include(":restful:restful-core")
-//include(":restful:restful-authorization-server")
-//include(":restful:restful-resource-server")
-//include(":restful:restful-system")
-
-
-//val projectReg = arrayListOf(".*(examples|restful)$", "restful-(core|dingtalk)$")
-//
 /**
  * 项目详细实体类
  */

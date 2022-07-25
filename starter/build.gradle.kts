@@ -49,4 +49,9 @@ subprojects {
     }
   }
 
+  tasks {
+    test {
+      useJUnitPlatform()
+    }
+  }
 }

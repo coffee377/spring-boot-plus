@@ -1,5 +1,7 @@
 package com.voc.boot.result;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.voc.boot.result.annotation.ResponseResult;
 import com.voc.boot.result.properties.ResultWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,7 @@ import java.util.Set;
 public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationContextAware {
 
     private final Set<String> ignoredClassName = new HashSet<>();
+    private ObjectMapper objectMapper;
 
     private final Class[] annotations = new Class[]{
             RequestMapping.class,
@@ -53,6 +57,7 @@ public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationCont
         if (ignoredClass != null) {
             ignoredClassName.addAll(ignoredClass);
         }
+        objectMapper = applicationContext.getBean(ObjectMapper.class);
     }
 
     @Override
@@ -80,6 +85,14 @@ public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationCont
             out = body;
         } else {
             out = Result.builder().success(body).build();
+        }
+        /* 如果是 StringHttpMessageConverter，说明返回的数据是字符，用 objectMapper 序列化后返回 */
+        if (selectedConverterType.isAssignableFrom(StringHttpMessageConverter.class)) {
+            try {
+                out = objectMapper.writeValueAsString(out);
+            } catch (JsonProcessingException e) {
+                log.error(e.getMessage(), e);
+            }
         }
         return out;
     }
