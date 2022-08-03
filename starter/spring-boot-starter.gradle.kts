@@ -12,6 +12,7 @@ dependencyManagement {
     dependencySet("$group:$version") {
       entry("spring-boot-starter-dingtalk")
       entry("spring-boot-starter-oss")
+      entry("spring-boot-starter-result")
     }
   }
 }

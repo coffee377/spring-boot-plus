@@ -1,3 +1,5 @@
+import com.voc.gradle.plugin.repository.VersionType
+
 plugins {
   id("com.voc.devtools")
   id("org.jetbrains.changelog") version "1.3.1"
@@ -11,15 +13,15 @@ dependencyManagement {
 //    val mapstructVersion = ext.get("org.mapstruct.version")
 //    val openapiUIVersion = ext.get("openapi.ui.version")
 //    val lombokMapstructBindingVersion = ext.get("lombok.mapstruct.binding.version")
-    dependencies {
-      dependency("com.alibaba.cloud:spring-cloud-alibaba-dependencies:2021.1")
+  dependencies {
+//      dependency("com.alibaba.cloud:spring-cloud-alibaba-dependencies:2021.1")
 //      dependency("org.springframework.security:spring-security-oauth2-authorization-server:$authorizationServerVersion")
 //      dependency("com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion")
 //      dependency("org.mapstruct:mapstruct:$mapstructVersion")
 //      dependency("org.mapstruct:mapstruct-processor:$mapstructVersion")
 //      dependency("org.springdoc:springdoc-openapi-ui:$openapiUIVersion")
 //      dependency("org.projectlombok:lombok-mapstruct-binding:$lombokMapstructBindingVersion")
-    }
+  }
 }
 
 
@@ -43,7 +45,16 @@ subprojects {
         snapshot {
           hash("XNRePo")
         }
+        publish(false)
+      }
+    }
+    maven {
+      create("jqsoft-nexus3") {
+        url(VersionType.RELEASE, "http://nexus.jqk8s.jqsoft.net/repository/maven-releases/")
+        url(VersionType.SNAPSHOT, "http://nexus.jqk8s.jqsoft.net/repository/maven-snapshots/")
         publish(true)
+        usernameFromEnvironment("DEV_OPTS_JQ_USERNAME")
+        passwordFromEnvironment("DEV_OPTS_JQ_PASSWORD")
       }
     }
   }

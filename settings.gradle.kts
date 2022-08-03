@@ -3,14 +3,14 @@ rootProject.name = "spring-boot-plus"
 
 //enableFeaturePreview("VERSION_CATALOGS")
 
-dependencyResolutionManagement {
-  versionCatalogs {
-
-    create("libs") {
-      library("spring-boot", "org.springframework.boot", "spring-boot-gradle-plugin").version("2.5.0")
-    }
-  }
-}
+//dependencyResolutionManagement {
+//  versionCatalogs {
+//
+//    create("libs") {
+//      library("spring-boot", "org.springframework.boot", "spring-boot-gradle-plugin").version("2.5.0")
+//    }
+//  }
+//}
 
 /* 插件管理 */
 pluginManagement {
@@ -55,18 +55,24 @@ fileTree(rootDir) {
   .collect(java.util.stream.Collectors.toList())
 //  .filter { info -> Regex(".*(examples|restful)$").matches(info.name) }
   .forEach {
-//    println("$it")
-    include(it.path)
+    println("$it")
+
     if (!it.isDefaultName) {
       val project = findProject(it.path)
       project?.projectDir = it.dir
       project?.name = it.name
       project?.buildFileName = it.buildFileName
+
 //      project(it.path).projectDir = it.dir
 //      project(it.path).name = it.name
+    } else {
+//      include(it.path)
     }
-
+    include(it.path)
   }
+
+//include(":common")
+//include(":common:api")
 
 /**
  * 项目详细实体类
