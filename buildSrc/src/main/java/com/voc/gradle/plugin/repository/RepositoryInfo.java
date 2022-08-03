@@ -20,6 +20,14 @@ public interface RepositoryInfo extends IProject, Named, Serializable {
     String getUrl();
 
     /**
+     * 根据 {@link VersionType} 获取仓库地址
+     *
+     * @param versionType
+     * @return
+     */
+    String getUrl(VersionType versionType);
+
+    /**
      * 设置仓库地址
      *
      * @param url String
@@ -37,6 +45,21 @@ public interface RepositoryInfo extends IProject, Named, Serializable {
      * @since 0.0.2
      */
     void url(String url);
+
+    /**
+     * 配置不同类型仓库地址
+     *
+     * @param versionType
+     * @param url
+     */
+    void url(VersionType versionType, String url);
+
+    /**
+     * 移除指定配置 URL
+     *
+     * @param versionType
+     */
+    void removeUrl(VersionType versionType);
 
     /**
      * 用户名

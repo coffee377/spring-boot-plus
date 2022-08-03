@@ -50,6 +50,7 @@ public class RepositoryUtil {
             String realUrl = StringUtils.isNotEmpty(url) ? url : info.getUrl();
             if (StringUtils.isNotEmpty(realUrl)) {
                 repositoryHandler.maven(mavenArtifactRepository -> {
+                    mavenArtifactRepository.setAllowInsecureProtocol(true);
                     Optional.of(info.getName()).ifPresent(mavenArtifactRepository::setName);
                     mavenArtifactRepository.setUrl(realUrl);
                     mavenArtifactRepository.credentials(credentials -> {

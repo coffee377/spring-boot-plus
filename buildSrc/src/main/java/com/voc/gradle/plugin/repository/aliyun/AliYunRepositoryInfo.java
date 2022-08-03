@@ -83,7 +83,8 @@ public interface AliYunRepositoryInfo extends RepositoryInfo {
      * @since 0.0.1
      * @deprecated
      */
-    @Deprecated default String getSnapshotUrl() {
+    @Deprecated
+    default String getSnapshotUrl() {
         return null;
     }
 

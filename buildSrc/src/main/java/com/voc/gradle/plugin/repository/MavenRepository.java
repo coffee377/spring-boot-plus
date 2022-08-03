@@ -5,18 +5,24 @@ import org.gradle.api.Project;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/12/10 14:49
  */
-public class MavenRepository extends ProjectBase implements RepositoryInfo {
+public class MavenRepository extends ProjectBase implements RepositoryInfo, VersionRepositoryInfo {
 
     private final Property<String> name;
     public final Property<String> url;
     protected final Property<String> username;
     private final Property<String> password;
     private final Property<Boolean> publish;
+
+    private final Map<VersionType, String> urls;
+
 
     public MavenRepository(Project project) {
         this(null, project);
@@ -30,21 +36,40 @@ public class MavenRepository extends ProjectBase implements RepositoryInfo {
         this.username = objectFactory.property(String.class);
         this.password = objectFactory.property(String.class);
         this.publish = objectFactory.property(Boolean.class).value(false);
+        this.urls = new HashMap<>(3);
+    }
+
+
+    @Override
+    public String getUrl(VersionType versionType) {
+        return this.urls.get(versionType);
     }
 
     @Override
     public String getUrl() {
-        return this.url.getOrNull();
+        VersionType versionType = VersionType.forProject(getProject());
+        return this.getUrl(versionType);
     }
 
     @Override
     public void setUrl(String url) {
-        this.url.set(url);
+        this.url(url);
+    }
+
+    @Override
+    public void url(VersionType versionType, String url) {
+        this.urls.put(versionType, url);
     }
 
     @Override
     public void url(String url) {
         this.url.set(url);
+        this.url(VersionType.RELEASE, url);
+    }
+
+    @Override
+    public void removeUrl(VersionType versionType) {
+        this.urls.remove(versionType);
     }
 
     @Override

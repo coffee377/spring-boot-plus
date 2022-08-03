@@ -1,6 +1,7 @@
 package com.voc.gradle.plugin.repository.aliyun;
 
 import com.voc.gradle.plugin.repository.MavenRepository;
+import com.voc.gradle.plugin.repository.VersionType;
 import com.voc.gradle.plugin.util.StringUtils;
 import lombok.EqualsAndHashCode;
 import org.gradle.api.Action;
@@ -9,9 +10,7 @@ import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 阿里云效仓库地址组成 [prefix]/[id]-[type]-[hash]
@@ -26,7 +25,6 @@ public class AliYunMavenRepository extends MavenRepository implements AliYunRepo
     private Property<String> id;
     private final Identification release;
     private final Identification snapshot;
-    private final Map<RepositoryType, String> urls;
 
     public AliYunMavenRepository(Project project) {
         this(null, project);
@@ -34,7 +32,6 @@ public class AliYunMavenRepository extends MavenRepository implements AliYunRepo
 
     public AliYunMavenRepository(String name, Project project) {
         super(name, project);
-        urls = new HashMap<>(2);
         initProps(project.getObjects());
         release = new Identification(RepositoryType.RELEASE);
         snapshot = new Identification(RepositoryType.SNAPSHOT);
@@ -70,34 +67,28 @@ public class AliYunMavenRepository extends MavenRepository implements AliYunRepo
     @Override
     public void release(Action<Identification> action) {
         action.execute(this.release);
-        handledUrl(RepositoryType.RELEASE, this.release);
+        handledUrl(VersionType.RELEASE, this.release);
     }
 
     @Override
     public void snapshot(Action<Identification> action) {
         action.execute(snapshot);
-        handledUrl(RepositoryType.SNAPSHOT, this.snapshot);
+        handledUrl(VersionType.SNAPSHOT, this.snapshot);
     }
 
     @Override
     public String getReleaseUrl() {
-        return this.urls.get(RepositoryType.RELEASE);
+        return getUrl(VersionType.RELEASE);
     }
 
     @Override
     public String getSnapshotUrl() {
-        return this.urls.get(RepositoryType.SNAPSHOT);
+        return getUrl(VersionType.SNAPSHOT);
     }
 
     @Override
     public List<String> getValidUrl() {
-        return new ArrayList<>(this.urls.values());
-    }
-
-    @Override
-    public String getUrl() {
-        RepositoryType repositoryType = RepositoryType.forProject(getProject());
-        return this.urls.get(repositoryType);
+        return new ArrayList<>();
     }
 
     @Override
@@ -107,12 +98,12 @@ public class AliYunMavenRepository extends MavenRepository implements AliYunRepo
         return builder.toString();
     }
 
-    private void handledUrl(RepositoryType repositoryType, Identification identification) {
+    private void handledUrl(VersionType versionType, Identification identification) {
         String suffix = identification.toString();
         if (StringUtils.isEmpty(suffix)) {
-            urls.remove(repositoryType);
+            super.removeUrl(versionType);
         } else {
-            urls.put(repositoryType, String.format("%s/%s", prefix.get(), suffix));
+            super.url(versionType, String.format("%s/%s", prefix.get(), suffix));
         }
     }
 
