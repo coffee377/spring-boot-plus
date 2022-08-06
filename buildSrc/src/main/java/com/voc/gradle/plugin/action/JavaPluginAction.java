@@ -1,6 +1,7 @@
 package com.voc.gradle.plugin.action;
 
 import com.voc.gradle.plugin.api.IPluginAction;
+import org.gradle.api.JavaVersion;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -71,6 +72,10 @@ public class JavaPluginAction implements IPluginAction {
                     CompileOptions options = compile.getOptions();
                     if (options.getEncoding() == null) {
                         options.setEncoding("UTF-8");
+                    }
+                    options.getCompilerArgs().add("-parameters");
+                    if (JavaVersion.current().isJava11Compatible()) {
+                        options.getRelease().set(8);
                     }
                     FileCollection annotationProcessorPath = options.getAnnotationProcessorPath();
 
