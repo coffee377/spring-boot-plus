@@ -9,6 +9,7 @@ import com.voc.gradle.plugin.embedded.DepEnum;
 import com.voc.gradle.plugin.embedded.ExtraProps;
 import com.voc.gradle.plugin.util.ExtraPropsUtils;
 import com.voc.gradle.plugin.util.StringUtils;
+import de.skuzzle.semantic.Version;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -18,6 +19,8 @@ import org.gradle.api.tasks.testing.Test;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 /**
@@ -58,8 +61,32 @@ public class DevToolsPluginAction implements IPluginAction, IRepository, IDepend
     @Override
     public void execute(Project project) {
         setProject(project);
+        configureSubProjectVersion(project);
         configureRepositories(project);
         configureDependencies(project);
+    }
+
+    /**
+     * 配置子项目版本
+     *
+     * @param project
+     */
+    private void configureSubProjectVersion(Project project) {
+        Set<Project> subprojects = project.getSubprojects();
+        subprojects.forEach(new Consumer<Project>() {
+            @Override
+            public void accept(Project project) {
+                Object parentVersion = project.getParent().getVersion();
+                Version version1 = Version.parseVersion(parentVersion.toString());
+                Object version = project.getVersion();
+                Version version2 = Version.parseVersion(version.toString());
+                if (version1.isGreaterThanOrEqualTo(version2)) {
+                    project.setVersion(version1.toString());
+                } else {
+                    project.setVersion(version2.toString());
+                }
+            }
+        });
     }
 
     /**
