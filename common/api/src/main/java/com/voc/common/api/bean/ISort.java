@@ -5,7 +5,7 @@ package com.voc.common.api.bean;
  * @email coffee377@dingtalk.com
  * @time 2022/07/16 16:12
  */
-public interface ISort{
+public interface ISort {
 
     /**
      * 排序

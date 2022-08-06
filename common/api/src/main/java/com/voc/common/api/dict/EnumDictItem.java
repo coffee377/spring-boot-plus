@@ -10,12 +10,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * 枚举数据字典项
+ * 枚举数据字典
  *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2018/06/27 22:37
  */
+@SuppressWarnings("rawtypes")
 public interface EnumDictItem<V> extends IDictItem<V>, IAuthorityDescriptor {
 
     /**
@@ -37,15 +38,6 @@ public interface EnumDictItem<V> extends IDictItem<V>, IAuthorityDescriptor {
     default Integer getSort() {
         return ordinal();
     }
-
-    /**
-     * 枚举字典选项的文本,通常为中文
-     *
-     * @return 枚举的文本
-     * @see IDictItem#getText()
-     */
-    @Override
-    String getText();
 
     /**
      * 枚举选项的描述,对一个选项进行详细的描述有时候是必要的.默认值为{@link #getText()}

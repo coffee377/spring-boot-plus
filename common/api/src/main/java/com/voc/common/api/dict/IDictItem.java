@@ -12,22 +12,15 @@ import com.voc.common.api.bean.ISort;
  */
 public interface IDictItem<V> extends ISort {
 
-//    /**
-//     * 索引
-//     *
-//     * @return 序号
-//     */
-//    Integer getIndex();
-
     /**
-     * 字典实际值
+     * 字典项实际值
      *
      * @return Value
      */
     V getValue();
 
     /**
-     * 字典显示值
+     * 字典项显示值
      *
      * @return String
      */

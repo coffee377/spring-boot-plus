@@ -1,24 +1,26 @@
 import com.voc.gradle.plugin.core.DevType
 
+
 plugins {
   id("com.voc.devtools")
 }
 
-dependencyManagement {
-  dependencies {
-    dependencySet("$group:$version") {
-      entry("common-api")
-    }
-  }
-}
+description = "Common Dependencies"
 
 devtools {
   type(DevType.BOM)
 }
 
-description = "Common Dependencies"
+dependencyManagement {
+  dependencies {
 
-dependencies {
+    dependencySet("$group:$version") {
+      /* 自动包含所有的子项目 */
+      subprojects.forEach {
+        entry(it.name)
+      }
+    }
+  }
 }
 
 subprojects {
@@ -28,3 +30,6 @@ subprojects {
     junit(true)
   }
 }
+
+
+

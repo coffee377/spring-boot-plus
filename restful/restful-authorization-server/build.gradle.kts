@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-  api(project(":${parent!!.name}:${parent!!.name}-core"))
+  api(project(":restful:restful-core"))
   api("org.springframework.boot:spring-boot-starter-security")
 
   implementation("mysql:mysql-connector-java")

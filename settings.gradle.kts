@@ -43,55 +43,69 @@ pluginManagement {
   }
 }
 
-fileTree(rootDir) {
+/**
+ * 获取所有项目信息
+ */
+val projectInfos = fileTree(rootDir) {
   val excludes = gradle.startParameter.projectProperties["excludeProjects"]?.split(",")
   include("**/*.gradle", "**/*.gradle.kts")
-//  exclude("**/settings.gradle", "**/settings.gradle.kts", "**/buildSrc")
   exclude("build", "**/gradle", "settings.gradle", "buildSrc", "/build.gradle", ".*", "out")
 }.files.stream()
   /* 非根项目 */
   .filter { file -> !file.parentFile.relativeTo(rootDir).name.isNullOrEmpty() }
   .map { file -> ProjectInfo(rootDir, file) }
+  .sorted()
   .collect(java.util.stream.Collectors.toList())
-//  .filter { info -> Regex(".*(examples|restful)$").matches(info.name) }
-  .forEach {
-    println("$it")
+  .filter { info -> !Regex(".*(examples|restful|dingtalk).*$").matches(info.name) }
 
-    if (!it.isDefaultName) {
-      val project = findProject(it.path)
-      project?.projectDir = it.dir
-      project?.name = it.name
-      project?.buildFileName = it.buildFileName
-
-//      project(it.path).projectDir = it.dir
-//      project(it.path).name = it.name
-    } else {
-//      include(it.path)
-    }
-    include(it.path)
-  }
-
-//include(":common")
-//include(":common:api")
+projectInfos.forEach {
+  include(it.path)
+}
 
 /**
- * 项目详细实体类
+ * 更新项目信息
  */
-private class ProjectInfo(rootFile: File, buildFile: File) {
+projectInfos.forEach {
+  val project = project(it.dir)
+  project.name = it.name
+  project.projectDir = it.dir
+  project.buildFileName = it.buildFileName
+}
+
+/**
+ * 项目详细信息
+ * @author  Wu Yujie
+ * @email  coffee377@dingtalk.com
+ * @time  2022/08/06 12:18
+ */
+class ProjectInfo(rootFile: File, buildFile: File) : Comparable<ProjectInfo> {
+  /**
+   * 项目所在目录
+   */
   val dir: File
+
+  /**
+   * gradle build 文件名称
+   */
   val buildFileName: String
+
+  /**
+   * 项目路径
+   */
   val path: String
+
+  /**
+   * 项目名称
+   */
   var name: String
-  val isDefaultName: Boolean
-  val isKotlin: Boolean
 
   init {
     dir = buildFile.parentFile
     buildFileName = buildFile.name
-    isDefaultName = buildFile.name == "build.gradle" || buildFile.name == "build.gradle.kts"
-    isKotlin = buildFile.name.endsWith(".kts")
+    val isDefaultName = buildFile.name == "build.gradle" || buildFile.name == "build.gradle.kts"
+    val isKotlin = buildFile.name.endsWith(".kts")
     val paths = dir.relativeTo(rootFile).path.split(File.separator)
-    path = ":${java.lang.String.join(":", paths)}"
+    path = ":${paths.joinToString(":")}"
     name = if (!isDefaultName) {
       if (isKotlin) {
         buildFile.name.replace(".gradle.kts", "")
@@ -99,17 +113,18 @@ private class ProjectInfo(rootFile: File, buildFile: File) {
         buildFile.name.replace(".gradle", "")
       }
     } else {
-      "${rootFile.name}-${java.lang.String.join("-", paths)}"
+      "${rootFile.name}-${paths.joinToString("-")}"
     }
   }
 
+  override fun compareTo(other: ProjectInfo): Int {
+    return this.path.compareTo(other.path)
+  }
+
   override fun toString(): String {
-    return "Project Name\t-> [${name}]\n" +
-            "Project Path\t-> [${path}]\n" +
-            "Project Dir\t\t-> [${dir.absolutePath}]\n" +
-            "buildFileName\t\t-> [${buildFileName}]\n" +
-            "isDefaultName \t [${isDefaultName}]\n" +
-            "isKotlin \t [${isKotlin}]\n"
+    return "Project Name\t\t-> ${name}\n" +
+            "Project Path\t\t-> ${path}\n" +
+            "Project Dir\t\t\t-> ${dir.absolutePath}\n" +
+            "buildFileName\t\t-> ${buildFileName}\n"
   }
 }
-
