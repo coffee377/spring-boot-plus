@@ -7,7 +7,7 @@ import java.util.Collection;
  * @email coffee377@dingtalk.com
  * @time 2022/07/16 16:19
  */
-public interface IDict<V, Item extends IDictItem<V>> {
+public interface IDict<Item extends IDictItem<?>> {
 
     /**
      * 字典编码
