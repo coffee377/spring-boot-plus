@@ -6,9 +6,12 @@ import com.voc.gradle.plugin.dsl.IDevToolsExtension;
 import com.voc.gradle.plugin.repository.RepositoryInfo;
 import com.voc.gradle.plugin.repository.aliyun.AliYunRepositoryInfo;
 import com.voc.gradle.plugin.util.RepositoryUtil;
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
-import org.gradle.api.Task;
+import groovy.util.Node;
+import org.gradle.api.*;
+import org.gradle.api.artifacts.Configuration;
+import org.gradle.api.artifacts.Dependency;
+import org.gradle.api.artifacts.DependencySet;
+import org.gradle.api.artifacts.ModuleDependency;
 import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.attributes.Usage;
 import org.gradle.api.plugins.ExtensionContainer;
@@ -20,8 +23,11 @@ import org.gradle.api.publish.VariantVersionMappingStrategy;
 import org.gradle.api.publish.maven.*;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.springframework.boot.gradle.plugin.SpringBootPlugin;
+import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -89,6 +95,31 @@ public class MavenPublishPluginAction implements IPluginAction {
         pom.licenses(this::customizeLicences);
         pom.developers(this::customizeDevelopers);
         pom.scm((scm) -> customizeScm(scm, project));
+        pom.withXml(xmlProvider -> customizeXml(xmlProvider, project));
+    }
+
+    private void customizeXml(XmlProvider xmlProvider, Project project) {
+        Configuration configuration = project.getConfigurations().getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME);
+        DependencySet allDependencies = configuration.getAllDependencies();
+
+        DependencyManagementExtension managementExtension = project.getExtensions().getByType(DependencyManagementExtension.class);
+        /* 版本信息 */
+        Map<String, String> managedVersions = managementExtension.getManagedVersionsForConfigurationHierarchy(configuration);
+
+        Node dependenciesNode = xmlProvider.asNode().appendNode("dependencies");
+        allDependencies.forEach(new Consumer<Dependency>() {
+            @Override
+            public void accept(Dependency dependency) {
+                String group = dependency.getGroup();
+                String artifact = dependency.getName();
+                String version = managedVersions.get(group + ":" + artifact);
+
+                Node dependencyNode = dependenciesNode.appendNode("dependency");
+                dependencyNode.appendNode("groupId", group);
+                dependencyNode.appendNode("artifactId", artifact);
+                dependencyNode.appendNode("version", version);
+            }
+        });
     }
 
     private void customizePackaging(MavenPom pom, Project project) {
