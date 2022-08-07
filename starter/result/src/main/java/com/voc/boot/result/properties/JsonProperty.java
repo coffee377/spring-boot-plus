@@ -32,4 +32,6 @@ public class JsonProperty {
      * 数据字段名称
      */
     private String data = "data";
+
+    private String total = "total";
 }

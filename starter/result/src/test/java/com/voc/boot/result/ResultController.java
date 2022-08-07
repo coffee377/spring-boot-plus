@@ -1,6 +1,5 @@
 package com.voc.boot.result;
 
-import com.voc.boot.result.annotation.ResponseResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +15,6 @@ public class ResultController {
     public void result0() {
     }
 
-    @ResponseResult(original = true)
     @GetMapping(value = "/global/string")
     public String result1() {
         return "返回字符串";

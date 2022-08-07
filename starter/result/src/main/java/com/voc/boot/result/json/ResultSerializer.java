@@ -3,6 +3,8 @@ package com.voc.boot.result.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.voc.boot.result.IPageResult;
+import com.voc.boot.result.IResult;
 import com.voc.boot.result.Result;
 import com.voc.boot.result.properties.JsonProperty;
 import com.voc.boot.result.properties.ResultProperties;
@@ -17,7 +19,7 @@ import java.io.IOException;
  * @time 2021/04/25 13:27
  */
 @Slf4j
-public class ResultSerializer extends JsonSerializer<Result> {
+public class ResultSerializer extends JsonSerializer<IResult<?>> {
 
     private final JsonProperty property;
 
@@ -26,13 +28,23 @@ public class ResultSerializer extends JsonSerializer<Result> {
     }
 
     @Override
-    public void serialize(Result result, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+    public void serialize(IResult result, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
         gen.writeBooleanField(property.getSuccess(), result.isSuccess());
-        gen.writeNumberField(property.getCode(), result.getCode());
-        gen.writeStringField(property.getMessage(), result.getMessage());
+        if (!ObjectUtils.isEmpty(result.getCode())) {
+            gen.writeNumberField(property.getCode(), result.getCode());
+        }
+        if (!ObjectUtils.isEmpty(result.getMessage())) {
+            gen.writeStringField(property.getMessage(), result.getMessage());
+        }
         if (!ObjectUtils.isEmpty(result.getData())) {
             gen.writeObjectField(property.getData(), result.getData());
+        }
+        if (result instanceof IPageResult) {
+            Integer total = ((IPageResult<?>) result).getTotal();
+            if (!ObjectUtils.isEmpty(total)) {
+                gen.writeNumberField(property.getTotal(), total);
+            }
         }
         gen.writeEndObject();
     }

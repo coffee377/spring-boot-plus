@@ -80,11 +80,11 @@ public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationCont
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         Object out;
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-        /* 响应结果为 Result 直接返回 */
-        if (body instanceof Result) {
+        /* 响应结果为 IResult 直接返回 */
+        if (body instanceof IResult) {
             out = body;
         } else {
-            out = Result.builder().success(body).build();
+            out = Result.success(body);
         }
         /* 如果是 StringHttpMessageConverter，说明返回的数据是字符，用 objectMapper 序列化后返回 */
         if (selectedConverterType.isAssignableFrom(StringHttpMessageConverter.class)) {

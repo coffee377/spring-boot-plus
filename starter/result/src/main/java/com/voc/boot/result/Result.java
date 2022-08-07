@@ -1,14 +1,6 @@
 package com.voc.boot.result;
 
-import com.voc.common.api.bean.IBean;
-import com.voc.common.api.biz.BizException;
 import com.voc.common.api.biz.IBizStatus;
-import com.voc.common.api.biz.InternalBizStatus;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.web.util.NestedServletException;
-
-import java.io.Serializable;
 
 /**
  * Rest 接口响应结果
@@ -17,9 +9,8 @@ import java.io.Serializable;
  * @email coffee377@dingtalk.com
  * @time 2018/11/04 23:07
  */
-@Getter
 @SuppressWarnings("unchecked")
-public class Result<T> implements Serializable {
+public class Result<T> implements IPageResult<T> {
 
     /**
      * 是否成功
@@ -27,12 +18,12 @@ public class Result<T> implements Serializable {
     private boolean success = false;
 
     /**
-     * 状态码
+     * 响应态码
      */
-    private long code;
+    private Long code;
 
     /**
-     * 提示信息
+     * 响应信息
      */
     private String message;
 
@@ -41,216 +32,108 @@ public class Result<T> implements Serializable {
      */
     private T data;
 
-    public Result() {
+    /**
+     * 分页返回数据时的总数据条数
+     */
+    private Integer total;
+
+    @Override
+    public boolean isSuccess() {
+        return success;
     }
 
-    public Result<T> setSuccess(boolean success) {
+    @Override
+    public Long getCode() {
+        return code;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    @Override
+    public T getData() {
+        return data;
+    }
+
+    @Override
+    public Integer getTotal() {
+        return total;
+    }
+
+    public Result<T> success(boolean success) {
         this.success = success;
         return this;
     }
 
-    public Result<T> setCode(long code) {
+    public Result<T> code(long code) {
         this.code = code;
         return this;
     }
 
-    public Result<T> setMessage(String message) {
+    public Result<T> message(String message) {
         this.message = message;
         return this;
     }
 
-    public Result<T> setData(T data) {
+    public Result<T> data(T data) {
         this.data = data;
         return this;
     }
 
-    public static <D> Builder<D> builder() {
-        return new Builder<>();
+    public Result<T> total(Integer total) {
+        this.total = total;
+        return this;
     }
 
-    public static <D> Builder<D> successBuilder(D data) {
-        return (Builder<D>) builder().success().code(0).data(data);
+
+    private static <D> ResultBuilder<D> builder() {
+        return new ResultBuilder<>();
     }
 
     public static <D> Result<D> success() {
-        return (Result<D>) successBuilder(null).build();
+        return (Result<D>) builder().success().build();
     }
 
     public static <D> Result<D> success(D data) {
-        return successBuilder(data).build();
+        return (Result<D>) builder().success(data).build();
     }
 
-    public static <D> Builder<D> failureBuilder(long code, String message, D data) {
-        return (Builder<D>) builder().failure(code, message).data(data);
+    public static <D> Result<D> success(D data, int total) {
+        return (Result<D>) builder().success(data, total).build();
     }
 
-    public static <D> Result<D> failure(int code, String message, D data) {
-        return failureBuilder(code, message, data).build();
+    public static <D> Result<D> success(String message, D data) {
+        return (Result<D>) builder().success(message, data).build();
+    }
+
+    public static <D> Result<D> success(String message, D data, int total) {
+        return (Result<D>) builder().success(message, data, total).build();
+    }
+
+    public static <D> Result<D> failure(long code, String message, D data) {
+        return (Result<D>) builder().failure(code, message, data).build();
+    }
+
+    public static <D> Result<D> failure(long code, String message) {
+        return (Result<D>) builder().failure(code, message, null).build();
+    }
+
+    public static <D> Result<D> failure(Exception exception, D data) {
+        return (Result<D>) builder().failure(exception, data).build();
     }
 
     public static <D> Result<D> failure(Exception exception) {
         return (Result<D>) builder().failure(exception).build();
     }
 
-    public static <D> Result<D> failure(IBizStatus bizStatus) {
-        return (Result<D>) builder().failure(bizStatus).build();
+    public static <D> Result<D> failure(IBizStatus bizStatus, D data) {
+        return (Result<D>) builder().failure(bizStatus, data).build();
     }
 
-    @Getter
-    @Setter
-    public static class Builder<D> implements IBean {
-
-        /**
-         * 是否成功
-         */
-        private boolean success = true;
-
-        /**
-         * 业务状态码
-         */
-        private long code = 0L;
-
-        /**
-         * 业务提示信息
-         */
-        private String message = "ok";
-
-        /**
-         * 数据
-         */
-        private D data;
-
-        /**
-         * 成功结果
-         *
-         * @param message 提示信息
-         * @param data    数据
-         * @return Builder
-         */
-        public Builder<D> success(String message, D data) {
-            this.message = message;
-            this.data = data;
-            return this;
-        }
-
-        /**
-         * 成功结果
-         *
-         * @param data 数据
-         * @return Builder
-         */
-        public Builder<D> success(D data) {
-            this.data = data;
-            return this;
-        }
-
-        /**
-         * 成功结果
-         *
-         * @return Builder
-         */
-        public Builder<D> success() {
-            return this;
-        }
-
-        /**
-         * 失败结果
-         *
-         * @param code    业务状态码
-         * @param message 提示信息
-         * @return Builder
-         */
-        public Builder<D> failure(long code, String message) {
-            this.success = false;
-            this.code = code;
-            this.message = message;
-            return this;
-        }
-
-        /**
-         * 失败结果
-         *
-         * @param bizStatus 业务状态
-         * @return Builder
-         */
-        public Builder<D> failure(IBizStatus bizStatus) {
-            this.success = false;
-            this.code = bizStatus.getCode();
-            this.message = bizStatus.getMessage();
-            return this;
-        }
-
-        /**
-         * 异常结果
-         *
-         * @param exception Exception
-         * @return Builder
-         */
-        public Builder<D> failure(Exception exception) {
-            this.success = false;
-            if (exception instanceof NestedServletException) {
-                Throwable cause = exception.getCause();
-                if (cause instanceof BizException) {
-                    BizException bizException = (BizException) cause;
-                    this.code = bizException.getCode();
-                    this.message = bizException.getMessage();
-                }
-            } else if (exception instanceof BizException) {
-                BizException bizException = (BizException) exception;
-                this.code = bizException.getCode();
-                this.message = bizException.getMessage();
-            } else {
-                this.code = InternalBizStatus.INTERNAL_SERVER_ERROR.getCode();
-                this.message = exception.getMessage();
-            }
-            return this;
-        }
-
-        /**
-         * 状态码
-         *
-         * @param code 业务状态码
-         * @return Builder
-         */
-        public Builder<D> code(long code) {
-            this.code = code;
-            this.success = code == 0L;
-            return this;
-        }
-
-        /**
-         * 提示信息
-         *
-         * @param message 信息
-         * @return Builder
-         */
-        public Builder<D> message(String message) {
-            this.message = message;
-            return this;
-        }
-
-        /**
-         * 返回数据
-         *
-         * @param data 数据
-         * @return Builder
-         */
-        public Builder<D> data(D data) {
-            this.data = data;
-            return this;
-        }
-
-        /**
-         * 创建统一响应结果
-         *
-         * @return Result
-         */
-        public Result<D> build() {
-            Result<D> result = new Result<>();
-            result.setSuccess(this.success).setCode(this.code).setMessage(this.message).setData(this.data);
-            return result;
-        }
-
+    public static <D> Result<D> failure(IBizStatus bizStatus) {
+        return (Result<D>) builder().failure(bizStatus).build();
     }
 
 }

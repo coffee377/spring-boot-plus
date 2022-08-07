@@ -1,37 +1,124 @@
 package com.voc.boot.result;
 
-import com.voc.boot.result.autoconfigure.ResultAutoConfiguration;
-import org.junit.jupiter.api.DisplayName;
+import com.voc.common.api.biz.BizException;
+import com.voc.common.api.biz.InternalBizStatus;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2022/07/24 01:02
  */
-@WebMvcTest
-@WebAppConfiguration
-@ContextConfiguration(classes = {ResultAutoConfiguration.class, ResultController.class})
 public class ResultTest {
 
-    @Autowired
-    MockMvc mockMvc;
+    @Test
+    void success() {
+        Result<Object> success = Result.success();
+        Assertions.assertTrue(success.isSuccess());
+        Assertions.assertEquals(0, success.getCode());
+        Assertions.assertEquals("ok", success.getMessage());
+        Assertions.assertNull(success.getData());
+        Assertions.assertNull(success.getTotal());
+    }
 
     @Test
-    @DisplayName("全局返回包装字符串")
-    void globalWrapperString() throws Exception {
-        mockMvc.perform(get("/global/string"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.['data']").value("返回字符串"));
+    void successData() {
+        Result<List<Integer>> success = Result.success(Arrays.asList(1, 2, 3, 4, 5));
+        Assertions.assertTrue(success.isSuccess());
+        Assertions.assertEquals(0, success.getCode());
+        Assertions.assertEquals("ok", success.getMessage());
+        Assertions.assertNotNull(success.getData());
+        Assertions.assertNull(success.getTotal());
+    }
+
+    @Test
+    void successDataTotal() {
+        Result<List<Integer>> success = Result.success(Arrays.asList(1, 2, 3, 4, 5), 10);
+        Assertions.assertTrue(success.isSuccess());
+        Assertions.assertEquals(0, success.getCode());
+        Assertions.assertNull(success.getMessage());
+        Assertions.assertNotNull(success.getData());
+        Assertions.assertEquals(5, success.getData().size());
+        Assertions.assertEquals(10, success.getTotal());
+    }
+
+    @Test
+    void successMessageData() {
+        Result<List<Integer>> success = Result.success("测试成功", Arrays.asList(1, 2, 3, 4, 5));
+        Assertions.assertTrue(success.isSuccess());
+        Assertions.assertEquals(0, success.getCode());
+        Assertions.assertEquals("测试成功", success.getMessage());
+        Assertions.assertNotNull(success.getData());
+        Assertions.assertNull(success.getTotal());
+    }
+
+    @Test
+    void successMessageDataTotal() {
+        Result<List<Integer>> success = Result.success("测试成功", Arrays.asList(1, 2, 3, 4, 5), 20);
+        Assertions.assertTrue(success.isSuccess());
+        Assertions.assertEquals(0, success.getCode());
+        Assertions.assertEquals("测试成功", success.getMessage());
+        Assertions.assertNotNull(success.getData());
+        Assertions.assertEquals(5, success.getData().size());
+        Assertions.assertNotNull(success.getTotal());
+        Assertions.assertEquals(20, success.getTotal());
+    }
+
+    @Test
+    void failureCodeMessageData() {
+        Result<String> failure = Result.failure(1, "测试异常提示", "测试异常数据");
+        Assertions.assertFalse(failure.isSuccess());
+        Assertions.assertNotEquals(0, failure.getCode());
+        Assertions.assertNotEquals("ok", failure.getMessage());
+        Assertions.assertNotNull(failure.getData());
+    }
+
+    @Test
+    void failureCodeMessage() {
+        Result<String> failure = Result.failure(1, "测试异常提示");
+        Assertions.assertFalse(failure.isSuccess());
+        Assertions.assertNotEquals(0, failure.getCode());
+        Assertions.assertNotEquals("ok", failure.getMessage());
+        Assertions.assertNull(failure.getData());
+    }
+
+    @Test
+    void failureExceptionData() {
+        Result<String> failure = Result.failure(new Exception("任意异常"), "测试异常类");
+        Assertions.assertFalse(failure.isSuccess());
+        Assertions.assertEquals(InternalBizStatus.INTERNAL_SERVER_ERROR.getCode(), failure.getCode());
+        Assertions.assertEquals("任意异常", failure.getMessage());
+        Assertions.assertNotNull(failure.getData());
+    }
+
+    @Test
+    void failureException() {
+        Result<String> failure = Result.failure(new BizException(InternalBizStatus.ACCOUNT_EXPIRED));
+        Assertions.assertFalse(failure.isSuccess());
+        Assertions.assertEquals(InternalBizStatus.ACCOUNT_EXPIRED.getCode(), failure.getCode());
+        Assertions.assertEquals(InternalBizStatus.ACCOUNT_EXPIRED.getMessage(), failure.getMessage());
+        Assertions.assertNull(failure.getData());
+    }
+
+    @Test
+    void failureBizStatusData() {
+        Result<String> failure = Result.failure(InternalBizStatus.FORBIDDEN, "123");
+        Assertions.assertFalse(failure.isSuccess());
+        Assertions.assertEquals(InternalBizStatus.FORBIDDEN.getCode(), failure.getCode());
+        Assertions.assertEquals(InternalBizStatus.FORBIDDEN.getMessage(), failure.getMessage());
+        Assertions.assertNotNull(failure.getData());
+    }
+
+    @Test
+    void failureBizStatus() {
+        Result<String> failure = Result.failure(InternalBizStatus.FORBIDDEN);
+        Assertions.assertFalse(failure.isSuccess());
+        Assertions.assertEquals(InternalBizStatus.FORBIDDEN.getCode(), failure.getCode());
+        Assertions.assertEquals(InternalBizStatus.FORBIDDEN.getMessage(), failure.getMessage());
+        Assertions.assertNull(failure.getData());
     }
 }

@@ -57,7 +57,7 @@ public class ResultErrorController extends AbstractErrorController implements Er
 //        model.put("status", exceptionData.getStatus().value());
 //        model.put("error", exceptionData.getStatus().toString());
 //        model.put("message", exceptionData.getMessage());
-        return Result.builder().failure(exception).data(model).build();
+        return Result.failure(exception, model);
     }
 
     public String getErrorPath() {
