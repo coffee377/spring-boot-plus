@@ -16,7 +16,6 @@ dependencyManagement {
     mavenBom("com.voc:spring-boot-plus-restful:$version")
   }
 
-
 }
 
 devtools {
