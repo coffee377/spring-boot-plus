@@ -1,8 +1,9 @@
-package com.voc.boot.dict.model;
+package com.voc.boot.dict.persist;
 
-import com.voc.boot.dict.DataDictItem;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+
+import java.util.Optional;
 
 /**
  * @author Wu Yujie
@@ -11,11 +12,23 @@ import lombok.EqualsAndHashCode;
  */
 @Builder
 @EqualsAndHashCode
-public class DictItem<V> implements DataDictItem<V> {
+public class DictItem<V> implements DataDictItem<V>, Comparable<DictItem<V>> {
+    private String id;
     private V value;
     private String text;
     private String description;
     private Integer sort;
+
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Override
     public Integer getSort() {
@@ -35,5 +48,12 @@ public class DictItem<V> implements DataDictItem<V> {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public int compareTo(DictItem<V> o) {
+        Integer that = Optional.ofNullable(getSort()).orElse(0);
+        Integer other = Optional.ofNullable(o.getSort()).orElse(0);
+        return that.compareTo(other);
     }
 }

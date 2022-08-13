@@ -1,7 +1,6 @@
 package com.voc.boot.dict.converter;
 
-import com.voc.boot.dict.DataDictItem;
-import com.voc.common.api.dict.EnumDictItem;
+import com.voc.boot.dict.persist.DataDictItem;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 

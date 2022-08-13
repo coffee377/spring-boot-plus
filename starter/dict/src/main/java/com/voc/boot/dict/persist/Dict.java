@@ -1,4 +1,4 @@
-package com.voc.boot.dict.model;
+package com.voc.boot.dict.persist;
 
 import com.voc.common.api.dict.IDict;
 import lombok.Builder;
