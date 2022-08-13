@@ -1,0 +1,6 @@
+server:
+  port: 8787
+gitlab:
+#  enable: true
+  host: http://10.1.150.190
+#  version: v3
