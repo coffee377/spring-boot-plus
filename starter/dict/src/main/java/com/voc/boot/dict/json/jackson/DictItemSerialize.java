@@ -2,6 +2,7 @@ package com.voc.boot.dict.json.jackson;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
 
@@ -12,13 +13,17 @@ import java.lang.annotation.*;
  * @email coffee377@dingtalk.com
  * @time 2022/08/09 13:54
  */
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @JsonSerialize(using = DictItemSerializer.class)
 @JacksonAnnotationsInside
 @Documented
 public @interface DictItemSerialize {
 
-    SerializeType type() default SerializeType.TEXT;
+    @AliasFor("type")
+    SerializeType value() default SerializeType.VALUE;
+
+    @AliasFor("value")
+    SerializeType type() default SerializeType.VALUE;
 
 }

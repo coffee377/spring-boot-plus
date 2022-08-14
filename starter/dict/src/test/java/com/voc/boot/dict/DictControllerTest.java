@@ -10,10 +10,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 /**
  * @author Wu Yujie
@@ -22,16 +20,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WebMvcTest
 @WebAppConfiguration
-@ContextConfiguration(classes = {DictAutoConfiguration.class, DictController.class})
+@ContextConfiguration(classes = {DictAutoConfiguration.class, DictController.class, MockMvcConfiguration.class})
 class DictControllerTest {
     @Autowired
     MockMvc mockMvc;
 
     @Test
     void enumDictItem() throws Exception {
+
         mockMvc.perform(get("/dict/enum"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
 //                .andExpect(jsonPath("$.['success']").value(true))
 //                .andExpect(jsonPath("$.['data']").isEmpty())
@@ -42,7 +41,7 @@ class DictControllerTest {
     void dataDictItem() throws Exception {
         mockMvc.perform(get("/dict/data"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.['success']").value(true))
                 .andExpect(jsonPath("$.['data']").isEmpty());
     }

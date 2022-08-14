@@ -1,5 +1,6 @@
 package com.voc.boot.dict;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.voc.boot.dict.json.jackson.DictItemSerialize;
 import com.voc.boot.dict.json.jackson.SerializeType;
 import com.voc.boot.dict.persist.DictItem;
@@ -26,14 +27,16 @@ public class DictController {
     private static class User {
         private String id;
 
-        @DictItemSerialize(type = SerializeType.OBJECT)
-        private UsingStatus status;
+        @DictItemSerialize(SerializeType.OBJECT)
+        private Sex sex;
     }
 
 
     @GetMapping("/enum")
-    public User enumDictItem() {
-        return User.builder().id("1").status(UsingStatus.LOCK).build();
+    @DictItemSerialize(type = SerializeType.TEXT)
+    public Object enumDictItem() {
+//        return Sex.FEMALE;
+        return User.builder().id("111").sex(Sex.FEMALE).build();
     }
 
     @GetMapping("/data")

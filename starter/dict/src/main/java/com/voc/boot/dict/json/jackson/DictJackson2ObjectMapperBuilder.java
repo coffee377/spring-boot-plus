@@ -13,8 +13,11 @@ public class DictJackson2ObjectMapperBuilder implements Jackson2ObjectMapperBuil
 
     @Override
     public void customize(Jackson2ObjectMapperBuilder builder) {
-        DictModule dictModule = new DictModule();
-        builder.modules(dictModule);
+//        builder.
+//        DictModule dictModule = new DictModule();
+//        builder.modules(dictModule);
+        builder.serializers(new DictItemSerializer(new DictItemSerializeProperties()));
+
     }
 
 
