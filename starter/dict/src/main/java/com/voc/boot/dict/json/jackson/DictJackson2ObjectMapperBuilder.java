@@ -16,13 +16,13 @@ public class DictJackson2ObjectMapperBuilder implements Jackson2ObjectMapperBuil
 //        builder.
 //        DictModule dictModule = new DictModule();
 //        builder.modules(dictModule);
-        builder.serializers(new DictItemSerializer(new DictItemSerializeProperties()));
+//        builder.serializers(new DictItemSerializer(new DictItemSerializeProperties()));
 
     }
 
 
     @Override
     public int getOrder() {
-        return Ordered.LOWEST_PRECEDENCE;
+        return 1;
     }
 }

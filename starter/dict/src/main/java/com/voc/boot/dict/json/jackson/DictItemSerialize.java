@@ -7,7 +7,7 @@ import org.springframework.core.annotation.AliasFor;
 import java.lang.annotation.*;
 
 /**
- * 字典项序列化注解
+ * 字典项局部序列化注解
  *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -15,15 +15,15 @@ import java.lang.annotation.*;
  */
 @Target({ElementType.TYPE, ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@JsonSerialize(using = DictItemSerializer.class)
+@JsonSerialize(using = DictItemSerializer.class, converter = DictItemConverter.class)
 @JacksonAnnotationsInside
 @Documented
 public @interface DictItemSerialize {
 
     @AliasFor("type")
-    SerializeType value() default SerializeType.VALUE;
+    SerializeType[] value() default SerializeType.VALUE;
 
     @AliasFor("value")
-    SerializeType type() default SerializeType.VALUE;
+    SerializeType[] type() default SerializeType.VALUE;
 
 }

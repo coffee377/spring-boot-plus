@@ -5,17 +5,22 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.voc.boot.dict.persist.DataDictItem;
 import com.voc.common.api.dict.IDictItem;
+import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2022/08/09 13:46
  */
-public class DictItemSerializer extends JsonSerializer<IDictItem>  {
+@JsonComponent
+public class DictItemSerializer extends JsonSerializer<IDictItem> implements ContextualSerializer {
 
     private final DictItemSerializeProperties serializeProperties;
 
@@ -23,48 +28,53 @@ public class DictItemSerializer extends JsonSerializer<IDictItem>  {
         this.serializeProperties = serializeProperties;
     }
 
-    private SerializeType serializeType;
+    private List<SerializeType> serializeType;
 
 
-    public void setSerializeType(SerializeType serializeType) {
-        this.serializeType = serializeType;
-    }
-
-    public SerializeType getSerializeType() {
-        return serializeType;
-    }
-
-//    @Override
-//    public JsonSerializer<?> createContextual(SerializerProvider serializerProvider, BeanProperty beanProperty) throws JsonMappingException {
+    @Override
+    public JsonSerializer<?> createContextual(SerializerProvider provider, BeanProperty property) throws JsonMappingException {
 //        DictItemSerializer dictItemSerializer = new DictItemSerializer(serializeProperties);
-//
-//        if (!ObjectUtils.isEmpty(beanProperty)) {
-//            DictItemSerialize annotation = beanProperty.getAnnotation(DictItemSerialize.class);
-//            SerializeType type = getSerializeType(annotation);
-//            dictItemSerializer.setSerializeType(type);
-//        }
-//
-//        return dictItemSerializer;
-//    }
+
+        if (!ObjectUtils.isEmpty(property)) {
+            DictItemSerialize annotation = property.getAnnotation(DictItemSerialize.class);
+            this.serializeType = getSerializeType(annotation);
+        }
+        return this;
+//        return provider.findValueSerializer(property.getType());
+    }
 
     @Override
     public void serialize(IDictItem dictItem, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
-        SerializeType type = mergeSerializeType(dictItem);
+        List<SerializeType> types = mergeSerializeType(dictItem);
+        serializeObject(dictItem, gen, types);
 
-        switch (type) {
-            case TEXT:
-                gen.writeString(dictItem.getText());
-                break;
-            case VALUE:
-                gen.writeObject(dictItem.getValue());
-                break;
-            case DESCRIPTION:
-                gen.writeString(dictItem.getDescription());
-                break;
-            case OBJECT:
-            default:
-                serializeObject(dictItem, gen);
-        }
+        /* 序列化所有属性 */
+        boolean all = types.stream().anyMatch(Predicate.isEqual(SerializeType.ALL));
+
+        /* 序列化单个属性 */
+        boolean single = !all && types.size() == 1;
+
+        /* 序列化多个值 */
+
+//        if (all) {
+//            serializeObject(dictItem, gen);
+////        switch (type) {
+////            case TEXT:
+////                gen.writeString(dictItem.getText());
+////                break;
+////            case VALUE:
+////                gen.writeObject(dictItem.getValue());
+////                break;
+////            case DESCRIPTION:
+////                gen.writeString(dictItem.getDescription());
+////                break;
+////            case ALL:
+////            default:
+//
+//        } else {
+//
+//        }
+////        }
     }
 
 
@@ -74,6 +84,17 @@ public class DictItemSerializer extends JsonSerializer<IDictItem>  {
     }
 
     private void serializeObject(IDictItem<?> dictItem, JsonGenerator gen) throws IOException {
+//        gen.writeStartObject();
+//        if (DataDictItem.class.isAssignableFrom(dictItem.getClass())) {
+//            gen.writeObjectField(serializeProperties.getId(), ((DataDictItem<?>) dictItem).getId());
+//        }
+//        gen.writeObjectField(serializeProperties.getValue(), dictItem.getValue());
+//        gen.writeObjectField(serializeProperties.getText(), dictItem.getText());
+//        gen.writeObjectField(serializeProperties.getDescription(), dictItem.getDescription());
+//        gen.writeEndObject();
+    }
+
+    private void serializeObject(IDictItem<?> dictItem, JsonGenerator gen, List<SerializeType> serializeTypes) throws IOException {
         gen.writeStartObject();
         if (DataDictItem.class.isAssignableFrom(dictItem.getClass())) {
             gen.writeObjectField(serializeProperties.getId(), ((DataDictItem<?>) dictItem).getId());
@@ -84,16 +105,16 @@ public class DictItemSerializer extends JsonSerializer<IDictItem>  {
         gen.writeEndObject();
     }
 
-    private SerializeType forIDictItemImpl(IDictItem dictItem) {
+    private List<SerializeType> forIDictItemImpl(IDictItem dictItem) {
         DictItemSerialize annotation = dictItem.getClass().getAnnotation(DictItemSerialize.class);
         return getSerializeType(annotation);
     }
 
-    private SerializeType getSerializeType(DictItemSerialize annotation) {
+    private List<SerializeType> getSerializeType(DictItemSerialize annotation) {
         if (!ObjectUtils.isEmpty(annotation)) {
             DictItemSerialize dictItemAnnotation = AnnotationUtils.synthesizeAnnotation(annotation, DictItemSerialize.class);
             if (!ObjectUtils.isEmpty(dictItemAnnotation)) {
-                return dictItemAnnotation.type();
+                return Arrays.asList(dictItemAnnotation.type());
             }
         }
         return null;
@@ -105,14 +126,14 @@ public class DictItemSerializer extends JsonSerializer<IDictItem>  {
      * @param dictItem 数据字典项实现类
      * @return SerializeType
      */
-    private SerializeType mergeSerializeType(IDictItem dictItem) {
+    private List<SerializeType> mergeSerializeType(IDictItem dictItem) {
         /* 1. 实体属性字段上的注解优先 */
         if (serializeType != null) {
             return serializeType;
         }
 
         /* 2. IDictItem 实现类上注解其次 */
-        SerializeType global = forIDictItemImpl(dictItem);
+        List<SerializeType> global = forIDictItemImpl(dictItem);
         if (global != null) {
             return global;
         }

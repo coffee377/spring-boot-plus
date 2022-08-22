@@ -5,6 +5,9 @@ import com.voc.common.api.dict.IDictItem;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -17,7 +20,7 @@ public class DictItemSerializeProperties {
     /**
      * 全局默认序列化类型
      */
-    SerializeType type = SerializeType.VALUE;
+    List<SerializeType> type = Collections.singletonList(SerializeType.VALUE);
 
     /**
      * {@link DataDictItem#getId()} 字典标识序列化名称

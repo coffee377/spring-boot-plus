@@ -1,6 +1,7 @@
 package com.voc.boot.dict;
 
 import com.voc.boot.dict.autoconfigure.DictAutoConfiguration;
+import com.voc.boot.dict.json.jackson.DictItemSerializer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,7 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WebMvcTest
 @WebAppConfiguration
-@ContextConfiguration(classes = {DictAutoConfiguration.class, DictController.class, MockMvcConfiguration.class})
+@ContextConfiguration(classes = {DictAutoConfiguration.class, DictController.class, MockMvcConfiguration.class,
+        })
 class DictControllerTest {
     @Autowired
     MockMvc mockMvc;

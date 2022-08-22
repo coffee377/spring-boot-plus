@@ -27,7 +27,7 @@ public class DictController {
     private static class User {
         private String id;
 
-        @DictItemSerialize(SerializeType.OBJECT)
+        @DictItemSerialize(SerializeType.ALL)
         private Sex sex;
     }
 

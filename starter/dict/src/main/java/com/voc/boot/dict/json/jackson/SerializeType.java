@@ -6,8 +6,9 @@ package com.voc.boot.dict.json.jackson;
  * @time 2022/08/09 13:55
  */
 public enum SerializeType {
+    ID,
     VALUE,
     TEXT,
     DESCRIPTION,
-    OBJECT,
+    ALL,
 }

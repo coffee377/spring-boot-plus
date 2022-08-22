@@ -14,14 +14,14 @@ import javax.annotation.PostConstruct;
  * @email coffee377@dingtalk.com
  * @time 2022/08/09 14:05
  */
-public class DictModule extends SimpleModule  {
+public class DictModule extends SimpleModule implements EnvironmentAware  {
 
     private Environment environment;
 
-//    @Override
-//    public void setEnvironment(Environment environment) {
-//        this.environment = environment;
-//    }
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
 
 
     public DictModule() {
@@ -30,9 +30,9 @@ public class DictModule extends SimpleModule  {
 
     @PostConstruct
     private void init() {
-//        DictItemSerializeProperties serializeProperties =
-////                Binder.get(environment).bind("dict.serialize", DictItemSerializeProperties.class).orElse(new DictItemSerializeProperties());
-//        this.addSerializer(IDictItem.class, new DictItemSerializer(serializeProperties));
+        DictItemSerializeProperties serializeProperties =
+                Binder.get(environment).bind("dict.serialize", DictItemSerializeProperties.class).orElse(new DictItemSerializeProperties());
+        this.addSerializer(IDictItem.class, new DictItemSerializer(serializeProperties));
     }
 
     @Override

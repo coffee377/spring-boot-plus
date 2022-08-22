@@ -13,7 +13,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-@DictItemSerialize(SerializeType.TEXT) // 定义 Sex 默认序列化类型
+//@DictItemSerialize(SerializeType.TEXT) // 定义 Sex 默认序列化类型
 public enum Sex implements EnumDictItem<Integer> {
     MALE(0, "男"),
     FEMALE(0, "女"),
