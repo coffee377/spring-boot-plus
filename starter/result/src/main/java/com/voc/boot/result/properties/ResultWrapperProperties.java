@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "api.result.wrapper")
-public class ResultWrapper {
+public class ResultWrapperProperties {
 
     /**
      * <p>是否启用响应结果自动包装，默认 true</p>

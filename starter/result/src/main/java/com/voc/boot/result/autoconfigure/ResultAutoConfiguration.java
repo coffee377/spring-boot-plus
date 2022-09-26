@@ -2,10 +2,14 @@ package com.voc.boot.result.autoconfigure;
 
 import com.voc.boot.result.ResultAdvice;
 import com.voc.boot.result.ResultErrorController;
+import com.voc.boot.result.customizer.ResultPropertiesCustomizer;
+import com.voc.boot.result.customizer.ResultPropertiesCustomizerBeanPostProcessor;
 import com.voc.boot.result.json.ResultJackson2ObjectMapperBuilder;
 import com.voc.boot.result.json.ResultSerializer;
+import com.voc.boot.result.properties.JsonFieldProperties;
 import com.voc.boot.result.properties.ResultProperties;
-import com.voc.boot.result.properties.ResultWrapper;
+import com.voc.boot.result.properties.ResultWrapperProperties;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,9 +31,21 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
  */
 @Configuration
 @Import({ResultAdvice.class, ResultErrorController.class})
-@EnableConfigurationProperties({ResultProperties.class, ResultWrapper.class})
+@EnableConfigurationProperties({ResultProperties.class, ResultWrapperProperties.class, JsonFieldProperties.class})
 @AutoConfigureBefore(ErrorMvcAutoConfiguration.class)
 public class ResultAutoConfiguration {
+
+    /**
+     * 自定义 Result 配置
+     *
+     * @param provider ObjectProvider<ResultPropertiesCustomizer>
+     * @return ResultPropertiesCustomizerBeanPostProcessor
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    ResultPropertiesCustomizerBeanPostProcessor resultPropertiesCustomizerBeanPostProcessor(ObjectProvider<ResultPropertiesCustomizer> provider) {
+        return new ResultPropertiesCustomizerBeanPostProcessor(provider);
+    }
 
     @Bean
     @ConditionalOnMissingBean

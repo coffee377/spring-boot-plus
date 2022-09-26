@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.voc.boot.result.IPageResult;
 import com.voc.boot.result.IResult;
-import com.voc.boot.result.Result;
-import com.voc.boot.result.properties.JsonProperty;
+import com.voc.boot.result.properties.JsonFieldProperties;
 import com.voc.boot.result.properties.ResultProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
@@ -21,7 +20,7 @@ import java.io.IOException;
 @Slf4j
 public class ResultSerializer extends JsonSerializer<IResult<?>> {
 
-    private final JsonProperty property;
+    private final JsonFieldProperties property;
 
     public ResultSerializer(ResultProperties resultProperties) {
         this.property = resultProperties.getJson();

@@ -1,7 +1,6 @@
 package com.voc.boot.result.properties;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -10,8 +9,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  * @email coffee377@dingtalk.com
  * @time 2020/09/24 12:22
  */
-@Getter
-@Setter
+@Data
 @ConfigurationProperties(prefix = "api.result")
 public class ResultProperties {
 
@@ -24,13 +22,13 @@ public class ResultProperties {
      * 响应结果包装配置
      */
     @NestedConfigurationProperty
-    private ResultWrapper wrapper = new ResultWrapper();
+    private ResultWrapperProperties wrapper = new ResultWrapperProperties();
 
     /**
      * Result 序列化名称配置
      */
     @NestedConfigurationProperty
-    private JsonProperty json = new JsonProperty();
+    private JsonFieldProperties json = new JsonFieldProperties();
 
 }
 

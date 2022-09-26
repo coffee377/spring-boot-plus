@@ -37,7 +37,7 @@ public enum InternalBizStatus implements IBizStatus {
     FORBIDDEN("没有访问权限", 403),
     NOT_FOUND("请求接口地址不存在", 404),
 
-    BAD_REQUEST("错误的请求", 403),
+    BAD_REQUEST("错误的请求", 400),
     INCORRECT_TEMPORARY_AUTHORIZATION_CODE("错误的临时授权码", 400),
     UN_SUPPORTED_METHOD("不支持的请求方法", 405),
 

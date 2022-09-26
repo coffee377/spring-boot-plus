@@ -3,10 +3,9 @@ package com.voc.boot.result;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.voc.boot.result.annotation.ResponseResult;
-import com.voc.boot.result.properties.ResultWrapper;
+import com.voc.boot.result.properties.ResultWrapperProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.MethodParameter;
@@ -35,11 +34,11 @@ import java.util.Set;
  */
 @Slf4j
 @RestControllerAdvice
-@ConditionalOnProperty(prefix = "api.result.wrapper", name = "enable", havingValue = "true", matchIfMissing = true)
 public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationContextAware {
 
     private final Set<String> ignoredClassName = new HashSet<>();
     private ObjectMapper objectMapper;
+    private ResultWrapperProperties wrapperProperties;
 
     private final Class[] annotations = new Class[]{
             RequestMapping.class,
@@ -52,7 +51,7 @@ public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationCont
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        ResultWrapper wrapperProperties = applicationContext.getBean(ResultWrapper.class);
+        wrapperProperties = applicationContext.getBean(ResultWrapperProperties.class);
         List<String> ignoredClass = wrapperProperties.getIgnoredClass();
         if (ignoredClass != null) {
             ignoredClassName.addAll(ignoredClass);
@@ -126,7 +125,11 @@ public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationCont
             log.debug("类上注解 value：{} wrapped：{}", classAnnotation.value(), classAnnotation.wrapped());
             return classAnnotation.value();
         }
-        /* 3. 都不存在时返回 true */
+        /* 3. 注解都不存在时返回全局开关 */
+        if (wrapperProperties.getEnable() != null) {
+            return wrapperProperties.getEnable();
+        }
+        /* 4. 否则，默认开启 */
         return true;
     }
 }
