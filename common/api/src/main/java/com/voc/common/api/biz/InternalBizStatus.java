@@ -18,8 +18,9 @@ public enum InternalBizStatus implements IBizStatus {
         }
     },
 
-    OUT_OF_MODULE_CODE_RANGE("%s 超出模块编码范围 %s", 500),
-    OUT_OF_ERROR_CODE_RANGE("%s 超出错误编码范围 %s", 500),
+    UN_IMPLEMENTED_METHOD("未实现的方法"),
+    OUT_OF_MODULE_CODE_RANGE("%s 超出模块编码范围 %s"),
+    OUT_OF_ERROR_CODE_RANGE("%s 超出错误编码范围 %s"),
 
     UNAUTHORIZED("未经认证的用户", 401),
     INVALID_BEARER_TOKEN("无效的令牌", 412),

@@ -1,6 +1,6 @@
 package com.voc.dingtalk.model;
 
-import com.voc.common.dict.enumeration.EnumDictItem;
+import com.voc.common.api.dict.EnumDictItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

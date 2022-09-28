@@ -1,6 +1,7 @@
 package com.voc.dingtalk.exception;
 
-import com.voc.common.biz.BizException;
+
+import com.voc.common.api.biz.BizException;
 
 /**
  * @author Wu Yujie

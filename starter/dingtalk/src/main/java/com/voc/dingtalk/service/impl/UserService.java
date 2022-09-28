@@ -5,16 +5,13 @@ import com.dingtalk.api.request.OapiUserGetbyunionidRequest;
 import com.dingtalk.api.request.OapiV2UserGetRequest;
 import com.dingtalk.api.response.OapiSnsGetuserinfoBycodeResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
+import com.voc.common.api.biz.BizException;
+import com.voc.common.api.biz.InternalBizStatus;
 import com.voc.dingtalk.autoconfigure.App;
 import com.voc.dingtalk.exception.DingTalkApiException;
 import com.voc.dingtalk.service.IAppService;
 import com.voc.dingtalk.service.IUserService;
 import com.voc.dingtalk.url.Corp;
-import com.voc.restful.core.autoconfigure.json.IJson;
-import com.voc.restful.core.third.AppName;
-import com.voc.restful.core.third.ThirdApp;
-import com.voc.restful.core.util.SpringUtils;
-import com.voc.restful.security.core.expection.AuthorizationCodeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
@@ -30,7 +27,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * @time 2021/04/21 21:51
  */
 @Slf4j
-@SuppressWarnings("unchecked")
 @Service("dingtalkUserService")
 public class UserService implements IUserService {
 
@@ -107,9 +103,10 @@ public class UserService implements IUserService {
         String unionid = this.getUnionid(appName, tempAuthCode);
         String uid = this.getUserIdByUnionId(accessToken, unionid);
         OapiV2UserGetResponse.UserGetResponse userInfo = this.getUserDetailInfo(accessToken, uid, "");
-        IJson json = SpringUtils.getBean(IJson.class);
-        String serializer = json.serializer(userInfo);
-        return (Map<String, Object>) json.deserializer(serializer, Map.class);
+//        IJson json = SpringUtils.getBean(IJson.class);
+//        String serializer = json.serializer(userInfo);
+//        return (Map<String, Object>) json.deserializer(serializer, Map.class);
+        throw new BizException(InternalBizStatus.UN_IMPLEMENTED_METHOD);
     }
 
     @Override
@@ -119,30 +116,5 @@ public class UserService implements IUserService {
         String uid = this.getUserIdByUnionId(accessToken, unionid);
         OapiV2UserGetResponse.UserGetResponse userInfo = this.getUserDetailInfo(accessToken, uid, "");
         return userInfo;
-    }
-
-    @Override
-    public AppName getAppInfo() {
-        return ThirdApp.DINGTALK;
-    }
-
-    @Override
-    public ThirdApp getUserInfoByClientIdAndTmpAuthCode(String clientId, String code) throws AuthenticationException {
-        OapiSnsGetuserinfoBycodeResponse.UserInfo info;
-        try {
-            info = this.getUserOpenInfoByClientIdAndTmpAuthCode(clientId, code);
-        } catch (DingTalkApiException e) {
-            throw new AuthorizationCodeException(e.getMessage());
-        }
-        String unionid = info.getUnionid();
-        String accessToken = appService.getAccessToken(clientId);
-        String uid = this.getUserIdByUnionId(accessToken, unionid);
-        OapiV2UserGetResponse.UserGetResponse userDetailInfo = this.getUserDetailInfo(accessToken, uid, "");
-        ThirdApp thirdApp = ThirdApp.of(getAppInfo(), unionid, info.getOpenid());
-        IJson json = SpringUtils.getBean(IJson.class);
-        String serializer = json.serializer(userDetailInfo);
-        Map<String, Object> deserializer = json.deserializer(serializer, Map.class);
-        thirdApp.setUserInfo(deserializer);
-        return thirdApp;
     }
 }

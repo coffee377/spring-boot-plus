@@ -2,14 +2,13 @@ package com.voc.dingtalk.service;
 
 import com.dingtalk.api.response.OapiSnsGetuserinfoBycodeResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
-import com.voc.restful.core.third.ThirdAppService;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2021/04/21 21:40
  */
-public interface IUserService extends IApiExecutor, ThirdAppService {
+public interface IUserService extends IApiExecutor {
 
     /**
      * 根据临时授权码获取用户开放信息

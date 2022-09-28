@@ -1,12 +1,11 @@
 package com.voc.dingtalk.model;
 
 
-import com.voc.common.dict.enumeration.EnumDictItem;
+import com.voc.common.api.dict.EnumDictItem;
 
 /**
  * <a href="https://open.dingtalk.com/document/orgapp-server/message-types-and-data-format">消息类型与数据格式</a>
  *
- * @author gzp
  * @author Wu Yujie
  * @date 2022/6/21 20:01
  */
