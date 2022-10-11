@@ -1,0 +1,41 @@
+server:
+  port: 9000
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/oauth2
+    username: root
+    password: root!@@&
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      continue-on-error: false
+      enabled: false # 首次执行时通过 -Dsql.init.enabled=true 来开启
+      encoding: utf-8
+      schema-locations:
+        - classpath:META-INF/oauth2.sql
+  #      data-locations:
+#        - classpath:META-INF/oauth2-data.sql
+  redis:
+    host: 127.0.0.1
+    password: tvoc.site.redis
+#logging:
+#  level:
+#    root: warn
+#    org:
+#      mybatis:
+#        spring:
+#          mapper: error
+#      springframework:
+#        security:
+#          config:
+#            annotation:
+#              web:
+#                builders: error
+#    io:
+#      undertow:
+#        websockets:
+#          jsr: error
+mybatis-plus:
+  global-config:
+    banner: false

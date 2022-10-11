@@ -28,7 +28,7 @@ public class LocalFileSystemConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    ObjectStorageService objectStorageService(OSSProperties oss, LocalFileSystemProperties localFileSystemProperties) {
+    ObjectStorageService objectStorageService(LocalFileSystemProperties localFileSystemProperties) {
         return new LocalFileSystemStorageService(localFileSystemProperties);
     }
 

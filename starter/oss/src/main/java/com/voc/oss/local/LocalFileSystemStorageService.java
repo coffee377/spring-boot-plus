@@ -43,7 +43,7 @@ public class LocalFileSystemStorageService implements ObjectStorageService {
         String endpoint = localFileSystemProperties.getEndpoint();
         String result = objectName;
         if (StringUtils.hasText(endpoint)) {
-            UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(endpoint);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(endpoint);
             builder.pathSegment(objectName);
             result = builder.build().toUriString();
         }

@@ -7,6 +7,10 @@ plugins {
 group = "com.voc.boot"
 description = "Spring Boot Plus Starter Dependencies"
 
+devtools {
+  type(DevType.BOM)
+}
+
 dependencyManagement {
   dependencies {
     dependencySet("$group:$version") {
@@ -15,10 +19,6 @@ dependencyManagement {
       }
     }
   }
-}
-
-devtools {
-  type(DevType.BOM)
 }
 
 subprojects {
