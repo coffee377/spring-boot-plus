@@ -5,14 +5,16 @@ import com.voc.restful.core.autoconfigure.json.JsonProperties;
 import com.voc.restful.core.autoconfigure.json.JsonType;
 import com.voc.restful.core.autoconfigure.json.annotation.ConditionalOnJsonType;
 import com.voc.restful.core.autoconfigure.json.annotation.Temporal;
-import com.voc.restful.core.autoconfigure.json.jackson.ser.ResultSerializer;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /**
@@ -24,7 +26,6 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 @ConditionalOnClass(ObjectMapper.class)
 @AutoConfigureAfter(JacksonAutoConfiguration.class)
 @ConditionalOnJsonType(value = JsonType.JACKSON)
-@Import({ResultSerializer.class})
 @ComponentScan(
         useDefaultFilters = false,
         includeFilters = {

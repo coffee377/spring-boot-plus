@@ -1,6 +1,6 @@
 package com.voc.restful.core.controller;
 
-import com.voc.restful.core.response.impl.InternalBizStatus;
+import com.voc.common.api.biz.InternalBizStatus;
 import com.voc.restful.core.vo.ErrorMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

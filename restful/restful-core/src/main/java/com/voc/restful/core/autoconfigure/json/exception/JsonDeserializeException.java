@@ -1,8 +1,9 @@
 package com.voc.restful.core.autoconfigure.json.exception;
 
-import com.voc.common.biz.BizException;
-import com.voc.common.biz.IBizStatus;
-import com.voc.restful.core.response.impl.InternalBizStatus;
+
+import com.voc.common.api.biz.BizException;
+import com.voc.common.api.biz.IBizStatus;
+import com.voc.common.api.biz.InternalBizStatus;
 
 /**
  * JSON 反序列号异常

@@ -1,12 +1,9 @@
 package com.voc.system.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.voc.restful.core.entity.IUser;
-import com.voc.restful.core.entity.impl.BaseUser;
 import com.voc.persist.PersistEntity;
 import com.voc.system.constant.Table;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 持久化对象 - 用户
@@ -16,10 +13,9 @@ import lombok.EqualsAndHashCode;
  * @time 2020/10/19 18:10
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName(value = Table.USER)
-public class UserPO extends BaseUser<String> implements IUser<String>, PersistEntity<String> {
-
+public class UserPO implements PersistEntity<String> {
+    private String id;
     /**
      * 工号
      */

@@ -4,9 +4,8 @@ import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusPropertiesCustomizer;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.voc.persist.IAccountInfo;
-import com.voc.persist.DefaultAccountInfo;
-import com.voc.persist.mybatis.handler.TableFieldMetaObjectHandler;
 import com.voc.persist.mybatis.plus.DefaultMybatisPlusProperties;
+import com.voc.persist.mybatis.plus.TableFieldMetaObjectHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -31,16 +30,16 @@ public class MybatisPlusConfiguration {
         return new DefaultMybatisPlusProperties();
     }
 
-    /**
-     * 注入默认管理员账户信息
-     *
-     * @return IAccountInfo
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    IAccountInfo account() {
-        return new DefaultAccountInfo();
-    }
+//    /**
+//     * 注入默认管理员账户信息
+//     *
+//     * @return IAccountInfo
+//     */
+//    @Bean
+//    @ConditionalOnMissingBean
+//    IAccountInfo account() {
+//        return new DefaultAccountInfo();
+//    }
 
     @Bean
     @ConditionalOnMissingBean

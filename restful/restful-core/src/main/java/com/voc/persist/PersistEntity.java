@@ -1,6 +1,7 @@
 package com.voc.persist;
 
-import com.voc.persist.entity.Identify;
+
+import com.voc.common.api.bean.Identify;
 
 import java.io.Serializable;
 

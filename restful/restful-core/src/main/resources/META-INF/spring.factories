@@ -3,9 +3,8 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
 com.voc.restful.core.autoconfigure.AutoConfiguration,\
 com.voc.restful.core.autoconfigure.cache.CacheAutoConfiguration,\
 com.voc.restful.core.autoconfigure.json.JsonAutoConfiguration,\
-com.voc.restful.core.autoconfigure.result.ResultAutoConfiguration,\
-com.voc.restful.security.core.autoconfigure.PasswordEncoderConfiguration,\
-com.voc.restful.security.core.autoconfigure.SecurityCoreAutoConfiguration,\
+com.voc.security.core.autoconfigure.PasswordEncoderConfiguration,\
+com.voc.security.core.autoconfigure.SecurityCoreAutoConfiguration,\
 com.voc.persist.mybatis.MybatisPlusConfiguration
 
 org.springframework.context.ApplicationListener                = \

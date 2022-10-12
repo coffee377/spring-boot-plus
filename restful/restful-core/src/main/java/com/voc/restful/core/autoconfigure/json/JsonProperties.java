@@ -1,6 +1,5 @@
 package com.voc.restful.core.autoconfigure.json;
 
-import com.voc.restful.core.response.ExceptionResult;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,10 +15,10 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @ConfigurationProperties(prefix = "api.json")
 public class JsonProperties {
 
-    /**
-     * 异常响应类型
-     */
-    private ExceptionResult exceptionResult;
+//    /**
+//     * 异常响应类型
+//     */
+//    private ExceptionResult exceptionResult;
 
     /**
      * <p>响应结果是否自动包装全局控制开关</p>

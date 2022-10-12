@@ -56,7 +56,7 @@ val projectInfos = fileTree(rootDir) {
   .map { file -> ProjectInfo(rootDir, file) }
   .sorted()
   .collect(java.util.stream.Collectors.toList())
-  .filter { info -> !Regex(".*(examples|restful).*$").matches(info.name) }
+  .filter { info -> !Regex(".*(examples).*$").matches(info.name) }
 
 projectInfos.forEach {
   include(it.path)

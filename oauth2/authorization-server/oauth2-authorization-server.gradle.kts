@@ -1,5 +1,6 @@
 dependencies {
   implementation(project(":common:common-api"))
+  implementation(project(":${parent?.name}:${parent?.name}-security"))
 
   implementation("mysql:mysql-connector-java")
 
@@ -8,10 +9,12 @@ dependencies {
 //  implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter")
   implementation("com.baomidou:mybatis-plus-boot-starter")
 //  implementation("org.springframework.boot:spring-boot-starter-jdbc")
+  implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
   /* redis 缓存 */
   implementation("org.springframework.boot:spring-boot-starter-cache")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
 
   /* 认证服务器 */
   implementation("org.springframework.security:spring-security-oauth2-authorization-server")

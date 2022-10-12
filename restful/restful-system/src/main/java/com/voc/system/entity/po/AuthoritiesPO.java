@@ -1,8 +1,8 @@
 package com.voc.system.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.voc.common.api.entity.IEntity;
 import com.voc.restful.core.entity.BaseEntity;
-import com.voc.persist.entity.IEntity;
 import com.voc.system.constant.Table;
 import com.voc.system.entity.IPersistAuthorities;
 import com.voc.system.entity.enums.AuthorityType;

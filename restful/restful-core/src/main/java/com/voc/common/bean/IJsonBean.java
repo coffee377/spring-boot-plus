@@ -1,5 +1,6 @@
 package com.voc.common.bean;
 
+import com.voc.common.api.bean.IBean;
 import com.voc.restful.core.autoconfigure.json.IJson;
 import com.voc.restful.core.autoconfigure.json.exception.JsonSerializeException;
 import com.voc.restful.core.util.SpringUtils;

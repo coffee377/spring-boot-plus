@@ -1,7 +1,7 @@
 package com.voc.oauth2.api;
 
-import com.voc.oauth2.api.model.Account;
-import com.voc.oauth2.api.model.OAuthData;
+import com.voc.security.oauth2.OAuthData;
+import com.voc.security.oauth2.entity.Account;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Optional;

@@ -1,6 +1,6 @@
 package com.voc.system.controller;
 
-import com.voc.restful.core.response.Result;
+import com.voc.boot.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

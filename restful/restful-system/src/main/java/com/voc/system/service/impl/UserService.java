@@ -41,7 +41,7 @@ public class UserService extends BaseService<String, UserDao, UserPO, UserBO> im
         UserPO persist = this.convert(entity);
         String password = entity.getPassword();
         String pwd = this.passwordConverter(password, plainPassword);
-        persist.setPassword(pwd);
+//        persist.setPassword(pwd);
         int result = this.getDao().insert(persist);
         return SqlHelper.retBool(result);
     }
