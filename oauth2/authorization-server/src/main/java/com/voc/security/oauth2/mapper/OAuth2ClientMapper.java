@@ -1,4 +1,4 @@
-package com.voc.oauth2.mapper;
+package com.voc.security.oauth2.mapper;
 
 import com.voc.security.oauth2.entity.OAuth2Client;
 import org.apache.ibatis.annotations.*;

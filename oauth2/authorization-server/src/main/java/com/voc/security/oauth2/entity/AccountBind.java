@@ -2,7 +2,7 @@ package com.voc.security.oauth2.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.common.api.entity.impl.BaseEntity;
-import com.voc.oauth2.AuthProvider;
+import com.voc.security.core.authentication.AuthProvider;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

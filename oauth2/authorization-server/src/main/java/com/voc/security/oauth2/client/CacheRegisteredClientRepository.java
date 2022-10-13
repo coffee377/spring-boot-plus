@@ -1,7 +1,7 @@
 package com.voc.security.oauth2.client;
 
 import com.voc.security.oauth2.entity.OAuth2Client;
-import com.voc.oauth2.mapper.OAuth2ClientMapper;
+import com.voc.security.oauth2.mapper.OAuth2ClientMapper;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;

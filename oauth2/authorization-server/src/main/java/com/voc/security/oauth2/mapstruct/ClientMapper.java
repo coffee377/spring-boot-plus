@@ -1,4 +1,4 @@
-package com.voc.oauth2.mapstruct;
+package com.voc.security.oauth2.mapstruct;
 
 
 import org.mapstruct.Mapper;

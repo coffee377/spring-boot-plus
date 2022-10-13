@@ -34,8 +34,8 @@ class UserDaoTest {
     @DisplayName("添加用户")
     public void add() {
         UserPO userPO = new UserPO();
-        userPO.setUsername("coffee377");
-        userPO.setPassword("123456");
+//        userPO.setUsername("coffee377");
+//        userPO.setPassword("123456");
         userPO.setRealName("吴玉杰");
         userDao.insert(userPO);
     }

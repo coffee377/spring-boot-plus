@@ -1,7 +1,7 @@
 package com.voc.security.core.authentication;
 
 import com.voc.boot.result.Result;
-import com.voc.boot.result.response.impl.ResponseHandler;
+import com.voc.boot.result.response.impl.ResultResponseHandler;
 import com.voc.common.api.biz.InternalBizStatus;
 import com.voc.security.core.expection.AuthorizationCodeException;
 import com.voc.security.core.expection.UnboundUserException;
@@ -28,7 +28,7 @@ import java.io.IOException;
  * @time 2017/12/27 18:01
  */
 @Slf4j
-public class RestfulAuthenticationFailureHandler extends ResponseHandler implements AuthenticationFailureHandler {
+public class RestfulAuthenticationFailureHandler extends ResultResponseHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
@@ -59,7 +59,7 @@ public class RestfulAuthenticationFailureHandler extends ResponseHandler impleme
             setResult(Result.failure(exception));
         }
 
-        this.write(response);
+        this.output(request, response);
     }
 
 }

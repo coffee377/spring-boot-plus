@@ -1,7 +1,7 @@
 package com.voc.security.core.authentication;
 
 import com.voc.boot.result.Result;
-import com.voc.boot.result.response.impl.ResponseHandler;
+import com.voc.boot.result.response.impl.ResultResponseHandler;
 import com.voc.common.api.biz.InternalBizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,7 +20,7 @@ import java.io.IOException;
  * @time 2018/01/29 16:44
  */
 @Slf4j
-public class RestfulAccessDeniedHandler extends ResponseHandler implements AccessDeniedHandler {
+public class RestfulAccessDeniedHandler extends ResultResponseHandler implements AccessDeniedHandler {
 
     /**
      * 权限异常处理
@@ -44,8 +44,7 @@ public class RestfulAccessDeniedHandler extends ResponseHandler implements Acces
         } else {
             setResult(Result.failure(e));
         }
-
-        this.write(response);
+        this.output(request, response);
     }
 }
 

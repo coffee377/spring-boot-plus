@@ -1,13 +1,10 @@
 package com.voc.security.core.authentication;
 
 import com.voc.boot.result.Result;
-import com.voc.boot.result.response.impl.ResponseHandler;
+import com.voc.boot.result.response.impl.ResultResponseHandler;
 import com.voc.security.core.authentication.converter.OAuth2AccessTokenResponseParametersConverter;
 import com.voc.security.core.event.LoginSuccessEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.core.convert.converter.Converter;
@@ -34,13 +31,10 @@ import java.util.Map;
  * @time 2017/12/27 17:58
  */
 @Slf4j
-public class RestfulAuthenticationSuccessHandler extends ResponseHandler implements AuthenticationSuccessHandler,
-        ApplicationContextAware,
-        ApplicationEventPublisherAware {
+public class RestfulAuthenticationSuccessHandler extends ResultResponseHandler implements AuthenticationSuccessHandler, ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher publisher;
 
-    private ApplicationContext applicationContext;
 
     private final Converter<OAuth2AccessTokenResponse, Map<String, Object>> accessTokenResponseParametersConverter = new OAuth2AccessTokenResponseParametersConverter();
 
@@ -54,12 +48,7 @@ public class RestfulAuthenticationSuccessHandler extends ResponseHandler impleme
         Result result = Result.success(map);
 
         this.setResult(result);
-        this.write(response);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+        this.output(request, response);
     }
 
     @Override

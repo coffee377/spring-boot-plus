@@ -1,4 +1,4 @@
-package com.voc.oauth2.mapper;
+package com.voc.security.oauth2.mapper;
 
 import org.apache.ibatis.jdbc.SQL;
 

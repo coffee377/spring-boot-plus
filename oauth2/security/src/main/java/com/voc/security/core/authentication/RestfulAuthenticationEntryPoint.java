@@ -1,6 +1,6 @@
 package com.voc.security.core.authentication;
 
-import com.voc.boot.result.response.impl.ResponseHandler;
+import com.voc.boot.result.response.impl.ResultResponseHandler;
 import com.voc.common.api.biz.InternalBizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -17,7 +17,7 @@ import java.io.IOException;
  * @time 2018/03/19 14:11
  */
 @Slf4j
-public class RestfulAuthenticationEntryPoint extends ResponseHandler implements AuthenticationEntryPoint {
+public class RestfulAuthenticationEntryPoint extends ResultResponseHandler implements AuthenticationEntryPoint {
 
     /**
      * 认证异常处理
@@ -35,7 +35,7 @@ public class RestfulAuthenticationEntryPoint extends ResponseHandler implements 
         }
 
         this.setBizStatus(InternalBizStatus.UNAUTHORIZED);
-        this.write(response);
+        this.output(request, response);
     }
 
 }

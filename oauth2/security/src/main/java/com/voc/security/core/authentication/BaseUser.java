@@ -18,7 +18,6 @@ import java.util.Set;
  * @time 2021/06/20 11:54
  */
 @Data
-@Builder
 @EqualsAndHashCode(callSuper = true)
 public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements IUser<ID> {
 

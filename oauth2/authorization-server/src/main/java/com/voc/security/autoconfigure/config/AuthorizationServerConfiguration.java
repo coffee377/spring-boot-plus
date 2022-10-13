@@ -5,9 +5,10 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.voc.security.oauth2.client.CacheRegisteredClientRepository;
-import com.voc.oauth2.jose.Jwks;
-import com.voc.oauth2.mapper.OAuth2ClientMapper;
+import com.voc.security.core.authentication.RestfulAuthenticationEntryPoint;
+import com.voc.security.core.authentication.RestfulAuthenticationFailureHandler;
+import com.voc.security.core.authentication.RestfulAuthenticationSuccessHandler;
+import com.voc.security.jose.Jwks;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -15,12 +16,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
@@ -29,6 +33,7 @@ import org.springframework.security.oauth2.server.authorization.config.TokenSett
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.Collections;
 
@@ -41,6 +46,15 @@ import java.util.Collections;
 @Configuration
 public class AuthorizationServerConfiguration {
 
+    @Resource
+    RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint;
+
+    @Resource
+    RestfulAuthenticationFailureHandler restfulAuthenticationFailureHandler;
+
+    @Resource
+    RestfulAuthenticationSuccessHandler restfulAuthenticationSuccessHandler;
+
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -50,13 +64,13 @@ public class AuthorizationServerConfiguration {
 
         /* 授权端点 */
         authorizationServerConfigurer.authorizationEndpoint(config -> {
-//            config.errorResponseHandler(restfulAuthenticationFailureHandler);
+            config.errorResponseHandler(restfulAuthenticationFailureHandler);
         });
 
         /* token 端点 */
         authorizationServerConfigurer.tokenEndpoint(tokenEndpoint -> {
-//            tokenEndpoint.accessTokenResponseHandler(restfulAuthenticationSuccessHandler);
-//            tokenEndpoint.errorResponseHandler(restfulAuthenticationFailureHandler);
+            tokenEndpoint.accessTokenResponseHandler(restfulAuthenticationSuccessHandler);
+            tokenEndpoint.errorResponseHandler(restfulAuthenticationFailureHandler);
         });
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
 
@@ -68,6 +82,8 @@ public class AuthorizationServerConfiguration {
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
                 .apply(authorizationServerConfigurer)
         ;
+
+        http.exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(restfulAuthenticationEntryPoint));
 
         return http.build();
 
@@ -85,7 +101,7 @@ public class AuthorizationServerConfiguration {
 
 
     @Bean
-    public RegisteredClientRepository registeredClientRepository(OAuth2ClientMapper clientMapper, JdbcTemplate jdbcTemplate) {
+    public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
         RegisteredClient demoClient = RegisteredClient.withId("2")
                 .clientId("demo")
                 .clientName("演示客户端")
@@ -123,11 +139,11 @@ public class AuthorizationServerConfiguration {
 //        jdbcRegisteredClientRepository.save(demoClient);
 //        return jdbcRegisteredClientRepository;
 
-        CacheRegisteredClientRepository cacheRegisteredClientRepository = new CacheRegisteredClientRepository(clientMapper);
-        cacheRegisteredClientRepository.save(demoClient);
-        return cacheRegisteredClientRepository;
+//        CacheRegisteredClientRepository cacheRegisteredClientRepository = new CacheRegisteredClientRepository(clientMapper);
+//        cacheRegisteredClientRepository.save(demoClient);
+//        return cacheRegisteredClientRepository;
 
-//        return new InMemoryRegisteredClientRepository(demoClient);
+        return new InMemoryRegisteredClientRepository(demoClient);
 
     }
 

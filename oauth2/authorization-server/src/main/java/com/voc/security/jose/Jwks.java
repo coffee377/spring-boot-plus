@@ -4,7 +4,6 @@ import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.jwk.ECKey;
 import com.nimbusds.jose.jwk.OctetSequenceKey;
 import com.nimbusds.jose.jwk.RSAKey;
-import com.voc.restful.security.jose.KeyGeneratorUtil;
 
 import javax.crypto.SecretKey;
 import java.security.KeyPair;

@@ -1,6 +1,6 @@
 package com.voc.security.core.authentication;
 
-import com.voc.boot.result.response.impl.ResponseHandler;
+import com.voc.boot.result.response.impl.ResultResponseHandler;
 import com.voc.common.api.biz.InternalBizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -17,7 +17,7 @@ import java.io.IOException;
  * @time 2020/09/25 09:12
  */
 @Slf4j
-public class RestfulLogoutSuccessHandler extends ResponseHandler implements LogoutSuccessHandler {
+public class RestfulLogoutSuccessHandler extends ResultResponseHandler implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -26,5 +26,6 @@ public class RestfulLogoutSuccessHandler extends ResponseHandler implements Logo
         }
 
         this.setBizStatus(InternalBizStatus.OK);
+        this.output(request, response);
     }
 }

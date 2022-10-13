@@ -57,6 +57,7 @@ public class ResultErrorController extends AbstractErrorController implements Er
 //        model.put("status", exceptionData.getStatus().value());
 //        model.put("error", exceptionData.getStatus().toString());
 //        model.put("message", exceptionData.getMessage());
+        // TODO: 2022/10/14 1:00 NPE for exception
         return Result.failure(exception, model);
     }
 

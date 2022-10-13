@@ -1,4 +1,4 @@
-package com.voc.oauth2.api.model;
+package com.voc.security.oauth2.client;
 
 /**
  * @author WuYujie

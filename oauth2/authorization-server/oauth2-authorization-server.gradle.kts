@@ -1,6 +1,7 @@
 dependencies {
   implementation(project(":common:common-api"))
   implementation(project(":${parent?.name}:${parent?.name}-security"))
+  implementation(project(":spring-boot-starter:spring-boot-starter-result"))
 
   implementation("mysql:mysql-connector-java")
 

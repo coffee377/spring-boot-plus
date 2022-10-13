@@ -1,10 +1,12 @@
 package com.voc.security.autoconfigure;
 
 import com.voc.security.autoconfigure.props.AuthorizationServerProperties;
+import com.voc.security.core.autoconfigure.SecurityCoreAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
@@ -20,5 +22,6 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
 @EnableConfigurationProperties({AuthorizationServerProperties.class})
 @AutoConfigureAfter(SecurityAutoConfiguration.class)
 @Import({AuthorizationServerImport.class})
+//@ComponentScan("com.voc.security")
 public class AuthorizationServerAutoConfiguration {
 }
