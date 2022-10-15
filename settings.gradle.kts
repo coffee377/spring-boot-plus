@@ -10,20 +10,21 @@ dependencyResolutionManagement {
       version("spring-boot", "2.5.14")
       version("dependency-management", "1.0.11.RELEASE")
       version("asciidoctor", "3.3.2")
-      version("smart-doc", "3.3.2")
+      version("smart-doc", "2.6.0-release") // https://plugins.gradle.org/plugin/com.github.shalousun.smart-doc
 
       plugin("spring-boot", "org.springframework.boot").versionRef("spring-boot")
       plugin("dependency-management", "io.spring.dependency-management").versionRef("dependency-management")
       plugin("asciidoctor", "org.asciidoctor.jvm.convert").versionRef("asciidoctor")
       plugin("asciidoctor-pdf", "org.asciidoctor.jvm.pdf").versionRef("asciidoctor")
+      plugin("asciidoctor-epub", "org.asciidoctor.jvm.epub").versionRef("asciidoctor")
       plugin("smart-doc", "com.github.shalousun.smart-doc").versionRef("smart-doc")
     }
 
     /* 钉钉 API */
     create("dingtalk") {
-      /* 旧版 SDK 依赖 */
+      /* 旧版 SDK */
       library("sdk", "com.aliyun", "alibaba-dingtalk-service-sdk").version("2.0.0")
-      /* 新版 API 依赖 */
+      /* 新版 SDK */
       library("api", "com.aliyun", "dingtalk").version("1.4.52")
       bundle("sdk", listOf("sdk", "api"))
     }
