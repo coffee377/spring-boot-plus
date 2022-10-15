@@ -4,9 +4,9 @@ import com.voc.security.oauth2.enums.AuthorizationGrantType;
 import com.voc.security.oauth2.enums.ClientAuthenticationMethod;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 
 import java.time.Duration;
 import java.time.Instant;

@@ -1,6 +1,7 @@
 package com.voc.security.token;
 
-import org.springframework.security.oauth2.core.OAuth2TokenType;
+
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 
 /**
  * @author Wu Yujie

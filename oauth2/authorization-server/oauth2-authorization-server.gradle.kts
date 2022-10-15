@@ -16,9 +16,9 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-cache")
   implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
-
   /* 认证服务器 */
-  implementation("org.springframework.security:spring-security-oauth2-authorization-server")
+//  implementation("org.springframework.security:spring-security-oauth2-authorization-server")
+  implementation(files("${rootDir}/libs/spring-security-oauth2-authorization-server-0.3.2.jar"))
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
   implementation("org.mapstruct:mapstruct")

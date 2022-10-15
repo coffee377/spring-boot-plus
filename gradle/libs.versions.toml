@@ -1,0 +1,16 @@
+[versions]
+spring-boot = "2.5.14"
+dependency-management = "1.0.11.RELEASE"
+
+[libraries]
+spring-boot = { group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version.ref = "spring-boot" }
+dependency-management = { group = "io.spring.gradle", name = "dependency-management-plugin", version.ref = "dependency-management" }
+
+[plugins]
+#spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+#dependency-management = { id = "io.spring.dependency-management", version.ref = "dependency-management" }
+#kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+#jetbrains-changelog = { id = "org.jetbrains.changelog", version.ref = "changelog-plugin" }
+#jetbrains-intellij = { id = "org.jetbrains.intellij", version.ref = "intellij-plugin" }
+#hierynomus-license = { id = "com.github.hierynomus.license", version.ref = "license-plugin" }
+#nebula-integtest = { id = "nebula.integtest", version.ref = "nebula-integtest-plugin" }

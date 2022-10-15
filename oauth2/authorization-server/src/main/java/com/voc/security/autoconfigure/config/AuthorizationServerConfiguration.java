@@ -16,20 +16,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
-import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
-import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -59,44 +59,51 @@ public class AuthorizationServerConfiguration {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         /* 授权服务器配置 */
-        OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer =
-                new OAuth2AuthorizationServerConfigurer<>();
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+                new OAuth2AuthorizationServerConfigurer();
+        http.apply(authorizationServerConfigurer);
 
-        /* 授权端点 */
-        authorizationServerConfigurer.authorizationEndpoint(config -> {
-            config.errorResponseHandler(restfulAuthenticationFailureHandler);
-        });
+        authorizationServerConfigurer
+//                .registeredClientRepository(registeredClientRepository)
+//                .authorizationService(authorizationService)
+//                .authorizationConsentService(authorizationConsentService)
+//                .authorizationServerSettings(authorizationServerSettings)
+//                .tokenGenerator(tokenGenerator)
+                .clientAuthentication(clientAuthentication -> {
+                })
+                /* 授权端点 */
+                .authorizationEndpoint(authorizationEndpoint -> {
+                    authorizationEndpoint.errorResponseHandler(restfulAuthenticationFailureHandler);
+                })
+                /* token 端点 */
+                .tokenEndpoint(tokenEndpoint -> {
+                    tokenEndpoint.accessTokenResponseHandler(restfulAuthenticationSuccessHandler);
+                    tokenEndpoint.errorResponseHandler(restfulAuthenticationFailureHandler);
+                })
+                .tokenIntrospectionEndpoint(tokenIntrospectionEndpoint -> {
+                })
+                .tokenRevocationEndpoint(tokenRevocationEndpoint -> {
+                })
+                .oidc(oidc -> oidc
+                        .userInfoEndpoint(userInfoEndpoint -> {
+                        })
+                        .clientRegistrationEndpoint(clientRegistrationEndpoint -> {
+                        })
+                );
 
-        /* token 端点 */
-        authorizationServerConfigurer.tokenEndpoint(tokenEndpoint -> {
-            tokenEndpoint.accessTokenResponseHandler(restfulAuthenticationSuccessHandler);
-            tokenEndpoint.errorResponseHandler(restfulAuthenticationFailureHandler);
-        });
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
-
-        http
-                .requestMatcher(endpointsMatcher)
+        http.requestMatcher(endpointsMatcher)
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests.anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
-                .apply(authorizationServerConfigurer)
-        ;
+                .exceptionHandling(exceptions -> {
+//                    new LoginUrlAuthenticationEntryPoint("/login");
+                    exceptions.authenticationEntryPoint(restfulAuthenticationEntryPoint);
+                });
 
-        http.exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(restfulAuthenticationEntryPoint));
 
         return http.build();
-
-//        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-//        http
-//                // Redirect to the login page when not authenticated from the
-//                // authorization endpoint
-//                .exceptionHandling((exceptions) -> exceptions
-//                        .authenticationEntryPoint(
-//                                new LoginUrlAuthenticationEntryPoint("/login"))
-//                );
-//
-//        return http.build();
     }
 
 
@@ -218,8 +225,13 @@ public class AuthorizationServerConfiguration {
 //    }
 
     @Bean
-    public ProviderSettings providerSettings() {
-        return ProviderSettings.builder().build();
+    public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
+        return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
+    }
+
+    @Bean
+    public AuthorizationServerSettings authorizationServerSettings() {
+        return AuthorizationServerSettings.builder().build();
     }
 
 }

@@ -1,16 +1,72 @@
 /* 根项目名称 */
 rootProject.name = "spring-boot-plus"
 
-//enableFeaturePreview("VERSION_CATALOGS")
+enableFeaturePreview("VERSION_CATALOGS")
 
-//dependencyResolutionManagement {
-//  versionCatalogs {
-//
-//    create("libs") {
-//      library("spring-boot", "org.springframework.boot", "spring-boot-gradle-plugin").version("2.5.0")
-//    }
-//  }
-//}
+dependencyResolutionManagement {
+  versionCatalogs {
+
+    create("libs") {
+      version("spring-boot", "2.5.14")
+      version("dependency-management", "1.0.11.RELEASE")
+      version("asciidoctor", "3.3.2")
+      version("smart-doc", "3.3.2")
+
+      plugin("spring-boot", "org.springframework.boot").versionRef("spring-boot")
+      plugin("dependency-management", "io.spring.dependency-management").versionRef("dependency-management")
+      plugin("asciidoctor", "org.asciidoctor.jvm.convert").versionRef("asciidoctor")
+      plugin("asciidoctor-pdf", "org.asciidoctor.jvm.pdf").versionRef("asciidoctor")
+      plugin("smart-doc", "com.github.shalousun.smart-doc").versionRef("smart-doc")
+    }
+
+    /* 钉钉 API */
+    create("dingtalk") {
+      /* 旧版 SDK 依赖 */
+      library("sdk", "com.aliyun", "alibaba-dingtalk-service-sdk").version("2.0.0")
+      /* 新版 API 依赖 */
+      library("api", "com.aliyun", "dingtalk").version("1.4.52")
+      bundle("sdk", listOf("sdk", "api"))
+    }
+
+    create("spring") {
+      version("boot", "2.5.0")
+      library("boot", "org.springframework.boot", "spring-boot-gradle-plugin").versionRef("boot")
+
+      library("framework", "org.springframework", "spring-framework-bom").version("5.3.23")
+      library("security", "org.springframework.security", "spring-security-bom").version("5.7.3")
+      library(
+        "authorization-server",
+        "org.springframework.security",
+        "spring-security-oauth2-authorization-server"
+      ).version("0.3.1")
+
+      version("openapi", "1.6.11")
+      library("doc-openapi", "org.springdoc", "springdoc-openapi-ui").versionRef("openapi")
+      library("doc-openapi-webflux", "org.springdoc", "springdoc-openapi-webflux-ui").versionRef("openapi")
+    }
+
+    create("tools") {
+      version("mapstruct", "1.5.0.RC1")
+      library("mapstruct", "org.mapstruct", "mapstruct").versionRef("mapstruct")
+
+      library("mapstruct-processor", "org.mapstruct", "mapstruct-processor").versionRef("mapstruct")
+      library("lombok", "org.projectlombok", "lombok").version("1.18.24")
+      library("lombok-mapstruct", "org.projectlombok", "lombok-mapstruct-binding").version("0.2.0")
+
+      library("servlet-api", "javax.servlet", "javax.servlet-api").version("4.0.1")
+
+      library("junit5", "org.junit.jupiter", "junit-jupiter-api").version("5.8.2")
+
+
+    }
+
+    create("orm") {
+      library("mybatis", "org.mybatis", "mybatis").version("3.5.11")
+      library("mybatis-boot", "org.mybatis.spring.boot", "mybatis-spring-boot-starter").version("2.2.2")
+      library("mybatis-plus-boot", "com.baomidou", "mybatis-plus-boot-starter").version("3.4.2")
+    }
+  }
+}
 
 /* 插件管理 */
 pluginManagement {
@@ -35,10 +91,10 @@ pluginManagement {
 
   /* 插件版本管理 */
   plugins {
-    id("org.asciidoctor.jvm.convert") version "3.1.0"
-    id("org.asciidoctor.jvm.convert") version "3.1.0"
+    id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("org.asciidoctor.jvm.pdf") version "3.3.2"
     id("com.github.shalousun.smart-doc") version "2.2.2"
-//    id("org.springframework.boot") version "2.3.5.RELEASE"
+//    id("org.springframework.boot") version "2.5.0.RELEASE"
 //    id("io.spring.dependency-management") version "1.0.11.RELEASE"
   }
 }
@@ -56,7 +112,7 @@ val projectInfos = fileTree(rootDir) {
   .map { file -> ProjectInfo(rootDir, file) }
   .sorted()
   .collect(java.util.stream.Collectors.toList())
-  .filter { info -> !Regex(".*(examples).*$").matches(info.name) }
+  .filter { info -> !Regex(".*(examples|restful).*$").matches(info.name) }
 
 projectInfos.forEach {
   include(it.path)

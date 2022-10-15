@@ -3,10 +3,11 @@ package com.voc.security.token;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.oauth2.core.ClaimAccessor;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.OAuth2TokenFormat;
-import org.springframework.security.oauth2.core.OAuth2TokenType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.context.AuthorizationServerContext;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -37,8 +38,9 @@ public class AccessTokenGenerator implements OAuth2TokenGenerator<OAuth2AccessTo
         }
 
         String issuer = null;
-        if (context.getProviderContext() != null) {
-            issuer = context.getProviderContext().getIssuer();
+        AuthorizationServerContext authorizationServerContext = context.getAuthorizationServerContext();
+        if (authorizationServerContext != null) {
+            issuer = authorizationServerContext.getIssuer();
         }
         RegisteredClient registeredClient = context.getRegisteredClient();
 
@@ -67,7 +69,7 @@ public class AccessTokenGenerator implements OAuth2TokenGenerator<OAuth2AccessTo
             OAuth2TokenClaimsContext.Builder accessTokenContextBuilder = OAuth2TokenClaimsContext.with(claimsBuilder)
                     .registeredClient(context.getRegisteredClient())
                     .principal(context.getPrincipal())
-                    .providerContext(context.getProviderContext())
+                    .authorizationServerContext(context.getAuthorizationServerContext())
                     .authorizedScopes(context.getAuthorizedScopes())
                     .tokenType(context.getTokenType())
                     .authorizationGrantType(context.getAuthorizationGrantType());

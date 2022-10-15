@@ -1,22 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.io.FileInputStream
-import java.util.*
-
-val props = Props()
-val springBootVersion = props.get("org.springframework.boot.version", "2.3.5.RELEASE")
-val dependencyManagementVersion = props.get("io.spring.dependency-management.version", "1.0.10.RELEASE")
-val pluginVersion = props.get("version", "0.0.1")
 
 plugins {
   `java-library`
   `java-gradle-plugin`
-//  `kotlin-dsl`
   `embedded-kotlin`
-
 }
-
-group = "com.voc"
-version = pluginVersion
 
 configurations {
 
@@ -66,21 +54,14 @@ repositories {
 }
 
 dependencies {
+  implementation(libs.spring.boot)
+  implementation(libs.dependency.management)
+  implementation(libs.semantic.version)
 
-  /* Spring Boot 版本 */
-  if (springBootVersion.isNotEmpty()) {
-    implementation("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
-  }
-  if (dependencyManagementVersion.isNotEmpty()) {
-    implementation("io.spring.gradle:dependency-management-plugin:$dependencyManagementVersion")
-  }
-  implementation("de.skuzzle:semantic-version:2.1.1")
+  annotationProcessor(libs.lombok)
 
-  annotationProcessor("org.projectlombok:lombok:1.18.20")
-
-  /*  Use JUnit Jupiter for testing. */
-  testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+  testImplementation(libs.junit.jupiter.api)
+  testRuntimeOnly(libs.junit.jupiter.engine)
 }
 
 tasks {
@@ -98,7 +79,7 @@ tasks {
     options.release.set(8)
   }
 
-  withType<KotlinCompile>{
+  withType<KotlinCompile> {
 //    kotlinOptions.jvmTarget = "11"
   }
 
@@ -125,23 +106,4 @@ gradlePlugin {
     }
   }
 
-}
-
-
-class Props {
-  private val properties: Properties = Properties()
-
-  init {
-    val root = rootProject.projectDir.parentFile.absolutePath
-    val file = file("${root}/gradle.properties")
-    this.properties.load(FileInputStream(file))
-  }
-
-  operator fun get(name: String, defaultValue: String): String {
-    val value = properties.getProperty(name)
-    if (!value.isNullOrEmpty()) {
-      return value
-    }
-    return defaultValue
-  }
 }

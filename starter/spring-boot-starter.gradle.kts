@@ -28,13 +28,13 @@ subprojects {
 
   dependencyManagement {
     val authorizationServerVersion = ext.get("spring.security.oauth2.authorization.server.version")
-    val mybatisPlusVersion = ext.get("mybatis.plus.version")
+//    val mybatisPlusVersion = ext.get("mybatis.plus.version")
 //    val mapstructVersion = ext.get("org.mapstruct.version")
 //    val openapiUIVersion = ext.get("openapi.ui.version")
 //    val lombokMapstructBindingVersion = ext.get("lombok.mapstruct.binding.version")
     dependencies {
-      dependency("org.springframework.security:spring-security-oauth2-authorization-server:$authorizationServerVersion")
-      dependency("com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion")
+//      dependency("org.springframework.security:spring-security-oauth2-authorization-server:$authorizationServerVersion")
+//      dependency("com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion")
 //      dependency("org.mapstruct:mapstruct:$mapstructVersion")
 //      dependency("org.mapstruct:mapstruct-processor:$mapstructVersion")
 //      dependency("org.springdoc:springdoc-openapi-ui:$openapiUIVersion")
@@ -47,6 +47,7 @@ subprojects {
 
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
       exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }

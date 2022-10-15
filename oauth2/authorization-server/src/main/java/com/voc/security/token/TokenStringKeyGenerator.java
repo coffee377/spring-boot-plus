@@ -3,7 +3,7 @@ package com.voc.security.token;
 import com.voc.security.helper.SnowflakeHelper;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
-import org.springframework.security.oauth2.core.OAuth2TokenType;
+import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 
 /**
  * @author Wu Yujie
