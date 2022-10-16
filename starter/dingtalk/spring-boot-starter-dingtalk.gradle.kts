@@ -1,6 +1,6 @@
 dependencies {
   implementation(project(":common:common-api"))
-  implementation(dingtalk.bundles.sdk) {
+  implementation(libs.bundles.dingtalk) {
     /* 旧版 SDK 排除项 */
     exclude(group = "commons-logging", module = "commons-logging")
     exclude(group = "log4j", module = "log4j")

@@ -32,7 +32,7 @@ import java.util.function.Consumer;
 @Getter
 public class DevToolsPlugin implements Plugin<Project> {
     public static final String ID = "com.voc.devtools";
-    public static final String MIN_GRADLE_VERSION = "6.8";
+    public static final String MIN_GRADLE_VERSION = "7.0";
     public static final String DEPENDENCY_MANAGEMENT_PLUGIN_ID = "io.spring.dependency-management";
     public static final String DEV_TOOL_EXTENSION_NAME = "devtools";
 
@@ -47,7 +47,7 @@ public class DevToolsPlugin implements Plugin<Project> {
     private void verifyGradleVersion() {
         GradleVersion currentVersion = GradleVersion.current();
         if (currentVersion.compareTo(GradleVersion.version(MIN_GRADLE_VERSION)) < 0) {
-            throw new GradleException("Devtools plugin requires Gradle 6.8.x, 6.9.x, or 7.x. "
+            throw new GradleException("Devtools plugin requires Gradle 7.x "
                     + "The current version is " + currentVersion);
         }
     }

@@ -4,21 +4,23 @@ rootProject.name = "spring-boot-plus"
 enableFeaturePreview("VERSION_CATALOGS")
 
 dependencyResolutionManagement {
+//  defaultLibrariesExtensionName.set("voc")
+
   versionCatalogs {
 
-    create("libs") {
-      version("spring-boot", "2.5.14")
-      version("dependency-management", "1.0.11.RELEASE")
-      version("asciidoctor", "3.3.2")
-      version("smart-doc", "2.6.0-release") // https://plugins.gradle.org/plugin/com.github.shalousun.smart-doc
-
-      plugin("spring-boot", "org.springframework.boot").versionRef("spring-boot")
-      plugin("dependency-management", "io.spring.dependency-management").versionRef("dependency-management")
-      plugin("asciidoctor", "org.asciidoctor.jvm.convert").versionRef("asciidoctor")
-      plugin("asciidoctor-pdf", "org.asciidoctor.jvm.pdf").versionRef("asciidoctor")
-      plugin("asciidoctor-epub", "org.asciidoctor.jvm.epub").versionRef("asciidoctor")
-      plugin("smart-doc", "com.github.shalousun.smart-doc").versionRef("smart-doc")
-    }
+//    create("libs") {
+//      version("spring-boot", "2.5.14")
+//      version("dependency-management", "1.0.11.RELEASE")
+//      version("asciidoctor", "3.3.2")
+//      version("smart-doc", "2.6.0-release") // https://plugins.gradle.org/plugin/com.github.shalousun.smart-doc
+//
+//      plugin("spring-boot", "org.springframework.boot").versionRef("spring-boot")
+//      plugin("dependency-management", "io.spring.dependency-management").versionRef("dependency-management")
+//      plugin("asciidoctor", "org.asciidoctor.jvm.convert").versionRef("asciidoctor")
+//      plugin("asciidoctor-pdf", "org.asciidoctor.jvm.pdf").versionRef("asciidoctor")
+//      plugin("asciidoctor-epub", "org.asciidoctor.jvm.epub").versionRef("asciidoctor")
+//      plugin("smart-doc", "com.github.shalousun.smart-doc").versionRef("smart-doc")
+//    }
 
     /* 钉钉 API */
     create("dingtalk") {
@@ -58,7 +60,6 @@ dependencyResolutionManagement {
 
       library("junit5", "org.junit.jupiter", "junit-jupiter-api").version("5.8.2")
 
-
     }
 
     create("orm") {
@@ -92,9 +93,12 @@ pluginManagement {
 
   /* 插件版本管理 */
   plugins {
+    id("org.jetbrains.kotlin.jvm") version "1.6.21"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     id("org.asciidoctor.jvm.pdf") version "3.3.2"
-    id("com.github.shalousun.smart-doc") version "2.2.2"
+    id("org.asciidoctor.jvm.epub") version "3.3.2"
+    id("com.github.shalousun.smart-doc") version "2.6.0-release"
+
 //    id("org.springframework.boot") version "2.5.0.RELEASE"
 //    id("io.spring.dependency-management") version "1.0.11.RELEASE"
   }

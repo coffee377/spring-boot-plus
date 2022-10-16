@@ -3,7 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
   `java-library`
   `java-gradle-plugin`
-  `embedded-kotlin`
+//  alias(libs.plugins.kotlin.jvm) // 此种方式可以使用，但会报错
+  id("org.jetbrains.kotlin.jvm")
 }
 
 configurations {
@@ -56,7 +57,7 @@ repositories {
 dependencies {
   implementation(libs.spring.boot)
   implementation(libs.dependency.management)
-  implementation(libs.semantic.version)
+  implementation(libs.semantic.versioning)
 
   annotationProcessor(libs.lombok)
 

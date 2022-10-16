@@ -49,6 +49,9 @@ subprojects {
       }
     }
     maven {
+//      create("n3"){
+//        url("http://nexus.jqk8s.jqsoft.net/repository/maven-public/")
+//      }
       create("jqsoft-nexus3") {
         url(VersionType.RELEASE, "http://nexus.jqk8s.jqsoft.net/repository/maven-releases/")
         url(VersionType.SNAPSHOT, "http://nexus.jqk8s.jqsoft.net/repository/maven-snapshots/")

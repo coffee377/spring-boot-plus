@@ -1,0 +1,12 @@
+[versions]
+dingtalk-service-sdk = "2.0.0"
+dingtalk-sdk = "1.4.52"
+
+[libraries]
+service-sdk = { group = "com.aliyun", name = "alibaba-dingtalk-service-sdk", version.ref = "dingtalk-service-sdk" }
+sdk = { group = "com.aliyun", name = "dingtalk", version.ref = "dingtalk-sdk" }
+
+[bundles]
+dingtalk = ["service-sdk", "sdk"]
+
+
