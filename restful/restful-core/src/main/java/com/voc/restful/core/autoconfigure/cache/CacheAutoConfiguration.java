@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Import;
  */
 @EnableCaching
 @Configuration
-@Import({CaffeineCacheAutoConfiguration.class, RedisCacheAutoConfiguration.class})
+@Import({CaffeineCacheAutoConfiguration.class})
 public class CacheAutoConfiguration {
 }

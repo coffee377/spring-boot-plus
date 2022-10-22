@@ -8,6 +8,7 @@ import com.voc.security.oauth2.entity.vo.OAuth2ClientVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 
 import java.util.Optional;
 
@@ -16,17 +17,15 @@ import java.util.Optional;
  * @email coffee377@dingtalk.com
  * @time 2022/10/12 00:16
  */
-public interface OAuth2ClientService {
-
-
-    OAuth2Client save(OAuth2ClientDTO client);
+public interface OAuth2ClientService extends RegisteredClientRepository {
+    String OAUTH2_CLIENT_CACHE_NAME = "oauth2:client";
 
     /**
      * Save client.
      *
      * @param client the client
      */
-//    void saveClient(OAuth2ClientDTO client);
+    OAuth2Client save(OAuth2ClientDTO client);
 
     /**
      * Update.
@@ -49,7 +48,7 @@ public interface OAuth2ClientService {
      * @param id the id
      * @return the o auth 2 client
      */
-    OAuth2Client  findClientById(String id);
+    OAuth2Client findClientById(String id);
 
     /**
      * Remove by client id.

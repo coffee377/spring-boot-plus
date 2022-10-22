@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "oauth2_account", excludeProperty = "authorities")
-public class Account extends BaseUser<String> {
+public class Account extends BaseUser<String> implements IUser<String> {
     /**
      * 工号
      */

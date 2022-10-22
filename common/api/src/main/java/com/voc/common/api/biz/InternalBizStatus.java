@@ -77,7 +77,7 @@ public enum InternalBizStatus implements IBizStatus {
 
     @Override
     public int getModule() {
-        return 0;
+        return 1;
     }
 
     @Override

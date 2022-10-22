@@ -9,7 +9,7 @@ import lombok.Data;
  * @time 2021/06/17 17:31
  */
 @Data
-public  class TokenResult {
+public class TokenResult {
 
     /**
      * 访问令牌

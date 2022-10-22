@@ -10,6 +10,11 @@ import com.voc.security.core.authentication.AuthProvider;
 public interface OAuth2Provider extends AuthProvider {
 
     /**
+     * 第三方应用 ID
+     */
+    String getClientId();
+
+    /**
      * 用户在第三方平台唯一 ID
      *
      * @return

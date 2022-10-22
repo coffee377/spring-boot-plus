@@ -1,7 +1,7 @@
 package com.voc.security.core.configurer;
 
-import com.voc.security.core.authentication.RestfulAuthenticationFailureHandler;
-import com.voc.security.core.authentication.RestfulAuthenticationSuccessHandler;
+import com.voc.security.core.authentication.ResultAuthenticationFailureHandler;
+import com.voc.security.core.authentication.ResultAuthenticationSuccessHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -29,8 +29,8 @@ public class SwitchUserConfigurer<H extends HttpSecurityBuilder<H>> extends Abst
     public void init(H http) throws Exception {
         ApplicationContext context = http.getSharedObject(ApplicationContext.class);
         userDetailsService = context.getBean(UserDetailsService.class);
-        successHandler = context.getBean(RestfulAuthenticationSuccessHandler.class);
-        failureHandler = context.getBean(RestfulAuthenticationFailureHandler.class);
+        successHandler = context.getBean(ResultAuthenticationSuccessHandler.class);
+        failureHandler = context.getBean(ResultAuthenticationFailureHandler.class);
     }
 
     @Override

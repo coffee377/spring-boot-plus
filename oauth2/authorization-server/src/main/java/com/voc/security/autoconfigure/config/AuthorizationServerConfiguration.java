@@ -5,9 +5,9 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.voc.security.core.authentication.RestfulAuthenticationEntryPoint;
-import com.voc.security.core.authentication.RestfulAuthenticationFailureHandler;
-import com.voc.security.core.authentication.RestfulAuthenticationSuccessHandler;
+import com.voc.security.core.authentication.ResultAuthenticationEntryPoint;
+import com.voc.security.core.authentication.ResultAuthenticationFailureHandler;
+import com.voc.security.core.authentication.ResultAuthenticationSuccessHandler;
 import com.voc.security.jose.Jwks;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -21,6 +21,8 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -47,13 +49,13 @@ import java.util.Collections;
 public class AuthorizationServerConfiguration {
 
     @Resource
-    RestfulAuthenticationEntryPoint restfulAuthenticationEntryPoint;
+    ResultAuthenticationEntryPoint resultAuthenticationEntryPoint;
 
     @Resource
-    RestfulAuthenticationFailureHandler restfulAuthenticationFailureHandler;
+    ResultAuthenticationFailureHandler resultAuthenticationFailureHandler;
 
     @Resource
-    RestfulAuthenticationSuccessHandler restfulAuthenticationSuccessHandler;
+    ResultAuthenticationSuccessHandler resultAuthenticationSuccessHandler;
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -73,12 +75,12 @@ public class AuthorizationServerConfiguration {
                 })
                 /* 授权端点 */
                 .authorizationEndpoint(authorizationEndpoint -> {
-                    authorizationEndpoint.errorResponseHandler(restfulAuthenticationFailureHandler);
+                    authorizationEndpoint.errorResponseHandler(resultAuthenticationFailureHandler);
                 })
                 /* token 端点 */
                 .tokenEndpoint(tokenEndpoint -> {
-                    tokenEndpoint.accessTokenResponseHandler(restfulAuthenticationSuccessHandler);
-                    tokenEndpoint.errorResponseHandler(restfulAuthenticationFailureHandler);
+                    tokenEndpoint.accessTokenResponseHandler(resultAuthenticationSuccessHandler);
+                    tokenEndpoint.errorResponseHandler(resultAuthenticationFailureHandler);
                 })
                 .tokenIntrospectionEndpoint(tokenIntrospectionEndpoint -> {
                 })
@@ -99,7 +101,7 @@ public class AuthorizationServerConfiguration {
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
                 .exceptionHandling(exceptions -> {
 //                    new LoginUrlAuthenticationEntryPoint("/login");
-                    exceptions.authenticationEntryPoint(restfulAuthenticationEntryPoint);
+                    exceptions.authenticationEntryPoint(resultAuthenticationEntryPoint);
                 });
 
 

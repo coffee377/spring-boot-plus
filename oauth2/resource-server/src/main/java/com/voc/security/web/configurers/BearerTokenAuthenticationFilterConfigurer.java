@@ -1,7 +1,7 @@
 package com.voc.security.web.configurers;
 
-import com.voc.security.core.authentication.RestfulAuthenticationEntryPoint;
-import com.voc.security.core.authentication.RestfulAuthenticationFailureHandler;
+import com.voc.security.core.authentication.ResultAuthenticationEntryPoint;
+import com.voc.security.core.authentication.ResultAuthenticationFailureHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,8 +28,8 @@ public class BearerTokenAuthenticationFilterConfigurer<H extends HttpSecurityBui
     @Override
     public void init(H http) throws Exception {
         context = http.getSharedObject(ApplicationContext.class);
-        authenticationEntryPoint = context.getBean(RestfulAuthenticationEntryPoint.class);
-        authenticationFailureHandler = context.getBean(RestfulAuthenticationFailureHandler.class);
+        authenticationEntryPoint = context.getBean(ResultAuthenticationEntryPoint.class);
+        authenticationFailureHandler = context.getBean(ResultAuthenticationFailureHandler.class);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.voc.security.core.autoconfigure;
 
-import com.voc.security.core.IgnoreWebSecurityCustomizer;
+import com.voc.security.core.autoconfigure.config.IgnoreWebSecurityCustomizer;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 

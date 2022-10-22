@@ -2,15 +2,14 @@ package com.voc.security.core.authentication;
 
 import com.voc.common.api.dict.enums.UsingStatus;
 import com.voc.common.api.entity.impl.BaseEntity;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Wu Yujie
@@ -28,13 +27,15 @@ public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements
 
     /**
      * 密码(加密后的密码串)
+     *
+     * @see PasswordEncoderFactories#createDelegatingPasswordEncoder
      */
     private String password;
 
     /**
      * 权限
      */
-    private Set<String> authorities;
+    private Collection<String> authorities;
 
     /**
      * 账号是否过期
@@ -71,7 +72,7 @@ public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements
     }
 
     @Override
-    public Set<String> getAuthorities() {
+    public Collection<String> getAuthorities() {
         return authorities;
     }
 

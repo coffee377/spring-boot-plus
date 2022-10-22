@@ -27,6 +27,11 @@ public class AccountBind extends BaseEntity<String> {
     private AuthProvider provider;
 
     /**
+     * 第三方应用 ID
+     */
+    private String clientId;
+
+    /**
      * 用户在第三方平台唯一 ID
      */
     private String unionId;

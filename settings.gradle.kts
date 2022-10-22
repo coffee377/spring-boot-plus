@@ -8,20 +8,6 @@ dependencyResolutionManagement {
 
   versionCatalogs {
 
-//    create("libs") {
-//      version("spring-boot", "2.5.14")
-//      version("dependency-management", "1.0.11.RELEASE")
-//      version("asciidoctor", "3.3.2")
-//      version("smart-doc", "2.6.0-release") // https://plugins.gradle.org/plugin/com.github.shalousun.smart-doc
-//
-//      plugin("spring-boot", "org.springframework.boot").versionRef("spring-boot")
-//      plugin("dependency-management", "io.spring.dependency-management").versionRef("dependency-management")
-//      plugin("asciidoctor", "org.asciidoctor.jvm.convert").versionRef("asciidoctor")
-//      plugin("asciidoctor-pdf", "org.asciidoctor.jvm.pdf").versionRef("asciidoctor")
-//      plugin("asciidoctor-epub", "org.asciidoctor.jvm.epub").versionRef("asciidoctor")
-//      plugin("smart-doc", "com.github.shalousun.smart-doc").versionRef("smart-doc")
-//    }
-
     /* 钉钉 API */
     create("dingtalk") {
       /* 旧版 SDK */
@@ -117,7 +103,7 @@ val projectInfos = fileTree(rootDir) {
   .map { file -> ProjectInfo(rootDir, file) }
   .sorted()
   .collect(java.util.stream.Collectors.toList())
-  .filter { info -> !Regex(".*(examples|restful).*$").matches(info.name) }
+  .filter { info -> !Regex(".*(examples|restful|persist).*$").matches(info.name) }
 
 projectInfos.forEach {
   include(it.path)

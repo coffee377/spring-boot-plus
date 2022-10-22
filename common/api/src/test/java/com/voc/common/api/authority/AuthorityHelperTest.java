@@ -1,18 +1,17 @@
 package com.voc.common.api.authority;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author WuYujie
  * @email coffee377@dingtalk.com
  * @time 2022/10/12 10:23
  */
-@Slf4j
 class AuthorityHelperTest {
 
 

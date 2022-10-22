@@ -18,11 +18,11 @@ public class ApiProperties {
 
     private String prefix = "/api";
 
-    /**
-     * json 配置
-     */
-    @NestedConfigurationProperty
-    private JsonProperties json = new JsonProperties();
+//    /**
+//     * json 配置
+//     */
+//    @NestedConfigurationProperty
+//    private JsonProperties json = new JsonProperties();
 
     /**
      * ping 接口配置

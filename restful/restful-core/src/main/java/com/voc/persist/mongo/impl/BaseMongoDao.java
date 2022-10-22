@@ -2,8 +2,6 @@ package com.voc.persist.mongo.impl;
 
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import com.voc.persist.mongo.IMongoDao;
-import com.voc.restful.core.entity.IJsonEntity;
 import org.bson.Document;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -40,7 +38,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * @email coffee377@dingtalk.com
  * @time 2021/02/07 10:28
  */
-public abstract class BaseMongoDao<E extends IJsonEntity, ID> implements IMongoDao<E, ID>, ApplicationContextAware {
+public abstract class BaseMongoDao<E, ID> implements IMongoDao<E, ID>, ApplicationContextAware {
 
     protected MongoOperations mongoOperations;
 

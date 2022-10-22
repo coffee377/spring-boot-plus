@@ -21,6 +21,11 @@ public enum OAuth2Platform implements OAuth2Provider {
 
     private String name;
 
+    /**
+     * 第三方应用 ID
+     */
+    private String clientId;
+
     private String unionid;
 
     private String openid;

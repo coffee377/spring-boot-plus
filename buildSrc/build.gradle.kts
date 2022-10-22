@@ -93,6 +93,10 @@ tasks {
 
 gradlePlugin {
   plugins {
+    create("init") {
+      id = "com.voc.gradle.init"
+      implementationClass = "com.voc.gradle.plugin.GradleInitPlugin"
+    }
     create("devtools") {
       id = "com.voc.devtools"
       implementationClass = "com.voc.gradle.plugin.DevToolsPlugin"

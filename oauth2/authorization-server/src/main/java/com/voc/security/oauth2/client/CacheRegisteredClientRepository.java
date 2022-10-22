@@ -54,8 +54,8 @@ public class CacheRegisteredClientRepository implements RegisteredClientReposito
                 .authorizationGrantTypes(null)
                 .redirectUris(registeredClient.getRedirectUris())
                 .scopes(registeredClient.getScopes())
-                .clientSettings("")
-                .tokenSettings("")
+//                .clientSettings("")
+//                .tokenSettings("")
                 .build();
 
         OAuth2Client existingRegisteredClient = clientMapper.findById(registeredClient.getId());

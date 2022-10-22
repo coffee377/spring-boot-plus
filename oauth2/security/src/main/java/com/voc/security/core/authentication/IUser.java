@@ -4,7 +4,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author Wu Yujie
@@ -22,7 +23,7 @@ public interface IUser<ID extends Serializable> extends Serializable {
     ID getId();
 
     /**
-     * 认证用户的用户名
+     * 用户名
      *
      * @return the username (never <code>null</code>)
      */
@@ -30,7 +31,7 @@ public interface IUser<ID extends Serializable> extends Serializable {
     String getUsername();
 
     /**
-     * 认证用户的密码
+     * 密码
      *
      * @return the password
      */
@@ -38,46 +39,58 @@ public interface IUser<ID extends Serializable> extends Serializable {
     String getPassword();
 
     /**
-     * 用户权限标识
+     * 获取权限
      *
      * @return Set<String>
      */
-    Set<String> getAuthorities();
+    @NonNull
+    default Collection<String> getAuthorities() {
+        return Collections.emptyList();
+    }
 
     /**
-     * 设置用户权限标识
+     * 赋予权限
      *
      * @param authorities Set<String>
      */
-    void setAuthorities(Set<String> authorities);
+    default void setAuthorities(Collection<String> authorities) {
+
+    }
 
     /**
      * 指示用户的账户是否已过期。已过期的账号不允许身份验证
      *
      * @return boolean
      */
-    boolean isAccountExpired();
+    default boolean isAccountExpired() {
+        return false;
+    }
 
     /**
      * 指示用户的账号是否被锁定。锁定的账号不允许身份验证
      *
      * @return boolean
      */
-    boolean isAccountLocked();
+    default boolean isAccountLocked() {
+        return false;
+    }
 
     /**
      * 指示用户的凭据(密码)是否已过期。过期的凭据不允许身份验证
      *
      * @return boolean
      */
-    boolean isCredentialsExpired();
+    default boolean isCredentialsExpired() {
+        return false;
+    }
 
     /**
      * 指示启用或禁用用户。被禁用的用户不能进行身份验证
      *
      * @return boolean
      */
-    boolean isEnabled();
-
+    default boolean isEnabled() {
+        return true;
+    }
 
 }

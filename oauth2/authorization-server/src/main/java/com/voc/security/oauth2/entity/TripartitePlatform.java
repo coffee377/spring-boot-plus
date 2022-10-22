@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
  * @email coffee377@dingtalk.com
  * @time 2022/06/11 19:36
  */
+@Deprecated
 @Getter
 @EqualsAndHashCode
 public class TripartitePlatform implements IBean {
