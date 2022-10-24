@@ -2,17 +2,17 @@ package com.voc.gradle.plugin;
 
 import com.voc.gradle.plugin.action.*;
 import com.voc.gradle.plugin.api.IPluginAction;
+import com.voc.gradle.plugin.core.DevType;
 import com.voc.gradle.plugin.dsl.DevToolsExtension;
 import com.voc.gradle.plugin.dsl.IDevToolsExtension;
 import com.voc.gradle.plugin.embedded.IDE;
 import com.voc.gradle.plugin.util.ExtraPropsUtils;
 import lombok.Getter;
+import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.plugins.ExtensionContainer;
-import org.gradle.api.plugins.JavaLibraryPlugin;
-import org.gradle.api.plugins.PluginContainer;
+import org.gradle.api.plugins.*;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.ide.visualstudio.plugins.VisualStudioPlugin;
 import org.gradle.ide.xcode.plugins.XcodePlugin;
@@ -22,6 +22,7 @@ import org.gradle.util.GradleVersion;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -54,8 +55,8 @@ public class DevToolsPlugin implements Plugin<Project> {
 
     private void registerPluginActions(Project project) {
         List<IPluginAction> actions = Arrays.asList(
-                new JavaPluginAction(),
                 new DevToolsPluginAction(),
+                new JavaLibraryPluginAction(),
                 new DependencyManagementPluginAction(),
                 new BootPluginAction(),
                 new MavenPublishPluginAction()
@@ -92,13 +93,16 @@ public class DevToolsPlugin implements Plugin<Project> {
      */
     private void applyPlugins(Project project) {
         PluginContainer plugins = project.getPlugins();
-
+        ExtraPropertiesExtension extraProperties = project.getExtensions().getExtraProperties();
+        Map<String, Object> properties = extraProperties.getProperties();
         /* 1. 应用开发工具插件，默认使用 idea */
         String ide = ExtraPropsUtils.getStringValue(project, "ide", "idea");
         this.applyIdePlugin(plugins, IDE.of(ide));
 
         /* 2.应用 Java Library 插件 */
         plugins.apply(JavaLibraryPlugin.class);
+        // TODO: 2022/10/23 16:58 BOM 使用 JavaPlatformPlugin
+//        plugins.apply(JavaPlatformPlugin.class);
 
         /* 3.应用 MavenPublish 插件 */
         plugins.apply(MavenPublishPlugin.class);

@@ -3,8 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
   `java-library`
   `java-gradle-plugin`
-//  alias(libs.plugins.kotlin.jvm) // 此种方式可以使用，但会报错
-  id("org.jetbrains.kotlin.jvm")
+  `kotlin-dsl`
 }
 
 configurations {
@@ -52,6 +51,7 @@ repositories {
   maven {
     url = uri("https://maven.aliyun.com/repository/public/")
   }
+
 }
 
 dependencies {
@@ -93,10 +93,6 @@ tasks {
 
 gradlePlugin {
   plugins {
-    create("init") {
-      id = "com.voc.gradle.init"
-      implementationClass = "com.voc.gradle.plugin.GradleInitPlugin"
-    }
     create("devtools") {
       id = "com.voc.devtools"
       implementationClass = "com.voc.gradle.plugin.DevToolsPlugin"

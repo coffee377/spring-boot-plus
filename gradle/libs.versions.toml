@@ -1,7 +1,8 @@
 [versions]
 spring-boot = "2.5.14"
 spring-cloud = "2020.0.3"
-alibaba-cloud = "2021.1"
+spring-alibaba-cloud = "2021.1"
+spring-security = "5.7.3"
 spring-authorization-server = "0.3.2"
 dependency-management = "1.0.11.RELEASE"
 lombok = "1.18.24"
@@ -20,6 +21,7 @@ dingtalk-sdk = "1.4.52"
 spring-boot = { group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version.ref = "spring-boot" }
 spring-boot-dependencies = { group = "org.springframework.boot", name = "spring-boot-dependencies", version.ref = "spring-boot" }
 spring-authorization-server = { group = "org.springframework.security", name = "spring-security-oauth2-authorization-server", version.ref = "spring-authorization-server" }
+spring-security-bom = { group = "org.springframework.security", name = "spring-security-bom", version.ref = "spring-security" }
 dependency-management = { group = "io.spring.gradle", name = "dependency-management-plugin", version.ref = "dependency-management" }
 
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }

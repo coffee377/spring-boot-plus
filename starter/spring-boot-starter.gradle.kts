@@ -1,7 +1,8 @@
 import com.voc.gradle.plugin.core.DevType
 
 plugins {
-  id("com.voc.devtools")
+//  id("com.voc.devtools")
+//  `java-platform`
 }
 
 group = "com.voc.boot"
@@ -18,6 +19,13 @@ dependencyManagement {
         entry(it.name)
       }
     }
+  }
+}
+
+dependencies {
+  implementation(enforcedPlatform(project(":spring-boot-plus-dependencies")))
+  constraints {
+
   }
 }
 

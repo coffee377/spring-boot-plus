@@ -8,6 +8,7 @@ import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.file.DuplicatesStrategy;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.plugins.JavaLibraryPlugin;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.tasks.Delete;
 import org.gradle.api.tasks.compile.CompileOptions;
@@ -21,11 +22,11 @@ import java.util.concurrent.TimeUnit;
  * @email coffee377@dingtalk.com
  * @time 2021/12/27 20:19
  */
-public class JavaPluginAction implements IPluginAction {
+public class JavaLibraryPluginAction implements IPluginAction {
 
     @Override
     public Class<? extends Plugin<? extends Project>> getPluginClass() {
-        return JavaPlugin.class;
+        return JavaLibraryPlugin.class;
     }
 
     @Override

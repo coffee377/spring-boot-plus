@@ -24,42 +24,45 @@ dependencyManagement {
   }
 }
 
-
 /* 子项目配置 */
 subprojects {
 
   group = "com.voc"
 
-  apply(plugin = "com.voc.devtools")
+  if (!project.name.endsWith("dependencies")) {
 
-  devtools {
-    aliMavenProxy(true)
-    ali {
-      create("AliYun") {
-        id("2038604")
-        usernameFromEnvironment("DEV_OPTS_USERNAME")
-        passwordFromEnvironment("DEV_OPTS_PASSWORD")
-        release {
-          hash("0bMxsA")
+    apply(plugin = "com.voc.devtools")
+    devtools {
+      aliMavenProxy(true)
+      ali {
+        create("AliYun") {
+          id("2038604")
+          usernameFromEnvironment("DEV_OPTS_USERNAME")
+          passwordFromEnvironment("DEV_OPTS_PASSWORD")
+          release {
+            hash("0bMxsA")
+          }
+          snapshot {
+            hash("XNRePo")
+          }
+          publish(false)
         }
-        snapshot {
-          hash("XNRePo")
-        }
-        publish(false)
       }
-    }
-    maven {
+      maven {
 //      create("n3"){
 //        url("http://nexus.jqk8s.jqsoft.net/repository/maven-public/")
 //      }
-      create("jqsoft-nexus3") {
-        url(VersionType.RELEASE, "http://nexus.jqk8s.jqsoft.net/repository/maven-releases/")
-        url(VersionType.SNAPSHOT, "http://nexus.jqk8s.jqsoft.net/repository/maven-snapshots/")
-        publish(true)
-        usernameFromEnvironment("DEV_OPTS_JQ_USERNAME")
-        passwordFromEnvironment("DEV_OPTS_JQ_PASSWORD")
+        create("jqsoft-nexus3") {
+          url(VersionType.RELEASE, "http://nexus.jqk8s.jqsoft.net/repository/maven-releases/")
+          url(VersionType.SNAPSHOT, "http://nexus.jqk8s.jqsoft.net/repository/maven-snapshots/")
+          publish(true)
+          usernameFromEnvironment("DEV_OPTS_JQ_USERNAME")
+          passwordFromEnvironment("DEV_OPTS_JQ_PASSWORD")
+        }
       }
     }
+  } else {
+    println(project.name)
   }
 
   dependencies {
