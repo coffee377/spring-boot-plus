@@ -1,7 +1,6 @@
-package com.voc.dingtalk.autoconfigure;
+package com.voc.dingtalk.props;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -9,10 +8,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @email coffee377@dingtalk.com
  * @time 2020/11/19 21:04
  */
-@Getter
-@Setter
-@ConfigurationProperties(prefix = "spring.dingtalk.proxy")
-public class Proxy {
+@Data
+@ConfigurationProperties("dingtalk.proxy")
+public class ProxyProperties {
 
     /**
      * 官方接口地址

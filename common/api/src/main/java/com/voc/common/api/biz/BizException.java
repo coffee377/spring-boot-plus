@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BizException extends RuntimeException {
-    private long code;
+    private String code;
     private int httpStatus;
 
     /**
@@ -20,7 +20,7 @@ public class BizException extends RuntimeException {
      * @param httpStatus HTTP 状态码
      * @param formatArgs 信息格式化参数
      */
-    public BizException(long code, String message, int httpStatus, Object... formatArgs) {
+    public BizException(String code, String message, int httpStatus, Object... formatArgs) {
         super(String.format(message, formatArgs));
         this.code = code;
         this.httpStatus = httpStatus;
@@ -31,7 +31,7 @@ public class BizException extends RuntimeException {
      * @param message    错误信息
      * @param formatArgs 信息格式化参数
      */
-    public BizException(long code, String message, Object... formatArgs) {
+    public BizException(String code, String message, Object... formatArgs) {
         this(code, message, 500, formatArgs);
     }
 
@@ -40,6 +40,6 @@ public class BizException extends RuntimeException {
      * @param formatArgs 信息格式化参数
      */
     public BizException(IBizStatus bizStatus, Object... formatArgs) {
-        this(bizStatus.getCode(), bizStatus.getMessage(), bizStatus.getHttpStatus(), formatArgs);
+        this(String.valueOf(bizStatus.getCode()), bizStatus.getMessage(), bizStatus.getHttpStatus(), formatArgs);
     }
 }

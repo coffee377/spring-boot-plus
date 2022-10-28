@@ -6,8 +6,8 @@ import com.dingtalk.api.request.OapiV2UserListRequest;
 import com.dingtalk.api.response.OapiV2DepartmentListsubResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
 import com.dingtalk.api.response.OapiV2UserListResponse;
-import com.voc.dingtalk.service.IAppService;
-import com.voc.dingtalk.service.IContactsService;
+import com.voc.dingtalk.service.AppService;
+import com.voc.dingtalk.service.ContactsService;
 import com.voc.dingtalk.url.Contacts;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +21,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * @time 2022/07/03 15:25
  */
 @Service
-public class ContactsService implements IContactsService {
-    private final IAppService appService;
+public class DefaultContactsService implements ContactsService {
+    private final AppService appService;
 
-    public ContactsService(IAppService appService) {
+    public DefaultContactsService(AppService appService) {
         this.appService = appService;
     }
 

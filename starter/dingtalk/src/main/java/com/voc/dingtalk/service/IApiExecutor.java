@@ -11,6 +11,8 @@ import org.springframework.util.StringUtils;
 import java.util.function.Consumer;
 
 /**
+ * 老版 SDK 抽象接口
+ *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/11/19 19:34
@@ -41,10 +43,10 @@ public interface IApiExecutor {
                 /* 正常响应后再消费数据 */
                 consumer.accept(response);
             } else {
-                throw new DingTalkApiException(Long.parseLong(response.getErrorCode()), response.getMsg());
+                throw new DingTalkApiException(response.getErrorCode(), response.getMsg());
             }
         } catch (ApiException e) {
-            throw new DingTalkApiException(Long.parseLong(e.getErrCode()), e.getErrMsg());
+            throw new DingTalkApiException(e.getErrCode(), e.getErrMsg());
         }
     }
 
@@ -119,12 +121,12 @@ public interface IApiExecutor {
 
                 if (StringUtils.hasText(subCode)) {
                     String msg = StringUtils.hasText(response.getSubMsg()) ? response.getSubMsg() : response.getSubMessage();
-                    throw new DingTalkApiException(Long.parseLong(subCode), msg);
+                    throw new DingTalkApiException(subCode, msg);
                 }
-                throw new DingTalkApiException(Long.parseLong(response.getErrorCode()), response.getMsg());
+                throw new DingTalkApiException(response.getErrorCode(), response.getMsg());
             }
         } catch (ApiException e) {
-            throw new DingTalkApiException(Long.parseLong(e.getErrCode()), e.getErrMsg());
+            throw new DingTalkApiException(e.getErrCode(), e.getErrMsg());
         }
     }
 

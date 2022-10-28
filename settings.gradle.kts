@@ -1,35 +1,7 @@
 /* 根项目名称 */
 rootProject.name = "spring-boot-plus"
 
-/* 插件管理 */
-pluginManagement {
-  /* 插件仓库 */
-  repositories {
-    maven { url = uri(file("D:\\Project\\personal\\gradle-devtools\\build\\publications\\repos")) }
-    gradlePluginPortal()
-    maven { url = uri("https://repo.spring.io/plugins-release") }
-  }
-
-  /* 插件版本管理 */
-  plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.6.21"
-    id("org.asciidoctor.jvm.convert") version "3.3.2"
-    id("org.asciidoctor.jvm.pdf") version "3.3.2"
-    id("org.asciidoctor.jvm.epub") version "3.3.2"
-    id("com.github.shalousun.smart-doc") version "2.6.0-release"
-
-    id("com.voc.auto") version "0.1.0-SNAPSHOT"
-//    id("org.springframework.boot") version "2.5.0.RELEASE"
-//    id("io.spring.dependency-management") version "1.0.11.RELEASE"
-  }
-}
-
-plugins {
-  id("com.voc.auto")
-}
-
 dependencyResolutionManagement {
-//  defaultLibrariesExtensionName.set("voc")
 
   versionCatalogs {
 

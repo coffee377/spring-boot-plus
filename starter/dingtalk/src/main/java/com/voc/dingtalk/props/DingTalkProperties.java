@@ -1,5 +1,6 @@
-package com.voc.dingtalk.autoconfigure;
+package com.voc.dingtalk.props;
 
+import com.voc.dingtalk.autoconfigure.model.App;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 @Slf4j
 @Data
-@ConfigurationProperties(prefix = "spring.dingtalk")
+@ConfigurationProperties(prefix = "dingtalk")
 public class DingTalkProperties implements InitializingBean {
     private int primaryAppCount;
 
@@ -32,7 +33,7 @@ public class DingTalkProperties implements InitializingBean {
     private String corpId;
 
     @NestedConfigurationProperty
-    private Proxy proxy = new Proxy();
+    private ProxyProperties proxy = new ProxyProperties();
 
     /**
      * APP 配置
@@ -61,6 +62,9 @@ public class DingTalkProperties implements InitializingBean {
         }
         if (!StringUtils.hasText(app.getAppSecret())) {
             throw new IllegalStateException("appSecret must not be empty.");
+        }
+        if (app.isPrimary()) {
+            this.primaryAppCount += 1;
         }
     }
 

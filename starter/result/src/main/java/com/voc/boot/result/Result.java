@@ -20,7 +20,7 @@ public class Result<T> implements IPageResult<T> {
     /**
      * 响应态码
      */
-    private Long code;
+    private String code;
 
     /**
      * 响应信息
@@ -43,7 +43,7 @@ public class Result<T> implements IPageResult<T> {
     }
 
     @Override
-    public Long getCode() {
+    public String getCode() {
         return code;
     }
 
@@ -67,7 +67,7 @@ public class Result<T> implements IPageResult<T> {
         return this;
     }
 
-    public Result<T> code(long code) {
+    public Result<T> code(String code) {
         this.code = code;
         return this;
     }
@@ -112,11 +112,11 @@ public class Result<T> implements IPageResult<T> {
         return (Result<D>) builder().success(message, data, total).build();
     }
 
-    public static <D> Result<D> failure(long code, String message, D data) {
+    public static <D> Result<D> failure(String code, String message, D data) {
         return (Result<D>) builder().failure(code, message, data).build();
     }
 
-    public static <D> Result<D> failure(long code, String message) {
+    public static <D> Result<D> failure(String code, String message) {
         return (Result<D>) builder().failure(code, message, null).build();
     }
 

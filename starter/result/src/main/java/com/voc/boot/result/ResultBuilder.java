@@ -21,7 +21,7 @@ public class ResultBuilder<D> implements Serializable {
     /**
      * 响应编码
      */
-    private Long code;
+    private String code;
 
     /**
      * 响应信息
@@ -45,7 +45,7 @@ public class ResultBuilder<D> implements Serializable {
      * @param code 业务错误编码
      * @return ResultBuilder
      */
-    public ResultBuilder<D> code(Long code) {
+    public ResultBuilder<D> code(String code) {
         this.code = code;
         return this;
     }
@@ -93,7 +93,7 @@ public class ResultBuilder<D> implements Serializable {
      */
     public ResultBuilder<D> success(String message, D data, Integer total) {
         this.success = true;
-        this.code = 0L;
+        this.code = null;
         this.message = message;
         this.data = data;
         this.total = total;
@@ -128,7 +128,7 @@ public class ResultBuilder<D> implements Serializable {
      * @return Builder
      */
     public ResultBuilder<D> success(D data) {
-        return success("ok", data);
+        return success(null, data);
     }
 
     /**
@@ -149,7 +149,7 @@ public class ResultBuilder<D> implements Serializable {
      * @param data    响应数据
      * @return Builder
      */
-    public ResultBuilder<D> failure(long code, String message, D data) {
+    public ResultBuilder<D> failure(String code, String message, D data) {
         this.success = false;
         this.code = code;
         this.message = message;
@@ -165,7 +165,7 @@ public class ResultBuilder<D> implements Serializable {
      * @return Builder
      */
     public ResultBuilder<D> failure(IBizStatus bizStatus, D data) {
-        return failure(bizStatus.getCode(), bizStatus.getMessage(), data);
+        return failure(String.valueOf(bizStatus.getCode()), bizStatus.getMessage(), data);
     }
 
     /**
@@ -199,7 +199,7 @@ public class ResultBuilder<D> implements Serializable {
             this.code = bizException.getCode();
             this.message = bizException.getMessage();
         } else {
-            this.code = InternalBizStatus.INTERNAL_SERVER_ERROR.getCode();
+            this.code = String.valueOf(InternalBizStatus.INTERNAL_SERVER_ERROR.getCode());
             this.message = exception.getMessage();
         }
         this.data = data;

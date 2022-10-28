@@ -1,6 +1,7 @@
 package com.voc.gradle.plugin.action;
 
 import com.voc.gradle.plugin.api.IPluginAction;
+import org.gradle.api.Action;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -13,6 +14,9 @@ import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.tasks.Delete;
 import org.gradle.api.tasks.compile.CompileOptions;
 import org.gradle.api.tasks.compile.JavaCompile;
+import org.gradle.api.tasks.javadoc.Javadoc;
+import org.gradle.external.javadoc.MinimalJavadocOptions;
+import org.gradle.external.javadoc.StandardJavadocDocletOptions;
 import org.gradle.jvm.tasks.Jar;
 
 import java.util.concurrent.TimeUnit;
@@ -114,6 +118,21 @@ public class JavaLibraryPluginAction implements IPluginAction {
      * @param project Project
      */
     public void configureConfigurations(Project project) {
+        project.getTasks().withType(Javadoc.class, new Action<Javadoc>() {
+            @Override
+            public void execute(Javadoc javadoc) {
+                javadoc.options(new Action<MinimalJavadocOptions>() {
+                    @Override
+                    public void execute(MinimalJavadocOptions minimalJavadocOptions) {
+                        minimalJavadocOptions.encoding("UTF-8");
+                        if (minimalJavadocOptions instanceof StandardJavadocDocletOptions) {
+                            ((StandardJavadocDocletOptions) minimalJavadocOptions).charSet("UTF-8");
+                        }
+                    }
+                });
+            }
+        });
+
         ConfigurationContainer configurations = project.getConfigurations();
 
         Configuration runtimeOnlyConfiguration = configurations.getByName(JavaPlugin.RUNTIME_ONLY_CONFIGURATION_NAME);

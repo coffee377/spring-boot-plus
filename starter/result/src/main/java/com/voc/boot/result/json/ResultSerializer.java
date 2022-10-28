@@ -8,6 +8,7 @@ import com.voc.boot.result.IResult;
 import com.voc.boot.result.properties.JsonFieldProperties;
 import com.voc.boot.result.properties.ResultProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @time 2021/04/25 13:27
  */
 @Slf4j
+@JsonComponent
 public class ResultSerializer extends JsonSerializer<IResult<?>> {
 
     private final JsonFieldProperties property;
@@ -31,7 +33,7 @@ public class ResultSerializer extends JsonSerializer<IResult<?>> {
         gen.writeStartObject();
         gen.writeBooleanField(property.getSuccess(), result.isSuccess());
         if (!ObjectUtils.isEmpty(result.getCode())) {
-            gen.writeNumberField(property.getCode(), result.getCode());
+            gen.writeStringField(property.getCode(), result.getCode());
         }
         if (!ObjectUtils.isEmpty(result.getMessage())) {
             gen.writeStringField(property.getMessage(), result.getMessage());

@@ -10,8 +10,12 @@ import com.voc.common.api.biz.BizException;
  */
 public class DingTalkApiException extends BizException {
 
-    public DingTalkApiException(long code, String message) {
+    public DingTalkApiException(String code, String message) {
         super(code, message);
+    }
+
+    public DingTalkApiException(String message) {
+        this(null, message);
     }
 
 }

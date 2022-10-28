@@ -1,15 +1,13 @@
-package com.voc.dingtalk.autoconfigure;
+package com.voc.dingtalk.autoconfigure.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2021/06/10 09:58
  */
-@Getter
-@Setter
+@Data
 public class EventSubscription {
     /**
      * 加密 aes_key

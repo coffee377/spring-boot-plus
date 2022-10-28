@@ -5,6 +5,6 @@ com.voc.dingtalk.autoconfigure.DingTalkAutoConfiguration
 org.springframework.context.ApplicationListener=\
 com.voc.dingtalk.cache.CacheInitListener
 
-org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer=\
-com.voc.dingtalk.security.configurer.DingTalkLoginConfigurer
+#org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer=\
+#com.voc.dingtalk.security.configurer.DingTalkLoginConfigurer
 

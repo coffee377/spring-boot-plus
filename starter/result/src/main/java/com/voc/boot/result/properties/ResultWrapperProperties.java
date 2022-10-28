@@ -1,6 +1,7 @@
 package com.voc.boot.result.properties;
 
 import com.voc.boot.result.annotation.ResponseResult;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,8 +15,7 @@ import java.util.List;
  * @email coffee377@dingtalk.com
  * @time 2022/05/06 21:37
  */
-@Getter
-@Setter
+@Data
 @ConfigurationProperties(prefix = "api.result.wrapper")
 public class ResultWrapperProperties {
 

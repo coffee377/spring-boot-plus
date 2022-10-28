@@ -56,6 +56,8 @@ subprojects {
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
       exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }

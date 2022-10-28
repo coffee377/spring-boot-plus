@@ -1,5 +1,7 @@
 package com.voc.boot.cache;
 
+import org.springframework.core.annotation.AliasFor;
+
 import java.lang.annotation.*;
 import java.time.Duration;
 
@@ -20,6 +22,23 @@ public @interface CacheTTL {
      *
      * @return 缓存过期时间
      */
+    @AliasFor(attribute = "time")
     String value() default "";
 
+    @AliasFor(attribute = "value")
+    String time() default "";
+
+    /**
+     * {@link Duration#minus(Duration)}
+     *
+     * @return 缓存时间减去的时间
+     */
+    String minus() default "";
+
+    /**
+     * {@link Duration#plus(Duration)}
+     *
+     * @return 缓存时间叠加的时间
+     */
+    String plus() default "";
 }

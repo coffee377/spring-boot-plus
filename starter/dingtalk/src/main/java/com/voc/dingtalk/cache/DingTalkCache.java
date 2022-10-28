@@ -11,11 +11,12 @@ public interface DingTalkCache {
     /**
      * 钉钉缓存前缀
      */
-    String DING_TALK_CACHE_NAME = "dingtalk";
-    String DING_TALK_APP = DING_TALK_CACHE_NAME + ":app";
+    String PREFIX = "dingtalk";
+    String APP = PREFIX + ":app";
+    String ROBOT = PREFIX + ":robot";
 
-    String DING_TALK_APP_ACCESS_TOKEN = DING_TALK_APP + ":access_token";
-    String DING_TALK_APP_JS_TICKET = DING_TALK_APP + ":jsapi_ticket";
+    String APP_ACCESS_TOKEN = APP + ":access_token";
+    String APP_JS_TICKET = APP + ":jsapi_ticket";
 
-    String APP_SECRET = DING_TALK_CACHE_NAME + ":appSecret";
+    String APP_SECRET = APP + ":appSecret";
 }

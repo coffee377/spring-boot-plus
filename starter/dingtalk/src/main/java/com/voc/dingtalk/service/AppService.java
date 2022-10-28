@@ -1,6 +1,6 @@
 package com.voc.dingtalk.service;
 
-import com.voc.dingtalk.autoconfigure.App;
+import com.voc.dingtalk.autoconfigure.model.App;
 import com.voc.dingtalk.exception.DingTalkApiException;
 
 /**
@@ -10,7 +10,7 @@ import com.voc.dingtalk.exception.DingTalkApiException;
  * @email coffee377@dingtalk.com
  * @time 2022/07/03 11:01
  */
-public interface IAppService extends IApiExecutor {
+public interface AppService extends IApiExecutor {
 
     /**
      * 获取主应用信息

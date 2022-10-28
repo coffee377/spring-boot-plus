@@ -1,10 +1,11 @@
 package com.voc.boot.cache.redis;
 
 import com.voc.boot.cache.CacheTimeToLive;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+
+import java.util.List;
 
 /**
  * @author WuYujie
@@ -15,9 +16,9 @@ public class RedisCacheLiveTimeCustomizer implements RedisCacheManagerBuilderCus
 
     private final RedisCacheConfiguration cacheConfiguration;
 
-    private final ObjectProvider<CacheTimeToLive> timeToLives;
+    private final List<CacheTimeToLive> timeToLives;
 
-    public RedisCacheLiveTimeCustomizer(ObjectProvider<CacheTimeToLive> cacheTTLS, RedisCacheConfiguration cacheConfiguration) {
+    public RedisCacheLiveTimeCustomizer(List<CacheTimeToLive> cacheTTLS, RedisCacheConfiguration cacheConfiguration) {
         this.timeToLives = cacheTTLS;
         if (cacheConfiguration == null) {
             this.cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
@@ -28,7 +29,7 @@ public class RedisCacheLiveTimeCustomizer implements RedisCacheManagerBuilderCus
 
     @Override
     public void customize(RedisCacheManager.RedisCacheManagerBuilder builder) {
-        timeToLives.orderedStream().forEach(ttl ->
+        timeToLives.forEach(ttl ->
                 builder.withCacheConfiguration(ttl.getName(), cacheConfiguration.entryTtl(ttl.getTime()))
         );
     }

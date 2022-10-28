@@ -1,7 +1,7 @@
 package com.voc.dingtalk.controller;
 
 import com.dingtalk.api.response.OapiV2UserGetResponse;
-import com.voc.dingtalk.service.IUserService;
+import com.voc.dingtalk.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 public class UserController {
 
     @Resource
-    private IUserService dingTalkUserService;
+    private UserService dingTalkUserService;
 
     @Resource
     private RestTemplate restTemplate;

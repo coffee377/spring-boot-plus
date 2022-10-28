@@ -8,7 +8,7 @@ import com.dingtalk.api.response.OapiV2UserGetResponse;
  * @email coffee377@dingtalk.com
  * @time 2021/04/21 21:40
  */
-public interface IUserService extends IApiExecutor {
+public interface UserService extends IApiExecutor {
 
     /**
      * 根据临时授权码获取用户开放信息
@@ -96,5 +96,11 @@ public interface IUserService extends IApiExecutor {
      * @return String
      */
     Object getUserDetailInfos(String accessKey, String accessSecret, String tempAuthCode);
+
+    /**
+     * 获取用户个人 token
+     * @return
+     */
+//    Object getUserToken();
 
 }

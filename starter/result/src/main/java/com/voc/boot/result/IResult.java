@@ -21,7 +21,7 @@ public interface IResult<T> extends Serializable {
      *
      * @return 异常响应时为具体的错误编码，正常响应可为空或者 0
      */
-    Long getCode();
+    String getCode();
 
     /**
      * 响应信息

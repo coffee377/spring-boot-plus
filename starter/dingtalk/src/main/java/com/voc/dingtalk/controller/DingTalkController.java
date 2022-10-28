@@ -3,10 +3,11 @@ package com.voc.dingtalk.controller;
 import com.dingtalk.api.response.OapiV2DepartmentListsubResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
 import com.dingtalk.api.response.OapiV2UserListResponse;
-import com.voc.dingtalk.autoconfigure.App;
-import com.voc.dingtalk.service.IAppService;
-import com.voc.dingtalk.service.IContactsService;
-import com.voc.dingtalk.service.IDingTalkService;
+import com.voc.boot.result.annotation.ResponseResult;
+import com.voc.dingtalk.autoconfigure.model.App;
+import com.voc.dingtalk.service.AppService;
+import com.voc.dingtalk.service.ContactsService;
+import com.voc.dingtalk.service.DingTalkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,14 +25,19 @@ import java.util.List;
 public class DingTalkController {
 
     @Resource
-    private IDingTalkService dingTalkService;
+    private DingTalkService dingTalkService;
 
     @Resource
-    private IAppService appService;
+    private AppService appService;
 
     @Resource
-    private IContactsService contactsService;
+    private ContactsService contactsService;
 
+    /**
+     * 查询应用列表
+     *
+     * @return List<App>
+     */
     @GetMapping("/app")
     public List<App> getApps() {
         return dingTalkService.getApps();
@@ -43,18 +49,18 @@ public class DingTalkController {
      * @param appNameOrAppId 应用ID或应用名称
      * @return 应用访问令牌
      */
-    @GetMapping("/{app}/access_token")
-    public String getAccessToken(@PathVariable(value = "app") String appNameOrAppId) {
+    @GetMapping("/app/access_token")
+    public String getAccessToken(@RequestParam(value = "app") String appNameOrAppId) {
         return appService.getAccessToken(appNameOrAppId);
     }
-
 
     /**
      * 获取主应用访问令牌
      *
      * @return 应用访问令牌
      */
-    @GetMapping("/app/primary")
+    @GetMapping("/app/primary/access_token")
+    @ResponseResult
     public String getPrimaryAppAccessToken() {
         return appService.getPrimaryAccessToken();
     }

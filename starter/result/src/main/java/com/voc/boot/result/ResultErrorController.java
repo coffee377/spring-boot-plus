@@ -1,5 +1,7 @@
 package com.voc.boot.result;
 
+import com.voc.boot.result.annotation.ResponseResult;
+import com.voc.common.api.biz.InternalBizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -48,17 +50,26 @@ public class ResultErrorController extends AbstractErrorController implements Er
     @ResponseBody
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Object error(HttpServletRequest request, HttpServletResponse response) {
-        HttpStatus status = getStatus(request);
-        response.setStatus(status.value());
+        HttpStatus httpStatus = getStatus(request);
+        response.setStatus(httpStatus.value());
         ErrorAttributeOptions options = getErrorAttributeOptions(request, MediaType.ALL);
         Map<String, Object> model = getErrorAttributes(request, options);
         Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+        if (exception != null) {
+            return Result.failure(exception, model);
+        }
+        if (HttpStatus.NOT_FOUND.equals(httpStatus)) {
+            return Result.failure(InternalBizStatus.NOT_FOUND, model);
+        }
+        Object status = model.get("status");
+        Object message = model.get("message");
+        return Result.failure(String.valueOf(status), String.valueOf(message), model);
 //        ExceptionData exceptionData = new ExceptionData(exception, model);
 //        model.put("status", exceptionData.getStatus().value());
 //        model.put("error", exceptionData.getStatus().toString());
 //        model.put("message", exceptionData.getMessage());
         // TODO: 2022/10/14 1:00 NPE for exception
-        return Result.failure(exception, model);
+
     }
 
     public String getErrorPath() {

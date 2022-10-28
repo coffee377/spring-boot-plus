@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +33,7 @@ import java.time.Duration;
 @Configuration
 @ConditionalOnClass(RedisOperations.class)
 @EnableConfigurationProperties(CacheProperties.class)
-@AutoConfigureBefore(RedisAutoConfiguration.class)
+//@AutoConfigureBefore(RedisAutoConfiguration.class)
 @Import(RedisCacheLiveTimeConfiguration.class)
 public class RedisCacheAutoConfiguration {
 
@@ -69,6 +70,7 @@ public class RedisCacheAutoConfiguration {
      * @see #redisValueSerializer()
      */
     @Bean("redisCacheConfiguration")
+//    @ConditionalOnMissingBean(RedisCacheAutoConfiguration.class)
     public RedisCacheConfiguration redisCacheConfiguration(CacheProperties cacheProperties,
                                                            RedisSerializer<Object> redisValueSerializer) {
         CacheProperties.Redis redis = cacheProperties.getRedis();

@@ -7,13 +7,11 @@ import com.dingtalk.api.response.OapiSnsGetuserinfoBycodeResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
 import com.voc.common.api.biz.BizException;
 import com.voc.common.api.biz.InternalBizStatus;
-import com.voc.dingtalk.autoconfigure.App;
-import com.voc.dingtalk.exception.DingTalkApiException;
-import com.voc.dingtalk.service.IAppService;
-import com.voc.dingtalk.service.IUserService;
+import com.voc.dingtalk.autoconfigure.model.App;
+import com.voc.dingtalk.service.AppService;
+import com.voc.dingtalk.service.UserService;
 import com.voc.dingtalk.url.Corp;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -28,10 +26,10 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Slf4j
 @Service("dingtalkUserService")
-public class UserService implements IUserService {
+public class DefaultUserService implements UserService {
 
     @Resource
-    private IAppService appService;
+    private AppService appService;
 
     @Override
     public OapiSnsGetuserinfoBycodeResponse.UserInfo getUserOpenInfoByCode(String accessKey, String accessSecret,

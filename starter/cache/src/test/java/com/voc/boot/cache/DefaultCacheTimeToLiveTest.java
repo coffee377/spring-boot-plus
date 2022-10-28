@@ -20,4 +20,8 @@ class DefaultCacheTimeToLiveTest {
         assertEquals("test", cacheTimeToLive.getName());
         assertEquals(Duration.ZERO, cacheTimeToLive.getTime());
     }
+
+    public void cacheAnno(){
+
+    }
 }

@@ -14,7 +14,7 @@ import java.util.List;
  * @email coffee377@dingtalk.com
  * @time 2022/07/03 15:11
  */
-public interface IContactsService extends IApiExecutor {
+public interface ContactsService extends IApiExecutor {
 
     /**
      * 获取下一级部门基础信息

@@ -3,7 +3,7 @@ package com.voc.boot.result;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.voc.boot.result.annotation.ResponseResult;
-import com.voc.boot.result.properties.ResultWrapperProperties;
+import com.voc.boot.result.properties.ResultProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -38,8 +38,7 @@ public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationCont
 
     private final Set<String> ignoredClassName = new HashSet<>();
     private ObjectMapper objectMapper;
-    private ResultWrapperProperties wrapperProperties;
-
+    private ResultProperties resultProperties;
     private final Class[] annotations = new Class[]{
             RequestMapping.class,
             GetMapping.class,
@@ -51,8 +50,8 @@ public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationCont
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        wrapperProperties = applicationContext.getBean(ResultWrapperProperties.class);
-        List<String> ignoredClass = wrapperProperties.getIgnoredClass();
+        resultProperties = applicationContext.getBean(ResultProperties.class);
+        List<String> ignoredClass = resultProperties.getWrapper().getIgnoredClass();
         if (ignoredClass != null) {
             ignoredClassName.addAll(ignoredClass);
         }
@@ -126,8 +125,9 @@ public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationCont
             return classAnnotation.value();
         }
         /* 3. 注解都不存在时返回全局开关 */
-        if (wrapperProperties.getEnable() != null) {
-            return wrapperProperties.getEnable();
+        Boolean enable = resultProperties.getWrapper().getEnable();
+        if (enable != null) {
+            return enable;
         }
         /* 4. 否则，默认开启 */
         return true;

@@ -1,16 +1,4 @@
 spring:
-  dingtalk:
-    corp-id: dingd8b32bfb2b9da7b2
-    app:
-      base:
-        primary: true
-        app-key: dingopfniakkw72klkjv
-        app-secret: 6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR
-        agent-id: 1038540627
-      teamwork:
-        app-key: dingpq80f8uhg9z6vx3l
-        app-secret: Ukz2CfV2i4mLnF34K3sZPBVbTZimFZ24eHmA9ze0TZwK4TJ4Jm7umm-fbQDqfch9
-        agent-id: 1700560522
   redis:
     database: 7
     password: tvoc.site.redis
@@ -20,3 +8,15 @@ logging:
     com:
       voc:
         dingtalk: debug
+dingtalk:
+  corp-id: dingd8b32bfb2b9da7b2
+  app:
+    base:
+      primary: true
+      agent-id: 1038540627
+      app-key: dingopfniakkw72klkjv
+      app-secret: 6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR
+    teamwork:
+      agent-id: 1700560522
+      app-key: dingpq80f8uhg9z6vx3l
+      app-secret: Ukz2CfV2i4mLnF34K3sZPBVbTZimFZ24eHmA9ze0TZwK4TJ4Jm7umm-fbQDqfch9

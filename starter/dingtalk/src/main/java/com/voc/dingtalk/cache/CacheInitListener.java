@@ -25,9 +25,12 @@ public class CacheInitListener implements ApplicationListener<ApplicationReadyEv
         ConfigurableApplicationContext applicationContext = event.getApplicationContext();
         Map<String, CacheManager> beansOfType = applicationContext.getBeansOfType(CacheManager.class);
         beansOfType.values().forEach(cacheManager -> {
-            Cache cache = cacheManager.getCache(DingTalkCache.DING_TALK_APP);
+            Cache cache = cacheManager.getCache(DingTalkCache.APP);
             if (cache != null) {
-                cache.clear();
+                /* 清除指定 key 的缓存 */
+//                cache.evict("all");
+                /* 清除所有的缓存 */
+//                cache.clear();
             }
         });
     }

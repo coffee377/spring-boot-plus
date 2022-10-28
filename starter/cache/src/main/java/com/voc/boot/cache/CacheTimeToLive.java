@@ -12,6 +12,7 @@ import java.time.Duration;
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/11/18 18:16
+ * @since 0.1.0
  */
 public interface CacheTimeToLive extends InitializingBean {
 

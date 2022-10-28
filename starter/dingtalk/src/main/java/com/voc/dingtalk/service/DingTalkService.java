@@ -1,6 +1,7 @@
 package com.voc.dingtalk.service;
 
-import com.voc.dingtalk.autoconfigure.App;
+import com.voc.dingtalk.autoconfigure.model.App;
+import com.voc.dingtalk.autoconfigure.model.Robot;
 
 import java.util.List;
 
@@ -9,9 +10,9 @@ import java.util.List;
  * @email coffee377@dingtalk.com
  * @time 2021/06/10 11:10
  */
-public interface IDingTalkService {
+public interface DingTalkService {
     /**
-     * 获取企业ID
+     * 获取企业 ID
      *
      * @return String
      */
@@ -23,4 +24,11 @@ public interface IDingTalkService {
      * @return App
      */
     List<App> getApps();
+
+    /**
+     * 获取所有配置的机器人
+     *
+     * @return Robot
+     */
+    List<Robot> getRobots();
 }

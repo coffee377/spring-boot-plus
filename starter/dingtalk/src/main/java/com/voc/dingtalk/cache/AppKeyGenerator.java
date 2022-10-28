@@ -1,8 +1,8 @@
 package com.voc.dingtalk.cache;
 
 import com.voc.dingtalk.annotation.PrimaryApp;
-import com.voc.dingtalk.autoconfigure.App;
-import com.voc.dingtalk.service.IAppService;
+import com.voc.dingtalk.autoconfigure.model.App;
+import com.voc.dingtalk.service.AppService;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -19,9 +19,9 @@ import java.lang.reflect.Method;
 @Component("appKeyGenerator")
 public class AppKeyGenerator implements KeyGenerator {
 
-    private final IAppService appService;
+    private final AppService appService;
 
-    public AppKeyGenerator(IAppService appService) {
+    public AppKeyGenerator(AppService appService) {
         this.appService = appService;
     }
 
