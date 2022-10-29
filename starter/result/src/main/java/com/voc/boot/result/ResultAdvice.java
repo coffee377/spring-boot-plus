@@ -124,12 +124,8 @@ public class ResultAdvice implements ResponseBodyAdvice<Object>, ApplicationCont
             log.debug("类上注解 value：{} wrapped：{}", classAnnotation.value(), classAnnotation.wrapped());
             return classAnnotation.value();
         }
+
         /* 3. 注解都不存在时返回全局开关 */
-        Boolean enable = resultProperties.getWrapper().getEnable();
-        if (enable != null) {
-            return enable;
-        }
-        /* 4. 否则，默认开启 */
-        return true;
+        return resultProperties.getWrapper().isEnable();
     }
 }

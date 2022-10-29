@@ -1,6 +1,6 @@
 package net.jqsoft.result;
 
-import com.voc.boot.result.properties.ResultWrapperProperties;
+import com.voc.boot.result.properties.ResultWrapper;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -20,7 +20,7 @@ public @interface EnableResult {
 
     /**
      * 是否兼容老代码，即不改变已有代码的逻辑
-     * <p>如果兼容老代码，则 {@link ResultWrapperProperties#getEnable()} 为 false，否则为 true</p>
+     * <p>如果兼容老代码，则 {@link ResultWrapper#isEnable()} 为 false，否则为 true</p>
      *
      * @return true or false
      */

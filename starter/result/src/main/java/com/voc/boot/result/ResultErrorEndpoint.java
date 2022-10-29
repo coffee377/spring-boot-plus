@@ -1,6 +1,5 @@
 package com.voc.boot.result;
 
-import com.voc.boot.result.annotation.ResponseResult;
 import com.voc.common.api.biz.InternalBizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -32,17 +31,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("${server.error.path:${error.path:/error}}")
 @ConditionalOnProperty(prefix = "api.result", name = "exception-type", havingValue = "json", matchIfMissing = true)
-public class ResultErrorController extends AbstractErrorController implements ErrorController {
+public class ResultErrorEndpoint extends AbstractErrorController implements ErrorController {
 
     private final ErrorProperties errorProperties;
 
     /**
-     * Create a new {@link ResultErrorController} instance.
+     * Create a new {@link ResultErrorEndpoint} instance.
      *
      * @param errorAttributes  the error attributes
      * @param serverProperties configuration properties
      */
-    public ResultErrorController(ErrorAttributes errorAttributes, ServerProperties serverProperties) {
+    public ResultErrorEndpoint(ErrorAttributes errorAttributes, ServerProperties serverProperties) {
         super(errorAttributes);
         this.errorProperties = serverProperties.getError();
     }

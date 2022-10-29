@@ -1,7 +1,6 @@
 package com.voc.boot.result.properties;
 
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * {@link com.voc.boot.result.Result} 序列化后字段名称配置
@@ -11,8 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @time 2021/04/25 13:40
  */
 @Data
-@ConfigurationProperties(prefix = "api.result.json")
-public class JsonFieldProperties {
+public class JsonField {
 
     /**
      * 请求是否成功字段名称

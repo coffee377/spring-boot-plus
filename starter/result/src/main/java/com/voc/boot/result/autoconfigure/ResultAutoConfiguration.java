@@ -1,12 +1,13 @@
 package com.voc.boot.result.autoconfigure;
 
+import com.fasterxml.jackson.databind.Module;
 import com.voc.boot.result.ResultAdvice;
-import com.voc.boot.result.ResultErrorController;
+import com.voc.boot.result.ResultErrorEndpoint;
 import com.voc.boot.result.customizer.ResultPropertiesCustomizer;
 import com.voc.boot.result.customizer.ResultPropertiesCustomizerBeanPostProcessor;
-import com.voc.boot.result.properties.JsonFieldProperties;
+import com.voc.boot.result.json.ResultModule;
+import com.voc.boot.result.json.ResultSerializer;
 import com.voc.boot.result.properties.ResultProperties;
-import com.voc.boot.result.properties.ResultWrapperProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -22,12 +23,12 @@ import org.springframework.context.annotation.Import;
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2020/09/23 12:38
- * @see ResultErrorController
+ * @see ResultErrorEndpoint
  * @see ResultAdvice
  */
 @Configuration
-@Import({ResultAdvice.class, ResultErrorController.class})
-@EnableConfigurationProperties({ResultProperties.class, ResultWrapperProperties.class, JsonFieldProperties.class})
+@Import({ResultAdvice.class, ResultErrorEndpoint.class})
+@EnableConfigurationProperties({ResultProperties.class})
 @AutoConfigureBefore(ErrorMvcAutoConfiguration.class)
 public class ResultAutoConfiguration {
 
@@ -43,16 +44,15 @@ public class ResultAutoConfiguration {
         return new ResultPropertiesCustomizerBeanPostProcessor(provider);
     }
 
-//    @Bean
-//    @ConditionalOnMissingBean
-//    ResultSerializer resultSerializer(ResultProperties resultProperties) {
-//        return new ResultSerializer(resultProperties);
-//    }
+    @Bean
+    @ConditionalOnMissingBean
+    ResultSerializer resultSerializer(ResultProperties resultProperties) {
+        return new ResultSerializer(resultProperties);
+    }
 
-//    @Bean
-//    @ConditionalOnClass(Jackson2ObjectMapperBuilder.class)
-//    ResultJackson2ObjectMapperBuilder resultJackson2ObjectMapperBuilder(ResultSerializer resultSerializer) {
-//        return new ResultJackson2ObjectMapperBuilder(resultSerializer);
-//    }
+    @Bean
+    Module resultModule(ResultSerializer resultSerializer){
+        return new ResultModule(resultSerializer);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.voc.boot.result.properties;
 
+import com.voc.boot.result.IResult;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -22,13 +23,18 @@ public class ResultProperties {
      * 响应结果包装配置
      */
     @NestedConfigurationProperty
-    private ResultWrapperProperties wrapper = new ResultWrapperProperties();
+    private ResultWrapper wrapper = new ResultWrapper();
 
     /**
      * Result 序列化名称配置
      */
     @NestedConfigurationProperty
-    private JsonFieldProperties json = new JsonFieldProperties();
+    private JsonField json = new JsonField();
+
+    /**
+     * 序列化 {@link IResult#getCode()} （必须是 Number 类型字符串）时，是否以 {@link Number} 进行输出
+     */
+    private boolean codeAsNumber;
 
 }
 
