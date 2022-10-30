@@ -23,8 +23,7 @@ import org.springframework.security.oauth2.server.resource.web.DefaultBearerToke
 @AutoConfigureAfter(SecurityAutoConfiguration.class)
 @ConditionalOnClass(DefaultAuthenticationEventPublisher.class)
 @EnableConfigurationProperties({ResourceServerProperties.class})
-@Import({ResourceServerConfiguration.class}
-)
+@Import({ResourceServerConfiguration.class})
 public class ResourceServerAutoConfiguration {
 
     @Bean

@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
  * @time 2022/04/04 12:59
  */
 @Configuration
-public class RestfulAuthenticationConfiguration {
+public class ResultAuthenticationConfiguration {
 
     /**
      * 认证异常处理器

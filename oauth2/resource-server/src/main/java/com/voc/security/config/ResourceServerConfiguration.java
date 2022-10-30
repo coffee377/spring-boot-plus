@@ -1,16 +1,14 @@
 package com.voc.security.config;
 
+import com.voc.security.core.authentication.ResultAccessDeniedHandler;
+import com.voc.security.core.authentication.ResultAuthenticationEntryPoint;
+import com.voc.security.core.authentication.filter.RestfulAuthenticationFilter;
 import com.voc.security.web.configurers.BearerTokenAuthenticationFilterConfigurer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 /**
  * @author Wu Yujie
@@ -20,20 +18,13 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @EnableWebSecurity
 public class ResourceServerConfiguration {
 
-//    @Resource
-//    private AuthenticationEntryPoint restfulAuthenticationEntryPoint;
 
-//    @Resource
-//    private AccessDeniedHandler restfulAccessDeniedHandler;
-
-//    @Resource
-//    private AuthenticationFailureHandler restfulAuthenticationFailureHandler;
 
     @Bean
     SecurityFilterChain restfulSecurityFilterChain(HttpSecurity http,
-                                                   @Autowired(required = false) AuthenticationEntryPoint restfulAuthenticationEntryPoint,
-                                                   @Autowired(required = false) AccessDeniedHandler restfulAccessDeniedHandler,
-                                                   @Autowired(required = false) AuthenticationFailureHandler restfulAuthenticationFailureHandler
+                                                   ResultAuthenticationEntryPoint resultAuthenticationEntryPoint,
+                                                   ResultAccessDeniedHandler resultAccessDeniedHandler,
+                                                   RestfulAuthenticationFilter restfulAuthenticationFilter
 
     ) throws Exception {
         /* 1. 禁用 session */
@@ -41,30 +32,39 @@ public class ResourceServerConfiguration {
 
         /* 2. 异常处理 */
         http.exceptionHandling(handling -> {
-            handling.authenticationEntryPoint(restfulAuthenticationEntryPoint);
-            handling.accessDeniedHandler(restfulAccessDeniedHandler);
+            handling.authenticationEntryPoint(resultAuthenticationEntryPoint);
+            handling.accessDeniedHandler(resultAccessDeniedHandler);
         });
 
         http.apply(new BearerTokenAuthenticationFilterConfigurer<>());
 
         /* oauth2 资源服务配置 */
         http.oauth2ResourceServer(configurer -> {
-            configurer.authenticationEntryPoint(restfulAuthenticationEntryPoint);
-            configurer.accessDeniedHandler(restfulAccessDeniedHandler);
+            configurer.authenticationEntryPoint(resultAuthenticationEntryPoint);
+            configurer.accessDeniedHandler(resultAccessDeniedHandler);
 //            configurer.jwt();
             configurer.opaqueToken();
         });
 
         /* 权限配置 */
-        http.authorizeRequests(
-                authorize -> {
-                    authorize
-                            .antMatchers(HttpMethod.OPTIONS).permitAll()
-                            .antMatchers("/messages/**").access("hasAuthority('SCOPE_message.read')")
-                            .antMatchers("/menus/**").access("hasAuthority('SCOPE_menu.read')")
-                            .anyRequest().authenticated();
-                }
-        );
+//        http.authorizeRequests(
+//                authorize -> {
+//                    authorize
+//                            .antMatchers(HttpMethod.OPTIONS).permitAll()
+//                            .antMatchers("/messages/**").access("hasAuthority('SCOPE_message.read')")
+//                            .antMatchers("/menus/**").access("hasAuthority('SCOPE_menu.read')")
+//                            .anyRequest().authenticated();
+//
+//                }
+//        );
+
+        http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
+            authorizationManagerRequestMatcherRegistry
+                    .antMatchers("/**").hasRole("")
+                    .anyRequest().authenticated();
+//                    .anyRequest().access()
+        });
+
 
         return http.build();
     }

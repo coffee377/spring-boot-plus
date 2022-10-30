@@ -1,4 +1,4 @@
-package com.voc.security.core.authentication.filter;
+package com.voc.security.oauth2;
 
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;

@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 
 /**
- * OAuth2AccessToken => Map
+ * {@link Map} => {@link OAuth2AccessToken}
  *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
@@ -21,14 +21,17 @@ public class OAuth2AccessTokenResponseConverter implements Converter<Map<String,
                     OAuth2ParameterNames.REFRESH_TOKEN, OAuth2ParameterNames.SCOPE, OAuth2ParameterNames.TOKEN_TYPE));
 
     @Override
-    public OAuth2AccessTokenResponse convert(Map<String, Object> tokenResponseParameters) {
-        String accessToken = (String) tokenResponseParameters.get(OAuth2ParameterNames.ACCESS_TOKEN);
-        OAuth2AccessToken.TokenType accessTokenType = getAccessTokenType(tokenResponseParameters);
-        long expiresIn = getExpiresIn(tokenResponseParameters);
-        Set<String> scopes = getScopes(tokenResponseParameters);
-        String refreshToken = (String) tokenResponseParameters.get(OAuth2ParameterNames.REFRESH_TOKEN);
+    public OAuth2AccessTokenResponse convert(Map<String, Object> source) {
+        /* 非标准 OAuth 参数转换 */
+        dingTalkConvert(source);
+
+        String accessToken = getParameterValue(source, OAuth2ParameterNames.ACCESS_TOKEN);
+        OAuth2AccessToken.TokenType accessTokenType = getAccessTokenType(source);
+        long expiresIn = getExpiresIn(source);
+        Set<String> scopes = getScopes(source);
+        String refreshToken = getParameterValue(source, OAuth2ParameterNames.REFRESH_TOKEN);
         Map<String, Object> additionalParameters = new LinkedHashMap<>();
-        for (Map.Entry<String, Object> entry : tokenResponseParameters.entrySet()) {
+        for (Map.Entry<String, Object> entry : source.entrySet()) {
             if (!TOKEN_RESPONSE_PARAMETER_NAMES.contains(entry.getKey())) {
                 additionalParameters.put(entry.getKey(), entry.getValue());
             }
@@ -42,29 +45,67 @@ public class OAuth2AccessTokenResponseConverter implements Converter<Map<String,
                 .build();
     }
 
-    private OAuth2AccessToken.TokenType getAccessTokenType(Map<String, Object> tokenResponseParameters) {
+    private void dingTalkConvert(Map<String, Object> source) {
+        replace(source, "accessToken", OAuth2ParameterNames.ACCESS_TOKEN);
+        replace(source, "refreshToken", OAuth2ParameterNames.REFRESH_TOKEN);
+        replace(source, "expireIn", OAuth2ParameterNames.EXPIRES_IN);
+        if (source.containsKey("corpId")) {
+            source.put(OAuth2ParameterNames.TOKEN_TYPE, OAuth2AccessToken.TokenType.BEARER.getValue());
+        }
+    }
+
+    private void replace(Map<String, Object> source, String key, String oauth2ParameterNames) {
+        if (source.containsKey(key)) {
+            source.put(oauth2ParameterNames, source.get(key));
+            source.remove(key);
+        }
+    }
+
+    private static OAuth2AccessToken.TokenType getAccessTokenType(Map<String, Object> tokenResponseParameters) {
         if (OAuth2AccessToken.TokenType.BEARER.getValue()
-                .equalsIgnoreCase((String) tokenResponseParameters.get(OAuth2ParameterNames.TOKEN_TYPE))) {
+                .equalsIgnoreCase(getParameterValue(tokenResponseParameters, OAuth2ParameterNames.TOKEN_TYPE))) {
             return OAuth2AccessToken.TokenType.BEARER;
         }
         return null;
     }
 
-    private long getExpiresIn(Map<String, Object> tokenResponseParameters) {
-        if (tokenResponseParameters.containsKey(OAuth2ParameterNames.EXPIRES_IN)) {
-            try {
-                return Long.parseLong((String) tokenResponseParameters.get(OAuth2ParameterNames.EXPIRES_IN));
-            } catch (NumberFormatException ex) {
-            }
-        }
-        return 0;
+    private static long getExpiresIn(Map<String, Object> tokenResponseParameters) {
+        return getParameterValue(tokenResponseParameters, OAuth2ParameterNames.EXPIRES_IN, 0L);
     }
 
-    private Set<String> getScopes(Map<String, Object> tokenResponseParameters) {
+    private static Set<String> getScopes(Map<String, Object> tokenResponseParameters) {
         if (tokenResponseParameters.containsKey(OAuth2ParameterNames.SCOPE)) {
-            String scope = (String) tokenResponseParameters.get(OAuth2ParameterNames.SCOPE);
+            String scope = getParameterValue(tokenResponseParameters, OAuth2ParameterNames.SCOPE);
             return new HashSet<>(Arrays.asList(StringUtils.delimitedListToStringArray(scope, " ")));
         }
         return Collections.emptySet();
+    }
+
+    private static String getParameterValue(Map<String, Object> tokenResponseParameters, String parameterName) {
+        Object obj = tokenResponseParameters.get(parameterName);
+        return (obj != null) ? obj.toString() : null;
+    }
+
+    private static long getParameterValue(Map<String, Object> tokenResponseParameters, String parameterName,
+                                          long defaultValue) {
+        long parameterValue = defaultValue;
+
+        Object obj = tokenResponseParameters.get(parameterName);
+        if (obj != null) {
+            // Final classes Long and Integer do not need to be coerced
+            if (obj.getClass() == Long.class) {
+                parameterValue = (Long) obj;
+            } else if (obj.getClass() == Integer.class) {
+                parameterValue = (Integer) obj;
+            } else {
+                // Attempt to coerce to a long (typically from a String)
+                try {
+                    parameterValue = Long.parseLong(obj.toString());
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        }
+
+        return parameterValue;
     }
 }

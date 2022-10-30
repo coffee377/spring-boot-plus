@@ -1,4 +1,4 @@
-package org.springframework.security.oauth2.client.endpoint;
+package com.voc.security.oauth2;
 
 import lombok.Builder;
 import lombok.Data;
@@ -9,8 +9,8 @@ import lombok.Data;
  * @time 2022/05/03 22:42
  */
 @Data
-@Builder
-public class DingTalkAuth {
+@Builder(builderClassName = "Builder")
+public class DingTalkOAuth2TokenRequest {
 
     private String clientId;
 

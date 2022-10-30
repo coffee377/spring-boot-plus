@@ -28,6 +28,7 @@ dependencyManagement {
 subprojects {
 
   group = "com.voc"
+  apply<MavenPublishPlugin>()
 
   if (!project.name.endsWith("dependencies")) {
 
@@ -63,6 +64,15 @@ subprojects {
     }
   } else {
     println(project.name)
+  }
+
+  publishing {
+    repositories {
+      maven {
+        name = "local"
+        url = uri("${rootProject.buildDir}/publications/repos")
+      }
+    }
   }
 
   dependencies {

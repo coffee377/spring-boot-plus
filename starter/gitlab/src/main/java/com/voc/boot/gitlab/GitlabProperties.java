@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @time 2022/08/13 10:34
  */
 @Data
-@ConfigurationProperties(prefix = GitlabProperties.PREFIX)
+@ConfigurationProperties(GitlabProperties.PREFIX)
 public class GitlabProperties implements InitializingBean {
 
 

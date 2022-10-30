@@ -4,7 +4,7 @@ val starter = "spring-boot-starter"
 dependencies {
   implementation(project(":$common:$common-api"))
   implementation(project(":$starter:$starter-cache"))
-  implementation(project(":$starter:$starter-result"))
+//  implementation(project(":$starter:$starter-result"))
   implementation(libs.bundles.dingtalk) {
     /* 旧版 SDK 排除项 */
     exclude(group = "commons-logging", module = "commons-logging")

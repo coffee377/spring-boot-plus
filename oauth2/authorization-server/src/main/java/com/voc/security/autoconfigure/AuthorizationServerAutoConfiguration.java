@@ -17,11 +17,10 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
  * @time 2021/06/14 08:27
  */
 @Configuration
-//@EnableCaching
 @ConditionalOnClass(DefaultAuthenticationEventPublisher.class)
 @EnableConfigurationProperties({AuthorizationServerProperties.class})
 @AutoConfigureAfter(SecurityAutoConfiguration.class)
 @Import({AuthorizationServerImport.class})
-//@ComponentScan("com.voc.security")
+@ComponentScan("com.voc.security")
 public class AuthorizationServerAutoConfiguration {
 }

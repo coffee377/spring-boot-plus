@@ -1,6 +1,8 @@
 package com.voc.boot.result.response.impl;
 
 import com.voc.boot.result.Result;
+import com.voc.boot.result.properties.ResultProperties;
+import com.voc.boot.result.properties.ResultWrapper;
 import com.voc.boot.result.response.ResponseHandler;
 import com.voc.common.api.biz.IBizStatus;
 import com.voc.common.api.biz.InternalBizStatus;
@@ -32,11 +34,13 @@ public class ResultResponseHandler implements ResponseHandler<Result>, Applicati
     protected ApplicationContext context;
 
     private List<HttpMessageConverter> converters;
+    private ResultWrapper resultWrapper;
 
     @Override
     public void setApplicationContext(ApplicationContext context) throws BeansException {
         this.context = context;
         converters = context.getBeanProvider(HttpMessageConverter.class).orderedStream().collect(Collectors.toList());
+        resultWrapper = context.getBean(ResultProperties.class).getWrapper();
     }
 
     @Override
@@ -72,7 +76,8 @@ public class ResultResponseHandler implements ResponseHandler<Result>, Applicati
         for (HttpMessageConverter converter : converters) {
             boolean canWrite = converter.canWrite(Result.class, mediaType);
             if (canWrite) {
-                converter.write(getResult(), mediaType, servletServerHttpResponse);
+                Object data = resultWrapper.isEnable() ? getResult() : getResult().getData();
+                converter.write(data, mediaType, servletServerHttpResponse);
                 break;
             }
         }

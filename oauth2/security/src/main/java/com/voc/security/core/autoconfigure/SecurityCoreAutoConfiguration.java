@@ -3,7 +3,7 @@ package com.voc.security.core.autoconfigure;
 import com.voc.security.core.authentication.DefaultUserDetailService;
 import com.voc.security.core.props.RootAccountProperties;
 import com.voc.security.core.props.SecurityProperties;
-import com.voc.security.core.autoconfigure.config.RestfulAuthenticationConfiguration;
+import com.voc.security.core.autoconfigure.config.ResultAuthenticationConfiguration;
 import com.voc.security.core.service.AuthService;
 import com.voc.security.core.service.impl.RootAccountService;
 import org.springframework.beans.factory.ObjectProvider;
@@ -29,7 +29,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableConfigurationProperties({SecurityProperties.class, RootAccountProperties.class})
 @ConditionalOnClass(DefaultAuthenticationEventPublisher.class)
 @AutoConfigureAfter(SecurityAutoConfiguration.class)
-@Import({RestfulAuthenticationConfiguration.class, SecurityImport.class,})
+@Import({ResultAuthenticationConfiguration.class, SecurityImport.class,})
 public class SecurityCoreAutoConfiguration {
 
     /**

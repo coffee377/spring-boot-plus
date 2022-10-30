@@ -3,7 +3,6 @@ package com.voc.dingtalk.controller;
 import com.dingtalk.api.response.OapiV2DepartmentListsubResponse;
 import com.dingtalk.api.response.OapiV2UserGetResponse;
 import com.dingtalk.api.response.OapiV2UserListResponse;
-import com.voc.boot.result.annotation.ResponseResult;
 import com.voc.dingtalk.autoconfigure.model.App;
 import com.voc.dingtalk.service.AppService;
 import com.voc.dingtalk.service.ContactsService;
@@ -60,7 +59,6 @@ public class DingTalkController {
      * @return 应用访问令牌
      */
     @GetMapping("/app/primary/access_token")
-    @ResponseResult
     public String getPrimaryAppAccessToken() {
         return appService.getPrimaryAccessToken();
     }

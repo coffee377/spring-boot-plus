@@ -42,7 +42,7 @@ publishing {
     }
   }
   publications {
-    create<MavenPublication>("myPlatform") {
+    create<MavenPublication>("Bom") {
       from(components["javaPlatform"])
     }
   }

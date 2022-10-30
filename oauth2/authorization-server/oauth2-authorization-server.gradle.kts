@@ -1,8 +1,10 @@
+val starter = "spring-boot-starter"
+
 dependencies {
   implementation(project(":common:common-api"))
   implementation(project(":${parent?.name}:${parent?.name}-security"))
-  implementation(project(":spring-boot-starter:spring-boot-starter-cache"))
-  implementation(project(":spring-boot-starter:spring-boot-starter-result"))
+  implementation(project(":$starter:$starter-cache"))
+  implementation(project(":$starter:$starter-result"))
 
   implementation("mysql:mysql-connector-java")
 
