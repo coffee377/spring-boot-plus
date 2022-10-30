@@ -1,4 +1,4 @@
-package com.voc.security.oauth2;
+package com.voc.security.oauth2.client.dingtalk;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

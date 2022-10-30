@@ -15,9 +15,6 @@ dependencies {
 //  implementation("org.springframework.boot:spring-boot-starter-jdbc")
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-  /* redis 缓存 */
-//  implementation("org.springframework.boot:spring-boot-starter-cache")
-//  implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
   /* 认证服务器 */
 //  implementation("org.springframework.security:spring-security-oauth2-authorization-server")
@@ -25,6 +22,10 @@ dependencies {
 //  implementation("org.springframework.security:spring-security-oauth2-authorization-server")
   implementation(libs.spring.authorization.server)
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+
+  /* 页面 */
+  implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+  implementation("org.thymeleaf:thymeleaf-spring5")
 
   implementation("org.mapstruct:mapstruct")
   annotationProcessor("org.mapstruct:mapstruct-processor")

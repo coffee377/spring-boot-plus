@@ -1,6 +1,7 @@
 package com.voc.security.oauth2;
 
 import com.voc.security.core.authentication.AuthProvider;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 
 /**
  * @author WuYujie
@@ -10,21 +11,27 @@ import com.voc.security.core.authentication.AuthProvider;
 public interface OAuth2Provider extends AuthProvider {
 
     /**
-     * 第三方应用 ID
+     * 默认重定向地址
      */
-    String getClientId();
+    String DEFAULT_REDIRECT_URL = "{baseUrl}/{action}/oauth2/code/{registrationId}";
+
+    String DEFAULT_ISSUER_URI = "{baseUrl}";
 
     /**
-     * 用户在第三方平台唯一 ID
+     * Create a new
+     * {@link org.springframework.security.oauth2.client.registration.ClientRegistration.Builder
+     * ClientRegistration.Builder} pre-configured with provider defaults.
      *
-     * @return
+     * @param registrationId the registration-id used with the new builder
+     * @return a builder instance
      */
-    String getUnionId();
+    ClientRegistration.Builder getBuilder(String registrationId);
 
     /**
-     * 用户在第三方平台某个开放应用 ID
+     * 获取 OAuth2 提供商描述信息
      *
-     * @return
+     * @return 描述信息
      */
-    String getOpenId();
+    String getDescription();
+
 }

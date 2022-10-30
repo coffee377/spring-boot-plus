@@ -30,14 +30,14 @@ public class TokenProperties {
     private String bearerTokenHeaderName = "Authorization";
 
     /**
-     * access_token 有效时间，默认 2h
+     * access_token 有效时间，默认 2m
      */
-    private Duration accessTokenExpiresIn = Duration.ofHours(2);
+    private Duration accessTokenExpiresIn = Duration.ofMinutes(5);
 
     /**
-     * refresh_token 有效时间，默认 30d
+     * refresh_token 有效时间，默认 7d
      */
-    private Duration refreshTokenExpiresIn = Duration.ofDays(30);
+    private Duration refreshTokenExpiresIn = Duration.ofDays(7);
 
     /**
      * 在线令牌并发数
@@ -57,7 +57,7 @@ public class TokenProperties {
     boolean invalidWhenCacheNotExist;
 
     /**
-     * TOKEN 驱逐策略
+     * TOKEN 并发驱逐策略
      */
     enum TokenConcurrencyStrategy {
         NONE,

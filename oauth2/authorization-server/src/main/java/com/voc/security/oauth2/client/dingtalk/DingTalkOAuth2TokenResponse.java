@@ -1,4 +1,4 @@
-package com.voc.security.oauth2;
+package com.voc.security.oauth2.client.dingtalk;
 
 import lombok.Builder;
 import lombok.Data;

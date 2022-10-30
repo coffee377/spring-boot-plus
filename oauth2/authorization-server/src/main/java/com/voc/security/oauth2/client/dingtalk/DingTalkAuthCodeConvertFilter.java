@@ -1,4 +1,4 @@
-package com.voc.security.oauth2;
+package com.voc.security.oauth2.client.dingtalk;
 
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -26,6 +26,7 @@ import java.util.Map;
 public class DingTalkAuthCodeConvertFilter extends OncePerRequestFilter {
 
     public static final String AUTH_CODE = "authCode";
+
     private RequestMatcher requestMatcher = new AndRequestMatcher(
             new AntPathRequestMatcher("/login/oauth2/code/*")
     );

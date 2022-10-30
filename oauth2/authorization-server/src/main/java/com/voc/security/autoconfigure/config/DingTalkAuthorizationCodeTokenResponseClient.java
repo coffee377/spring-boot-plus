@@ -6,7 +6,7 @@
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.http.converter.FormHttpMessageConverter;
 //import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-//import com.voc.security.oauth2.DingTalkOAuth2AuthorizationCodeGrantRequestEntityConverter;
+//import com.voc.security.oauth2.client.dingtalk.DingTalkOAuth2AuthorizationCodeGrantRequestEntityConverter;
 //import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 //import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 //import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;

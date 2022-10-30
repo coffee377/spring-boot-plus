@@ -15,7 +15,7 @@ spring:
       schema-locations:
         - classpath:META-INF/oauth2.sql
   #      data-locations:
-#        - classpath:META-INF/oauth2-data.sql
+  #        - classpath:META-INF/oauth2-data.sql
   redis:
     host: 127.0.0.1
     password: tvoc.site.redis
@@ -24,44 +24,15 @@ spring:
       client:
         registration:
           dingtalk:
-#            client-id: dingpq80f8uhg9z6vx3l
             client-id: dingopfniakkw72klkjv
-#            client-secret: Ukz2CfV2i4mLnF34K3sZPBVbTZimFZ24eHmA9ze0TZwK4TJ4Jm7umm-fbQDqfch9
             client-secret: 6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR
-#            client-authentication-method: none
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            scope:
-#              - openid
-              - corpid
-            client-name: DingTalk
           github:
             client-id: db3bd3536a1d3163acf9
             client-secret: f7170889aefcb05ed1c5b316c08c00eb5c315374
-        provider:
-          dingtalk:
-            authorization-uri: https://login.dingtalk.com/oauth2/auth # 获取访问凭证 https://open.dingtalk.com/document/orgapp-server/obtain-identity-credentials
-            token-uri: https://api.dingtalk.com/v1.0/oauth2/userAccessToken # 获取用户访问令牌 https://open.dingtalk.com/document/orgapp-server/obtain-user-token
-            user-info-uri: https://api.dingtalk.com/v1.0/contact/users/me # 获取通讯录个人信息 https://open.dingtalk.com/document/isvapp-server/dingtalk-retrieve-user-information
-            user-info-authentication-method: get
-            user-name-attribute: nick
-#logging:
-#  level:
-#    root: warn
-#    org:
-#      mybatis:
-#        spring:
-#          mapper: error
-#      springframework:
-#        security:
-#          config:
-#            annotation:
-#              web:
-#                builders: error
-#    io:
-#      undertow:
-#        websockets:
-#          jsr: error
+#          test:
+#            provider: native
+#            client-id: demo
+#            client-secret: "{noop}123456"
 mybatis-plus:
   global-config:
     banner: false

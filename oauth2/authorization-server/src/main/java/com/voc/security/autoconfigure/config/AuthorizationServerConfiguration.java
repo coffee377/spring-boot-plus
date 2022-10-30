@@ -21,8 +21,6 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -72,6 +70,7 @@ public class AuthorizationServerConfiguration {
 //                .authorizationServerSettings(authorizationServerSettings)
 //                .tokenGenerator(tokenGenerator)
                 .clientAuthentication(clientAuthentication -> {
+
                 })
                 /* 授权端点 */
                 .authorizationEndpoint(authorizationEndpoint -> {
@@ -111,6 +110,37 @@ public class AuthorizationServerConfiguration {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
+        RegisteredClient dingtalk = RegisteredClient.withId("1")
+                .clientId("dingopfniakkw72klkjv")
+                .clientName("DingTalk")
+                .clientSecret("{noop}6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/dingtalk")
+                .scope(OidcScopes.OPENID)
+                .scope("corpid")
+                .clientSettings(
+                        ClientSettings.builder()
+                                // 是否需要用户确认一下客户端需要获取用户的哪些权限
+                                // 比如：客户端需要获取用户的 用户信息、用户照片 但是此处用户可以控制只给客户端授权获取 用户信息。
+                                .requireAuthorizationConsent(true)
+                                .build()
+                )
+                .tokenSettings(
+                        TokenSettings.builder()
+                                // accessToken 的有效期
+                                .accessTokenTimeToLive(Duration.ofHours(2))
+                                // 访问令牌格式
+                                .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
+                                // refreshToken 的有效期
+                                .refreshTokenTimeToLive(Duration.ofDays(7))
+                                // 是否可重用刷新令牌
+                                .reuseRefreshTokens(false)
+                                .build()
+                )
+                .build();
+
         RegisteredClient demoClient = RegisteredClient.withId("2")
                 .clientId("demo")
                 .clientName("演示客户端")
@@ -152,7 +182,7 @@ public class AuthorizationServerConfiguration {
 //        cacheRegisteredClientRepository.save(demoClient);
 //        return cacheRegisteredClientRepository;
 
-        return new InMemoryRegisteredClientRepository(demoClient);
+        return new InMemoryRegisteredClientRepository(dingtalk, demoClient);
 
     }
 

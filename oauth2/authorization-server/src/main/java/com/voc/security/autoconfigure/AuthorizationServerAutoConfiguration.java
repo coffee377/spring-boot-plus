@@ -19,7 +19,7 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
 @Configuration
 @ConditionalOnClass(DefaultAuthenticationEventPublisher.class)
 @EnableConfigurationProperties({AuthorizationServerProperties.class})
-@AutoConfigureAfter(SecurityAutoConfiguration.class)
+//@AutoConfigureAfter(SecurityAutoConfiguration.class)
 @Import({AuthorizationServerImport.class})
 @ComponentScan("com.voc.security")
 public class AuthorizationServerAutoConfiguration {
