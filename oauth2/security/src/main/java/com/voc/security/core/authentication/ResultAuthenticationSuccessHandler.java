@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
@@ -63,6 +64,9 @@ public class ResultAuthenticationSuccessHandler extends ResultResponseHandler im
      * @return TokenResult
      */
     private OAuth2AccessTokenResponse genToken(Authentication authentication) {
+        if (authentication instanceof OAuth2LoginAuthenticationToken) {
+
+        }
         if (authentication instanceof OAuth2AccessTokenAuthenticationToken) {
             return token4OAuth2(authentication);
         }

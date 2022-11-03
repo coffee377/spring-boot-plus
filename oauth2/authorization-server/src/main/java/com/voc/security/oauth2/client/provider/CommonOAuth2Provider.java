@@ -80,6 +80,22 @@ public enum CommonOAuth2Provider implements OAuth2Provider {
         }
     },
 
+    /**
+     * <a href="https://gitee.com/api/v5/oauth_doc">OAuth 文档</a>
+     */
+    GITEE("Gitee"){
+        @Override
+        public ClientRegistration.Builder getBuilder(String registrationId) {
+            ClientRegistration.Builder builder = getBuilder(registrationId, ClientAuthenticationMethod.CLIENT_SECRET_POST, DEFAULT_REDIRECT_URL);
+            builder.authorizationUri("https://gitee.com/oauth/authorize");
+            builder.tokenUri("https://gitee.com/oauth/token");
+            builder.userInfoUri("https://gitee.com/api/v5/user");
+            builder.userInfoAuthenticationMethod(AuthenticationMethod.QUERY);
+            builder.userNameAttributeName("name");
+            return builder;
+        }
+    },
+
     NATIVE("") {
         @Override
         public ClientRegistration.Builder getBuilder(String registrationId) {

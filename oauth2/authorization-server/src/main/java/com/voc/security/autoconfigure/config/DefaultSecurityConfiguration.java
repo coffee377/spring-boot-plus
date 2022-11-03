@@ -1,5 +1,7 @@
 package com.voc.security.autoconfigure.config;
 
+import com.voc.security.core.authentication.ResultAuthenticationFailureHandler;
+import com.voc.security.core.authentication.ResultAuthenticationSuccessHandler;
 import com.voc.security.core.authentication.converter.OAuth2AccessTokenResponseConverter;
 import com.voc.security.oauth2.client.dingtalk.DingTalkAuthCodeConvertFilter;
 import com.voc.security.oauth2.client.dingtalk.DingTalkOAuth2AuthorizationCodeGrantRequestEntityConverter;
@@ -29,6 +31,7 @@ import org.springframework.security.oauth2.core.http.converter.OAuth2AccessToken
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -87,7 +90,9 @@ public class DefaultSecurityConfiguration {
     @Order(10)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http,
                                                           OAuth2AuthorizationRequestResolver authorizationRequestResolver,
-                                                          OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> authorizationCodeTokenResponseClient
+                                                          OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> authorizationCodeTokenResponseClient,
+                                                          ResultAuthenticationFailureHandler resultAuthenticationFailureHandler,
+                                                          ResultAuthenticationSuccessHandler resultAuthenticationSuccessHandler
     ) throws Exception {
         http
                 .authorizeRequests((authorize) -> {
@@ -98,6 +103,8 @@ public class DefaultSecurityConfiguration {
                 .formLogin().and()
                 .httpBasic().and()
                 .oauth2Login(loginConfigurer -> {
+                    loginConfigurer.successHandler(resultAuthenticationSuccessHandler);
+                    loginConfigurer.failureHandler(resultAuthenticationFailureHandler);
 //                    loginConfigurer.clientRegistrationRepository()
                     loginConfigurer.authorizationEndpoint(authorizationEndpoint -> {
 //                        authorizationEndpoint.baseUri()
@@ -130,7 +137,7 @@ public class DefaultSecurityConfiguration {
     }
 
     @Bean
-    ClientRegistrationRepository inMemoryClientRegistrationRepository(OAuth2ClientProperties properties){
+    ClientRegistrationRepository inMemoryClientRegistrationRepository(OAuth2ClientProperties properties) {
         List<ClientRegistration> registrations = new ArrayList<>(OAuth2ClientRegistrationAdapter.getClientRegistrations(properties).values());
         return new InMemoryClientRegistrationRepository(registrations);
     }

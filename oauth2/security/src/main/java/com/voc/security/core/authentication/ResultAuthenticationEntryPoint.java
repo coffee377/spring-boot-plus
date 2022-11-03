@@ -3,6 +3,7 @@ package com.voc.security.core.authentication;
 import com.voc.boot.result.response.impl.ResultResponseHandler;
 import com.voc.common.api.biz.InternalBizStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.ProviderNotFoundException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -29,12 +30,16 @@ public class ResultAuthenticationEntryPoint extends ResultResponseHandler implem
      * @throws ServletException ServletException
      */
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         if (log.isDebugEnabled()) {
             log.debug("访问资源 {} 需要用户身份认证", request.getRequestURL().toString());
         }
 
-        this.setBizStatus(InternalBizStatus.UNAUTHORIZED);
+        if (exception instanceof ProviderNotFoundException) {
+            this.setBizStatus(InternalBizStatus.AUTHENTICATION_PROVIDER_NOT_FOUND);
+        } else {
+            this.setBizStatus(InternalBizStatus.UNAUTHORIZED);
+        }
         this.output(request, response);
     }
 

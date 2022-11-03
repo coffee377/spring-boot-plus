@@ -29,6 +29,9 @@ spring:
           github:
             client-id: db3bd3536a1d3163acf9
             client-secret: f7170889aefcb05ed1c5b316c08c00eb5c315374
+          gitee:
+            client-id: 96e5747bd3ba7792345f60d8812e1c579cee9c6557ef9bd377f3391d2cc9930c
+            client-secret: 278877235bd765f8912fc30e2cef06fbad72be331014dcc40175b7da70b02954
 #          test:
 #            provider: native
 #            client-id: demo
@@ -39,3 +42,12 @@ mybatis-plus:
 api:
   result:
     code-as-number: true
+logging:
+  level:
+    root: warn
+#    org.springframework: trace
+    org.springframework.security: trace
+#    org:
+#      springframework:
+#        security:
+#          authentication: trace

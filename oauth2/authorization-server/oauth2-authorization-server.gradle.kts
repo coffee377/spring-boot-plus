@@ -1,6 +1,8 @@
 val starter = "spring-boot-starter"
 
 dependencies {
+  implementation(platform(project(":spring-boot-plus-dependencies")))
+
   implementation(project(":common:common-api"))
   implementation(project(":${parent?.name}:${parent?.name}-security"))
   implementation(project(":$starter:$starter-cache"))
@@ -17,10 +19,7 @@ dependencies {
 
 
   /* 认证服务器 */
-//  implementation("org.springframework.security:spring-security-oauth2-authorization-server")
-//  implementation(files("${rootDir}/libs/spring-security-oauth2-authorization-server-0.3.2.jar"))
-//  implementation("org.springframework.security:spring-security-oauth2-authorization-server")
-  implementation(libs.spring.authorization.server)
+  implementation("org.springframework.security:spring-security-oauth2-authorization-server")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
   /* 页面 */

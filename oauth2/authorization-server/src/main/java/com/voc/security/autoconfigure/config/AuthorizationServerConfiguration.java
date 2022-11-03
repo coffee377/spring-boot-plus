@@ -9,6 +9,8 @@ import com.voc.security.core.authentication.ResultAuthenticationEntryPoint;
 import com.voc.security.core.authentication.ResultAuthenticationFailureHandler;
 import com.voc.security.core.authentication.ResultAuthenticationSuccessHandler;
 import com.voc.security.jose.Jwks;
+import com.voc.security.oauth2.servcer.OAuth2UsernamePasswordAuthenticationConverter;
+import com.voc.security.oauth2.servcer.OAuth2UsernamePasswordAuthenticationProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,8 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -55,6 +59,12 @@ public class AuthorizationServerConfiguration {
     @Resource
     ResultAuthenticationSuccessHandler resultAuthenticationSuccessHandler;
 
+    @Resource
+    UserDetailsService userDetailsService;
+
+    @Resource
+    PasswordEncoder passwordEncoder;
+
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -69,8 +79,15 @@ public class AuthorizationServerConfiguration {
 //                .authorizationConsentService(authorizationConsentService)
 //                .authorizationServerSettings(authorizationServerSettings)
 //                .tokenGenerator(tokenGenerator)
+                .authorizationServerMetadataEndpoint(metadataEndpoint -> {
+                    metadataEndpoint.authorizationServerMetadataCustomizer(builder -> {
+                                // oauth2 授权类型支持密码模式
+                                builder.grantType(AuthorizationGrantType.PASSWORD.getValue());
+                            }
+                    );
+                })
                 .clientAuthentication(clientAuthentication -> {
-
+//                    clientAuthentication.
                 })
                 /* 授权端点 */
                 .authorizationEndpoint(authorizationEndpoint -> {
@@ -78,6 +95,9 @@ public class AuthorizationServerConfiguration {
                 })
                 /* token 端点 */
                 .tokenEndpoint(tokenEndpoint -> {
+                    tokenEndpoint.accessTokenRequestConverter(new OAuth2UsernamePasswordAuthenticationConverter());
+                    OAuth2UsernamePasswordAuthenticationProvider passwordAuthenticationProvider = new OAuth2UsernamePasswordAuthenticationProvider(userDetailsService, passwordEncoder);
+                    tokenEndpoint.authenticationProvider(passwordAuthenticationProvider);
                     tokenEndpoint.accessTokenResponseHandler(resultAuthenticationSuccessHandler);
                     tokenEndpoint.errorResponseHandler(resultAuthenticationFailureHandler);
                 })
@@ -147,9 +167,11 @@ public class AuthorizationServerConfiguration {
                 .clientSecret("{noop}123456")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .authorizationGrantType(AuthorizationGrantType.PASSWORD)
                 .redirectUri("http://127.0.0.1:9000/login/oauth2/code/dingtalk")
                 .redirectUri("http://127.0.0.1:8090/callback")
                 .scope(OidcScopes.OPENID)
@@ -157,7 +179,9 @@ public class AuthorizationServerConfiguration {
                         ClientSettings.builder()
                                 // 是否需要用户确认一下客户端需要获取用户的哪些权限
                                 // 比如：客户端需要获取用户的 用户信息、用户照片 但是此处用户可以控制只给客户端授权获取 用户信息。
-                                .requireAuthorizationConsent(true)
+//                                .requireAuthorizationConsent(true)
+                                // 是否启用 PKCE 全称是 Proof Key for Code Exchange（代码交换证明密钥）
+//                                .requireProofKey(true)
                                 .build()
                 )
                 .tokenSettings(
