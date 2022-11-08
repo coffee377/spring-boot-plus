@@ -9,13 +9,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   sql:
     init:
-      continue-on-error: false
-      enabled: false # 首次执行时通过 -Dsql.init.enabled=true 来开启
       encoding: utf-8
       schema-locations:
         - classpath:META-INF/oauth2.sql
-  #      data-locations:
-  #        - classpath:META-INF/oauth2-data.sql
+        - classpath:org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql
+        - classpath:org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql
+        - classpath:org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql
   redis:
     host: 127.0.0.1
     password: tvoc.site.redis

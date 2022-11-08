@@ -1,10 +1,11 @@
 dependencies {
-  implementation(platform(project(":spring-boot-plus-dependencies")))
 
   implementation(project(":common:common-api"))
-  api(project(":spring-boot-starter:spring-boot-starter-result"))
+
   implementation("org.springframework.security:spring-security-crypto")
   implementation("org.springframework.security:spring-security-oauth2-core")
+
+  api(project(":spring-boot-starter:spring-boot-starter-result"))
 
   compileOnly("org.springframework.data:spring-data-commons")
   compileOnly("org.springframework.boot:spring-boot-starter-security")

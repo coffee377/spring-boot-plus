@@ -1,7 +1,6 @@
 val starter = "spring-boot-starter"
 
 dependencies {
-  implementation(platform(project(":spring-boot-plus-dependencies")))
 
   implementation(project(":common:common-api"))
   implementation(project(":${parent?.name}:${parent?.name}-security"))
@@ -27,7 +26,5 @@ dependencies {
   implementation("org.thymeleaf:thymeleaf-spring5")
 
   implementation("org.mapstruct:mapstruct")
-  annotationProcessor("org.mapstruct:mapstruct-processor")
-  annotationProcessor("org.projectlombok:lombok-mapstruct-binding")
 
 }

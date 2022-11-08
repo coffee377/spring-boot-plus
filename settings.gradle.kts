@@ -1,33 +1,25 @@
+import com.voc.gradle.plugin.extensions.AutoIncludeProjectExtension
+
 /* 根项目名称 */
 rootProject.name = "spring-boot-plus"
 
 pluginManagement {
   repositories {
-    maven { url = uri("D:\\Project\\personal\\gradle-devtools\\build\\publications\\repos") }
-    maven {
-      url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-public/")
-      isAllowInsecureProtocol = true
-    }
+//    maven { url = uri("D:\\Project\\personal\\gradle-devtools\\build\\publications\\repos") }
+//    maven {
+//      url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-public/")
+//      isAllowInsecureProtocol = true
+//    }
     gradlePluginPortal()
     maven { url = uri("https://repo.spring.io/plugins-release") }
   }
 
   plugins {
-    id("com.voc.auto") version "0.1.0"
-    id("org.jetbrains.kotlin.jvm") version "1.6.21"
-    id("org.asciidoctor.jvm.convert") version "3.3.2"
-    id("org.asciidoctor.jvm.pdf") version "3.3.2"
-    id("org.asciidoctor.jvm.epub") version "3.3.2"
-    id("com.github.shalousun.smart-doc") version "2.6.0-release"
-//    id("com.voc.auto").version("0.1.0")
-    id("com.gradle.plugin-publish") version "1.0.0"
-    id("org.springframework.boot") version "2.5.0.RELEASE"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("io.github.coffee377.auto-include") version "0.1.2"
   }
 }
 
 dependencyResolutionManagement {
-
   versionCatalogs {
 
     /* 钉钉 API */
@@ -79,5 +71,11 @@ dependencyResolutionManagement {
 }
 
 plugins {
-//  id("com.voc.auto")
+  id("io.github.coffee377.auto-include")
 }
+
+configure<AutoIncludeProjectExtension> {
+  exclude(".*persist$")
+  exclude("^restful.*")
+}
+

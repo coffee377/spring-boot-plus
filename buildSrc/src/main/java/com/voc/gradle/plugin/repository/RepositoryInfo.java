@@ -114,7 +114,7 @@ public interface RepositoryInfo extends IProject, Named, Serializable {
     void password(String password);
 
     /**
-     * 是否允许 @{code MavenPublishPlugin} 发布到此仓库
+     * 是否允许 {@link org.gradle.api.publish.maven.plugins.MavenPublishPlugin} 发布到此仓库
      *
      * @return boolean
      * @since 0.0.1

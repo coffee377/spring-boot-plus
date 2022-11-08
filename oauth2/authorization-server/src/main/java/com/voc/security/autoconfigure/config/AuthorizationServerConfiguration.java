@@ -1,5 +1,6 @@
 package com.voc.security.autoconfigure.config;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +27,11 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
@@ -129,6 +135,7 @@ public class AuthorizationServerConfiguration {
 
 
     @Bean
+    @ConditionalOnMissingBean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
         RegisteredClient dingtalk = RegisteredClient.withId("1")
                 .clientId("dingopfniakkw72klkjv")
@@ -198,16 +205,10 @@ public class AuthorizationServerConfiguration {
                 )
                 .build();
 
-//        JdbcRegisteredClientRepository jdbcRegisteredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
-//        jdbcRegisteredClientRepository.save(demoClient);
-//        return jdbcRegisteredClientRepository;
-
-//        CacheRegisteredClientRepository cacheRegisteredClientRepository = new CacheRegisteredClientRepository(clientMapper);
-//        cacheRegisteredClientRepository.save(demoClient);
-//        return cacheRegisteredClientRepository;
-
-        return new InMemoryRegisteredClientRepository(dingtalk, demoClient);
-
+        JdbcRegisteredClientRepository jdbcRegisteredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
+        jdbcRegisteredClientRepository.save(dingtalk);
+        jdbcRegisteredClientRepository.save(demoClient);
+        return jdbcRegisteredClientRepository;
     }
 
     /**
@@ -217,25 +218,25 @@ public class AuthorizationServerConfiguration {
      * @param registeredClientRepository RegisteredClientRepository
      * @return OAuth2AuthorizationConsentService
      */
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
-//        JdbcOAuth2AuthorizationService authorizationService = new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
-//        class CustomOAuth2AuthorizationRowMapper extends JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper {
-//            public CustomOAuth2AuthorizationRowMapper(RegisteredClientRepository registeredClientRepository) {
-//                super(registeredClientRepository);
-//                getObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-//                this.setLobHandler(new DefaultLobHandler());
-//            }
-//        }
-//
-//        CustomOAuth2AuthorizationRowMapper oAuth2AuthorizationRowMapper =
-//                new CustomOAuth2AuthorizationRowMapper(registeredClientRepository);
-//
-////        authorizationService.setAuthorizationRowMapper(oAuth2AuthorizationRowMapper);
-//
-//        return authorizationService;
-//    }
+    @Bean
+    @ConditionalOnMissingBean
+    public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
+        JdbcOAuth2AuthorizationService authorizationService = new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
+        class CustomOAuth2AuthorizationRowMapper extends JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper {
+            public CustomOAuth2AuthorizationRowMapper(RegisteredClientRepository registeredClientRepository) {
+                super(registeredClientRepository);
+                getObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+                this.setLobHandler(new DefaultLobHandler());
+            }
+        }
+
+        CustomOAuth2AuthorizationRowMapper oAuth2AuthorizationRowMapper =
+                new CustomOAuth2AuthorizationRowMapper(registeredClientRepository);
+
+//        authorizationService.setAuthorizationRowMapper(oAuth2AuthorizationRowMapper);
+
+        return authorizationService;
+    }
 
 
     /**
@@ -246,11 +247,11 @@ public class AuthorizationServerConfiguration {
      * @param registeredClientRepository RegisteredClientRepository
      * @return OAuth2AuthorizationConsentService
      */
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
-//        return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
-//    }
+    @Bean
+    @ConditionalOnMissingBean
+    public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
+        return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
+    }
 
     /**
      * 授权服务器公私钥配置
