@@ -1,10 +1,12 @@
-package com.voc.security.oauth2.entity;
+package com.voc.security.oauth2.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.common.api.entity.impl.BaseEntity;
+import com.voc.common.api.entity.impl.BasePersistEntity;
 import com.voc.security.core.authentication.AuthProvider;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author Wu Yujie
@@ -12,9 +14,10 @@ import lombok.EqualsAndHashCode;
  * @time 2022/04/21 13:26
  */
 @Data
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "oauth2_account_bind")
-public class AccountBind extends BaseEntity<String> {
+@TableName(value = "oauth2_provider_account")
+public class OAuth2ProviderAccount extends BasePersistEntity<String> {
 
     /**
      * 账号 ID
@@ -22,22 +25,22 @@ public class AccountBind extends BaseEntity<String> {
     private String accountId;
 
     /**
-     * 第三方认证提供商
+     * 认证提供商
      */
     private AuthProvider provider;
 
     /**
-     * 第三方应用 ID
+     * 认证提供商内应用 ID
      */
     private String clientId;
 
     /**
-     * 用户在第三方平台唯一 ID
+     * 用户在认证提供商的唯一 ID
      */
     private String unionId;
 
     /**
-     * 用户在第三方平台应用的开放 ID
+     * 用户在应用内唯一 ID
      */
     private String openId;
 

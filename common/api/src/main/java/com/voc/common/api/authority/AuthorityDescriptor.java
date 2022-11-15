@@ -5,7 +5,17 @@ package com.voc.common.api.authority;
  * @email coffee377@dingtalk.com
  * @time 2022/05/25 09:54
  */
+@Deprecated
 public class AuthorityDescriptor implements IAuthorityDescriptor {
+    @Override
+    public int getPosition() {
+        return 0;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
+    }
 
     private final String name;
     private final Integer mask;

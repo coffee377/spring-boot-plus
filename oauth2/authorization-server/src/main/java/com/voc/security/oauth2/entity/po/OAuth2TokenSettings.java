@@ -1,4 +1,4 @@
-package com.voc.security.oauth2.entity;
+package com.voc.security.oauth2.entity.po;
 
 import lombok.Data;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
@@ -49,5 +49,17 @@ public class OAuth2TokenSettings {
                 .refreshTokenTimeToLive(refreshTokenTimeToLive)
                 .idTokenSignatureAlgorithm(idTokenSignatureAlgorithm);
         return builder.build();
+    }
+
+    public static OAuth2TokenSettings from(TokenSettings settings) {
+//        return OAuth2TokenSettings.builder()
+//                .authorizationCodeTimeToLive(settings.getAuthorizationCodeTimeToLive())
+//                .accessTokenTimeToLive(settings.getAccessTokenTimeToLive())
+//                .accessTokenFormat(settings.getAccessTokenFormat())
+//                .reuseRefreshTokens(settings.isReuseRefreshTokens())
+//                .refreshTokenTimeToLive(settings.getRefreshTokenTimeToLive())
+//                .idTokenSignatureAlgorithm(settings.getIdTokenSignatureAlgorithm())
+//                .build();
+        return null;
     }
 }

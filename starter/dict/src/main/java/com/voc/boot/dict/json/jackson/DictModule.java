@@ -1,11 +1,10 @@
 package com.voc.boot.dict.json.jackson;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.voc.common.api.dict.IDictItem;
+import com.voc.common.api.dict.DictionaryItem;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
@@ -32,7 +31,7 @@ public class DictModule extends SimpleModule implements EnvironmentAware  {
     private void init() {
         DictItemSerializeProperties serializeProperties =
                 Binder.get(environment).bind("dict.serialize", DictItemSerializeProperties.class).orElse(new DictItemSerializeProperties());
-        this.addSerializer(IDictItem.class, new DictItemSerializer(serializeProperties));
+        this.addSerializer(DictionaryItem.class, new DictItemSerializer(serializeProperties));
     }
 
     @Override

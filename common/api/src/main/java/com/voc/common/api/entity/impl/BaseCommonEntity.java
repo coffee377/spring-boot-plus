@@ -2,9 +2,10 @@ package com.voc.common.api.entity.impl;
 
 import com.voc.common.api.dict.enums.DataFlag;
 import com.voc.common.api.dict.enums.UsingStatus;
-import com.voc.common.api.entity.ICommonEntity;
+import com.voc.common.api.entity.CommonEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
 
@@ -14,8 +15,9 @@ import java.time.Instant;
  * @time 2022/07/16 20:12
  */
 @Data
-@EqualsAndHashCode
-public abstract class CommonEntity implements ICommonEntity {
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public abstract class BaseCommonEntity extends BaseEntity implements CommonEntity {
     /**
      * 创建人
      */

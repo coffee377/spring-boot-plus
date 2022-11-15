@@ -12,5 +12,5 @@ import com.voc.common.api.bean.IUpdate;
  * @email coffee377@dingtalk.com
  * @time 2022/07/16 16:08
  */
-public interface ICommonEntity extends ICreate, IUpdate, IFlag, IStatus {
+public interface CommonEntity extends Entity, ICreate, IUpdate, IFlag, IStatus {
 }

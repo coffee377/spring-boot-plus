@@ -41,7 +41,7 @@ public interface FunctionPoint extends Supplier<BigInteger> {
     @Override
     default BigInteger get() {
         int position = getPosition();
-        if (position <= 0) throw new FunctionException("", "");
+        if (position <= 0) throw new FunctionException("-1", "position 的值必须大于零");
         // TODO: 2022/11/12 22:25 错误定义
         return BigInteger.ONE.shiftLeft(position - 1);
     }

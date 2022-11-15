@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.BiFunction;
 
 /**
  * @author WuYujie
@@ -77,12 +76,7 @@ public final class DefaultFunctions implements Functions {
     public Functions remove(Collection<FunctionPoint> points) {
         this.functions = points.stream()
                 .filter(this::has)
-                .reduce(functions, new BiFunction<BigInteger, FunctionPoint, BigInteger>() {
-                    @Override
-                    public BigInteger apply(BigInteger bigInteger, FunctionPoint point) {
-                        return bigInteger.subtract(point.get());
-                    }
-                }, BigInteger::divide);
+                .reduce(functions, (bigInteger, point) -> bigInteger.subtract(point.get()), BigInteger::divide);
         return this;
     }
 

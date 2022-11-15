@@ -1,4 +1,4 @@
-package com.voc.security.oauth2.entity;
+package com.voc.security.oauth2.entity.po;
 
 import lombok.Data;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
@@ -46,4 +46,14 @@ public class OAuth2ClientSettings {
         }
         return builder.build();
     }
+
+    public static OAuth2ClientSettings from(ClientSettings settings) {
+//        return OAuth2ClientSettings.builder()
+//                .requireProofKey(settings.isRequireProofKey())
+//                .requireAuthorizationConsent(settings.isRequireAuthorizationConsent())
+//                .jwkSetUrl(settings.getJwkSetUrl())
+//                .build();
+        return null;
+    }
+
 }

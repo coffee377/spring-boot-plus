@@ -1,6 +1,6 @@
 package com.voc.security.oauth2.endpoint;
 
-import com.voc.security.oauth2.entity.Account;
+import com.voc.security.oauth2.entity.po.OAuth2Account;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +34,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public Account create(String mobile, String code) {
+    public OAuth2Account create(String mobile, String code) {
 //        return accountService.createByMobile(mobile);
         return null;
     }

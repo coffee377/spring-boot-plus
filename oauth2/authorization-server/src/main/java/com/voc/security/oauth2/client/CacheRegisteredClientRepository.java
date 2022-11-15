@@ -1,7 +1,8 @@
 package com.voc.security.oauth2.client;
 
-import com.voc.security.oauth2.entity.OAuth2Client;
-import com.voc.security.oauth2.mapper.OAuth2ClientMapper;
+import com.voc.security.oauth2.entity.po.OAuth2Client;
+import com.voc.security.oauth2.service.OAuth2ClientService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -19,23 +20,22 @@ import java.time.Instant;
 public class CacheRegisteredClientRepository implements RegisteredClientRepository {
     public static final String OAUTH2_CLIENT_CACHE_NAME = "oauth2:client";
 
-    private final OAuth2ClientMapper clientMapper;
+    private final OAuth2ClientService clientService;
 
-    public CacheRegisteredClientRepository(OAuth2ClientMapper clientMapper) {
-        this.clientMapper = clientMapper;
+    public CacheRegisteredClientRepository(OAuth2ClientService clientService) {
+        this.clientService = clientService;
     }
 
     @Override
-
     public void save(RegisteredClient registeredClient) {
         insertOrUpdate(registeredClient);
     }
 
     @Caching(
-//            evict = {
-//                    @CacheEvict(cacheNames = OAUTH2_CLIENT_CACHE_NAME, key = "#registeredClient.id"),
-//                    @CacheEvict(cacheNames = OAUTH2_CLIENT_CACHE_NAME, key = "#registeredClient.clientId")
-//            },
+            evict = {
+                    @CacheEvict(cacheNames = OAUTH2_CLIENT_CACHE_NAME, key = "#registeredClient.id"),
+                    @CacheEvict(cacheNames = OAUTH2_CLIENT_CACHE_NAME, key = "#registeredClient.clientId")
+            },
             put = {
                     @CachePut(cacheNames = OAUTH2_CLIENT_CACHE_NAME, key = "#registeredClient.clientId")
             }
@@ -58,11 +58,11 @@ public class CacheRegisteredClientRepository implements RegisteredClientReposito
 //                .tokenSettings("")
                 .build();
 
-        OAuth2Client existingRegisteredClient = clientMapper.findById(registeredClient.getId());
+        OAuth2Client existingRegisteredClient = clientService.findById(registeredClient.getId());
         if (existingRegisteredClient != null) {
-            clientMapper.updateById(client);
+//            clientService.updateById(client);
         } else {
-            clientMapper.insert(client);
+//            clientService.add(client);
         }
         return existingRegisteredClient;
     }
@@ -71,15 +71,15 @@ public class CacheRegisteredClientRepository implements RegisteredClientReposito
     @Cacheable(cacheNames = OAUTH2_CLIENT_CACHE_NAME, key = "#id", unless = "#result == null")
     public RegisteredClient findById(String id) {
         Assert.hasText(id, "id cannot be empty");
-        OAuth2Client client = clientMapper.findById(id);
-        return null;
+        OAuth2Client client = clientService.findById(id);
+        return client.toRegisteredClient();
     }
 
     @Override
     @Cacheable(cacheNames = OAUTH2_CLIENT_CACHE_NAME, key = "#clientId", unless = "#result == null")
     public RegisteredClient findByClientId(String clientId) {
         Assert.hasText(clientId, "clientId cannot be empty");
-        OAuth2Client client = clientMapper.findByClientId(clientId);
-        return null;
+        OAuth2Client client = clientService.findByClientId(clientId);
+        return client.toRegisteredClient();
     }
 }

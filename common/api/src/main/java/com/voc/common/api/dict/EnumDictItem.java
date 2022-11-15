@@ -1,11 +1,9 @@
 package com.voc.common.api.dict;
 
-
-import com.voc.common.api.authority.IAuthorities;
-import com.voc.common.api.authority.IAuthorityDescriptor;
-
-import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -17,7 +15,7 @@ import java.util.stream.Collectors;
  * @time 2018/06/27 22:37
  */
 @SuppressWarnings("rawtypes")
-public interface EnumDictItem<V> extends IDictItem<V>, IAuthorityDescriptor {
+public interface EnumDictItem<V> extends DictionaryItem<V> {
 
     /**
      * {@link Enum#ordinal()}
@@ -47,26 +45,6 @@ public interface EnumDictItem<V> extends IDictItem<V>, IAuthorityDescriptor {
     @Override
     default String getDescription() {
         return getText();
-    }
-
-    /**
-     * 权限名称。默认值为{@link Enum#name()}
-     *
-     * @return String
-     */
-    @Override
-    default String getName() {
-        return name();
-    }
-
-    /**
-     * 掩码值
-     *
-     * @return int
-     */
-    @Override
-    default Integer getMask() {
-        return ordinal();
     }
 
     /**
@@ -111,23 +89,6 @@ public interface EnumDictItem<V> extends IDictItem<V>, IAuthorityDescriptor {
         return findByCondition(type, item -> true);
     }
 
-
-    /**
-     * 查找权限中拥有的枚举值
-     *
-     * @param type      Class<T>
-     * @param authority 枚举类型权限
-     * @param <T>       枚举类型
-     * @return List<T>
-     */
-    static <T extends EnumDictItem> List<T> getByAuthority(Class<T> type, IAuthorities authority) {
-        BigInteger authorities = authority.get();
-        if (authorities != null) {
-            return new ArrayList<>(findByCondition(type, item -> item.get().or(authorities).equals(authorities)));
-        }
-        return Collections.emptyList();
-    }
-
     /**
      * 根据枚举的{@link EnumDictItem#getValue()}来查找.
      *
@@ -135,7 +96,7 @@ public interface EnumDictItem<V> extends IDictItem<V>, IAuthorityDescriptor {
      * @param value BigInteger
      * @param <T>   枚举类型
      * @return 查找到的结果
-     * @see this#findByCondition(Class, Predicate)
+     * @see #findByCondition(Class, Predicate)
      */
     static <T extends EnumDictItem> Optional<T> findByValue(Class<T> type, Object value) {
         return findByCondition(type, item -> item.getValue().equals(value)).stream().findFirst();
@@ -148,7 +109,7 @@ public interface EnumDictItem<V> extends IDictItem<V>, IAuthorityDescriptor {
      * @param text String
      * @param <T>  枚举类型
      * @return 查找到的结果
-     * @see this#findByCondition(Class, Predicate)
+     * @see #findByCondition(Class, Predicate)
      */
     static <T extends EnumDictItem> Optional<T> findByText(Class<T> type, String text) {
         return findByCondition(type, item -> item.getText().equalsIgnoreCase(text)).stream().findFirst();
@@ -160,7 +121,7 @@ public interface EnumDictItem<V> extends IDictItem<V>, IAuthorityDescriptor {
      * @param target Object
      * @param <T> 枚举类型
      * @return 查找到的结果
-     * @see this#findByCondition(Class, Predicate)
+     * @see #findByCondition(Class, Predicate)
      */
     static <T extends EnumDictItem> Optional<T> find(Class<T> type, Object target) {
         return findByCondition(type, item -> item.eq(target)).stream().findFirst();

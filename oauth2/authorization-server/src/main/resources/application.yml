@@ -38,6 +38,8 @@ spring:
 mybatis-plus:
   global-config:
     banner: false
+  configuration:
+    database-id: d
 api:
   result:
     code-as-number: true
@@ -45,7 +47,7 @@ logging:
   level:
     root: warn
 #    org.springframework: trace
-    org.springframework.security: trace
+#    org.springframework.security: trace
 #    org:
 #      springframework:
 #        security:

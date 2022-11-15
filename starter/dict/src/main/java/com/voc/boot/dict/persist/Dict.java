@@ -1,6 +1,6 @@
 package com.voc.boot.dict.persist;
 
-import com.voc.common.api.dict.IDict;
+import com.voc.common.api.dict.Dictionary;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +13,7 @@ import java.util.Collection;
  */
 @Builder
 @EqualsAndHashCode
-public class Dict<V> implements IDict<DictItem<V>> {
+public class Dict<V> implements Dictionary<DictItem<V>> {
     private String code;
     private String name;
     private Collection<DictItem<V>> items;

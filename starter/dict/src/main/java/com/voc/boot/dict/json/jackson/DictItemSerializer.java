@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.voc.boot.dict.persist.DataDictItem;
-import com.voc.common.api.dict.IDictItem;
+import com.voc.common.api.dict.DictionaryItem;
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ObjectUtils;
@@ -20,7 +20,7 @@ import java.util.function.Predicate;
  * @time 2022/08/09 13:46
  */
 @JsonComponent
-public class DictItemSerializer extends JsonSerializer<IDictItem> implements ContextualSerializer {
+public class DictItemSerializer extends JsonSerializer<DictionaryItem> implements ContextualSerializer {
 
     private final DictItemSerializeProperties serializeProperties;
 
@@ -44,7 +44,7 @@ public class DictItemSerializer extends JsonSerializer<IDictItem> implements Con
     }
 
     @Override
-    public void serialize(IDictItem dictItem, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
+    public void serialize(DictionaryItem dictItem, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
         List<SerializeType> types = mergeSerializeType(dictItem);
         serializeObject(dictItem, gen, types);
 
@@ -79,11 +79,11 @@ public class DictItemSerializer extends JsonSerializer<IDictItem> implements Con
 
 
     @Override
-    public Class<IDictItem> handledType() {
-        return IDictItem.class;
+    public Class<DictionaryItem> handledType() {
+        return DictionaryItem.class;
     }
 
-    private void serializeObject(IDictItem<?> dictItem, JsonGenerator gen) throws IOException {
+    private void serializeObject(DictionaryItem<?> dictItem, JsonGenerator gen) throws IOException {
 //        gen.writeStartObject();
 //        if (DataDictItem.class.isAssignableFrom(dictItem.getClass())) {
 //            gen.writeObjectField(serializeProperties.getId(), ((DataDictItem<?>) dictItem).getId());
@@ -94,7 +94,7 @@ public class DictItemSerializer extends JsonSerializer<IDictItem> implements Con
 //        gen.writeEndObject();
     }
 
-    private void serializeObject(IDictItem<?> dictItem, JsonGenerator gen, List<SerializeType> serializeTypes) throws IOException {
+    private void serializeObject(DictionaryItem<?> dictItem, JsonGenerator gen, List<SerializeType> serializeTypes) throws IOException {
         gen.writeStartObject();
         if (DataDictItem.class.isAssignableFrom(dictItem.getClass())) {
             gen.writeObjectField(serializeProperties.getId(), ((DataDictItem<?>) dictItem).getId());
@@ -105,7 +105,7 @@ public class DictItemSerializer extends JsonSerializer<IDictItem> implements Con
         gen.writeEndObject();
     }
 
-    private List<SerializeType> forIDictItemImpl(IDictItem dictItem) {
+    private List<SerializeType> forIDictItemImpl(DictionaryItem dictItem) {
         DictItemSerialize annotation = dictItem.getClass().getAnnotation(DictItemSerialize.class);
         return getSerializeType(annotation);
     }
@@ -126,7 +126,7 @@ public class DictItemSerializer extends JsonSerializer<IDictItem> implements Con
      * @param dictItem 数据字典项实现类
      * @return SerializeType
      */
-    private List<SerializeType> mergeSerializeType(IDictItem dictItem) {
+    private List<SerializeType> mergeSerializeType(DictionaryItem dictItem) {
         /* 1. 实体属性字段上的注解优先 */
         if (serializeType != null) {
             return serializeType;

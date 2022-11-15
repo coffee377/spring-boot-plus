@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @email coffee377@dingtalk.com
  * @time 2022/07/16 20:22
  */
-public interface ITreeSortEntity<ID extends Serializable> extends IEntity<ID>, ITreeSort<ID> {
+public interface TreeSortEntity<ID extends Serializable> extends Entity, ITreeSort<ID> {
 
 
 }

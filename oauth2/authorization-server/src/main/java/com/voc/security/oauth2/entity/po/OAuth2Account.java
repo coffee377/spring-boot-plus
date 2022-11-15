@@ -1,10 +1,11 @@
-package com.voc.security.oauth2.entity;
+package com.voc.security.oauth2.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.voc.security.core.authentication.BaseUser;
 import com.voc.security.core.authentication.IUser;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author Wu Yujie
@@ -12,9 +13,10 @@ import lombok.EqualsAndHashCode;
  * @time 2022/04/21 13:26
  */
 @Data
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "oauth2_account", excludeProperty = "authorities")
-public class Account extends BaseUser<String> implements IUser<String> {
+public class OAuth2Account extends BaseUser<String> implements IUser<String> {
     /**
      * 工号
      */

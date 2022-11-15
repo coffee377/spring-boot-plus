@@ -2,6 +2,7 @@ package com.voc.security.autoconfigure;
 
 import com.voc.security.autoconfigure.props.AuthorizationServerProperties;
 import com.voc.security.core.autoconfigure.SecurityCoreAutoConfiguration;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -21,6 +22,7 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
 @EnableConfigurationProperties({AuthorizationServerProperties.class})
 //@AutoConfigureAfter(SecurityAutoConfiguration.class)
 @Import({AuthorizationServerImport.class})
-@ComponentScan("com.voc.security")
+@ComponentScan({"com.voc.security", "com.voc.mybatis"})
+@MapperScan("com.voc.security.oauth2.dao")
 public class AuthorizationServerAutoConfiguration {
 }

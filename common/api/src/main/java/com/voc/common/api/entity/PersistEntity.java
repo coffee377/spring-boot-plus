@@ -12,5 +12,5 @@ import java.io.Serializable;
  * @email coffee377@dingtalk.com
  * @time 2022/04/17 00:05
  */
-public interface PersistEntity<ID extends Serializable> extends Identify<ID> {
+public interface PersistEntity<ID extends Serializable> extends Identify<ID>, CommonEntity {
 }

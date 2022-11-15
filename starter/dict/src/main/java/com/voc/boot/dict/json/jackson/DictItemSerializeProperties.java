@@ -1,7 +1,7 @@
 package com.voc.boot.dict.json.jackson;
 
 import com.voc.boot.dict.persist.DataDictItem;
-import com.voc.common.api.dict.IDictItem;
+import com.voc.common.api.dict.DictionaryItem;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -28,17 +28,17 @@ public class DictItemSerializeProperties {
     String id = "id";
 
     /**
-     * {@link IDictItem#getValue()} 字典项实际值序列化名称
+     * {@link DictionaryItem#getValue()} 字典项实际值序列化名称
      */
     String value = "value";
 
     /**
-     * {@link IDictItem#getText()} 字典项显示值序列化名称
+     * {@link DictionaryItem#getText()} 字典项显示值序列化名称
      */
     String text = "text";
 
     /**
-     * {@link IDictItem#getDescription()}} 字典项描述序列化名称
+     * {@link DictionaryItem#getDescription()}} 字典项描述序列化名称
      */
     String description = "description";
 

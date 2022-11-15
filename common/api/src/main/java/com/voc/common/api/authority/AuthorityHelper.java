@@ -12,6 +12,7 @@ import java.util.List;
  * @email coffee377@dingtalk.com
  * @time 2022/05/25 01:04
  */
+@Deprecated
 public class AuthorityHelper {
 
     /**
@@ -143,5 +144,12 @@ public class AuthorityHelper {
 
     public static IAuthorities remove(IAuthorities source, IAuthorityDescriptor descriptor, List<IAuthorityDescriptor>... others) {
         return null;
+    }
+
+    public static IAuthorities get(IAuthorityDescriptor... descriptors) {
+        return () -> {
+            BigInteger reduce = Arrays.stream(descriptors).map(IAuthorityDescriptor::get).reduce(BigInteger.ZERO, BigInteger::add);
+            return reduce;
+        };
     }
 }

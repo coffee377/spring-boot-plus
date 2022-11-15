@@ -10,7 +10,7 @@ import com.voc.common.api.bean.ISort;
  * @email coffee377@dingtalk.com
  * @time 2018/06/27 22:48
  */
-public interface IDictItem<V> extends ISort {
+public interface DictionaryItem<V> extends ISort {
 
     /**
      * 字典项实际值

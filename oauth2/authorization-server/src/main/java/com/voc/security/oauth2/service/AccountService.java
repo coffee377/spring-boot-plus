@@ -3,7 +3,7 @@ package com.voc.security.oauth2.service;
 import com.voc.common.api.biz.BizException;
 import com.voc.common.api.biz.InternalBizStatus;
 import com.voc.common.api.dict.enums.UsingStatus;
-import com.voc.security.oauth2.entity.Account;
+import com.voc.security.oauth2.entity.po.OAuth2Account;
 import com.voc.security.oauth2.entity.TripartitePlatform;
 import com.voc.security.oauth2.entity.dto.AccountDTO;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
  */
 public interface AccountService {
 
-    Page<Account> page(Integer page, Integer size);
+    Page<OAuth2Account> page(Integer page, Integer size);
 
     /**
      * 创建账号
@@ -26,14 +26,14 @@ public interface AccountService {
      * @param plainPassword 是否存储约定格式明文密码(主要方便测试)
      * @return boolean
      */
-    Account create(AccountDTO account, boolean plainPassword);
+    OAuth2Account create(AccountDTO account, boolean plainPassword);
 
     /**
      * 根据 {@link OAuth2User} 创建账号
      *
      * @return 账号信息
      */
-    default Account create(OAuth2User user) {
+    default OAuth2Account create(OAuth2User user) {
         // 根据 OAuth2User 创建系统账号，并进行账号绑定
         throw new BizException(InternalBizStatus.UN_IMPLEMENTED_METHOD);
     }
@@ -43,7 +43,7 @@ public interface AccountService {
      *
      * @return Account
      */
-    Account createByMobile(@NonNull String mobile, @NonNull String code) throws BizException;
+    OAuth2Account createByMobile(@NonNull String mobile, @NonNull String code) throws BizException;
 
     /**
      * 根据 ID 删除用户
@@ -60,7 +60,7 @@ public interface AccountService {
      * @param username 用户名
      * @return Account
      */
-    Account findByUsername(String username);
+    OAuth2Account findByUsername(String username);
 
     /**
      * 获取与第三平台用户绑定的
@@ -68,7 +68,7 @@ public interface AccountService {
      * @param platform 用户在三方平台的信息
      * @return 账户信息
      */
-    Account findByOAuth2Client(TripartitePlatform platform);
+    OAuth2Account findByOAuth2Client(TripartitePlatform platform);
 
     /**
      * 重置密码

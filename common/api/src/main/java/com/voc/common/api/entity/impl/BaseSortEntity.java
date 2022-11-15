@@ -1,10 +1,9 @@
 package com.voc.common.api.entity.impl;
 
-import com.voc.common.api.entity.ISortEntity;
+import com.voc.common.api.entity.SortEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author Wu Yujie
@@ -12,8 +11,9 @@ import java.io.Serializable;
  * @time 2021/07/12 16:47
  */
 @Data
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public abstract class BaseSortEntity<ID extends Serializable> extends BaseEntity<ID> implements ISortEntity<ID> {
+public abstract class BaseSortEntity extends BaseEntity implements SortEntity {
 
     /**
      * 排序

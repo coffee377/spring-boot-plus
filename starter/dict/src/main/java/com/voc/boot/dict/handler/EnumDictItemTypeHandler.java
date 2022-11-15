@@ -4,15 +4,12 @@ import com.voc.common.api.dict.EnumDictItem;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
-import org.apache.ibatis.type.TypeHandler;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.stereotype.Component;
+import org.apache.ibatis.type.TypeHandlerRegistry;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 /**
  * mybatis EnumDictItem 枚举类型处理器
@@ -21,14 +18,13 @@ import java.util.Optional;
  * @email coffee377@dingtalk.com
  * @time 2022/04/17 14:31
  * @see EnumDictItem
+ * @see TypeHandlerRegistry#register(Class)
  */
-@Component
 @MappedTypes(EnumDictItem.class)
-@ConditionalOnClass({TypeHandler.class})
-public class EnumDictItemTypeHandler<Dict extends EnumDictItem<?>> extends BaseTypeHandler<Dict> {
-    private final Class<Dict> clazz;
+public class EnumDictItemTypeHandler<T extends EnumDictItem<?>> extends BaseTypeHandler<T> {
+    private final Class<T> clazz;
 
-    public EnumDictItemTypeHandler(Class<Dict> clazz) {
+    public EnumDictItemTypeHandler(Class<T> clazz) {
         if (clazz == null) {
             throw new IllegalArgumentException("Type argument cannot be null");
         } else {
@@ -36,8 +32,9 @@ public class EnumDictItemTypeHandler<Dict extends EnumDictItem<?>> extends BaseT
         }
     }
 
+
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, Dict parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException {
         if (jdbcType == null) {
             ps.setObject(i, this.getValue(parameter));
         } else {
@@ -45,31 +42,30 @@ public class EnumDictItemTypeHandler<Dict extends EnumDictItem<?>> extends BaseT
         }
     }
 
-    private Object getValue(Dict parameter) {
+    private Object getValue(T parameter) {
         return parameter.getValue();
     }
 
     @Override
-    public Dict getNullableResult(ResultSet resultSet, String columnName) throws SQLException {
+    public T getNullableResult(ResultSet resultSet, String columnName) throws SQLException {
         Object object = resultSet.getObject(columnName);
         return valueOf(object);
     }
 
     @Override
-    public Dict getNullableResult(ResultSet resultSet, int i) throws SQLException {
+    public T getNullableResult(ResultSet resultSet, int i) throws SQLException {
         Object object = resultSet.getObject(i);
         return valueOf(object);
     }
 
     @Override
-    public Dict getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
+    public T getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
         Object object = callableStatement.getObject(i);
         return valueOf(object);
     }
 
-    private Dict valueOf(Object value) {
-        Optional<Dict> dict = EnumDictItem.findByValue(clazz, value);
-        return dict.orElse(null);
+    private T valueOf(Object value) {
+        return EnumDictItem.findByValue(clazz, value).orElse(null);
     }
 
 }

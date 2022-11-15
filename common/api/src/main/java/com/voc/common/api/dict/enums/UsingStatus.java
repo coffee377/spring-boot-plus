@@ -1,5 +1,6 @@
 package com.voc.common.api.dict.enums;
 
+import com.voc.common.api.dict.Dict;
 import com.voc.common.api.dict.EnumDictItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
+@Dict(name = "数据使用状态")
 public enum UsingStatus implements EnumDictItem<Integer> {
 
     NORMAL(1, "正常", "正常"),

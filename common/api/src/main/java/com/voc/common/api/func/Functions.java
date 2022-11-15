@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * 功能点容器
+ * 功能点描述（容器）
  *
  * @author WuYujie
  * @email coffee377@dingtalk.com
@@ -135,7 +135,7 @@ public interface Functions extends Supplier<BigInteger> {
             return of((long) intValue);
         }
 
-        public Builder functions(Collection<FunctionPoint> points) {
+        public Builder functions(Collection<? extends FunctionPoint> points) {
             if (functionPoints == null) {
                 functionPoints = new HashSet<>();
             }
@@ -165,7 +165,7 @@ public interface Functions extends Supplier<BigInteger> {
             if (functionPoints != null && functionPoints.size() > 0) {
                 result = functionPoints.stream()
                         /* functions 中不包含的功能点才累加 */
-                        .filter(point -> !point.get().or(functions).equals(functions))
+                        .filter(point -> functions == null || !point.get().or(functions).equals(functions))
                         .reduce(result, (pre, cur) -> pre.add(cur.get()), BigInteger::add);
             }
             return new DefaultFunctions(result);

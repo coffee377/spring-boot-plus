@@ -1,41 +1,35 @@
 package com.voc.security.oauth2.service;
 
-import com.voc.security.oauth2.OAuthData;
-import com.voc.security.oauth2.entity.Account;
-import com.voc.security.oauth2.entity.OAuth2Client;
+import com.voc.security.oauth2.entity.po.OAuth2Client;
 import com.voc.security.oauth2.entity.dto.OAuth2ClientDTO;
 import com.voc.security.oauth2.entity.vo.OAuth2ClientVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-
-import java.util.Optional;
 
 /**
  * @author WuYujie
  * @email coffee377@dingtalk.com
  * @time 2022/10/12 00:16
  */
-public interface OAuth2ClientService extends RegisteredClientRepository {
+public interface OAuth2ClientService {
     String OAUTH2_CLIENT_CACHE_NAME = "oauth2:client";
 
     /**
-     * Save client.
+     * 保存客户端信息
      *
      * @param client the client
      */
-    OAuth2Client save(OAuth2ClientDTO client);
+    OAuth2Client add(OAuth2ClientDTO client);
 
     /**
-     * Update.
+     * 更新客户端信息
      *
      * @param client the client
      */
-    void update(OAuth2ClientDTO client);
+    OAuth2Client update(OAuth2ClientDTO client);
 
     /**
-     * Page page.
+     * 分页查询客户端信息
      *
      * @param pageable the pageable
      * @return the page
@@ -43,59 +37,67 @@ public interface OAuth2ClientService extends RegisteredClientRepository {
     Page<OAuth2ClientVO> page(Pageable pageable);
 
     /**
-     * Find client by id o auth 2 client.
+     * 根据 id 查找客户端
      *
      * @param id the id
-     * @return the o auth 2 client
+     * @return the oauth2 client
      */
-    OAuth2Client findClientById(String id);
+    OAuth2Client findById(String id);
+
+    /**
+     * 根据 clientId 查找客户端
+     *
+     * @param clientId 客户端 ID
+     * @return OAuth2Client
+     */
+    OAuth2Client findByClientId(String clientId);
 
     /**
      * Remove by client id.
      *
      * @param id the id
      */
-    void removeByClientId(String id);
+    void removeById(String id);
 
-
-    /**
-     * 获取认证提供商提供的用户信息
-     *
-     * @return OAuth2User
-     */
-    OAuth2User getUser(OAuthData data);
-
-    /**
-     * 获取账号
-     *
-     * @param data 认证数据
-     * @return 统一认证中心账号信息
-     */
-    Optional<Account> getAccount(OAuth2User user);
-
-    /**
-     * 创建账号
-     *
-     * @return 账号 ID
-     */
-    Account createAccount(OAuth2User user);
-
-    void bind(Account account, OAuth2User user);
-
-
-//    void unbind(AuthProvider provider);
-
-    /**
-     * @param data oauth2 认证数据
-     * @return 账号信息
-     */
-    default Account login(OAuthData data) {
-        OAuth2User user = getUser(data);
-        Optional<Account> account = getAccount(user);
-        return account.orElseGet(() -> {
-            Account account11 = createAccount(user);
-            bind(account11, user);
-            return account11;
-        });
-    }
+//
+//    /**
+//     * 获取认证提供商提供的用户信息
+//     *
+//     * @return OAuth2User
+//     */
+//    OAuth2User getUser(OAuthData data);
+//
+//    /**
+//     * 获取账号
+//     *
+//     * @param data 认证数据
+//     * @return 统一认证中心账号信息
+//     */
+//    Optional<OAuth2Account> getAccount(OAuth2User user);
+//
+//    /**
+//     * 创建账号
+//     *
+//     * @return 账号 ID
+//     */
+//    OAuth2Account createAccount(OAuth2User user);
+//
+//    void bind(OAuth2Account account, OAuth2User user);
+//
+//
+////    void unbind(AuthProvider provider);
+//
+//    /**
+//     * @param data oauth2 认证数据
+//     * @return 账号信息
+//     */
+//    default OAuth2Account login(OAuthData data) {
+//        OAuth2User user = getUser(data);
+//        Optional<OAuth2Account> account = getAccount(user);
+//        return account.orElseGet(() -> {
+//            OAuth2Account account11 = createAccount(user);
+//            bind(account11, user);
+//            return account11;
+//        });
+//    }
 }

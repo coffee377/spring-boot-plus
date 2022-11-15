@@ -1,6 +1,7 @@
 package com.voc.boot.dict.autoconfigure;
 
 import com.voc.boot.dict.DictItemConverterConfiguration;
+import com.voc.boot.dict.handler.TypeHandlerConfiguration;
 import com.voc.boot.dict.json.DictJsonConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Import;
  * @time 2022/08/06 22:45
  */
 @Configuration
-@Import({DictItemConverterConfiguration.class, DictJsonConfiguration.class})
+@Import({DictItemConverterConfiguration.class, TypeHandlerConfiguration.class, DictJsonConfiguration.class,})
 public class DictAutoConfiguration {
 
 

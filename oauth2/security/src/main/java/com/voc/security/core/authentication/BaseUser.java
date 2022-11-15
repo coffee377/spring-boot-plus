@@ -1,15 +1,14 @@
 package com.voc.security.core.authentication;
 
 import com.voc.common.api.dict.enums.UsingStatus;
-import com.voc.common.api.entity.impl.BaseEntity;
+import com.voc.common.api.entity.impl.BasePersistEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 
 /**
  * @author Wu Yujie
@@ -17,8 +16,9 @@ import java.util.HashSet;
  * @time 2021/06/20 11:54
  */
 @Data
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements IUser<ID> {
+public class BaseUser<ID extends Serializable> extends BasePersistEntity<ID> implements IUser<ID> {
 
     /**
      * 用户名
@@ -47,19 +47,19 @@ public class BaseUser<ID extends Serializable> extends BaseEntity<ID> implements
      */
     private boolean credentialsExpired;
 
-    public BaseUser(ID id, String username, String password, Collection<String> authorities) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.authorities = new HashSet<>(authorities);
-    }
-
-    public BaseUser(ID id, String username, String password, String... authorities) {
-        this(id, username, password, Arrays.asList(authorities));
-    }
-
-    public BaseUser() {
-    }
+//    public BaseUser(ID id, String username, String password, Collection<String> authorities) {
+//        this.id = id;
+//        this.username = username;
+//        this.password = password;
+//        this.authorities = new HashSet<>(authorities);
+//    }
+//
+//    public BaseUser(ID id, String username, String password, String... authorities) {
+//        this(id, username, password, Arrays.asList(authorities));
+//    }
+//
+//    public BaseUser() {
+//    }
 
     @Override
     public String getUsername() {

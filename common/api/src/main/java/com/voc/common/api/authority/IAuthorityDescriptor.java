@@ -1,7 +1,6 @@
 package com.voc.common.api.authority;
 
-import java.math.BigInteger;
-import java.util.function.Supplier;
+import com.voc.common.api.func.FunctionPoint;
 
 /**
  * 权限项描述
@@ -10,7 +9,8 @@ import java.util.function.Supplier;
  * @email coffee377@dingtalk.com
  * @time 2021/02/05 09:18
  */
-public interface IAuthorityDescriptor extends Supplier<BigInteger> {
+@Deprecated
+public interface IAuthorityDescriptor extends FunctionPoint {
 
     /**
      * 权限名称
@@ -24,20 +24,9 @@ public interface IAuthorityDescriptor extends Supplier<BigInteger> {
      *
      * @return Integer
      */
-    Integer getMask();
-
-    /**
-     * 权限大整数表示
-     *
-     * @return BigInteger
-     */
-    @Override
-    default BigInteger get() {
-        Integer mask = getMask();
-        if (mask == null) {
-            return BigInteger.ZERO;
-        }
-        return BigInteger.ONE.shiftLeft(Math.abs(mask) - 1);
+    @Deprecated
+    default Integer getMask() {
+        return getPosition();
     }
 
 }
