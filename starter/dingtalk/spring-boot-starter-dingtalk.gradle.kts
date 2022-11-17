@@ -13,7 +13,7 @@ dependencies {
 //    exclude(group = "com.aliyun", module = "alibabacloud-gateway-spi")
   }
   implementation("org.springframework.boot:spring-boot-starter-web")
-
+  implementation("org.springframework.data:spring-data-commons")
 //  compileOnly("org.springframework.boot:spring-boot-starter-security")
 //  compileOnly("org.springframework.boot:spring-boot-starter-oauth2-client")
 

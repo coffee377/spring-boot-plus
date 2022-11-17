@@ -37,6 +37,11 @@ public interface EnumDictItem<V> extends DictionaryItem<V> {
         return ordinal();
     }
 
+    @Override
+    default String getText() {
+        return name().toLowerCase();
+    }
+
     /**
      * 枚举选项的描述,对一个选项进行详细的描述有时候是必要的.默认值为{@link #getText()}
      *

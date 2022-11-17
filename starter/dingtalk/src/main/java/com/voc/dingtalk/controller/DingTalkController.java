@@ -95,4 +95,6 @@ public class DingTalkController {
     public OapiV2UserGetResponse.UserGetResponse queryUserDetails(@PathVariable(name = "id") String userId) {
         return contactsService.getUserDetails(userId);
     }
+
+
 }

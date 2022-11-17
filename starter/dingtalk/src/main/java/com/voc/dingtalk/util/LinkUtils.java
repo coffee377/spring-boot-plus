@@ -23,14 +23,14 @@ public class LinkUtils {
      * 获取钉钉容器协议链接地址
      * <a href="https://open.dingtalk.com/document/orgapp-client/unified-routing-protocol">统一跳转协议</a>
      *
-     * @param origin       实际跳转地址（可包含格式化参数）
+     * @param variableUrl  跳转地址（可包含格式化参数）
      * @param isPC         是否 PC 端
      * @param uriVariables 参数变量
      * @return 协议地址
      */
-    public static String dingtalkProtocolUrl(String origin, boolean isPC, Object... uriVariables) {
-        UriComponentsBuilder builder = getUriComponentsBuilder(isPC);
-        String expandUrl = UriComponentsBuilder.fromHttpUrl(origin).buildAndExpand(uriVariables).toUriString();
+    public static String dingtalkProtocolUrl(String variableUrl, boolean isPC, Object... uriVariables) {
+        UriComponentsBuilder builder = getDingtalkUriComponentsBuilder(isPC);
+        String expandUrl = UriComponentsBuilder.fromHttpUrl(variableUrl).buildAndExpand(uriVariables).toUriString();
         builder.queryParam("url", expandUrl);
         return builder.encode().toUriString();
     }
@@ -38,19 +38,19 @@ public class LinkUtils {
     /**
      * 获取钉钉容器协议链接地址
      *
-     * @param origin       实际跳转地址（可包含格式化参数）
+     * @param variableUrl  跳转地址（可包含格式化参数）
      * @param isPC         是否 PC 端
      * @param uriVariables 参数变量
      * @return 协议地址
      */
-    public static String dingtalkProtocolUrl(String origin, boolean isPC, Map<String, ?> uriVariables) {
-        UriComponentsBuilder builder = getUriComponentsBuilder(isPC);
-        String expandUrl = UriComponentsBuilder.fromHttpUrl(origin).buildAndExpand(uriVariables).toUriString();
+    public static String dingtalkProtocolUrl(String variableUrl, boolean isPC, Map<String, ?> uriVariables) {
+        UriComponentsBuilder builder = getDingtalkUriComponentsBuilder(isPC);
+        String expandUrl = UriComponentsBuilder.fromHttpUrl(variableUrl).buildAndExpand(uriVariables).toUriString();
         builder.queryParam("url", expandUrl);
         return builder.encode().toUriString();
     }
 
-    private static UriComponentsBuilder getUriComponentsBuilder(boolean isPC) {
+    private static UriComponentsBuilder getDingtalkUriComponentsBuilder(boolean isPC) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(DINGTALK_PROTOCOL);
         if (isPC) {
             builder.queryParam("pc_slide", true);
@@ -93,16 +93,13 @@ public class LinkUtils {
     }
 
     private static UriComponentsBuilder getUriComponentsBuilder(String url, String endpoint, boolean encode) {
-        Assert.hasText(url, "endpoint must has text");
+        Assert.hasText(url, "url must has text");
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url);
-        if (encode) builder.encode();
         UriComponents components = builder.build();
-        if (!StringUtils.hasText(components.getHost())) {
-            Assert.hasText(endpoint, "endpoint must has text");
-            assert endpoint != null;
+        if (!StringUtils.hasText(components.getHost()) && StringUtils.hasText(endpoint)) {
             builder = UriComponentsBuilder.fromHttpUrl(endpoint).uriComponents(components);
-            if (encode) builder.encode();
         }
+        if (encode) builder.encode();
         return builder;
     }
 

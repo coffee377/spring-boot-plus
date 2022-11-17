@@ -1,5 +1,6 @@
 package com.voc.dingtalk.model;
 
+import com.voc.common.api.dict.EnumDictItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,6 +11,14 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum Priority {
-low,
+public enum Priority implements EnumDictItem<Integer> {
+    LOWEST(10, "较低"),
+    ORDINARY(20, "普通"),
+    HIGHER(30, "紧急"),
+    HIGHEST(40, "非常紧急"),
+    ;
+
+    private final Integer value;
+    private final String description;
+    
 }
