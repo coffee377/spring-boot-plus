@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.voc.boot"
-description = "Spring Boot Plus Starter Dependencies"
+description = "Spring Plus Starter Dependencies"
 
 devtools {
   type(DevType.BOM)
@@ -23,7 +23,7 @@ dependencyManagement {
 }
 
 dependencies {
-  implementation(enforcedPlatform(project(":spring-boot-plus-dependencies")))
+  implementation(enforcedPlatform(project(":spring-plus-dependencies")))
   constraints {
 
   }

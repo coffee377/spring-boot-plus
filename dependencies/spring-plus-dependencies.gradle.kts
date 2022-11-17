@@ -7,6 +7,9 @@ javaPlatform {
   allowDependencies()
 }
 
+val common = "common"
+val starter = "spring-plus-starter"
+
 dependencies {
   /* Spring Boot 依赖 */
   api(platform(libs.spring.boot.dependencies))
@@ -20,6 +23,7 @@ dependencies {
     api("org.mapstruct:mapstruct:1.5.0.RC1")
     api("org.mapstruct:mapstruct-processor:1.5.0.RC1")
     api("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+    api("org.gitlab4j:gitlab4j-api:5.0.1")
 
 //    api(toolsLibs.mapstruct)
 //    api(toolsLibs.mapstruct.processor)
@@ -28,7 +32,7 @@ dependencies {
     api("org.springdoc:springdoc-openapi-ui:1.6.11")
 
     /* projects */
-    api(project(":spring-boot-starter:spring-boot-starter-result"))
+    api(project(":$starter:$starter-result"))
   }
 }
 

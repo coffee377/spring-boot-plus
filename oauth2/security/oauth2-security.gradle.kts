@@ -1,11 +1,14 @@
+val common = "common"
+val starter = "spring-plus-starter"
+
 dependencies {
 
-  implementation(project(":common:common-api"))
+  implementation(project(":$common:$common-api"))
 
   implementation("org.springframework.security:spring-security-crypto")
   implementation("org.springframework.security:spring-security-oauth2-core")
 
-  api(project(":spring-boot-starter:spring-boot-starter-result"))
+  api(project(":$starter:$starter-result"))
 
   compileOnly("org.springframework.data:spring-data-commons")
   compileOnly("org.springframework.boot:spring-boot-starter-security")

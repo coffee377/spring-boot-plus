@@ -24,6 +24,8 @@ dependencyManagement {
 }
 
 subprojects {
+  group = "com.voc.common"
+
   devtools {
     type(DevType.LIB)
     lombok(true)

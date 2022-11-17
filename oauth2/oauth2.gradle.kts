@@ -16,12 +16,12 @@ devtools {
 //}
 
 subprojects {
-  group = "com.voc.boot"
+  group = "com.voc.oauth"
 
   apply(plugin = "com.voc.boot")
 
   dependencies {
-    implementation(platform(project(":spring-boot-plus-dependencies")))
+    implementation(platform(project(":spring-plus-dependencies")))
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-security")

@@ -1,7 +1,7 @@
 import com.voc.gradle.plugin.extensions.AutoIncludeProjectExtension
 
 /* 根项目名称 */
-rootProject.name = "spring-boot-plus"
+rootProject.name = "spring-plus"
 
 pluginManagement {
   repositories {

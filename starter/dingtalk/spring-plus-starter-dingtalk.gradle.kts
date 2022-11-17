@@ -1,5 +1,5 @@
 val common = "common"
-val starter = "spring-boot-starter"
+val starter = "spring-plus-starter"
 
 dependencies {
   implementation(project(":$common:$common-api"))
