@@ -24,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @EnableConfigurationProperties(DingTalkProperties.class)
 @ComponentScan(basePackages = "com.voc.dingtalk")
-@ConditionalOnProperty(prefix = "spring.dingtalk", name = "enable", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "dingtalk", name = "enable", havingValue = "true", matchIfMissing = true)
 @Import({DingTalkCacheConfiguration.class, DingTalkNoticeConfiguration.class, DingTalkProxyConfiguration.class})
 public class DingTalkAutoConfiguration {
 
@@ -34,8 +34,4 @@ public class DingTalkAutoConfiguration {
         return new DefaultDingTalkService(dingTalkProperties, noticeProperties);
     }
 
-    @Bean
-    RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }

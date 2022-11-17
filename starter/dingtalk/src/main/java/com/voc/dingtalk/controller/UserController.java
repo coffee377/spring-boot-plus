@@ -2,9 +2,7 @@ package com.voc.dingtalk.controller;
 
 import com.dingtalk.api.response.OapiV2UserGetResponse;
 import com.voc.dingtalk.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
@@ -20,10 +18,6 @@ public class UserController {
     @Resource
     private UserService dingTalkUserService;
 
-    @Resource
-    private RestTemplate restTemplate;
-
-
     @GetMapping("/{appName}/scan")
     public Object login(@PathVariable(name = "appName") String appName,
                         @RequestParam("code") String code,
@@ -34,8 +28,6 @@ public class UserController {
 
     @GetMapping("/user/info")
     public Object getUserInfo() {
-        ResponseEntity<String> forEntity = restTemplate.getForEntity("/fdf/fd", String.class);
-
         OapiV2UserGetResponse.UserGetResponse info = dingTalkUserService.getUserDetailInfo("", "", "");
         return info;
     }

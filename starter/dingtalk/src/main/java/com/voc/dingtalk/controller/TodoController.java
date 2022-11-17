@@ -35,7 +35,7 @@ public class TodoController {
         todoService.update(request.getOperatorId(), taskId, request);
     }
 
-    @PutMapping("/{taskId}")
+    @PutMapping("/{taskId}/status")
     public void updateTodoTaskExecutorStatus(@PathVariable String taskId, @RequestBody UpdateTodoTaskExecutorStatusRequest request) {
         todoService.updateExecutorStatus(request.getOperatorId(), taskId, request);
     }
