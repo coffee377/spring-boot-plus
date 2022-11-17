@@ -24,38 +24,36 @@
     <dependencies>
       <dependency>
         <groupId>com.voc</groupId>
-        <artifactId>common</artifactId>
-        <version>0.1.0</version>
+        <artifactId>spring-plus-dependencies</artifactId>
+        <version>0.1.2-SNAPSHOT</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
-      <dependency>
-        <groupId>com.voc.boot</groupId>
-        <artifactId>spring-boot-starter</artifactId>
-        <version>0.1.0</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
+<!--      <dependency>-->
+<!--        <groupId>com.voc.boot</groupId>-->
+<!--        <artifactId>spring-boot-starter</artifactId>-->
+<!--        <version>0.1.0</version>-->
+<!--        <scope>import</scope>-->
+<!--        <type>pom</type>-->
+<!--      </dependency>-->
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>com.voc</groupId>
-      <artifactId>common-api</artifactId>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.voc.common</groupId>-->
+<!--      <artifactId>common-api</artifactId>-->
+<!--    </dependency>-->
     <!-- 钉钉 SDK -->
     <!-- 老版本 SDK -->
     <dependency>
       <groupId>com.aliyun</groupId>
       <artifactId>alibaba-dingtalk-service-sdk</artifactId>
-      <version>2.0.0</version>
     </dependency>
     <!-- 新版 SDK -->
     <dependency>
       <groupId>com.aliyun</groupId>
       <artifactId>dingtalk</artifactId>
-      <version>1.4.20</version>
     </dependency>
   </dependencies>
 
