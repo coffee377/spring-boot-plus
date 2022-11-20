@@ -32,39 +32,38 @@ public class EnumDictItemTypeHandler<T extends EnumDictItem<?>> extends BaseType
         }
     }
 
-
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, T parameter, JdbcType jdbcType) throws SQLException {
         if (jdbcType == null) {
-            ps.setObject(i, this.getValue(parameter));
+            ps.setObject(i, fromEnumDictItem(parameter));
         } else {
-            ps.setObject(i, this.getValue(parameter), jdbcType.TYPE_CODE);
+            ps.setObject(i, fromEnumDictItem(parameter), jdbcType.TYPE_CODE);
         }
-    }
-
-    private Object getValue(T parameter) {
-        return parameter.getValue();
     }
 
     @Override
     public T getNullableResult(ResultSet resultSet, String columnName) throws SQLException {
         Object object = resultSet.getObject(columnName);
-        return valueOf(object);
+        return toEnumDictItem(object);
     }
 
     @Override
     public T getNullableResult(ResultSet resultSet, int i) throws SQLException {
         Object object = resultSet.getObject(i);
-        return valueOf(object);
+        return toEnumDictItem(object);
     }
 
     @Override
     public T getNullableResult(CallableStatement callableStatement, int i) throws SQLException {
         Object object = callableStatement.getObject(i);
-        return valueOf(object);
+        return toEnumDictItem(object);
     }
 
-    private T valueOf(Object value) {
+    private Object fromEnumDictItem(T parameter) {
+        return parameter.getValue();
+    }
+
+    private T toEnumDictItem(Object value) {
         return EnumDictItem.findByValue(clazz, value).orElse(null);
     }
 

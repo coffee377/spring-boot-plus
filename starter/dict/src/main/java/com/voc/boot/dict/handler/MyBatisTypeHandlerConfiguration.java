@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClas
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.function.Consumer;
+
 /**
  * @author WuYujie
  * @email coffee377@dingtalk.com
@@ -19,12 +21,8 @@ import org.springframework.context.annotation.Configuration;
 public class MyBatisTypeHandlerConfiguration {
 
     @Bean
-    ConfigurationCustomizer mybatisTypeHandler() {
-        return configuration -> {
-            TypeHandlerRegistry registry = configuration.getTypeHandlerRegistry();
-            registry.register(EnumDictItemTypeHandler.class);
-            registry.register(FuncEnumDictItemTypeHandler.class);
-        };
+    ConfigurationCustomizer mybatisTypeHandler(Consumer<TypeHandlerRegistry> consumer) {
+        return configuration -> consumer.accept(configuration.getTypeHandlerRegistry());
     }
 
 }
