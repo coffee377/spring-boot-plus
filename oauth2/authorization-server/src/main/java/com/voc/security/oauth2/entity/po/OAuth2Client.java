@@ -1,7 +1,10 @@
 package com.voc.security.oauth2.entity.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.voc.common.api.entity.impl.BasePersistEntity;
+import com.voc.mybatis.handler.CollectionStringTypeHandler;
 import com.voc.security.oauth2.enums.OAuth2AuthorizationGrantType;
 import com.voc.security.oauth2.enums.OAuth2ClientAuthenticationMethod;
 import lombok.Data;
@@ -74,21 +77,25 @@ public class OAuth2Client extends BasePersistEntity<String> {
     /**
      * 重定向地址
      */
+    @TableField(typeHandler = CollectionStringTypeHandler.class)
     private Set<String> redirectUris;
 
     /**
      * 允许授予的权限
      */
+    @TableField(typeHandler = CollectionStringTypeHandler.class)
     private Set<String> scopes;
 
     /**
      * 客户端设置
      */
+    @TableField(typeHandler = JacksonTypeHandler.class)
     private OAuth2ClientSettings clientSettings;
 
     /**
      * 令牌设置
      */
+    @TableField(typeHandler = JacksonTypeHandler.class)
     private OAuth2TokenSettings tokenSettings;
 
     /**
@@ -148,9 +155,9 @@ public class OAuth2Client extends BasePersistEntity<String> {
                 .clientAuthenticationMethods(methods)
                 .authorizationGrantTypes(grantTypes)
                 .redirectUris(registeredClient.getRedirectUris())
-                .scopes(registeredClient.getScopes())
-                .clientSettings(OAuth2ClientSettings.from(registeredClient.getClientSettings()))
-                .tokenSettings(OAuth2TokenSettings.from(registeredClient.getTokenSettings()));
+                .scopes(registeredClient.getScopes());
+//                .clientSettings(OAuth2ClientSettings.from(registeredClient.getClientSettings()))
+//                .tokenSettings(OAuth2TokenSettings.from(registeredClient.getTokenSettings()));
         return builder.build();
     }
 

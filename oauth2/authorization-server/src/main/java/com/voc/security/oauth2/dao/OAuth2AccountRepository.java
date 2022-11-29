@@ -9,6 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @email coffee377@dingtalk.com
  * @time 2022/11/08 15:09
  */
-@Mapper
+
 public interface OAuth2AccountRepository extends BaseMapper<OAuth2Account> {
 }

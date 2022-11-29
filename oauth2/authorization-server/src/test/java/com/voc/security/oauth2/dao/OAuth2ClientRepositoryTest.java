@@ -1,8 +1,7 @@
 package com.voc.security.oauth2.dao;
 
-import com.voc.common.api.dict.enums.UsingStatus;
 import com.voc.security.autoconfigure.AuthorizationServerAutoConfiguration;
-import com.voc.security.oauth2.enums.OAuth2ClientAuthenticationMethod;
+import com.voc.security.oauth2.entity.po.OAuth2Client;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -11,9 +10,6 @@ import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author WuYujie
@@ -46,20 +42,21 @@ class OAuth2ClientRepositoryTest {
                 .redirectUri("http://127.0.0.1:8090/callback")
                 .scope(OidcScopes.OPENID).build();
 
-//        OAuth2Client client =  OAuth2Client.from(demoClient);
-//        clientRepository.insert(client);
-        User user = new User();
-        user.setName("coffee377");
-        user.setAge(32);
-        user.setEmail("coffee377@dingtalk.com");
-        Set<OAuth2ClientAuthenticationMethod> set = new HashSet<>(Arrays.asList(OAuth2ClientAuthenticationMethod.values()));
-        user.setAuthenticationMethods(set);
-        user.setStatus(UsingStatus.LOCK);
+        OAuth2Client client =  OAuth2Client.from(demoClient);
+        clientRepository.insert(client);
 
-        userMapper.insert(user);
+//        User user = new User();
+//        user.setName("coffee377");
+//        user.setAge(32);
+//        user.setEmail("coffee377@dingtalk.com");
+//        List<OAuth2ClientAuthenticationMethod> set = Arrays.asList(OAuth2ClientAuthenticationMethod.values());
+//        user.setAuthenticationMethods(set);
+//        user.setStatus(UsingStatus.LOCK);
 
-        User user1 = userMapper.selectById("1591804921398206466");
-        System.out.println(user1);
+//        userMapper.insert(user);
+//
+//        User user1 = userMapper.selectById("1591804921398206466");
+//        System.out.println(user1);
     }
 
 }

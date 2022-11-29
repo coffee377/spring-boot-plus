@@ -1,6 +1,7 @@
 package com.voc.security.oauth2.entity.po;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
@@ -13,6 +14,7 @@ import java.time.Duration;
  * @time 2022/10/22 01:11
  */
 @Data
+@Accessors(chain = true)
 public class OAuth2TokenSettings {
 
     /**
@@ -52,14 +54,14 @@ public class OAuth2TokenSettings {
     }
 
     public static OAuth2TokenSettings from(TokenSettings settings) {
-//        return OAuth2TokenSettings.builder()
-//                .authorizationCodeTimeToLive(settings.getAuthorizationCodeTimeToLive())
-//                .accessTokenTimeToLive(settings.getAccessTokenTimeToLive())
-//                .accessTokenFormat(settings.getAccessTokenFormat())
-//                .reuseRefreshTokens(settings.isReuseRefreshTokens())
-//                .refreshTokenTimeToLive(settings.getRefreshTokenTimeToLive())
-//                .idTokenSignatureAlgorithm(settings.getIdTokenSignatureAlgorithm())
-//                .build();
-        return null;
+        OAuth2TokenSettings tokenSettings = new OAuth2TokenSettings();
+        tokenSettings
+                .setAuthorizationCodeTimeToLive(settings.getAuthorizationCodeTimeToLive())
+                .setAccessTokenTimeToLive(settings.getAccessTokenTimeToLive())
+                .setAccessTokenFormat(settings.getAccessTokenFormat())
+                .setReuseRefreshTokens(settings.isReuseRefreshTokens())
+                .setRefreshTokenTimeToLive(settings.getRefreshTokenTimeToLive())
+                .setIdTokenSignatureAlgorithm(settings.getIdTokenSignatureAlgorithm());
+        return tokenSettings;
     }
 }

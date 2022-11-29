@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,5 +26,5 @@ public class User {
 
 //    @TableField(typeHandler = ClientAuthenticationMethodTypeHandler.class)
 //    @TableField(typeHandler = UnknownTypeHandler.class)
-    private Set<OAuth2ClientAuthenticationMethod> authenticationMethods;
+    private List<OAuth2ClientAuthenticationMethod> authenticationMethods;
 }

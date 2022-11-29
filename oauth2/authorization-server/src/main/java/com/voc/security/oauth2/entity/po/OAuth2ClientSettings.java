@@ -1,6 +1,7 @@
 package com.voc.security.oauth2.entity.po;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
@@ -13,6 +14,7 @@ import org.springframework.util.StringUtils;
  * @time 2022/10/22 01:08
  */
 @Data
+@Accessors(chain = true)
 public class OAuth2ClientSettings {
     private boolean requireProofKey; // false
     private boolean requireAuthorizationConsent; // false
@@ -48,12 +50,11 @@ public class OAuth2ClientSettings {
     }
 
     public static OAuth2ClientSettings from(ClientSettings settings) {
-//        return OAuth2ClientSettings.builder()
-//                .requireProofKey(settings.isRequireProofKey())
-//                .requireAuthorizationConsent(settings.isRequireAuthorizationConsent())
-//                .jwkSetUrl(settings.getJwkSetUrl())
-//                .build();
-        return null;
+        OAuth2ClientSettings clientSettings = new OAuth2ClientSettings();
+        clientSettings.setRequireProofKey(settings.isRequireProofKey())
+                .setRequireAuthorizationConsent(settings.isRequireAuthorizationConsent())
+                .setJwkSetUrl(settings.getJwkSetUrl());
+        return clientSettings;
     }
 
 }
