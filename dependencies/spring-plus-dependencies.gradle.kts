@@ -10,39 +10,45 @@ javaPlatform {
 val common = "common"
 val starter = "spring-plus-starter"
 
+/* 依赖管理 */
 dependencies {
-  /* Spring Boot 依赖 */
+  /* Spring Boot */
   api(platform(libs.spring.boot.dependencies))
+  /* Spring Cloud */
+  api(platform(libs.spring.cloud.dependencies))
+  /* Spring Cloud Alibaba */
+  api(platform(libs.spring.cloud.alibaba.dependencies))
+
   api(platform(libs.spring.security.bom))
 
   constraints {
     /* 授权服务器依赖 */
-    api(libs.spring.authorization.server)
+    api(libs.spring.security.oauth2.authorization.server)
     api(libs.bundles.dingtalk)
-    api("com.baomidou:mybatis-plus-boot-starter:3.5.2")
 
+    api("com.baomidou:mybatis-plus-boot-starter:3.5.2")
     api("org.mapstruct:mapstruct:1.5.0.RC1")
     api("org.mapstruct:mapstruct-processor:1.5.0.RC1")
     api("org.projectlombok:lombok-mapstruct-binding:0.2.0")
-    api("org.gitlab4j:gitlab4j-api:5.0.1")
+//    api("org.gitlab4j:gitlab4j-api:5.0.1")
+//    api("org.springdoc:springdoc-openapi-ui:1.6.11")
+    api(libs.spring.doc.openapi)
+    api(libs.gitlab)
 
-//    api(toolsLibs.mapstruct)
-//    api(toolsLibs.mapstruct.processor)
-//    api(toolsLibs.lombok.mapstruct)
-
-    api("org.springdoc:springdoc-openapi-ui:1.6.11")
+    api(toolsLibs.mapstruct)
+    api(toolsLibs.mapstruct.processor)
+    api(toolsLibs.lombok.mapstruct)
 
     /* projects */
-    api(project(":$starter:$starter-result"))
+    api(project(":$common:$common-api"))
+    api(project(":$starter:$starter-cache"))
+    api(project(":$starter:$starter-dict"))
+    api(project(":$starter:$starter-dingtalk"))
   }
 }
 
 publishing {
   repositories {
-    maven {
-      name = "local"
-      url = uri("${project.rootProject.buildDir}/publications/repos")
-    }
     maven {
       name = "nexus3"
       val versionType = if (project.version.toString().endsWith("", true)) "snapshots" else "releases"
