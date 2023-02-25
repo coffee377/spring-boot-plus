@@ -3,7 +3,6 @@ package com.voc.persist.mongo.impl;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.voc.persist.mongo.IMongoDao;
-import org.bson.Document;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -177,9 +176,11 @@ public abstract class BaseMongoDao<E, ID> implements IMongoDao<E, ID>, Applicati
 
     @Override
     public E update(E entity) {
-        Assert.notNull(entity.getId(), "The Entity id must not be null!");
-        Document document = Document.parse(entity.toJson());
-        return this.innerUpdate(entity.getId(), document);
+        // TODO: 2023/2/25 20:52
+//        Assert.notNull(entity.getId(), "The Entity id must not be null!");
+//        Document document = Document.parse(entity.toJson());
+//        return this.innerUpdate(entity.getId(), document);
+        return null;
     }
 
     protected E innerUpdate(Object id, Map<String, Object> updateFieldMap) {

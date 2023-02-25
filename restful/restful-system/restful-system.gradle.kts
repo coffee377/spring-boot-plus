@@ -8,7 +8,7 @@ val restful = parent!!.name
 dependencies {
   api(project(":$restful:$restful-core"))
   implementation(project(":common:common-api"))
-  implementation(project(":spring-boot-starter:spring-boot-starter-result"))
+//  implementation(project(":spring-boot-starter:spring-boot-starter-result"))
   implementation("org.springframework.boot:spring-boot-starter-web") {
 //    exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
   }

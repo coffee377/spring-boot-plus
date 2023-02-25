@@ -1,21 +1,20 @@
-import com.voc.gradle.plugin.extensions.AutoIncludeProjectExtension
+import io.github.coffee377.gradle.plugin.extensions.AutoIncludeProjectExtension
 
 /* 根项目名称 */
 rootProject.name = "spring-plus"
 
 pluginManagement {
   repositories {
-//    maven { url = uri("D:\\Project\\personal\\gradle-devtools\\build\\publications\\repos") }
-//    maven {
-//      url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-public/")
-//      isAllowInsecureProtocol = true
-//    }
+    maven {
+      url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-public")
+      isAllowInsecureProtocol = true
+    }
     gradlePluginPortal()
     maven { url = uri("https://repo.spring.io/plugins-release") }
   }
 
   plugins {
-    id("io.github.coffee377.auto-include") version "0.1.2"
+    id("io.github.coffee377.auto-include") version "0.2.0-alpha"
   }
 }
 

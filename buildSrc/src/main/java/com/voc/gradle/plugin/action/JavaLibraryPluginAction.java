@@ -145,9 +145,9 @@ public class JavaLibraryPluginAction implements IPluginAction {
 
         configurations.all(configuration -> configuration.resolutionStrategy(resolutionStrategy -> {
             /* 动态版本依赖缓存 10 minutes */
-            resolutionStrategy.cacheDynamicVersionsFor(10, TimeUnit.MINUTES);
+//            resolutionStrategy.cacheDynamicVersionsFor(10, TimeUnit.MINUTES);
             /* SNAPSHOT版本依赖缓存 0 seconds */
-            resolutionStrategy.cacheChangingModulesFor(10, TimeUnit.SECONDS);
+//            resolutionStrategy.cacheChangingModulesFor(10, TimeUnit.SECONDS);
         }));
     }
 

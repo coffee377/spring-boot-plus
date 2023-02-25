@@ -1,6 +1,8 @@
 plugins {
   `java-platform`
   `maven-publish`
+
+  id("io.spring.dependency-management")
 }
 
 javaPlatform {
@@ -8,7 +10,27 @@ javaPlatform {
 }
 
 val common = "common"
-val starter = "spring-plus-starter"
+val starter = "spring-plus"
+
+repositories {
+  maven {
+    url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-public/")
+    isAllowInsecureProtocol = true
+  }
+}
+
+dependencyManagement {
+//  imports {
+//
+//    mavenBom(libs.spring.boot.dependencies.get().toString())
+////    mavenBom("org.springframework.boot:spring-boot-dependencies:2.5.14")
+//  }
+  generatedPomCustomization {
+    enabled(false)
+  }
+//
+////  pomConfigurer.configurePom()
+}
 
 /* 依赖管理 */
 dependencies {
@@ -50,8 +72,8 @@ dependencies {
 publishing {
   repositories {
     maven {
-      name = "nexus3"
-      val versionType = if (project.version.toString().endsWith("", true)) "snapshots" else "releases"
+      name = "JinQiSoftNexus3"
+      val versionType = if (project.version.toString().endsWith("SNAPSHOT", true)) "snapshots" else "releases"
       url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-${versionType}/")
       isAllowInsecureProtocol = true
       credentials {

@@ -1,5 +1,5 @@
 val common = "common"
-val starter = "spring-plus-starter"
+val starter = "spring-plus"
 
 dependencies {
 
