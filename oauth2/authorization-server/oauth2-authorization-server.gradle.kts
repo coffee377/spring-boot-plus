@@ -10,6 +10,7 @@ dependencies {
   implementation(project(":$starter:$starter-dict"))
 
   implementation("mysql:mysql-connector-java")
+//  implementation("mysql:mysql-connector-java:8.0.32")
 
   implementation("org.springframework.security:spring-security-crypto")
   implementation("org.springframework.boot:spring-boot-starter-web")

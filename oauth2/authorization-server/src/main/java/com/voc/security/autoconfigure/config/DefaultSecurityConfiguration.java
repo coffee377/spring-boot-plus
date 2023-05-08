@@ -5,6 +5,8 @@ import com.voc.security.core.authentication.ResultAuthenticationSuccessHandler;
 import com.voc.security.core.authentication.converter.OAuth2AccessTokenResponseConverter;
 import com.voc.security.oauth2.client.dingtalk.DingTalkAuthCodeConvertFilter;
 import com.voc.security.oauth2.client.dingtalk.DingTalkOAuth2AuthorizationCodeGrantRequestEntityConverter;
+import com.voc.security.oauth2.client.dingtalk.DingTalkOAuth2User;
+import com.voc.security.oauth2.client.dingtalk.DingTalkOAuth2UserService;
 import com.voc.security.oauth2.client.provider.OAuth2ClientRegistrationAdapter;
 import com.voc.security.oauth2.client.OAuth2UserRequestEntityConverterPlus;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -16,18 +18,20 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.*;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.client.RestTemplate;
 
@@ -98,13 +102,15 @@ public class DefaultSecurityConfiguration {
                 .authorizeRequests((authorize) -> {
                     authorize
 //                            .antMatchers("/account/**").permitAll()
+                            .antMatchers("/actuator/health","/actuator/health/liveness").permitAll()
                             .anyRequest().authenticated();
                 })
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .formLogin().and()
                 .httpBasic().and()
                 .oauth2Login(loginConfigurer -> {
-                    loginConfigurer.successHandler(resultAuthenticationSuccessHandler);
-                    loginConfigurer.failureHandler(resultAuthenticationFailureHandler);
+//                    loginConfigurer.successHandler(resultAuthenticationSuccessHandler);
+//                    loginConfigurer.failureHandler(resultAuthenticationFailureHandler);
 //                    loginConfigurer.clientRegistrationRepository()
                     loginConfigurer.authorizationEndpoint(authorizationEndpoint -> {
 //                        authorizationEndpoint.baseUri()
@@ -117,11 +123,18 @@ public class DefaultSecurityConfiguration {
                     });
                     /* 用户信息端点配置 */
                     loginConfigurer.userInfoEndpoint(userInfoEndpoint -> {
-//                        userInfoEndpoint.customUserType(DingTalkOAuth2User.class, "dingtalk");
-                        DefaultOAuth2UserService userService = new DefaultOAuth2UserService();
+                        List<OAuth2UserService<OAuth2UserRequest, OAuth2User>> userServices = new ArrayList<>();
+                        DingTalkOAuth2UserService dingTalkOAuth2UserService = new DingTalkOAuth2UserService();
+//                        userServices.add(dingTalkOAuth2UserService);
+                        DefaultOAuth2UserService defUserService = new DefaultOAuth2UserService();
                         /* 请求参数转换 */
-                        userService.setRequestEntityConverter(new OAuth2UserRequestEntityConverterPlus());
-                        userInfoEndpoint.userService(userService);
+//                        defUserService.setRequestEntityConverter(new OAuth2UserRequestEntityConverterPlus());
+
+                        userServices.add(defUserService);
+                        // TODO: 2023/2/26 16:06 使用委托类注入不同实现
+                        DelegatingOAuth2UserService<OAuth2UserRequest, OAuth2User> userService = new DelegatingOAuth2UserService<>(userServices);
+//                        userInfoEndpoint.customUserType(DingTalkOAuth2User.class, "dingtalk");
+//                        userInfoEndpoint.userService(userService);
                     });
                 })
                 .oauth2Client(clientConfigurer -> {
@@ -142,8 +155,4 @@ public class DefaultSecurityConfiguration {
         return new InMemoryClientRegistrationRepository(registrations);
     }
 
-//    @Bean
-//    OAuth2AuthorizedClientRepository authorizedClientRepository(){
-//        return null;
-//    }
 }

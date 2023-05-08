@@ -45,8 +45,8 @@ public class ResultAuthenticationSuccessHandler extends ResultResponseHandler im
 
         publisher.publishEvent(new LoginSuccessEvent("用户登录成功", authentication, tokenResponse));
 
-        Map<String, Object> map = accessTokenResponseParametersConverter.convert(tokenResponse);
-        Result result = Result.success(map);
+//        Map<String, Object> map = accessTokenResponseParametersConverter.convert(tokenResponse);
+        Result result = Result.success(tokenResponse);
 
         this.setResult(result);
         this.output(request, response);

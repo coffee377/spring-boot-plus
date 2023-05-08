@@ -4,12 +4,16 @@ import com.voc.security.core.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -21,10 +25,12 @@ import java.util.stream.Collectors;
 public class DefaultUserDetailService implements UserDetailsService {
 
     private final List<AuthService> authServices;
+    private final PasswordEncoder passwordEncoder;
 
-    public DefaultUserDetailService(ObjectProvider<AuthService> authServiceProvider) {
+    public DefaultUserDetailService(ObjectProvider<AuthService> authServiceProvider, PasswordEncoder passwordEncoder) {
         /* 根据注入的 AuthService 按顺序进行排列 */
         this.authServices = authServiceProvider.orderedStream().collect(Collectors.toList());
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -45,7 +51,14 @@ public class DefaultUserDetailService implements UserDetailsService {
 
         /* 3. 构建用户权限 */
         Set<SimpleGrantedAuthority> authorities = user.getAuthorities().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
-        return new DefaultUserDetails(user, authorities);
+        return User.withUsername(user.getUsername())
+                .password(Objects.requireNonNull(user.getPassword()))
+                .accountExpired(user.isAccountExpired())
+                .accountLocked(user.isAccountLocked())
+                .authorities(authorities)
+                .credentialsExpired(user.isCredentialsExpired())
+                .disabled(!user.isEnabled())
+                .build();
     }
 
 }

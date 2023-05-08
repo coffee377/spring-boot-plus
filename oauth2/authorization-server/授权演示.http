@@ -1,6 +1,6 @@
-### 1. 授权码流程
+### 1. PKCE 授权码流程
 # 1.1 获取授权码 浏览器打开以下地址 redirect_url 不能使用 localhost
-GET http://localhost:9000/oauth2/authorize?client_id=demo&response_type=code&scope=openid&redirect_uri=http://127.0.0.1:8090/callback
+GET http://localhost:9000/oauth2/authorize?client_id=spa&response_type=code&scope=openid&redirect_uri=http://127.0.0.1:3000/login&code_challenge_method=S256&code_challenge=FWOeBX6Qw_krhUE2M0lOIH3jcxaZzfs5J4jtai5hOX4
 
 ###
 # 1.2 根据授权码获取 token (client_secret_post)

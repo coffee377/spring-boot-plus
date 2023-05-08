@@ -21,6 +21,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -41,6 +42,10 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.context.NullSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.annotation.Resource;
@@ -89,6 +94,7 @@ public class AuthorizationServerConfiguration {
                     metadataEndpoint.authorizationServerMetadataCustomizer(builder -> {
                                 // oauth2 授权类型支持密码模式
                                 builder.grantType(AuthorizationGrantType.PASSWORD.getValue());
+
                             }
                     );
                 })
@@ -97,14 +103,15 @@ public class AuthorizationServerConfiguration {
                 })
                 /* 授权端点 */
                 .authorizationEndpoint(authorizationEndpoint -> {
-                    authorizationEndpoint.errorResponseHandler(resultAuthenticationFailureHandler);
+//                    authorizationEndpoint.
+//                    authorizationEndpoint.errorResponseHandler(resultAuthenticationFailureHandler);
                 })
                 /* token 端点 */
                 .tokenEndpoint(tokenEndpoint -> {
                     tokenEndpoint.accessTokenRequestConverter(new OAuth2UsernamePasswordAuthenticationConverter());
                     OAuth2UsernamePasswordAuthenticationProvider passwordAuthenticationProvider = new OAuth2UsernamePasswordAuthenticationProvider(userDetailsService, passwordEncoder);
                     tokenEndpoint.authenticationProvider(passwordAuthenticationProvider);
-                    tokenEndpoint.accessTokenResponseHandler(resultAuthenticationSuccessHandler);
+//                    tokenEndpoint.accessTokenResponseHandler(resultAuthenticationSuccessHandler);
                     tokenEndpoint.errorResponseHandler(resultAuthenticationFailureHandler);
                 })
                 .tokenIntrospectionEndpoint(tokenIntrospectionEndpoint -> {
@@ -123,13 +130,16 @@ public class AuthorizationServerConfiguration {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests.anyRequest().authenticated()
                 )
+//                .httpBasic().and()
+                .cors().and()
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
                 .exceptionHandling(exceptions -> {
-//                    new LoginUrlAuthenticationEntryPoint("/login");
-                    exceptions.authenticationEntryPoint(resultAuthenticationEntryPoint);
+                    LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint("/login");
+                    exceptions.authenticationEntryPoint(loginUrlAuthenticationEntryPoint);
                 });
 
-
+        SecurityContextHolderFilter securityContextHolderFilter = new SecurityContextHolderFilter(new JwtSecurityContextRepository());
+        http.addFilter(securityContextHolderFilter);
         return http.build();
     }
 
@@ -169,19 +179,27 @@ public class AuthorizationServerConfiguration {
                 .build();
 
         RegisteredClient demoClient = RegisteredClient.withId("2")
-                .clientId("demo")
-                .clientName("演示客户端")
-                .clientSecret("{noop}123456")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+                .clientId("spa")
+                .clientName("前端 SPA 应用")
+//                .clientSecret("{noop}123456")
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+//                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .authorizationGrantType(AuthorizationGrantType.PASSWORD)
-                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/dingtalk")
+//                .authorizationGrantType(AuthorizationGrantType.PASSWORD)
+//                .redirectUri("http://127.0.0.1:9000/login/oauth2/code/dingtalk")
                 .redirectUri("http://127.0.0.1:8090/callback")
+                .redirectUri("http://127.0.0.1:3000/login")
+                .redirectUri("http://127.0.0.1:5173/login")
                 .scope(OidcScopes.OPENID)
+                .scope(OidcScopes.PROFILE)
+                .scope(OidcScopes.EMAIL)
+                .scope(OidcScopes.PHONE)
+                .scope("tweet.read")
+                .scope("users.read")
+                .scope("follows.read")
                 .clientSettings(
                         ClientSettings.builder()
                                 // 是否需要用户确认一下客户端需要获取用户的哪些权限
@@ -222,17 +240,17 @@ public class AuthorizationServerConfiguration {
     @ConditionalOnMissingBean
     public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
         JdbcOAuth2AuthorizationService authorizationService = new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
-        class CustomOAuth2AuthorizationRowMapper extends JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper {
-            public CustomOAuth2AuthorizationRowMapper(RegisteredClientRepository registeredClientRepository) {
-                super(registeredClientRepository);
-                getObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-                this.setLobHandler(new DefaultLobHandler());
-            }
-        }
-
-        CustomOAuth2AuthorizationRowMapper oAuth2AuthorizationRowMapper =
-                new CustomOAuth2AuthorizationRowMapper(registeredClientRepository);
-
+//        class CustomOAuth2AuthorizationRowMapper extends JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper {
+//            public CustomOAuth2AuthorizationRowMapper(RegisteredClientRepository registeredClientRepository) {
+//                super(registeredClientRepository);
+//                getObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+//                this.setLobHandler(new DefaultLobHandler());
+//            }
+//        }
+//
+//        CustomOAuth2AuthorizationRowMapper oAuth2AuthorizationRowMapper =
+//                new CustomOAuth2AuthorizationRowMapper(registeredClientRepository);
+//
 //        authorizationService.setAuthorizationRowMapper(oAuth2AuthorizationRowMapper);
 
         return authorizationService;

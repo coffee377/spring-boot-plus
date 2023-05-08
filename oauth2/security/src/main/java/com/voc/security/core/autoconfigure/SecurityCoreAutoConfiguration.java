@@ -62,8 +62,8 @@ public class SecurityCoreAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    UserDetailsService userDetailsService(ObjectProvider<AuthService> authServices) {
-        return new DefaultUserDetailService(authServices);
+    UserDetailsService userDetailsService(ObjectProvider<AuthService> authServices, PasswordEncoder passwordEncoder) {
+        return new DefaultUserDetailService(authServices, passwordEncoder);
     }
 
 //    @Bean

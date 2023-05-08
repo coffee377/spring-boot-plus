@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 
 /**
  * 注解方式实现事件（LogInSuccessEvent）监听
- * Created with IntelliJ IDEA.
  *
  * @author Wu Yujie
  * @email coffee377@dingtalk.com

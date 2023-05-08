@@ -82,4 +82,13 @@ public class DingTalkOAuth2User extends DefaultOAuth2User implements OAuth2User 
         return getAttribute("stateCode");
     }
 
+    /**
+     * 用户登录是选择的企业
+     *
+     * @return 企业 ID
+     */
+    public String getCorpId() {
+        return null;
+    }
+
 }

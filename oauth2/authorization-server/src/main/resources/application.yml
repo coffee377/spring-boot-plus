@@ -17,17 +17,19 @@ spring:
         - classpath:org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql
   redis:
     host: 127.0.0.1
-    password: tvoc.site.redis
+    password: redis!@@&
   security:
     oauth2:
+#     联合身份认证提供商客户端
       client:
         registration:
           dingtalk:
             client-id: dingopfniakkw72klkjv
             client-secret: 6Il0DuPZPPIr-OG03uMrnqDNu_o03tpIkK03ScpuEPP6NAw7J52D0LWPvTjRf4BR
-          github:
+          github-idp:
+            provider: github
             client-id: db3bd3536a1d3163acf9
-            client-secret: f7170889aefcb05ed1c5b316c08c00eb5c315374
+            client-secret: 45e9229144cfd3e083ee6994f4719c31bc553cf5
           gitee:
             client-id: 96e5747bd3ba7792345f60d8812e1c579cee9c6557ef9bd377f3391d2cc9930c
             client-secret: 278877235bd765f8912fc30e2cef06fbad72be331014dcc40175b7da70b02954
@@ -46,9 +48,14 @@ api:
 logging:
   level:
     root: warn
-#    org.springframework: trace
-#    org.springframework.security: trace
-#    org:
-#      springframework:
-#        security:
-#          authentication: trace
+    org.springframework: info
+    org.springframework.security: info
+    org.springframework.security.oauth2: trace
+    org.springframework.security.authorization: trace
+    org.springframework.security.authentication: trace
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+

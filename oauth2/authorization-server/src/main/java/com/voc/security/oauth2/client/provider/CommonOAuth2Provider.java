@@ -49,7 +49,6 @@ public enum CommonOAuth2Provider implements OAuth2Provider {
             builder.userInfoAuthenticationMethod(AuthenticationMethod.HEADER);
             builder.userNameAttributeName(DingTalkOAuth2User.NAME_ATTRIBUTE_KEY);
             // TODO: 2022/10/30 22:11 钉钉是非标准的 oauth2.1 授权协议，若传 openid 则走 oidc 认证
-            // builder.scope("openid");
             builder.scope("corpid");
             builder.clientName("DingTalk");
             return builder;
@@ -83,7 +82,7 @@ public enum CommonOAuth2Provider implements OAuth2Provider {
     /**
      * <a href="https://gitee.com/api/v5/oauth_doc">OAuth 文档</a>
      */
-    GITEE("Gitee"){
+    GITEE("Gitee") {
         @Override
         public ClientRegistration.Builder getBuilder(String registrationId) {
             ClientRegistration.Builder builder = getBuilder(registrationId, ClientAuthenticationMethod.CLIENT_SECRET_POST, DEFAULT_REDIRECT_URL);

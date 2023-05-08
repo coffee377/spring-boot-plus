@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
@@ -68,6 +69,7 @@ public class ResultResponseHandler implements ResponseHandler<Result>, Applicati
     @Override
     @SuppressWarnings("unchecked")
     public void output(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        response.setStatus(bizStatus.getHttpStatus());
         ServletServerHttpResponse servletServerHttpResponse = new ServletServerHttpResponse(response);
         MediaType mediaType = servletServerHttpResponse.getHeaders().getContentType();
         if (mediaType == null) {
