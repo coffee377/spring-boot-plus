@@ -40,7 +40,8 @@ public final class DefaultFunctions implements Functions {
 
     @Override
     public boolean has(FunctionPoint point) {
-        return functions != null && point.get().or(functions).equals(functions);
+        return functions != null && point.get().and(functions).equals(point.get());
+//        return functions != null && point.get().or(functions).equals(functions);
     }
 
     @Override

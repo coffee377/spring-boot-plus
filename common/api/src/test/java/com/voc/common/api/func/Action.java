@@ -11,10 +11,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Action implements FunctionPoint {
+    QUERY("查询"),
     ADD("添加"),
     DELETE("删除"),
     UPDATE("更新"),
-    QUERY("查询"),
     EXPORT("导出")
     ;
 

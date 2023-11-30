@@ -1,5 +1,7 @@
 package com.voc.common.api.func;
 
+import com.voc.common.api.authority.IAuthorities;
+
 import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Supplier;
@@ -11,7 +13,7 @@ import java.util.function.Supplier;
  * @email coffee377@dingtalk.com
  * @since 0.1.2
  */
-public interface Functions extends Supplier<BigInteger> {
+public interface Functions extends IAuthorities {
 
     /**
      * 原始功能点
@@ -21,7 +23,7 @@ public interface Functions extends Supplier<BigInteger> {
     BigInteger getSource();
 
     /**
-     * 重置
+     * 重置功能点
      */
     void reset();
 
@@ -31,7 +33,16 @@ public interface Functions extends Supplier<BigInteger> {
      * @return 功能字符串
      */
     default String getFunctions() {
-        return get().toString();
+        return getFunctions(10);
+    }
+
+    /**
+     * 获取功能点字符串描述
+     * @param base 字符串表示形式的基数
+     * @return 功能字符串
+     */
+    default String getFunctions(Integer base) {
+        return get().toString(base);
     }
 
     /**

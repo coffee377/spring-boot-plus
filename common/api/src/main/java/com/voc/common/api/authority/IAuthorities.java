@@ -10,7 +10,6 @@ import java.util.function.Supplier;
  * @email coffee377@dingtalk.com
  * @time 2022/04/16 11:38
  */
-@Deprecated
 public interface IAuthorities extends Supplier<BigInteger> {
 
 }

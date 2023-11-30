@@ -1,5 +1,7 @@
 package com.voc.common.api.func;
 
+import com.voc.common.api.authority.IAuthorities;
+
 import java.math.BigInteger;
 import java.util.function.Supplier;
 
@@ -10,7 +12,7 @@ import java.util.function.Supplier;
  * @email coffee377@dingtalk.com
  * @since 0.1.2
  */
-public interface FunctionPoint extends Supplier<BigInteger> {
+public interface FunctionPoint extends IAuthorities {
 
     /**
      * 功能点名称
@@ -41,8 +43,7 @@ public interface FunctionPoint extends Supplier<BigInteger> {
     @Override
     default BigInteger get() {
         int position = getPosition();
-        if (position <= 0) throw new FunctionException("-1", "position 的值必须大于零");
-        // TODO: 2022/11/12 22:25 错误定义
+        if (position <= 0) throw new FunctionException("-1", "功能点位置 position 的值必须为正整数");
         return BigInteger.ONE.shiftLeft(position - 1);
     }
 
