@@ -48,7 +48,7 @@ public class PacketEncoder {
     public JsonSupport getJsonSupport() {
         return jsonSupport;
     }
-    
+
     public ByteBuf allocateBuffer(ByteBufAllocator allocator) {
         if (configuration.isPreferDirectBuffer()) {
             return allocator.ioBuffer();
@@ -252,7 +252,7 @@ public class PacketEncoder {
 
                     ByteBuf encBuf = null;
 
-                    if (packet.getSubType() == PacketType.ERROR) {
+                    if (packet.getSubType() == PacketType.CONNECT_ERROR) {
                         encBuf = allocateBuffer(allocator);
 
                         ByteBufOutputStream out = new ByteBufOutputStream(encBuf);

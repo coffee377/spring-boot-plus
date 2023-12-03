@@ -17,13 +17,19 @@ package com.corundumstudio.socketio;
 
 import com.corundumstudio.socketio.transport.WebSocketTransport;
 import com.corundumstudio.socketio.transport.PollingTransport;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Arrays;
 
 public enum Transport {
+    UNKNOWN("unknown"),
 
     WEBSOCKET(WebSocketTransport.NAME),
     POLLING(PollingTransport.NAME);
 
+    @JsonValue
     private final String value;
+    public final static String PARAMETER_NAME = "transport";
 
     Transport(String value) {
         this.value = value;
@@ -31,5 +37,11 @@ public enum Transport {
 
     public String getValue() {
         return value;
+    }
+
+    public static Transport from(String value) {
+        return Arrays.stream(values())
+                .filter(version -> value.equalsIgnoreCase(version.getValue()))
+                .findFirst().orElse(UNKNOWN);
     }
 }

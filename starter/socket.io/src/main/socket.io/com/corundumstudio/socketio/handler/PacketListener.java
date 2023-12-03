@@ -92,7 +92,11 @@ public class PacketListener {
 
             if (packet.getSubType() == PacketType.CONNECT) {
                 Namespace namespace = namespacesHub.get(packet.getNsp());
+                Object data = packet.getData(); // todo 获取前端传来连接认证数据
+                // todo 两种处理方式，一种放在 HandshakeData，一种是 onConnect 添加 auth 参数
+//                client.getHandshakeData().setAuth((Map<String, Object>) data);
                 namespace.onConnect(client);
+                // todo 认证逻辑应该在这里处理
                 // send connect handshake packet back to client
                 if (!EngineIOVersion.V4.equals(client.getEngineIOVersion())) {
                     client.getBaseClient().send(packet, transport);

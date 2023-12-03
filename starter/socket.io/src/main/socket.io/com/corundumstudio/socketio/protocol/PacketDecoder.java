@@ -142,10 +142,14 @@ public class PacketDecoder {
     }
 
     private Packet decode(ClientHead head, ByteBuf frame) throws IOException {
+        if (head.getLastBinaryPacket() != null) {
+            return parseBinary(head, frame);
+        }
         if ((frame.getByte(0) == 'b' && frame.getByte(1) == '4')
                 || frame.getByte(0) == 4 || frame.getByte(0) == 1) {
             return parseBinary(head, frame);
         }
+
         PacketType type = readType(frame);
         Packet packet = new Packet(type, head.getEngineIOVersion());
 
@@ -224,12 +228,12 @@ public class PacketDecoder {
             if (frame.getByte(0) == 'b' && frame.getByte(1) == '4') {
                 binaryPacket.addAttachment(Unpooled.copiedBuffer(frame));
             } else {
-                ByteBuf attachBuf = Base64.encode(frame);
-                binaryPacket.addAttachment(Unpooled.copiedBuffer(attachBuf));
-                attachBuf.release();
+//                ByteBuf attachBuf = Base64.encode(frame);
+                binaryPacket.addAttachment(Unpooled.copiedBuffer(frame));
+//                attachBuf.release();
             }
             frame.readerIndex(frame.readerIndex() + frame.readableBytes());
-
+            // 所有附加数据加载完成处理逻辑
             if (binaryPacket.isAttachmentsLoaded()) {
                 LinkedList<ByteBuf> slices = new LinkedList<ByteBuf>();
                 ByteBuf source = binaryPacket.getDataSource();
@@ -289,6 +293,7 @@ public class PacketDecoder {
             if (packet.getSubType() == PacketType.EVENT
                     || packet.getSubType() == PacketType.BINARY_EVENT) {
                 ByteBufInputStream in = new ByteBufInputStream(frame);
+                // todo fix 事件名称
                 Event event = jsonSupport.readValue(packet.getNsp(), in, Event.class);
                 packet.setName(event.getName());
                 packet.setData(event.getArgs());
@@ -315,7 +320,9 @@ public class PacketDecoder {
         if (endIndex > 0) {
             return readString(buffer, endIndex);
         }
-        return readString(buffer);
+        // 不能存在“,”说明是默认命名空间
+        return "";
+//        return readString(buffer);
     }
 
 }

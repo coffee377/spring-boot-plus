@@ -45,6 +45,10 @@ public class Configuration {
     private int upgradeTimeout = 10000;
     private int pingTimeout = 60000;
     private int pingInterval = 25000;
+    /**
+     * https://socket.io/docs/v4/engine-io-protocol/#handshake
+     */
+    private int maxPayload = 1000000;
     private int firstDataTimeout = 5000;
 
     private int maxHttpContentLength = 64 * 1024;
@@ -224,6 +228,14 @@ public class Configuration {
     }
     public int getPingInterval() {
         return pingInterval;
+    }
+
+    public int getMaxPayload() {
+        return maxPayload;
+    }
+
+    public void setMaxPayload(int maxPayload) {
+        this.maxPayload = maxPayload;
     }
 
     /**

@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2012-2023 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,9 +22,9 @@ import java.net.InetSocketAddress;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import com.corundumstudio.socketio.*;
 import com.corundumstudio.socketio.protocol.EngineIOVersion;
 import com.corundumstudio.socketio.store.Store;
+import io.socket.engineio.handler.HandshakeResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +38,6 @@ import com.corundumstudio.socketio.ack.AckManager;
 import com.corundumstudio.socketio.messages.HttpErrorMessage;
 import com.corundumstudio.socketio.namespace.Namespace;
 import com.corundumstudio.socketio.namespace.NamespacesHub;
-import com.corundumstudio.socketio.protocol.AuthPacket;
 import com.corundumstudio.socketio.protocol.Packet;
 import com.corundumstudio.socketio.protocol.PacketType;
 import com.corundumstudio.socketio.scheduler.CancelableScheduler;
@@ -79,7 +78,7 @@ public class AuthorizeHandler extends ChannelInboundHandlerAdapter implements Di
     private final ClientsBox clientsBox;
 
     public AuthorizeHandler(String connectPath, CancelableScheduler scheduler, Configuration configuration, NamespacesHub namespacesHub, StoreFactory storeFactory,
-            DisconnectableHub disconnectable, AckManager ackManager, ClientsBox clientsBox) {
+                            DisconnectableHub disconnectable, AckManager ackManager, ClientsBox clientsBox) {
         super();
         this.connectPath = connectPath;
         this.configuration = configuration;
@@ -114,6 +113,7 @@ public class AuthorizeHandler extends ChannelInboundHandlerAdapter implements Di
             Channel channel = ctx.channel();
             QueryStringDecoder queryDecoder = new QueryStringDecoder(req.uri());
 
+            /*  不允许使用自定义请求头 */
             if (!configuration.isAllowCustomRequests()
                     && !queryDecoder.path().startsWith(connectPath)) {
                 HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
@@ -123,9 +123,9 @@ public class AuthorizeHandler extends ChannelInboundHandlerAdapter implements Di
             }
 
             List<String> sid = queryDecoder.parameters().get("sid");
-            if (queryDecoder.path().equals(connectPath)
-                    && sid == null) {
+            if (queryDecoder.path().equals(connectPath) && sid == null) {
                 String origin = req.headers().get(HttpHeaderNames.ORIGIN);
+                // todo 认证不应该在这里处理，这里只是首次握手数据
                 if (!authorize(ctx, channel, origin, queryDecoder.parameters(), req)) {
                     req.release();
                     return;
@@ -138,36 +138,36 @@ public class AuthorizeHandler extends ChannelInboundHandlerAdapter implements Di
 
     private boolean authorize(ChannelHandlerContext ctx, Channel channel, String origin, Map<String, List<String>> params, FullHttpRequest req)
             throws IOException {
-        Map<String, List<String>> headers = new HashMap<String, List<String>>(req.headers().names().size());
+        Map<String, List<String>> headers = new HashMap<>(req.headers().names().size());
         for (String name : req.headers().names()) {
             List<String> values = req.headers().getAll(name);
             headers.put(name, values);
         }
 
         HandshakeData data = new HandshakeData(req.headers(), params,
-                (InetSocketAddress)channel.remoteAddress(),
-                (InetSocketAddress)channel.localAddress(),
+                (InetSocketAddress) channel.remoteAddress(),
+                (InetSocketAddress) channel.localAddress(),
                 req.uri(), origin != null && !origin.equalsIgnoreCase("null"));
 
         boolean result = false;
         Map<String, Object> storeParams = Collections.emptyMap();
-        try {
-            AuthorizationResult authResult = configuration.getAuthorizationListener().getAuthorizationResult(data);
-            result = authResult.isAuthorized();
-            storeParams = authResult.getStoreParams();
-        } catch (Exception e) {
-            log.error("Authorization error", e);
-        }
+//        try {
+//            AuthorizationResult authResult = configuration.getAuthorizationListener().getAuthorizationResult(data);
+//            result = authResult.isAuthorized();
+//            storeParams = authResult.getStoreParams();
+//        } catch (Exception e) {
+//            log.error("Authorization error", e);
+//        }
 
-        if (!result) {
-            HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.UNAUTHORIZED);
-            channel.writeAndFlush(res)
-                    .addListener(ChannelFutureListener.CLOSE);
-            log.debug("Handshake unauthorized, query params: {} headers: {}", params, headers);
-            return false;
-        }
+//        if (!result) {
+//            HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.UNAUTHORIZED);
+//            channel.writeAndFlush(res)
+//                    .addListener(ChannelFutureListener.CLOSE);
+//            log.debug("Handshake unauthorized, query params: {} headers: {}", params, headers);
+//            return false;
+//        }
 
-        UUID sessionId = null;
+        UUID sessionId;
         if (configuration.isRandomSession()) {
             sessionId = UUID.randomUUID();
         } else {
@@ -197,28 +197,28 @@ public class AuthorizeHandler extends ChannelInboundHandlerAdapter implements Di
 
         ClientHead client = new ClientHead(sessionId, ackManager, disconnectable, storeFactory, data, clientsBox, transport, scheduler, configuration, params);
         Store store = client.getStore();
-        storeParams.forEach(store::set);
+//        storeParams.forEach(store::set);
         channel.attr(ClientHead.CLIENT).set(client);
         clientsBox.addClient(client);
 
-        String[] transports = {};
+        Transport[] transports = {};
         //:TODO lyjnew   Current WEBSOCKET retrun upgrade[] engine-io protocol
         // the test case line
         // https://github.com/socketio/engine.io-protocol/blob/de247df875ddcd4778d1165829c8644301750e9f/test-suite/test-suite.js#L131C43-L131C43
         if (configuration.getTransports().contains(Transport.WEBSOCKET) &&
-                !(EngineIOVersion.V4.equals(client.getEngineIOVersion()) && Transport.WEBSOCKET.equals(client.getCurrentTransport())))  {
-            transports = new String[]{"websocket"};
+                !(EngineIOVersion.V4.equals(client.getEngineIOVersion()) && Transport.WEBSOCKET.equals(client.getCurrentTransport()))) {
+            transports = new Transport[]{Transport.WEBSOCKET};
         }
 
-        AuthPacket authPacket = new AuthPacket(sessionId, transports, configuration.getPingInterval(),
-                configuration.getPingTimeout());
+        HandshakeResponse handshake = new HandshakeResponse(sessionId, transports, configuration.getPingInterval(), configuration.getPingTimeout(), configuration.getMaxPayload());
         Packet packet = new Packet(PacketType.OPEN, client.getEngineIOVersion());
-        packet.setData(authPacket);
+        packet.setData(handshake);
         client.send(packet);
 
+        /* https://socket.io/docs/v4/engine-io-protocol/#heartbeat */
         client.schedulePing();
         client.schedulePingTimeout();
-        log.debug("Handshake authorized for sessionId: {}, query params: {} headers: {}", sessionId, params, headers);
+        log.debug("Handshake for sessionId: {}, query params: {} headers: {}", sessionId, params, headers);
         return true;
     }
 

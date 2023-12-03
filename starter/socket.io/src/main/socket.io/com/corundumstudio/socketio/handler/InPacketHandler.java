@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2012-2023 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,21 +15,19 @@
  */
 package com.corundumstudio.socketio.handler;
 
+import com.corundumstudio.socketio.listener.ExceptionListener;
+import com.corundumstudio.socketio.messages.PacketsMessage;
+import com.corundumstudio.socketio.namespace.Namespace;
+import com.corundumstudio.socketio.namespace.NamespacesHub;
 import com.corundumstudio.socketio.protocol.*;
+import com.corundumstudio.socketio.transport.NamespaceClient;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.corundumstudio.socketio.listener.ExceptionListener;
-import com.corundumstudio.socketio.messages.PacketsMessage;
-import com.corundumstudio.socketio.namespace.Namespace;
-import com.corundumstudio.socketio.namespace.NamespacesHub;
-import com.corundumstudio.socketio.transport.NamespaceClient;
 
 @Sharable
 public class InPacketHandler extends SimpleChannelInboundHandler<PacketsMessage> {
@@ -55,20 +53,30 @@ public class InPacketHandler extends SimpleChannelInboundHandler<PacketsMessage>
         ByteBuf content = message.getContent();
         ClientHead client = message.getClient();
 
+        String data = content.toString(CharsetUtil.UTF_8);
         if (log.isTraceEnabled()) {
-            log.trace("In message: {} sessionId: {}", content.toString(CharsetUtil.UTF_8), client.getSessionId());
+            log.trace("In message: {} sessionId: {}", data, client.getSessionId());
         }
+
         while (content.isReadable()) {
             try {
+                // todo 40/test,{"token":"test"} 换成自定义解析
+                // todo 自定义解析 PacketsMessage 40/test,{"token":"test"}
                 Packet packet = decoder.decodePackets(content, client);
 
                 Namespace ns = namespacesHub.get(packet.getNsp());
                 if (ns == null) {
                     if (packet.getSubType() == PacketType.CONNECT) {
                         Packet p = new Packet(PacketType.MESSAGE, client.getEngineIOVersion());
-                        p.setSubType(PacketType.ERROR);
+                        p.setSubType(PacketType.CONNECT_ERROR);
                         p.setNsp(packet.getNsp());
-                        p.setData("Invalid namespace");
+
+                        if (client.getEngineIOVersion().equals(EngineIOVersion.V2)) {
+                            p.setData("Invalid namespace");
+                        } else {
+                            p.setData(new ConnErrorPacket("Invalid namespace"));
+                        }
+
                         client.send(p);
                         return;
                     }
@@ -80,8 +88,7 @@ public class InPacketHandler extends SimpleChannelInboundHandler<PacketsMessage>
                     client.addNamespaceClient(ns);
                     //:TODO lyjnew client namespace send connect packet 0+namespace  socket io v4
                     // https://socket.io/docs/v4/socket-io-protocol/#connection-to-a-namespace
-                    if (EngineIOVersion.V4.equals(client.getEngineIOVersion()))
-                    {
+                    if (EngineIOVersion.V4.equals(client.getEngineIOVersion())) {
                         Packet p = new Packet(PacketType.MESSAGE, client.getEngineIOVersion());
                         p.setSubType(PacketType.CONNECT);
                         p.setNsp(packet.getNsp());

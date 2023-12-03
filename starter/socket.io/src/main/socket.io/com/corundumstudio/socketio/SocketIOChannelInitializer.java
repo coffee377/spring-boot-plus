@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2012-2023 Nikita Koksharov
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,26 +15,8 @@
  */
 package com.corundumstudio.socketio;
 
-import java.security.KeyStore;
-
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-
-import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.corundumstudio.socketio.ack.AckManager;
-import com.corundumstudio.socketio.handler.AuthorizeHandler;
-import com.corundumstudio.socketio.handler.ClientHead;
-import com.corundumstudio.socketio.handler.ClientsBox;
-import com.corundumstudio.socketio.handler.EncoderHandler;
-import com.corundumstudio.socketio.handler.InPacketHandler;
-import com.corundumstudio.socketio.handler.PacketListener;
-import com.corundumstudio.socketio.handler.WrongUrlHandler;
+import com.corundumstudio.socketio.handler.*;
 import com.corundumstudio.socketio.namespace.NamespacesHub;
 import com.corundumstudio.socketio.protocol.JsonSupport;
 import com.corundumstudio.socketio.protocol.PacketDecoder;
@@ -46,17 +28,22 @@ import com.corundumstudio.socketio.store.pubsub.DisconnectMessage;
 import com.corundumstudio.socketio.store.pubsub.PubSubType;
 import com.corundumstudio.socketio.transport.PollingTransport;
 import com.corundumstudio.socketio.transport.WebSocketTransport;
-
+import io.socket.engineio.handler.EngineIOCodec;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
-import io.netty.handler.codec.http.HttpContentCompressor;
-import io.netty.handler.codec.http.HttpMessage;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.cors.CorsConfig;
+import io.netty.handler.codec.http.cors.CorsConfigBuilder;
+import io.netty.handler.codec.http.cors.CorsHandler;
+import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.ssl.SslHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.*;
+import java.security.KeyStore;
 
 public class SocketIOChannelInitializer extends ChannelInitializer<Channel> implements DisconnectableHub {
 
@@ -141,8 +128,13 @@ public class SocketIOChannelInitializer extends ChannelInitializer<Channel> impl
     @Override
     protected void initChannel(Channel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        addSslHandler(pipeline);
-        addSocketioHandlers(pipeline);
+//        addSslHandler(pipeline);
+//        addSocketioHandlers(pipeline);
+        pipeline.addLast(new HttpServerCodec());
+        pipeline.addLast(new HttpObjectAggregator(64*1024));
+        CorsConfig corsConfig = CorsConfigBuilder.forAnyOrigin().allowNullOrigin().allowCredentials().build();
+        pipeline.addLast(new CorsHandler(corsConfig));
+        pipeline.addLast(new EngineIOCodec());
     }
 
     /**

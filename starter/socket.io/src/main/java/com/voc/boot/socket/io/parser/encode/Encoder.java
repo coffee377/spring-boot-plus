@@ -9,13 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.voc.boot.socket.io.utils.HasBinary.hasBinary;
 
 @Slf4j
 public class Encoder implements Parser.Encoder {
+
     @Override
-    public void encode(Packet packet, Callback callback) {
+    public void encode(Packet packet, Consumer<Object[]> consumer) {
         if ((packet.getType().equals(PacketType.EVENT) || packet.getType().equals(PacketType.ACK) && hasBinary(packet.getData()))) {
             packet.setType(packet.getType() == PacketType.EVENT ? PacketType.BINARY_EVENT : PacketType.BINARY_ACK);
         }
@@ -23,10 +25,12 @@ public class Encoder implements Parser.Encoder {
         log.debug("encoding packet {}", packet);
 
         if (PacketType.BINARY_EVENT == packet.getType() || PacketType.BINARY_ACK == packet.getType()) {
-            encodeAsBinary(packet, callback);
+            encodeAsBinary(packet, consumer);
         } else {
             String encoding = encodeAsString(packet);
-            callback.call(new String[]{encoding});
+            if (consumer != null) {
+                consumer.accept(new String[]{encoding});
+            }
         }
     }
 
@@ -55,12 +59,14 @@ public class Encoder implements Parser.Encoder {
         return str.toString();
     }
 
-    private void encodeAsBinary(Packet obj, Callback callback) {
+    private void encodeAsBinary(Packet obj, Consumer<Object[]> consumer) {
         Binary.DeconstructedPacket deconstruction = Binary.deconstructPacket(obj);
         String pack = encodeAsString(deconstruction.packet);
         List<Object> buffers = new ArrayList<>(Arrays.asList(deconstruction.buffers));
 
         buffers.add(0, pack);
-        callback.call(buffers.toArray());
+        if (consumer != null) {
+            consumer.accept(buffers.toArray());
+        }
     }
 }

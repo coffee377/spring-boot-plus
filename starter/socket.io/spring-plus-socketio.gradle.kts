@@ -34,6 +34,7 @@ dependencies {
 
   runtimeOnly(dependencyNotation = "org.redisson:redisson:3.24.3")
   runtimeOnly(dependencyNotation = "com.hazelcast:hazelcast-client:3.12.13")
+  implementation("org.json:json:20231013")
 
   testImplementation("org.junit.vintage:junit-vintage-engine")
   testImplementation("org.jmockit:jmockit:1.49")

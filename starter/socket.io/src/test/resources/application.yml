@@ -4,7 +4,10 @@ socket:
       port: 9092
       allow-headers: io
       need-client-auth: true
+      namespaces: /test
 logging:
   level:
     com.corundumstudio.socketio: trace
     com.corundumstudio.socketio.handler: trace
+    com.voc.boot.socket.io: trace
+    io.socket: trace
