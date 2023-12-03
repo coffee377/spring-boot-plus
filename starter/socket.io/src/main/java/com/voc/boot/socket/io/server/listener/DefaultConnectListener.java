@@ -4,19 +4,19 @@ import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import io.netty.handler.codec.http.HttpHeaders;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.Resource;
 import java.util.UUID;
 
 @Slf4j
 public class DefaultConnectListener implements ConnectListener {
 
-//    @Resource
-//    JsonMapper jsonMapper;
+    JsonMapper jsonMapper;
+
+    public DefaultConnectListener(JsonMapper jsonMapper) {
+        this.jsonMapper = jsonMapper;
+    }
 
     @Override
     public void onConnect(SocketIOClient client) {
@@ -24,16 +24,20 @@ public class DefaultConnectListener implements ConnectListener {
         String transport = client.getTransport().getValue();
         UUID sessionId = client.getSessionId();
         HandshakeData handshakeData = client.getHandshakeData();
-        HttpHeaders httpHeaders = handshakeData.getHttpHeaders();
+        if (log.isTraceEnabled()) {
+            try {
+                String data = jsonMapper.writeValueAsString(handshakeData);
+                log.trace("{}", data);
+            } catch (JsonProcessingException e) {
+                log.error("{}", e.getMessage());
+            }
+        }
 
-//        try {
-//            jsonMapper.writeValueAsString(handshakeData);
-//        } catch (JsonProcessingException e) {
-//            log.error("{}",e.getMessage());
-//        }
 //        String mac = client.getHandshakeData().getSingleUrlParam("mac");
         // 存储SocketIOClient，用于发送消息
 //        socketIOClientMap.put(mac, client);
-        log.info("EIO: {} transport: {} sid: {} 已连接", EIO, transport, sessionId);
+        if (log.isInfoEnabled()) {
+            log.info("EIO: {} transport: {} sid: {} 已连接", EIO, transport, sessionId);
+        }
     }
 }

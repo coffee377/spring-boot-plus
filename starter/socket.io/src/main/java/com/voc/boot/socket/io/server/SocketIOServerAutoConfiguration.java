@@ -5,7 +5,6 @@ import com.corundumstudio.socketio.annotation.SpringAnnotationScanner;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.voc.boot.socket.io.server.listener.DefaultConnectListener;
 import com.voc.boot.socket.io.server.listener.DefaultDisconnectListener;
-import com.voc.boot.socket.io.server.listener.DefaultPongListener;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,18 +26,32 @@ public class SocketIOServerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    JsonMapper jsonMapper(){
+    JsonMapper jsonMapper() {
         return JsonMapper.builder().build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    SocketIOServer socketIOServer(ObjectProvider<SocketIOServerProperties> configProvider) {
+    DefaultConnectListener defaultConnectListener(JsonMapper jsonMapper) {
+        return new DefaultConnectListener(jsonMapper);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    DefaultDisconnectListener defaultDisconnectListener() {
+        return new DefaultDisconnectListener();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    SocketIOServer socketIOServer(ObjectProvider<SocketIOServerProperties> configProvider,
+                                  DefaultConnectListener defaultConnectListener,
+                                  DefaultDisconnectListener defaultDisconnectListener) {
         SocketIOServerProperties config = configProvider.getIfAvailable(SocketIOServerProperties::new);
         SocketIOServer server = new SocketIOServer(config);
 //        server.addPongListener(new DefaultPongListener());
-        server.addConnectListener(new DefaultConnectListener());
-        server.addDisconnectListener(new DefaultDisconnectListener());
+        server.addConnectListener(defaultConnectListener);
+        server.addDisconnectListener(defaultDisconnectListener);
         Optional.ofNullable(config.getNamespaces()).ifPresent(nss -> nss.forEach(server::addNamespace));
         return server;
     }

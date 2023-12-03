@@ -9,6 +9,7 @@ import com.corundumstudio.socketio.annotation.OnEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -51,10 +52,12 @@ public class MessageEventHandler {
      * @param data    　客户端发送数据
      */
     @OnEvent(value = "message-event")
-    public void onEvent(SocketIOClient client, AckRequest request, Object data) {
-        log.info("发来消息：" + data);
-        // 回发消息
-        client.sendEvent("message-event", "我是服务器都安发送的信息");
+    public void onEvent(SocketIOClient client, AckRequest request, Object data, Object data2, Object data3) {
+        log.info("发来消息：{}, {}, {}", data, data2, data3);
+        // 返回消息
+        client.sendEvent("message-event", "我是服务器返回数据", data, data2, data3);
+        // ack 回调
+        request.sendAckData("哈哈", request.isAckRequested());
         // 广播消息
         sendBroadcast();
     }
