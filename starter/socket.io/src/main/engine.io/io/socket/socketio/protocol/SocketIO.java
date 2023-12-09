@@ -30,7 +30,8 @@ public class SocketIO {
             this.description = description;
         }
 
-        public int getValue() {
+        @Override
+        public int getTypeValue() {
             return value;
         }
 
@@ -40,7 +41,7 @@ public class SocketIO {
 
         public static PacketType from(int value) {
             return Arrays.stream(values())
-                    .filter(type -> type.getValue() == value)
+                    .filter(type -> type.getTypeValue() == value)
                     .findFirst().orElse(PacketType.UNKNOWN);
         }
 
@@ -110,10 +111,9 @@ public class SocketIO {
         }
 
         @Override
-        public int getValue() {
-            return type.getValue();
+        public int getTypeValue() {
+            return type.getTypeValue();
         }
-
 
         public boolean hasAttachments() {
             return attachments != 0;

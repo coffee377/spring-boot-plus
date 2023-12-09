@@ -1,9 +1,9 @@
 package io.socket.engineio.parser;
 
-import io.netty.buffer.ByteBuf;
-import io.socket.engineio.protocol.EngineIO.*;
+import io.socket.engineio.protocol.EngineIO.Packet;
+import io.socket.engineio.protocol.EngineIO.PacketType;
+import io.socket.engineio.protocol.EngineIO.Version;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -30,14 +30,16 @@ public final class ParserV4 implements Parser {
         Object data = packet.getData();
         if (data instanceof byte[]) {
             encodeByteArray((Packet<byte[]>) packet, supportsBinary, callback);
-        } else if (data instanceof ByteBuf) {
-            String encoded = String.valueOf(packet.getType().getValue());
-            ByteBuf res = (ByteBuf) data;
-            encoded += String.valueOf(res.toString(StandardCharsets.UTF_8));
-            res.release();
-            callback.call(encoded);
-        } else {
-            String encoded = String.valueOf(packet.getType().getValue());
+        }
+//        else if (data instanceof ByteBuf) {
+//            String encoded = packet.getTypeSting();
+//            ByteBuf res = (ByteBuf) data;
+//            encoded += String.valueOf(res.toString(StandardCharsets.UTF_8));
+//            res.release();
+//            callback.call(encoded);
+//        }
+        else {
+            String encoded = packet.getTypeSting();
 
             if (null != packet.getData()) {
                 encoded += String.valueOf(packet.getData());

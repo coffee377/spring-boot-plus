@@ -1,11 +1,8 @@
 package io.socket.engineio.protocol;
 
 import io.socket.IPacketType;
-import lombok.Data;
 
 import java.util.Arrays;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public class EngineIO {
     public enum Version {
@@ -44,7 +41,7 @@ public class EngineIO {
 
     }
 
-    public enum PacketType implements io.socket.engineio.protocol.PacketType, IPacketType {
+    public enum PacketType implements IPacketType {
         OPEN("open", 0, "Used during the handshake"),
         CLOSE("close", 1, "Used to indicate that a transport can be closed"),
         PING("ping", 2, "Used in the heartbeat mechanism"),
@@ -66,29 +63,26 @@ public class EngineIO {
         }
 
 
-        @Override
         public String getType() {
             return type;
         }
 
-        @Override
         public Integer getId() {
             return id;
         }
 
-        @Override
         public String getUsage() {
             return usage;
         }
 
         @Override
-        public int getValue() {
-            return this.id;
+        public int getTypeValue() {
+            return id;
         }
 
         public static PacketType from(int value) {
             return Arrays.stream(values())
-                    .filter(type -> type.getValue() == value)
+                    .filter(type -> type.getTypeValue() == value)
                     .findFirst().orElseThrow(() -> new IllegalArgumentException("Can't parse " + value));
         }
 
@@ -98,6 +92,10 @@ public class EngineIO {
     public static class Packet<T> implements IPacketType {
 
         private final PacketType type;
+
+        /**
+         * 数据类型 String  | byte[]
+         */
         private T data;
 
         public Packet(PacketType type) {
@@ -122,8 +120,8 @@ public class EngineIO {
         }
 
         @Override
-        public int getValue() {
-            return type.getValue();
+        public int getTypeValue() {
+            return type.getTypeValue();
         }
     }
 }

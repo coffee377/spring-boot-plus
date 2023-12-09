@@ -15,7 +15,7 @@
  */
 package com.corundumstudio.socketio.messages;
 
-import com.corundumstudio.socketio.Transport;
+import io.socket.engineio.Transport;
 import com.corundumstudio.socketio.handler.ClientHead;
 
 public class OutPacketMessage extends HttpMessage {

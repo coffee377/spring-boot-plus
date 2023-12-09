@@ -1,6 +1,6 @@
 package io.socket.engineio.handler;
 
-import com.corundumstudio.socketio.Transport;
+import io.socket.engineio.Transport;
 
 /**
  * <a href="https://socket.io/zh-CN/docs/v4/engine-io-protocol/#handshake">handshake</a>

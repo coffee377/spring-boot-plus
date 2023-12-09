@@ -39,6 +39,9 @@ import io.netty.handler.codec.http.cors.CorsConfigBuilder;
 import io.netty.handler.codec.http.cors.CorsHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.ssl.SslHandler;
+import io.socket.engineio.handler.EngineIOHandshake;
+import io.socket.engineio.transports.EngineIOPollingTransport;
+import io.socket.engineio.transports.EngineIOWebSocketTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,13 +131,16 @@ public class SocketIOChannelInitializer extends ChannelInitializer<Channel> impl
     @Override
     protected void initChannel(Channel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-//        addSslHandler(pipeline);
-//        addSocketioHandlers(pipeline);
-        pipeline.addLast(new HttpServerCodec());
-        pipeline.addLast(new HttpObjectAggregator(64*1024));
-        CorsConfig corsConfig = CorsConfigBuilder.forAnyOrigin().allowNullOrigin().allowCredentials().build();
-        pipeline.addLast(new CorsHandler(corsConfig));
-        pipeline.addLast(new EngineIOCodec());
+        addSslHandler(pipeline);
+        addSocketioHandlers(pipeline);
+//        pipeline.addLast(new HttpServerCodec());
+//        pipeline.addLast(new HttpObjectAggregator(64*1024));
+//        CorsConfig corsConfig = CorsConfigBuilder.forAnyOrigin().allowNullOrigin().allowCredentials().build();
+//        pipeline.addLast(new CorsHandler(corsConfig));
+//        pipeline.addLast(new EngineIOHandshake());
+//        pipeline.addLast(new EngineIOCodec());
+//        pipeline.addLast(new EngineIOPollingTransport());
+//        pipeline.addLast(new EngineIOWebSocketTransport());
     }
 
     /**

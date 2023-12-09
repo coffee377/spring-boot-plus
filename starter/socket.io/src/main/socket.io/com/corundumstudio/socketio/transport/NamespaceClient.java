@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import com.corundumstudio.socketio.AckCallback;
 import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
-import com.corundumstudio.socketio.Transport;
+import io.socket.engineio.Transport;
 import com.corundumstudio.socketio.handler.ClientHead;
 import com.corundumstudio.socketio.namespace.Namespace;
 import com.corundumstudio.socketio.protocol.Packet;

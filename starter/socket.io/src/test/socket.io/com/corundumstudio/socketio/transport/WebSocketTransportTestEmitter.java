@@ -42,7 +42,7 @@ import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
  * @author hangsu.cho@navercorp.com
  *
  */
-public class WebSocketTransportTest {
+public class WebSocketTransportTestEmitter {
 
   /**
    * Test method for {@link WebSocketTransport#channelRead()}.

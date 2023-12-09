@@ -22,6 +22,7 @@ import java.util.UUID;
 import com.corundumstudio.socketio.protocol.EngineIOVersion;
 import com.corundumstudio.socketio.protocol.Packet;
 import com.corundumstudio.socketio.store.Store;
+import io.socket.engineio.Transport;
 
 
 /**

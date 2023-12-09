@@ -1,4 +1,4 @@
-package io.socket.engineio.server;
+package io.socket.engineio;
 
 /**
  * The possible states a connection can be in at any given time.

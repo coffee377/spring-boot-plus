@@ -25,6 +25,7 @@ import com.corundumstudio.socketio.listener.ExceptionListener;
 import com.corundumstudio.socketio.protocol.JsonSupport;
 import com.corundumstudio.socketio.store.MemoryStoreFactory;
 import com.corundumstudio.socketio.store.StoreFactory;
+import io.socket.engineio.Transport;
 
 import javax.net.ssl.KeyManagerFactory;
 

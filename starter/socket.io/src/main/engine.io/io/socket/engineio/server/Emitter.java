@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentMap;
  *
  * @see <a href="https://github.com/component/emitter">https://github.com/component/emitter</a>
  */
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public class Emitter {
 
     public interface Listener {

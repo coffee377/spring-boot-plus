@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.corundumstudio.socketio.AckRequest;
-import com.corundumstudio.socketio.Transport;
+import io.socket.engineio.Transport;
 import com.corundumstudio.socketio.ack.AckManager;
 import com.corundumstudio.socketio.namespace.Namespace;
 import com.corundumstudio.socketio.namespace.NamespacesHub;

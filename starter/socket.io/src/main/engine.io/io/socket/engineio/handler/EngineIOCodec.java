@@ -15,238 +15,107 @@
  */
 package io.socket.engineio.handler;
 
-import com.corundumstudio.socketio.HandshakeData;
-import com.corundumstudio.socketio.Transport;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufOutputStream;
-import io.netty.channel.*;
 import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageCodec;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.codec.http.cookie.Cookie;
-import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
-import io.netty.util.ReferenceCountUtil;
+import io.socket.engineio.parser.Parser;
+import io.socket.engineio.protocol.EngineIO;
+import io.socket.engineio.protocol.EngineIO.Packet;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import io.socket.engineio.protocol.EngineIO.*;
 
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import io.socket.engineio.parser.Parser;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 @Slf4j
 @Sharable
-public class EngineIOCodec extends ChannelDuplexHandler {
-    private boolean allowCustomRequests;
-    private String connectPath;
-    private ObjectMapper objectMapper;
-    private Parser parser;
+public class EngineIOCodec extends MessageToMessageCodec<Packet, Packet> {
+    private final Parser parser = Parser.PROTOCOL_V4;
+    private final boolean supportBinary = false;
+    @Override
+    protected void encode(ChannelHandlerContext ctx, Packet msg, List<Object> out) throws Exception {
+        /* 服务端发送信息 */
+        AtomicBoolean binary = new AtomicBoolean(false);
+        ByteBuf out2 = ctx.alloc().buffer(8);
+        this.parser.encodePacket(msg, supportBinary, data -> {
+            if (data instanceof byte[]) {
+                binary.set(true);
+                out2.writeBytes((byte[]) data);
+            } else if (data instanceof String) {
+                out2.writeCharSequence((String) data, StandardCharsets.UTF_8);
+            }
+        });
 
-    public EngineIOCodec() {
-        this(false, "/socket.io/", Jackson2ObjectMapperBuilder.json().build());
-        this.parser = io.socket.engineio.parser.Parser.PROTOCOL_V4;
-    }
+        // http 长轮询发送的消息
+        HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.OK);
+        if (binary.get()) {
+            res.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_OCTET_STREAM);
+        }
+        HttpUtil.setContentLength(res, out2.readableBytes());
 
-    public EngineIOCodec(boolean allowCustomRequests, String connectPath, ObjectMapper objectMapper) {
-        this.allowCustomRequests = allowCustomRequests;
-        this.connectPath = connectPath;
-        this.objectMapper = objectMapper;
-    }
-
-    public void setAllowCustomRequests(boolean allowCustomRequests) {
-        this.allowCustomRequests = allowCustomRequests;
-    }
-
-    public void setConnectPath(String connectPath) {
-        this.connectPath = connectPath;
-    }
-
-    public void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+        out.add(res);
+        out.add(new DefaultHttpContent(out2));
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof HttpRequest) {
-            HttpRequest req = (HttpRequest) msg;
-            Channel channel = ctx.channel();
-            QueryStringDecoder queryDecoder = new QueryStringDecoder(req.uri());
-
-            /* 获取握手时的数据 */
-            HandshakeRequest handshakeRequest = HandshakeRequest.from(req);
-
-            log.debug("{} {}", req.method(), req.uri());
-
-            /*  不允许使用自定义请求头 */
-            if (!allowCustomRequests && !handshakeRequest.getPath().startsWith(connectPath)) {
-                HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
-                channel.writeAndFlush(res).addListener(ChannelFutureListener.CLOSE);
-                ReferenceCountUtil.release(req);
-                return;
-            }
-
-            if (handshakeRequest.getPath().equals(connectPath) && handshakeRequest.isFirst()) {
-                String origin = req.headers().get(HttpHeaderNames.ORIGIN);
-                HandshakeData data = new HandshakeData(req.headers(), queryDecoder.parameters(),
-                        (InetSocketAddress) channel.remoteAddress(),
-                        (InetSocketAddress) channel.localAddress(),
-                        req.uri(), origin != null && !origin.equalsIgnoreCase("null"));
-                // todo 首次握手数据回调，接受连接后才发生 open packet
-                boolean success = onHandshake(data);
-                if (!success) {
-                    HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.UNAUTHORIZED);
-                    channel.writeAndFlush(res).addListener(ChannelFutureListener.CLOSE);
-                }
-                UUID sessionId = this.generateOrGetSessionIdFromRequest(req.headers());
-                Transport[] upgradeTransports = {Transport.WEBSOCKET};
-
-                HandshakeResponse<UUID> handshakeResponse = new HandshakeResponse<>(sessionId, upgradeTransports);
-//                Packet<HandshakeResponse> openPacket = new Packet<>(PacketType.OPEN,handshakeResponse);
-
-                final ByteBuf encBuf = ctx.alloc().directBuffer();
-                OutputStream out = new ByteBufOutputStream(encBuf);
-                objectMapper.writeValue(out, handshakeResponse);
-//                byte[] dst = new byte[encBuf.readableBytes()];
-//                encBuf.readBytes(dst);
-                Packet<ByteBuf> openPacket = new Packet<>(PacketType.OPEN);
-                openPacket.setData(encBuf);
-
-                /* https://socket.io/zh-CN/docs/v4/engine-io-protocol/#handshake */
-//                client.send(packet);
-//                objectMapper.w
-//                HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.OK);
-                channel.writeAndFlush(openPacket);
-//                ctx.fireChannelRead(openPacket);
+    protected void decode(ChannelHandlerContext ctx, Packet msg, List<Object> out) throws Exception {
+        EngineIO.PacketType packetType = msg.getType();
+        switch (packetType) {
+            case OPEN:
                 /* heartbeat 心跳监测 */
 //                /* https://socket.io/docs/v4/engine-io-protocol/#heartbeat */
 //                client.schedulePing();
 //                client.schedulePingTimeout();
 //                log.debug("Handshake for sessionId: {}, query params: {} headers: {}", sessionId, params, headers);
-            } else {
-                HttpMethod method = handshakeRequest.getMethod();
-                if (HttpMethod.GET.equals(method)) {
-                    log.debug("GET requests, for receiving data from the server");
-                    HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.OK);
-                    channel.write(res);
-
-                    ByteBuf out = ctx.alloc().buffer(8);
-                    out.writeCharSequence("ok", StandardCharsets.UTF_8);
-                    HttpUtil.setContentLength(res, out.readableBytes());
-                    if (out.isReadable()) {
-                        channel.write(new DefaultHttpContent(out));
-                    } else {
-                        out.release();
-                    }
-                    channel.write(new DefaultHttpContent(out));
-
-                    channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT).addListener(ChannelFutureListener.CLOSE);
-                    ReferenceCountUtil.release(req);
-                } else if (HttpMethod.POST.equals(method)) {
-                    log.debug("POST requests, for sending data to the server");
-                    HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.OK);
-                    channel.write(res);
-
-                    ByteBuf out = ctx.alloc().buffer(8);
-                    Packet<String> packet = new Packet<>(PacketType.MESSAGE, String.format("0{\"sid\":\"%s\"}",
-                            handshakeRequest.getSid()));
-                    this.parser.encodePacket(packet, false, data -> {
-                        if (data instanceof byte[]) {
-                            out.writeBytes((byte[]) data);
-                        } else if (data instanceof String) {
-                            out.writeCharSequence((String) data, StandardCharsets.UTF_8);
-                        }
-                    });
-                    HttpUtil.setContentLength(res, out.readableBytes());
-                    if (out.isReadable()) {
-                        channel.write(new DefaultHttpContent(out));
-                    } else {
-                        out.release();
-                    }
-
-                    channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT).addListener(ChannelFutureListener.CLOSE);
-                    ReferenceCountUtil.release(req);
-                }
-            }
-        }
-        else {
-            ctx.fireChannelRead(msg);
+//                out.add(msg);
+//                ctx.writeAndFlush(msg);
+//                return;
+//                ctx.channel().writeAndFlush(msg);
+//                out.forEach(ctx::write);
+            case CLOSE:
+                ctx.channel().close();
+            case PING:
+            case PONG:
+            case MESSAGE:
+            case UPGRADE:
+            case NOOP:
+            default:
+                log.debug("接收头信息 {}", msg);
         }
 
-    }
+//        Packet<?> packet = (Packet<?>) msg;
+//        ByteBuf out = ctx.alloc().buffer(8);
+//        AtomicBoolean binary = new AtomicBoolean(false);
+////        this.parser.encodePacket(packet, false, data -> {
+////            if (data instanceof byte[]) {
+////                binary.set(true);
+////                out.writeBytes((byte[]) data);
+////            } else if (data instanceof String) {
+////                out.writeCharSequence((String) data, StandardCharsets.UTF_8);
+////            }
+////        });
+//
+//        log.debug("{}", out.toString(StandardCharsets.UTF_8));
+//        Channel channel = ctx.channel();
+//
+//        HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.OK);
+//        if (binary.get()) {
+//            res.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_OCTET_STREAM);
+//        }
+//        HttpUtil.setContentLength(res, out.readableBytes());
+//        channel.write(res);
+//
+//        if (out.isReadable()) {
+//            channel.write(new DefaultHttpContent(out));
+//        } else {
+//            out.release();
+//        }
+//
+//        channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT, promise).addListener(ChannelFutureListener.CLOSE);
 
-    @Override
-    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        if (msg instanceof Packet) {
-            Packet<?> packet = (Packet<?>) msg;
-            ByteBuf out = ctx.alloc().buffer(8);
-            this.parser.encodePacket(packet, false, data -> {
-                if (data instanceof byte[]) {
-                    out.writeBytes((byte[]) data);
-                } else if (data instanceof String) {
-                    out.writeCharSequence((String) data, StandardCharsets.UTF_8);
-                }
-            });
-//            out.writeByte(PacketType.OPEN.getByte());
-//            String result = objectMapper.writeValueAsString(((Packet<?>) msg).getData());
-//            out.writeCharSequence(result, StandardCharsets.UTF_8);
-            log.debug("{}", out.toString(StandardCharsets.UTF_8));
-            Channel channel = ctx.channel();
-
-            HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.OK);
-            HttpUtil.setContentLength(res, out.readableBytes());
-            channel.write(res);
-
-            if (out.isReadable()) {
-                channel.write(new DefaultHttpContent(out));
-            } else {
-                out.release();
-            }
-
-            channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT, promise).addListener(ChannelFutureListener.CLOSE);
-            return;
-        }
-        super.write(ctx, msg, promise);
-    }
-
-    private byte toChar(int number) {
-        return (byte) (number ^ 0x30);
-    }
-
-    private boolean onHandshake(HandshakeData data) {
-        return true;
-    }
-
-    private UUID generateOrGetSessionIdFromRequest(HttpHeaders headers) {
-        List<String> values = headers.getAll("io");
-        if (values.size() == 1) {
-            try {
-                return UUID.fromString(values.get(0));
-            } catch (IllegalArgumentException iaex) {
-                log.warn("Malformed UUID received for session! io=" + values.get(0));
-            }
-        }
-
-        for (String cookieHeader : headers.getAll(HttpHeaderNames.COOKIE)) {
-            Set<io.netty.handler.codec.http.cookie.Cookie> cookies = ServerCookieDecoder.LAX.decode(cookieHeader);
-
-            for (Cookie cookie : cookies) {
-                if (cookie.name().equals("io")) {
-                    try {
-                        return UUID.fromString(cookie.value());
-                    } catch (IllegalArgumentException iaex) {
-                        log.warn("Malformed UUID received for session! io=" + cookie.value());
-                    }
-                }
-            }
-        }
-
-        return UUID.randomUUID();
     }
 }

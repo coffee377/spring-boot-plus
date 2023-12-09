@@ -1,6 +1,6 @@
 package io.socket.engineio.handler;
 
-import com.corundumstudio.socketio.Transport;
+import io.socket.engineio.Transport;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
@@ -17,7 +17,7 @@ public class HandshakeRequest {
     private String path;
     private EngineIO.Version engineIOVersion;
     private Transport transport;
-    private String sid;
+    private String sessionId;
     private String time;
 
 
@@ -29,7 +29,7 @@ public class HandshakeRequest {
     }
 
     public boolean isFirst() {
-        return sid == null || sid.isEmpty();
+        return sessionId == null || sessionId.isEmpty();
     }
 
     public static HandshakeRequest from(HttpRequest request) {
@@ -56,7 +56,7 @@ public class HandshakeRequest {
         HandshakeRequest handshakeRequest = new HandshakeRequest(request.method(), queryDecoder.path(), version, transport);
 
         List<String> sid = parameters.getOrDefault("sid", Collections.singletonList(null));
-        handshakeRequest.setSid(sid.get(0));
+        handshakeRequest.setSessionId(sid.get(0));
 
         List<String> time = parameters.getOrDefault("t", Collections.singletonList(null));
         handshakeRequest.setTime(time.get(0));
