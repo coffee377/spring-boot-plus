@@ -7,7 +7,6 @@ import java.math.BigInteger;
  * @email coffee377@dingtalk.com
  * @time 2022/10/12 00:02
  */
-@Deprecated
 public class Authorities implements IAuthorities {
 
     private final BigInteger value;

@@ -28,11 +28,8 @@ subprojects {
 
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-
-    //  annotationProcessor("org.mapstruct:mapstruct-processor")
-//  annotationProcessor("org.projectlombok:lombok-mapstruct-binding")
-    annotationProcessor("org.mapstruct:mapstruct-processor:1.5.0.RC1")
-    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+    annotationProcessor("org.mapstruct:mapstruct-processor")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
 //      exclude(group = "org.junit.vintage", module = "junit-vintage-engine")

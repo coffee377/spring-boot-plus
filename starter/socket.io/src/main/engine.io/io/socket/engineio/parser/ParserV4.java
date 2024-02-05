@@ -1,12 +1,14 @@
 package io.socket.engineio.parser;
 
+import io.socket.engineio.protocol.EngineIO;
 import io.socket.engineio.protocol.EngineIO.Packet;
 import io.socket.engineio.protocol.EngineIO.PacketType;
 import io.socket.engineio.protocol.EngineIO.Version;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public final class ParserV4 implements Parser {
@@ -18,120 +20,75 @@ public final class ParserV4 implements Parser {
         return Version.V4.getValue();
     }
 
-    /**
-     * Encode a packet for transfer over transport.
-     *
-     * @param packet         The packet to encode.
-     * @param supportsBinary Whether the transport supports binary encoding.
-     * @param callback       The callback to be called with the encoded data.
-     */
     @Override
-    public void encodePacket(Packet<?> packet, boolean supportsBinary, EncodeCallback<Object> callback) {
+    public Object encode(Packet<?> packet, boolean supportsBinary) {
         Object data = packet.getData();
         if (data instanceof byte[]) {
-            encodeByteArray((Packet<byte[]>) packet, supportsBinary, callback);
-        }
-//        else if (data instanceof ByteBuf) {
-//            String encoded = packet.getTypeSting();
-//            ByteBuf res = (ByteBuf) data;
-//            encoded += String.valueOf(res.toString(StandardCharsets.UTF_8));
-//            res.release();
-//            callback.call(encoded);
-//        }
-        else {
+            return encodeByteArray((Packet<byte[]>) packet, supportsBinary);
+        } else {
             String encoded = packet.getTypeSting();
 
             if (null != packet.getData()) {
                 encoded += String.valueOf(packet.getData());
             }
-
-            callback.call(encoded);
+            return encoded;
         }
     }
 
-    /**
-     * Encode an array of packets into a payload for transfer over transport.
-     *
-     * @param packets  Array of packets to encode.
-     * @param callback The callback to be called with the encoded data.
-     */
     @Override
-    public void encodePayload(List<Packet<?>> packets, boolean supportsBinary, EncodeCallback<Object> callback) {
-        final String[] encodedPackets = new String[packets.size()];
-        for (int i = 0; i < encodedPackets.length; i++) {
-            final Packet<?> packet = packets.get(i);
-
-            final int packetIdx = i;
-            encodePacket(packet, false, data -> encodedPackets[packetIdx] = (String) data);
-        }
-
-        callback.call(String.join(SEPARATOR, encodedPackets));
+    public String encode(List<Packet<?>> packets, boolean supportsBinary) {
+        return packets.stream()
+                .map(packet -> (String) encode(packet, false))
+                .collect(Collectors.joining(SEPARATOR));
     }
 
-    /**
-     * Decode a packet received from transport.
-     *
-     * @param data Data received from transport.
-     * @return Packet decoded from data.
-     */
     @Override
-    public Packet<?> decodePacket(Object data) {
-        if(data == null) {
+    public Packet<?> decode(Object data) {
+        if (data == null) {
             throw new IllegalArgumentException("data can't null");
         }
         if (data instanceof String) {
-            final String stringData = (String) data;
-            if (stringData.charAt(0) == 'b') {
-                final Packet<byte[]> packet = new Packet<>(PacketType.MESSAGE);
-                packet.setData(Base64.getDecoder().decode(stringData.substring(1)));
-                return packet;
-            } else {
-                PacketType packetType = PacketType.from(stringData.charAt(0) & 0xf);
-                final Packet<String> packet = new Packet<>(packetType);
-                packet.setData(stringData.substring(1));
-                return packet;
-            }
+            return decode((String) data);
         } else if (data instanceof byte[]) {
-            return new Packet<>(PacketType.MESSAGE, (byte[]) data);
+            return decode((byte[]) data);
         } else {
             throw new IllegalArgumentException("Invalid type for data: " + data.getClass().getSimpleName());
         }
     }
 
-    /**
-     * Decode payload received from transport.
-     *
-     * @param data     Data received from transport.
-     * @param callback The callback to be called with each decoded packet in payload.
-     */
     @Override
-    public void decodePayload(Object data, DecodePayloadCallback<Object> callback) {
-        assert callback != null;
-
-        final ArrayList<Packet<?>> packets = new ArrayList<>();
-        if (data instanceof String) {
-            final String[] encodedPackets = ((String) data).split(SEPARATOR);
-            for (String encodedPacket : encodedPackets) {
-                final Packet<?> packet = decodePacket(encodedPacket);
-                packets.add(packet);
-            }
+    public Packet<?> decode(String data) {
+        char type = data.charAt(0);
+        String content = data.substring(1);
+        if (type == 'b') {
+            Packet<byte[]> packet = new EngineIO.Packet<>(EngineIO.PacketType.MESSAGE);
+            packet.setData(Base64.getDecoder().decode(content));
+            return packet;
         } else {
-            throw new IllegalArgumentException("data must be a String");
-        }
-
-        for (int i = 0; i < packets.size(); i++) {
-            if (!callback.call((Packet<Object>) packets.get(i), i, packets.size())) {
-                return;
-            }
+            PacketType packetType = PacketType.from(type & 0xf);
+            Packet<String> packet = new Packet<>(packetType);
+            packet.setData(content);
+            return packet;
         }
     }
 
-    private void encodeByteArray(Packet<byte[]> packet, boolean supportsBinary, EncodeCallback<Object> callback) {
+    @Override
+    public Packet<?> decode(byte[] data) {
+        return new Packet<>(EngineIO.PacketType.MESSAGE, data);
+    }
+
+    @Override
+    public List<Packet<?>> decodePayload(String payload) {
+        return Arrays.stream(payload.split(SEPARATOR))
+                .map(this::decode)
+                .collect(Collectors.toList());
+    }
+
+    private Object encodeByteArray(Packet<byte[]> packet, boolean supportsBinary) {
         if (supportsBinary) {
-            callback.call(packet.getData());
+            return packet.getData();
         } else {
-            final String resultBuilder = "b" + Base64.getEncoder().encodeToString(packet.getData());
-            callback.call(resultBuilder);
+            return "b" + Base64.getEncoder().encodeToString(packet.getData());
         }
     }
 

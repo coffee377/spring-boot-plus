@@ -1,7 +1,5 @@
 package com.voc.common.api.func;
 
-import com.voc.common.api.authority.IAuthorities;
-
 import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Supplier;
@@ -13,7 +11,7 @@ import java.util.function.Supplier;
  * @email coffee377@dingtalk.com
  * @since 0.1.2
  */
-public interface Functions extends IAuthorities {
+public interface Functions extends Supplier<BigInteger> {
 
     /**
      * 原始功能点

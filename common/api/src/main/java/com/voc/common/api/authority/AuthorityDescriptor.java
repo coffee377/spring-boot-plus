@@ -5,25 +5,10 @@ package com.voc.common.api.authority;
  * @email coffee377@dingtalk.com
  * @time 2022/05/25 09:54
  */
-@Deprecated
 public class AuthorityDescriptor implements IAuthorityDescriptor {
-    @Override
-    public int getPosition() {
-        return 0;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
-
     private final String name;
-    private final Integer mask;
-
-    AuthorityDescriptor(String name, Integer mask) {
-        this.name = name;
-        this.mask = mask;
-    }
+    private final Integer position;
+    private final String description;
 
     @Override
     public String getName() {
@@ -31,9 +16,21 @@ public class AuthorityDescriptor implements IAuthorityDescriptor {
     }
 
     @Override
-    public Integer getMask() {
-        return mask;
+    public int getPosition() {
+        return position;
     }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    AuthorityDescriptor(String name, Integer position, String description) {
+        this.name = name;
+        this.position = position;
+        this.description = description;
+    }
+
 
     public static Builder builder() {
         return new Builder();
@@ -41,20 +38,26 @@ public class AuthorityDescriptor implements IAuthorityDescriptor {
 
     public static class Builder {
         private String name;
-        private Integer mask;
+        private Integer position;
+        private String description;
 
         public Builder name(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder mask(Integer mask) {
-            this.mask = mask;
+        public Builder position(Integer mask) {
+            this.position = mask;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
         public AuthorityDescriptor build() {
-            return new AuthorityDescriptor(name, mask);
+            return new AuthorityDescriptor(name, position, description);
         }
     }
 }

@@ -16,11 +16,11 @@ class AuthorityHelperTest {
 
 
     IAuthorityDescriptor def = AuthorityDescriptor.builder().name("默认").build(); // 0
-    IAuthorityDescriptor add = AuthorityDescriptor.builder().name("添加").mask(1).build(); // 1
-    IAuthorityDescriptor delete = AuthorityDescriptor.builder().name("删除").mask(2).build(); // 2
-    IAuthorityDescriptor update = AuthorityDescriptor.builder().name("更新").mask(3).build(); // 4
-    IAuthorityDescriptor query = AuthorityDescriptor.builder().name("查询").mask(4).build(); // 8
-    IAuthorityDescriptor export = AuthorityDescriptor.builder().name("导出").mask(5).build(); // 16
+    IAuthorityDescriptor add = AuthorityDescriptor.builder().name("添加").position(1).build(); // 1
+    IAuthorityDescriptor delete = AuthorityDescriptor.builder().name("删除").position(2).build(); // 2
+    IAuthorityDescriptor update = AuthorityDescriptor.builder().name("更新").position(3).build(); // 4
+    IAuthorityDescriptor query = AuthorityDescriptor.builder().name("查询").position(4).build(); // 8
+    IAuthorityDescriptor export = AuthorityDescriptor.builder().name("导出").position(5).build(); // 16
 
 //    @Test
 //    void print() {

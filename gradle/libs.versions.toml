@@ -1,30 +1,35 @@
 [versions]
-spring-boot = "2.5.14"
-spring-cloud = "2020.0.3"
-spring-cloud-alibaba= "2021.1"
-spring-security = "5.7.8"
-spring-security-oauth2-authorization-server = "0.4.2"
-spring-doc-openapi="1.6.1"
-dependency-management = "1.1.0"
+spring-boot = "2.5.15"
+spring-cloud = "2020.0.6"
+spring-cloud-alibaba = "2021.1"
+spring-security = "5.7.11"
+spring-security-oauth2-authorization-server = "0.4.5"
+spring-doc-openapi = "1.7.0"
+dependency-management = "1.1.4"
+
 lombok = "1.18.24"
+lombok-mapstruct-binding = "0.2.0"
+mapstruct = "1.5.5.Final"
 kotlin = "1.6.21"
 junit5 = "5.7.2"
 semantic = "2.1.1"
 asciidoctor = "3.3.2"
-gitlab = "5.0.1"
+gitlab = "5.5.0"
 smartdoc = "2.6.0-release" # https://plugins.gradle.org/plugin/com.github.shalousun.smart-doc
 intellij-plugin = "1.9.0"
 changelog-plugin = "1.3.1"
-dingtalk-service-sdk = "2.0.0"
-dingtalk-sdk = "1.4.52"
+openapi-generator-plugin = "7.2.0"
+dingtalk-service-sdk = "2.0.0" # 旧版 SDK
+dingtalk-sdk = "2.0.84"
 
-jq-apis="3.2.4"
-jq-service="3.0.5"
-jq-boot-commons="3.0.5"
-jq-boot-starter-persistent-mysql="3.1.3"
-jq-boot-starter-observe="3.0.3"
+jq-apis = "3.2.4"
+jq-service = "3.0.5"
+jq-boot-commons = "3.0.5"
+jq-boot-starter-persistent-mysql = "3.1.3"
+jq-boot-starter-observe = "3.0.3"
 
-socket-io-server="4.1.2"
+socket-io-server = "4.1.2"
+grpc = "1.61.1"
 
 [libraries]
 spring-boot = { group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version.ref = "spring-boot" }
@@ -37,10 +42,21 @@ spring-security-bom = { group = "org.springframework.security", name = "spring-s
 spring-doc-openapi = { group = "org.springdoc", name = "springdoc-openapi-ui", version.ref = "spring-doc-openapi" }
 spring-doc-openapi-webflux = { group = "org.springdoc", name = "springdoc-openapi-webflux-ui", version.ref = "spring-doc-openapi" }
 dependency-management = { group = "io.spring.gradle", name = "dependency-management-plugin", version.ref = "dependency-management" }
+io-grpc-bom = { group = "io.grpc", name = "grpc-bom", version.ref = "grpc" }
+
+mybatis = "org.mybatis:mybatis:3.5.15"
+mybatis-boot = "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.2"
+mybatis-plus-boot = "com.baomidou:mybatis-plus-boot-starter:3.5.5"
 
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+lombok-mapstruct-binding = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "lombok-mapstruct-binding" }
+
+mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
+
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit5" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit5" }
+
 semantic-versioning = { group = "de.skuzzle", name = "semantic-version", version.ref = "semantic" }
 
 # DingTalk SDK
@@ -61,6 +77,8 @@ socket-io-server = { group = "io.socket", name = "socket.io-server", version.ref
 
 [bundles]
 dingtalk = ["dingtalk-service-sdk", "dingtalk-sdk"]
+lombok = ["lombok", "lombok-mapstruct-binding"]
+mapstruct = ["mapstruct", "mapstruct-processor"]
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
@@ -73,6 +91,7 @@ smartdoc = { id = "com.github.shalousun.smart-doc", version.ref = "smartdoc" }
 
 jetbrains-changelog = { id = "org.jetbrains.changelog", version.ref = "changelog-plugin" }
 jetbrains-intellij = { id = "org.jetbrains.intellij", version.ref = "intellij-plugin" }
+openapi-generator = { id = "org.openapi.generator", version.ref = "openapi-generator-plugin" }
 #hierynomus-license = { id = "com.github.hierynomus.license", version.ref = "license-plugin" }
 #nebula-integtest = { id = "nebula.integtest", version.ref = "nebula-integtest-plugin" }
 

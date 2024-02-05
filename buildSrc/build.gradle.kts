@@ -78,16 +78,19 @@ tasks {
 
   withType<JavaCompile> {
     options.release.set(8)
+    options.encoding = "UTF-8"
+//    options.compilerArgs.add("-Xlint:deprecation")
   }
 
   withType<KotlinCompile> {
-//    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "1.8"
   }
 
   register("lib", Copy::class.java) {
     group = "build"
     from(configurations.runtimeClasspath)
     into("${buildDir.path}/lib")
+//    into("${layout.buildDirectory.get().asFile.path}/lib")
   }
 }
 

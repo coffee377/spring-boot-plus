@@ -32,7 +32,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 @Slf4j
 @Sharable
-public class EngineIOPacketEncoder extends MessageToMessageEncoder<EngineIO.Packet> {
+public class EngineIOEncoder extends MessageToMessageEncoder<EngineIO.Packet> {
     private final Parser parser = Parser.PROTOCOL_V4;
     @Override
     protected void encode(ChannelHandlerContext ctx, EngineIO.Packet msg, List<Object> out) throws Exception {

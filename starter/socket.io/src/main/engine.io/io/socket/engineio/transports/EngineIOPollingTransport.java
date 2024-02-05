@@ -89,7 +89,7 @@ public class EngineIOPollingTransport extends SimpleChannelInboundHandler<FullHt
 //            content = decoder.preprocessJson(jsonIndex, content);
 //        }
         ByteBuf cb = content.readBytes(content.readableBytes());
-        EngineIO.Packet<?> packet = parser.decodePacket(cb.toString(StandardCharsets.UTF_8));
+        EngineIO.Packet<?> packet = parser.decode(cb.toString(StandardCharsets.UTF_8));
         ctx.pipeline().fireChannelRead(packet);
     }
 

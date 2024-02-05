@@ -36,6 +36,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 public class EngineIOCodec extends MessageToMessageCodec<Packet, Packet> {
     private final Parser parser = Parser.PROTOCOL_V4;
     private final boolean supportBinary = false;
+
     @Override
     protected void encode(ChannelHandlerContext ctx, Packet msg, List<Object> out) throws Exception {
         /* 服务端发送信息 */
@@ -81,41 +82,13 @@ public class EngineIOCodec extends MessageToMessageCodec<Packet, Packet> {
             case PING:
             case PONG:
             case MESSAGE:
+                Object data = msg.getData();
+                out.add(data);
             case UPGRADE:
             case NOOP:
             default:
                 log.debug("接收头信息 {}", msg);
         }
-
-//        Packet<?> packet = (Packet<?>) msg;
-//        ByteBuf out = ctx.alloc().buffer(8);
-//        AtomicBoolean binary = new AtomicBoolean(false);
-////        this.parser.encodePacket(packet, false, data -> {
-////            if (data instanceof byte[]) {
-////                binary.set(true);
-////                out.writeBytes((byte[]) data);
-////            } else if (data instanceof String) {
-////                out.writeCharSequence((String) data, StandardCharsets.UTF_8);
-////            }
-////        });
-//
-//        log.debug("{}", out.toString(StandardCharsets.UTF_8));
-//        Channel channel = ctx.channel();
-//
-//        HttpResponse res = new DefaultHttpResponse(HTTP_1_1, HttpResponseStatus.OK);
-//        if (binary.get()) {
-//            res.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_OCTET_STREAM);
-//        }
-//        HttpUtil.setContentLength(res, out.readableBytes());
-//        channel.write(res);
-//
-//        if (out.isReadable()) {
-//            channel.write(new DefaultHttpContent(out));
-//        } else {
-//            out.release();
-//        }
-//
-//        channel.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT, promise).addListener(ChannelFutureListener.CLOSE);
 
     }
 }

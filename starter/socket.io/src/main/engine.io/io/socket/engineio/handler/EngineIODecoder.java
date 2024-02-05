@@ -25,7 +25,7 @@ import java.util.List;
 
 @Slf4j
 @Sharable
-public class EngineIOPacketDecoder extends MessageToMessageDecoder<PacketsMessage> {
+public class EngineIODecoder extends MessageToMessageDecoder<PacketsMessage> {
     @Override
     protected void decode(ChannelHandlerContext ctx, PacketsMessage msg, List<Object> out) throws Exception {
 

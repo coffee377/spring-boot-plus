@@ -15,28 +15,15 @@ public class ParserTest {
         Packet<Object> open = new Packet<>(PacketType.OPEN);
         HandshakeResponse handshakeResponse = new HandshakeResponse<>("1");
         open.setData(handshakeResponse);
-        v4.encodePacket(open, false, new Parser.EncodeCallback<Object>() {
-            @Override
-            public void call(Object data) {
-                log.debug("{}", data);
-            }
-        });
+        Object encode = v4.encode(open, false);
+        log.debug("{}", encode);
     }
     @Test
     public void V4Open() {
         Parser v4 = Parser.PROTOCOL_V4;
-//        Packet<Object> open = new Packet<>(PacketType.OPEN);
-//        HandshakeResponse handshakeResponse = new HandshakeResponse<>("1");
-//        open.setData(handshakeResponse);
         String data = "0{\"token\":\"123456\"}";
-        Packet<?> packet = v4.decodePacket(data);
+        Packet<?> packet = v4.decode(data);
         log.debug("{}", packet);
-//        v4.encodePacket(open, false, new Parser.EncodeCallback<Object>() {
-//            @Override
-//            public void call(Object data) {
-//                log.debug("{}", data);
-//            }
-//        });
     }
 
 }
