@@ -1,3 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.voc.boot.socket.io.server.SocketIOServerAutoConfiguration
