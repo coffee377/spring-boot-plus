@@ -40,8 +40,8 @@ subprojects {
           url(VersionType.RELEASE, "http://nexus.jqk8s.jqsoft.net/repository/maven-releases/")
           url(VersionType.SNAPSHOT, "http://nexus.jqk8s.jqsoft.net/repository/maven-snapshots/")
           publish(true)
-          usernameFromEnvironment("DEV_OPTS_JQ_USERNAME")
-          passwordFromEnvironment("DEV_OPTS_JQ_PASSWORD")
+          usernameFromEnvironment("DEV_OPTS_NEXUS_USERNAME")
+          passwordFromEnvironment("DEV_OPTS_NEXUS_PASSWORD")
         }
       }
     }
@@ -59,9 +59,9 @@ subprojects {
   }
 
   dependencies {
-//    implementation(platform(project(":spring-boot-plus-dependencies")))
+    // implementation(platform(project(":spring-boot-plus-dependencies")))
     /* spring boot 版本升级工具*/
-//    compileOnly("org.springframework.boot:spring-boot-properties-migrator")
+    // compileOnly("org.springframework.boot:spring-boot-properties-migrator")
   }
 
 }

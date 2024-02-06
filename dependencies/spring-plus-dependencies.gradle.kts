@@ -1,7 +1,8 @@
+import com.voc.gradle.plugin.core.DevType
+
 plugins {
   `java-platform`
   `maven-publish`
-//  id("io.spring.dependency-management")
 }
 
 javaPlatform {
@@ -9,7 +10,7 @@ javaPlatform {
 }
 
 val common = "common"
-val starter = "spring-plus"
+val plus = "spring-plus"
 
 repositories {
   maven {
@@ -18,18 +19,12 @@ repositories {
   }
 }
 
-//dependencyManagement {
-////  imports {
-////
-////    mavenBom(libs.spring.boot.dependencies.get().toString())
-//////    mavenBom("org.springframework.boot:spring-boot-dependencies:2.5.14")
-////  }
-////  generatedPomCustomization {
-////    enabled(false)
-////  }
-////
-//////  pomConfigurer.configurePom()
-//}
+repositories {
+  maven {
+    url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-public/")
+    isAllowInsecureProtocol = true
+  }
+}
 
 /* 依赖管理 */
 dependencies {
@@ -62,9 +57,10 @@ dependencies {
 
     /* projects */
     api(project(":$common:$common-api"))
-    api(project(":$starter:$starter-cache"))
-    api(project(":$starter:$starter-dict"))
-    api(project(":$starter:$starter-dingtalk"))
+    api(project(":$plus:$plus-cache"))
+    api(project(":$plus:$plus-dict"))
+    api(project(":$plus:$plus-dingtalk"))
+    api(project(":$plus:$plus-result"))
   }
 }
 
@@ -76,8 +72,8 @@ publishing {
       url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-${versionType}/")
       isAllowInsecureProtocol = true
       credentials {
-        username = System.getenv("DEV_OPTS_JQ_USERNAME")
-        password = System.getenv("DEV_OPTS_JQ_PASSWORD")
+        username = System.getenv("DEV_OPTS_NEXUS_USERNAME")
+        password = System.getenv("DEV_OPTS_NEXUS_PASSWORD")
       }
     }
   }

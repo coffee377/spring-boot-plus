@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.utils.extendsFrom
 
 plugins {
   `java-library`
@@ -6,20 +7,23 @@ plugins {
   `kotlin-dsl`
 }
 
+
 configurations {
 
   val annotationProcessor = configurations.getByName(JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME)
   val testAnnotationProcessor = configurations.getByName(JavaPlugin.TEST_ANNOTATION_PROCESSOR_CONFIGURATION_NAME)
   val compileOnly = configurations.getByName(JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME)
   val runtimeOnly = configurations.getByName(JavaPlugin.RUNTIME_ONLY_CONFIGURATION_NAME)
-  val runtimeClasspath = configurations.getByName(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME)
-  val testImplementation = configurations.getByName(JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME)
 
   testAnnotationProcessor {
     extendsFrom(annotationProcessor)
   }
 
   compileOnly {
+    extendsFrom(annotationProcessor)
+  }
+
+  implementation {
     extendsFrom(annotationProcessor)
   }
 
@@ -55,6 +59,7 @@ repositories {
 }
 
 dependencies {
+
   implementation(libs.spring.boot)
   implementation(libs.dependency.management)
   implementation(libs.semantic.versioning)

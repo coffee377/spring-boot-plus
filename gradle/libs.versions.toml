@@ -18,7 +18,7 @@ gitlab = "5.5.0"
 smartdoc = "2.6.0-release" # https://plugins.gradle.org/plugin/com.github.shalousun.smart-doc
 intellij-plugin = "1.9.0"
 changelog-plugin = "1.3.1"
-openapi-generator-plugin = "7.2.0"
+openapi-generator = "7.2.0"
 dingtalk-service-sdk = "2.0.0" # 旧版 SDK
 dingtalk-sdk = "2.0.84"
 
@@ -44,9 +44,10 @@ spring-doc-openapi-webflux = { group = "org.springdoc", name = "springdoc-openap
 dependency-management = { group = "io.spring.gradle", name = "dependency-management-plugin", version.ref = "dependency-management" }
 io-grpc-bom = { group = "io.grpc", name = "grpc-bom", version.ref = "grpc" }
 
-mybatis = "org.mybatis:mybatis:3.5.15"
-mybatis-boot = "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.2"
-mybatis-plus-boot = "com.baomidou:mybatis-plus-boot-starter:3.5.5"
+mybatis = { group = "org.mybatis", name = "mybatis", version = "3.5.15" }
+mybatis-boot = { module = "org.mybatis.spring.boot:mybatis-spring-boot-starter", version = "2.3.2" }
+mybatis-plus-boot = { group = "com.baomidou", name = "mybatis-plus-boot-starter", version = "3.5.5" }
+
 
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 lombok-mapstruct-binding = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "lombok-mapstruct-binding" }
@@ -65,6 +66,7 @@ dingtalk-sdk = { group = "com.aliyun", name = "dingtalk", version.ref = "dingtal
 
 gitlab = { group = "org.gitlab4j", name = "gitlab4j-api", version.ref = "gitlab" }
 
+openapi-generator = { group = "org.openapitools", name = "openapi-generator", version.ref = "openapi-generator" }
 # jqsoft
 jq-apis = { group = "net.jqsoft", name = "jq-apis", version.ref = "jq-apis" }
 jq-service = { group = "net.jqsoft", name = "jq-service", version.ref = "jq-service" }
@@ -91,7 +93,7 @@ smartdoc = { id = "com.github.shalousun.smart-doc", version.ref = "smartdoc" }
 
 jetbrains-changelog = { id = "org.jetbrains.changelog", version.ref = "changelog-plugin" }
 jetbrains-intellij = { id = "org.jetbrains.intellij", version.ref = "intellij-plugin" }
-openapi-generator = { id = "org.openapi.generator", version.ref = "openapi-generator-plugin" }
+openapi-generator = { id = "org.openapi.generator", version.ref = "openapi-generator" }
 #hierynomus-license = { id = "com.github.hierynomus.license", version.ref = "license-plugin" }
 #nebula-integtest = { id = "nebula.integtest", version.ref = "nebula-integtest-plugin" }
 

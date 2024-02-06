@@ -31,6 +31,7 @@ plugins {
 configure<AutoIncludeProjectExtension> {
   exclude(".*persist$")
 //  exclude("oauth2-authorization-server")
+//  exclude("openapi-codegen")
+  exclude(".*socket.io$")
   exclude("^restful.*")
 }
-

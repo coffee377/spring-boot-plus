@@ -22,21 +22,17 @@ dependencyManagement {
   }
 }
 
-dependencies {
-  implementation(enforcedPlatform(project(":spring-plus-dependencies")))
-  constraints {
-
-  }
-}
-
 subprojects {
   group = "com.voc.boot"
 
   apply(plugin = "com.voc.boot")
 
   dependencies {
+    /* 统一引入依赖版本 */
+    implementation(enforcedPlatform(project(":spring-plus-dependencies")))
+
     compileOnly("javax.servlet:javax.servlet-api")
-    compileOnly("jakarta.servlet:jakarta.servlet-api:6.0.0")
+    compileOnly("jakarta.servlet:jakarta.servlet-api")
 
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

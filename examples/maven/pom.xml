@@ -11,49 +11,39 @@
   <properties>
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
+    <spring.plus.version>0.1.4-SNAPSHOT</spring.plus.version>
   </properties>
-
-  <repositories>
-    <repository>
-      <id>nexus3</id>
-      <url>http://nexus.jqk8s.jqsoft.net/repository/maven-public/</url>
-    </repository>
-  </repositories>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>com.voc</groupId>
         <artifactId>spring-plus-dependencies</artifactId>
-        <version>0.1.2-SNAPSHOT</version>
+        <version>${spring.plus.version}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
-<!--      <dependency>-->
-<!--        <groupId>com.voc.boot</groupId>-->
-<!--        <artifactId>spring-boot-starter</artifactId>-->
-<!--        <version>0.1.0</version>-->
-<!--        <scope>import</scope>-->
-<!--        <type>pom</type>-->
-<!--      </dependency>-->
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
-<!--    <dependency>-->
-<!--      <groupId>com.voc.common</groupId>-->
-<!--      <artifactId>common-api</artifactId>-->
-<!--    </dependency>-->
-    <!-- 钉钉 SDK -->
-    <!-- 老版本 SDK -->
+    <dependency>
+      <groupId>com.voc.common</groupId>
+      <artifactId>common-api</artifactId>
+    </dependency>
+    <!-- 钉钉老版本 SDK -->
     <dependency>
       <groupId>com.aliyun</groupId>
       <artifactId>alibaba-dingtalk-service-sdk</artifactId>
     </dependency>
-    <!-- 新版 SDK -->
+    <!-- 钉钉新版 SDK -->
     <dependency>
       <groupId>com.aliyun</groupId>
       <artifactId>dingtalk</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure-processor</artifactId>
     </dependency>
   </dependencies>
 
