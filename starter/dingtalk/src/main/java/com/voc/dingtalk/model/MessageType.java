@@ -34,7 +34,7 @@ public enum MessageType implements EnumDictItem<String> {
     }
 
     @Override
-    public String getText() {
+    public String getLabel() {
         return text;
     }
 

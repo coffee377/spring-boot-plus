@@ -19,8 +19,12 @@ public interface FuncEnumDictItem<V> extends EnumDictItem<V>, FunctionPoint, Fun
 
     @Override
     default V getValue() {
-        BigInteger bigInteger = BigInteger.ONE.shiftLeft(getPosition());
-        return apply(bigInteger);
+        return apply(get());
+    }
+
+    @Override
+    default String getName() {
+        return getDescription();
     }
 
     @Override

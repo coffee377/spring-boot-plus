@@ -29,8 +29,8 @@ public class DictModule extends SimpleModule implements EnvironmentAware  {
 
     @PostConstruct
     private void init() {
-        DictItemSerializeProperties serializeProperties =
-                Binder.get(environment).bind("dict.serialize", DictItemSerializeProperties.class).orElse(new DictItemSerializeProperties());
+        DictSerializeProperties serializeProperties =
+                Binder.get(environment).bind("dict.serialize", DictSerializeProperties.class).orElse(new DictSerializeProperties());
         this.addSerializer(DictionaryItem.class, new DictItemSerializer(serializeProperties));
     }
 

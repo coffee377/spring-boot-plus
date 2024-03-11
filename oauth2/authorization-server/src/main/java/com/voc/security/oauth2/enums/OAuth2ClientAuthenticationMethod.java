@@ -37,17 +37,7 @@ public enum OAuth2ClientAuthenticationMethod implements FuncEnumDictItem<Integer
     }
 
     @Override
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public String getName() {
-        return description;
-    }
-
-    @Override
-    public String getDescription() {
+    public String getLabel() {
         return description;
     }
 

@@ -1,80 +1,79 @@
 package com.voc.boot.dict.json.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.BeanProperty;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
+import com.voc.boot.dict.json.annotation.DictSerialize;
+import com.voc.boot.dict.json.jackson.ser.DictItemContextHolder;
 import com.voc.boot.dict.persist.DataDictItem;
 import com.voc.common.api.dict.DictionaryItem;
-import org.springframework.boot.jackson.JsonComponent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * @author Wu Yujie
  * @email coffee377@dingtalk.com
  * @time 2022/08/09 13:46
  */
-@JsonComponent
+@Slf4j
 public class DictItemSerializer extends JsonSerializer<DictionaryItem> implements ContextualSerializer {
 
-    private final DictItemSerializeProperties serializeProperties;
+    private final DictItemContextHolder context;
+    private final DictSerializeProperties serializeProperties;
 
-    public DictItemSerializer(DictItemSerializeProperties serializeProperties) {
-        this.serializeProperties = serializeProperties;
+    public DictItemSerializer(DictSerializeProperties serializeProperties) {
+        this(serializeProperties, new DictItemContextHolder(serializeProperties));
     }
 
-    private List<SerializeType> serializeType;
-
+    public DictItemSerializer(DictSerializeProperties serializeProperties, DictItemContextHolder context) {
+        this.serializeProperties = serializeProperties;
+        this.context = context;
+    }
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider provider, BeanProperty property) throws JsonMappingException {
-//        DictItemSerializer dictItemSerializer = new DictItemSerializer(serializeProperties);
+    public JsonSerializer<?> createContextual(SerializerProvider provider, BeanProperty beanProperty) throws JsonMappingException {
+        if (!ObjectUtils.isEmpty(beanProperty)) {
+            Class<?> rawClass = beanProperty.getType().getRawClass();
+            if (DictionaryItem.class.isAssignableFrom(rawClass)) {
+                DictSerialize annotation1 = null, annotation2 = null;
+                /* 获取实现类上的注解 */
+                if (rawClass.isAnnotationPresent(DictSerialize.class)) {
+                    annotation1 = AnnotationUtils.getAnnotation(rawClass, DictSerialize.class);
+                }
 
-        if (!ObjectUtils.isEmpty(property)) {
-            DictItemSerialize annotation = property.getAnnotation(DictItemSerialize.class);
-            this.serializeType = getSerializeType(annotation);
+                /* 获取属性上的注解 */
+                if (beanProperty.getMember().hasAnnotation(DictSerialize.class)) {
+                    annotation2 = beanProperty.getAnnotation(DictSerialize.class);
+                    if (annotation2 == null) {
+                        annotation2 = beanProperty.getContextAnnotation(DictSerialize.class);
+                    }
+
+                    if (annotation2 != null) {
+                        annotation2 = AnnotationUtils.synthesizeAnnotation(annotation2, DictSerialize.class);
+                    }
+                }
+
+                DictItemContextHolder contextHolder = new DictItemContextHolder(serializeProperties, annotation1, annotation2);
+                return new DictItemSerializer(serializeProperties, contextHolder);
+
+            }
         }
         return this;
-//        return provider.findValueSerializer(property.getType());
     }
 
     @Override
     public void serialize(DictionaryItem dictItem, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
-        List<SerializeType> types = mergeSerializeType(dictItem);
-        serializeObject(dictItem, gen, types);
-
-        /* 序列化所有属性 */
-        boolean all = types.stream().anyMatch(Predicate.isEqual(SerializeType.ALL));
-
-        /* 序列化单个属性 */
-        boolean single = !all && types.size() == 1;
-
-        /* 序列化多个值 */
-
-//        if (all) {
-//            serializeObject(dictItem, gen);
-////        switch (type) {
-////            case TEXT:
-////                gen.writeString(dictItem.getText());
-////                break;
-////            case VALUE:
-////                gen.writeObject(dictItem.getValue());
-////                break;
-////            case DESCRIPTION:
-////                gen.writeString(dictItem.getDescription());
-////                break;
-////            case ALL:
-////            default:
-//
-//        } else {
-//
-//        }
-////        }
+        if (context.isWriteMultipleFields()) {
+            serializeMultiple(dictItem, gen, context);
+        } else {
+            serializeSingle(dictItem, gen, context);
+        }
     }
 
 
@@ -83,63 +82,69 @@ public class DictItemSerializer extends JsonSerializer<DictionaryItem> implement
         return DictionaryItem.class;
     }
 
-    private void serializeObject(DictionaryItem<?> dictItem, JsonGenerator gen) throws IOException {
-//        gen.writeStartObject();
-//        if (DataDictItem.class.isAssignableFrom(dictItem.getClass())) {
-//            gen.writeObjectField(serializeProperties.getId(), ((DataDictItem<?>) dictItem).getId());
-//        }
-//        gen.writeObjectField(serializeProperties.getValue(), dictItem.getValue());
-//        gen.writeObjectField(serializeProperties.getText(), dictItem.getText());
-//        gen.writeObjectField(serializeProperties.getDescription(), dictItem.getDescription());
-//        gen.writeEndObject();
-    }
-
-    private void serializeObject(DictionaryItem<?> dictItem, JsonGenerator gen, List<SerializeType> serializeTypes) throws IOException {
-        gen.writeStartObject();
-        if (DataDictItem.class.isAssignableFrom(dictItem.getClass())) {
-            gen.writeObjectField(serializeProperties.getId(), ((DataDictItem<?>) dictItem).getId());
-        }
-        gen.writeObjectField(serializeProperties.getValue(), dictItem.getValue());
-        gen.writeObjectField(serializeProperties.getText(), dictItem.getText());
-        gen.writeObjectField(serializeProperties.getDescription(), dictItem.getDescription());
-        gen.writeEndObject();
-    }
-
-    private List<SerializeType> forIDictItemImpl(DictionaryItem dictItem) {
-        DictItemSerialize annotation = dictItem.getClass().getAnnotation(DictItemSerialize.class);
-        return getSerializeType(annotation);
-    }
-
-    private List<SerializeType> getSerializeType(DictItemSerialize annotation) {
-        if (!ObjectUtils.isEmpty(annotation)) {
-            DictItemSerialize dictItemAnnotation = AnnotationUtils.synthesizeAnnotation(annotation, DictItemSerialize.class);
-            if (!ObjectUtils.isEmpty(dictItemAnnotation)) {
-                return Arrays.asList(dictItemAnnotation.type());
+    /**
+     * 序列化单个字段
+     *
+     * @param dictItem 数据字典
+     * @param gen      JsonGenerator
+     * @param context  自定义序列化上下文
+     * @throws IOException IO异常
+     */
+    private void serializeSingle(DictionaryItem<?> dictItem, JsonGenerator gen, DictItemContextHolder context) throws IOException {
+        if (context.isWriteMultipleFields()) return;
+        if (context.canWriteId()) {
+            if (DataDictItem.class.isAssignableFrom(dictItem.getClass())) {
+                gen.writeObject(((DataDictItem<?>) dictItem).getId());
+            } else {
+                gen.writeObject(null);
             }
+            return;
         }
-        return null;
+        if (context.canWriteLabel()) {
+            gen.writeString(dictItem.getLabel());
+            return;
+        }
+        if (context.canWriteValue()) {
+            gen.writeObject(dictItem.getValue());
+            return;
+        }
+        if (context.canWriteCode()) {
+            gen.writeString(dictItem.getCode());
+            return;
+        }
+        if (context.canWriteDescription()) {
+            gen.writeString(dictItem.getDescription());
+        }
+
     }
 
     /**
-     * 按照注解位置优先级获取序列化类型
+     * 序列化多个字段
      *
-     * @param dictItem 数据字典项实现类
-     * @return SerializeType
+     * @param dictItem 数据字典
+     * @param gen      JsonGenerator
+     * @param context  自定义序列化上下文
+     * @throws IOException IO异常
      */
-    private List<SerializeType> mergeSerializeType(DictionaryItem dictItem) {
-        /* 1. 实体属性字段上的注解优先 */
-        if (serializeType != null) {
-            return serializeType;
+    private void serializeMultiple(DictionaryItem<?> dictItem, JsonGenerator gen, DictItemContextHolder context) throws IOException {
+        if (!context.isWriteMultipleFields()) return;
+        gen.writeStartObject();
+        if (DataDictItem.class.isAssignableFrom(dictItem.getClass()) && context.canWriteId()) {
+            gen.writeObjectField(context.getId(), ((DataDictItem<?>) dictItem).getId());
         }
-
-        /* 2. IDictItem 实现类上注解其次 */
-        List<SerializeType> global = forIDictItemImpl(dictItem);
-        if (global != null) {
-            return global;
+        if (context.canWriteLabel()) {
+            gen.writeObjectField(context.getLabel(), dictItem.getLabel());
         }
-
-        /* 3. 找不到则使用默认 */
-        return serializeProperties.type;
+        if (context.canWriteValue()) {
+            gen.writeObjectField(context.getValue(), dictItem.getValue());
+        }
+        if (context.canWriteCode()) {
+            gen.writeObjectField("code", dictItem.getCode());
+        }
+        if (context.canWriteDescription()) {
+            gen.writeObjectField(context.getDescription(), dictItem.getDescription());
+        }
+        gen.writeEndObject();
     }
 
 }

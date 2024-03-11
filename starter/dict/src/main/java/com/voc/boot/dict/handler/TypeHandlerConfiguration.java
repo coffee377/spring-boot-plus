@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
  * @email coffee377@dingtalk.com
  * @since 0.1.2
  */
-@Configuration
 @Import({MyBatisTypeHandlerConfiguration.class, MyBatisPlusTypeHandlerConfiguration.class})
 public class TypeHandlerConfiguration {
 

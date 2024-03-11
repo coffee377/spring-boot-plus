@@ -20,6 +20,10 @@ public class AuthorityDescriptor implements IAuthorityDescriptor {
         return position;
     }
 
+    public String getLabel() {
+        return description;
+    }
+
     @Override
     public String getDescription() {
         return description;

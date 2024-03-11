@@ -20,7 +20,7 @@ public enum RobotMessageType implements EnumDictItem<String> {
     /**
      * 发送消息方式
      */
-    private final String text;
+    private final String label;
 
     /**
      * 支持的消息格式
@@ -34,7 +34,7 @@ public enum RobotMessageType implements EnumDictItem<String> {
     }
 
     @Override
-    public String getText() {
-        return text;
+    public String getLabel() {
+        return label;
     }
 }

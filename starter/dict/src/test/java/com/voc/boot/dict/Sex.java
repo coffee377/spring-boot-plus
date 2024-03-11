@@ -1,5 +1,6 @@
 package com.voc.boot.dict;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.voc.common.api.dict.EnumDictItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,13 +12,13 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-//@DictItemSerialize(SerializeType.TEXT) // 定义 Sex 默认序列化类型
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public enum Sex implements EnumDictItem<Integer> {
     MALE(1, "男"),
     FEMALE(2, "女"),
     ;
 
     private final Integer value;
-    private final String text;
+    private final String label;
 
 }

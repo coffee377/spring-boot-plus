@@ -34,13 +34,13 @@ public enum RobotWebhookMessageType implements EnumDictItem<String> {
         return value;
     }
 
-    @Override
-    public String getText() {
-        return text;
-    }
 
     public String getDisplay() {
         return text;
     }
 
+    @Override
+    public String getLabel() {
+        return text;
+    }
 }

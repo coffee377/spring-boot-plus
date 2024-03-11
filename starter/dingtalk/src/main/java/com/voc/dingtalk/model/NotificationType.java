@@ -25,7 +25,7 @@ public enum NotificationType implements EnumDictItem<Integer> {
     /**
      * 消息名称
      */
-    private final String text;
+    private final String label;
 
     /**
      * 消息描述

@@ -6,7 +6,7 @@ dependencies {
 
   compileOnly("org.springframework.boot:spring-boot-starter-web")
   compileOnly("org.mybatis.spring.boot:mybatis-spring-boot-starter")
-//  compileOnly(libs.mybatis.boot)
   compileOnly("com.baomidou:mybatis-plus-boot-starter")
-//  compileOnly(libs.mybatis.plus.boot)
+  testImplementation("javax.servlet:javax.servlet-api")
+  testImplementation("org.springframework.boot:spring-boot-starter-web")
 }

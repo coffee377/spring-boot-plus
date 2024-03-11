@@ -19,6 +19,6 @@ public enum Priority implements EnumDictItem<Integer> {
     ;
 
     private final Integer value;
-    private final String description;
+    private final String label;
     
 }

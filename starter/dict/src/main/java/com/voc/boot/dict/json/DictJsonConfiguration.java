@@ -1,8 +1,8 @@
 package com.voc.boot.dict.json;
 
-import com.voc.boot.dict.json.jackson.DictItemSerializeProperties;
 import com.voc.boot.dict.json.jackson.DictJackson2ObjectMapperBuilder;
 import com.voc.boot.dict.json.jackson.DictModule;
+import com.voc.boot.dict.json.jackson.DictSerializeProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,7 +18,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
  */
 @Configuration
 @ComponentScan
-@EnableConfigurationProperties(DictItemSerializeProperties.class)
+@EnableConfigurationProperties(DictSerializeProperties.class)
 public class DictJsonConfiguration {
 
     /**
@@ -26,19 +26,16 @@ public class DictJsonConfiguration {
      *
      * @return DictJackson2ObjectMapperBuilder
      */
-//    @Bean
-//    @ConditionalOnClass(Jackson2ObjectMapperBuilder.class)
-//    DictJackson2ObjectMapperBuilder dictJackson2ObjectMapperBuilder() {
-//        return new DictJackson2ObjectMapperBuilder();
-//    }
+    @Bean
+    @ConditionalOnClass(Jackson2ObjectMapperBuilder.class)
+    DictJackson2ObjectMapperBuilder dictJackson2ObjectMapperBuilder() {
+        return new DictJackson2ObjectMapperBuilder();
+    }
 
-//    @Bean
-//    @ConditionalOnMissingBean
-//    DictModule dictModule() {
-//        return new DictModule();
-//    }
-//    @Bean
-//    DictItemSerializer dictItemSerializer(DictItemSerializeProperties serializeProperties) {
-//        return new DictItemSerializer(serializeProperties);
-//    }
+    @Bean
+    @ConditionalOnMissingBean
+    DictModule dictModule() {
+        return new DictModule();
+    }
+
 }

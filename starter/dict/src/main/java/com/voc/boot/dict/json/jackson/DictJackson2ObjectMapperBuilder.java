@@ -1,8 +1,12 @@
 package com.voc.boot.dict.json.jackson;
 
+import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.core.Ordered;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import java.util.function.Function;
 
 /**
  * @author Wu Yujie
@@ -13,11 +17,15 @@ public class DictJackson2ObjectMapperBuilder implements Jackson2ObjectMapperBuil
 
     @Override
     public void customize(Jackson2ObjectMapperBuilder builder) {
+        builder.annotationIntrospector(new DictJacksonAnnotationIntrospector());
+        builder.annotationIntrospector(annotationIntrospector -> {
+            AnnotationIntrospector pair = AnnotationIntrospectorPair.pair(annotationIntrospector, new DictJacksonAnnotationIntrospector());
+            return pair;
+        });
 //        builder.
 //        DictModule dictModule = new DictModule();
 //        builder.modules(dictModule);
 //        builder.serializers(new DictItemSerializer(new DictItemSerializeProperties()));
-
     }
 
 

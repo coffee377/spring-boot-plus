@@ -1,0 +1,105 @@
+import { request } from '@/utils/request';
+import { Micro } from '@/api/Micro';
+import { RequestOptions } from '@antd-vue/hooks';
+
+export interface Query {
+  /**
+   * 名称
+   */
+  name?: string;
+  /**
+   * 状态
+   */
+  status?: string;
+}
+
+/**
+ * CgGoodsManageBO，商品管理信息入参实体
+ */
+export interface CommodityData {
+  /**
+   * 品牌
+   */
+  brand?: string;
+  /**
+   * 类别(字典)
+   */
+  category?: string;
+  /**
+   * 型号
+   */
+  model?: string;
+  /**
+   * 名称
+   */
+  name?: string;
+  /**
+   * 参数
+   */
+  parameters?: string;
+  /**
+   * 备注
+   */
+  remark?: string;
+  /**
+   * 查找码(名称首字母大写)
+   */
+  searchNo?: string;
+  /**
+   * 单位(字典)
+   */
+  unit?: string;
+}
+
+/**
+ * 商品管理
+ */
+class SupplierManagement {
+  /**
+   * 供应商查询
+   * @param params
+   */
+  list = (params: Query) => {
+    const opts: RequestOptions = { params, microPrefix: Micro.PROCUREMENT, resultFormat: '$' };
+    return request.get('/api/business/supplier', opts);
+  };
+
+  /**
+   * 供应商导出
+   * @param params
+   */
+  exportFile = (params: Query) => {
+    const opts: RequestOptions = { params, microPrefix: Micro.PROCUREMENT, download: true };
+    return request.get('/api/business/supplier/exportation', opts);
+  };
+
+  /**
+   * 供应商新增
+   * @param data
+   */
+  add = (data: CommodityData) => {
+    const opts: RequestOptions = { data, microPrefix: Micro.PROCUREMENT };
+    return request.post('/api/business/supplier', opts);
+  };
+
+  /**
+   * 供应商修改
+   * @param id
+   * @param data
+   */
+  update = (id: string | number, data: CommodityData) => {
+    const opts: RequestOptions = { data, microPrefix: Micro.PROCUREMENT };
+    return request.put(`/api/business/supplier/${id}`, opts);
+  };
+
+  /**
+   * 更改供应商启用状态
+   * @param id
+   */
+  toggleStatus = (id: string | number) => {
+    const opts: RequestOptions = { microPrefix: Micro.PROCUREMENT };
+    return request.put(`/api/business/supplier/${id}/status`, opts);
+  };
+}
+
+export const supplierManagement = new SupplierManagement();

@@ -1,13 +1,6 @@
 package com.voc.boot.dict;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.voc.boot.dict.json.jackson.DictItemSerialize;
-import com.voc.boot.dict.json.jackson.SerializeType;
 import com.voc.boot.dict.persist.DictItem;
-import com.voc.common.api.dict.enums.UsingStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,30 +11,22 @@ import org.springframework.web.bind.annotation.RestController;
  * @time 2022/08/13 22:39
  */
 @RestController
-@RequestMapping("/dict")
+@RequestMapping(value = "/dict",name = "字典")
 public class DictController {
 
-    @Data
-    @Builder
-    @AllArgsConstructor
-    private static class User {
-        private String id;
-
-        @DictItemSerialize(SerializeType.ALL)
-        private Sex sex;
+    @GetMapping(value = "/enum",name = "枚举字典序列化")
+    public User enumDictItem() {
+        return User.builder().id("1").name("coffee377")
+                .sex(Sex.FEMALE)
+                .sex1(Sex.FEMALE)
+                .sex2(Sex.FEMALE)
+                .sex3(Sex.FEMALE)
+                .sex4(Sex.FEMALE)
+                .build();
     }
 
-
-    @GetMapping("/enum")
-    @DictItemSerialize(type = SerializeType.TEXT)
-    public Object enumDictItem() {
-//        return Sex.FEMALE;
-        return User.builder().id("111").sex(Sex.FEMALE).build();
-    }
-
-    @GetMapping("/data")
+    @GetMapping(value = "/data",name = "持久化字典序列化")
     public DictItem<Object> dataDictItem() {
-        DictItem<Object> build = DictItem.builder().id("1").value(1).text("测试").description("测试").build();
-        return build;
+        return DictItem.builder().id("1").value(1).label("测试").description("测试").build();
     }
 }

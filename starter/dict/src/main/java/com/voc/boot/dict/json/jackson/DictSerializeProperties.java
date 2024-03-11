@@ -1,5 +1,6 @@
 package com.voc.boot.dict.json.jackson;
 
+import com.voc.boot.dict.json.annotation.DictSerialize;
 import com.voc.boot.dict.persist.DataDictItem;
 import com.voc.common.api.dict.DictionaryItem;
 import lombok.Data;
@@ -15,12 +16,12 @@ import java.util.List;
  */
 @Data
 @ConfigurationProperties(prefix = "dict.serialize")
-public class DictItemSerializeProperties {
+public class DictSerializeProperties {
 
     /**
      * 全局默认序列化类型
      */
-    List<SerializeType> type = Collections.singletonList(SerializeType.VALUE);
+    List<DictSerialize.Scope> scopes = Collections.singletonList(DictSerialize.Scope.VALUE);
 
     /**
      * {@link DataDictItem#getId()} 字典标识序列化名称
@@ -33,9 +34,9 @@ public class DictItemSerializeProperties {
     String value = "value";
 
     /**
-     * {@link DictionaryItem#getText()} 字典项显示值序列化名称
+     * {@link DictionaryItem#getLabel()} 字典项显示值序列化名称
      */
-    String text = "text";
+    String label = "label";
 
     /**
      * {@link DictionaryItem#getDescription()}} 字典项描述序列化名称

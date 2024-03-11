@@ -37,19 +37,24 @@ public interface EnumDictItem<V> extends DictionaryItem<V> {
         return ordinal();
     }
 
-    @Override
-    default String getText() {
-        return name().toLowerCase();
-    }
-
     /**
-     * 枚举选项的描述,对一个选项进行详细的描述有时候是必要的.默认值为{@link #getText()}
+     * 枚举选项的描述,对一个选项进行详细的描述有时候是必要的.默认值为 {@code null}
      *
      * @return 描述
      */
     @Override
     default String getDescription() {
-        return getText();
+        return null;
+    }
+
+    /**
+     * 枚举选项的编码,默认值为枚举名称的小写形式
+     *
+     * @return 描述
+     */
+    @Override
+    default String getCode() {
+        return name().toLowerCase();
     }
 
     /**
@@ -65,7 +70,7 @@ public interface EnumDictItem<V> extends DictionaryItem<V> {
                 || getValue() == value
                 || getValue().equals(value)
                 || getValue().toString().equalsIgnoreCase(value.toString())
-                || getText().equalsIgnoreCase(value.toString());
+                || getLabel().equalsIgnoreCase(value.toString());
     }
 
     /**
@@ -108,20 +113,20 @@ public interface EnumDictItem<V> extends DictionaryItem<V> {
     }
 
     /**
-     * 根据枚举的{@link EnumDictItem#getText()}  来查找.
+     * 根据枚举的{@link EnumDictItem#getLabel()}来查找.
      *
-     * @param type Class<T>
-     * @param text String
-     * @param <T>  枚举类型
+     * @param type  Class<T>
+     * @param label String
+     * @param <T>   枚举类型
      * @return 查找到的结果
      * @see #findByCondition(Class, Predicate)
      */
-    static <T extends EnumDictItem> Optional<T> findByText(Class<T> type, String text) {
-        return findByCondition(type, item -> item.getText().equalsIgnoreCase(text)).stream().findFirst();
+    static <T extends EnumDictItem> Optional<T> findByLabel(Class<T> type, String label) {
+        return findByCondition(type, item -> item.getLabel().equalsIgnoreCase(label)).stream().findFirst();
     }
 
     /***
-     * 根据枚举的{@link EnumDictItem#getValue()},{@link EnumDictItem#getText()}来查找.
+     * 根据枚举的{@link EnumDictItem#getValue()},{@link EnumDictItem#getLabel()}来查找.
      * @param type Class<T>
      * @param target Object
      * @param <T> 枚举类型

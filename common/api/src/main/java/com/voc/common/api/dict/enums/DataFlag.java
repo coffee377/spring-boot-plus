@@ -11,7 +11,6 @@ import lombok.Getter;
  * @email coffee377@dingtalk.com
  * @time 2020/10/12 08:56
  */
-@Getter
 @AllArgsConstructor
 public enum DataFlag implements EnumDictItem<Integer> {
 
@@ -22,4 +21,14 @@ public enum DataFlag implements EnumDictItem<Integer> {
     private final Integer value;
     private final String text;
 
+
+    @Override
+    public Integer getValue() {
+        return value;
+    }
+
+    @Override
+    public String getLabel() {
+        return text;
+    }
 }

@@ -17,29 +17,24 @@ public enum OAuth2AuthorizationGrantType implements FuncEnumDictItem<Integer> {
     REFRESH_TOKEN("refresh_token", "刷新令牌", AuthorizationGrantType.REFRESH_TOKEN), // 8
     JWT_BEARER("urn:ietf:params:oauth:grant-type:jwt-bearer", "JWT令牌", AuthorizationGrantType.JWT_BEARER), // 16
     ;
-    private final String text;
-    private final String description;
+    private final String code;
+    private final String label;
     private final AuthorizationGrantType grantType;
 
-    OAuth2AuthorizationGrantType(String text, String description, AuthorizationGrantType grantType) {
-        this.text = text;
-        this.description = description;
+    OAuth2AuthorizationGrantType(String code, String label, AuthorizationGrantType grantType) {
+        this.code = code;
+        this.label = label;
         this.grantType = grantType;
     }
 
     @Override
-    public String getName() {
-        return description;
+    public String getLabel() {
+        return label;
     }
 
     @Override
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
+    public String getCode() {
+        return code;
     }
 
     public AuthorizationGrantType getGrantType() {
@@ -54,4 +49,5 @@ public enum OAuth2AuthorizationGrantType implements FuncEnumDictItem<Integer> {
     public AuthorizationGrantType toGrantType() {
         return grantType;
     }
+
 }

@@ -24,7 +24,7 @@ public interface DictionaryItem<V> extends ISort {
      *
      * @return String
      */
-    String getText();
+    String getLabel();
 
     /**
      * 字典项描述
@@ -32,5 +32,25 @@ public interface DictionaryItem<V> extends ISort {
      * @return String
      */
     String getDescription();
+
+    /**
+     * 字典项编码
+     *
+     * @return String
+     * @since 0.1.4
+     */
+    default String getCode() {
+        return null;
+    }
+
+    /**
+     * 字典项项是否禁用
+     *
+     * @return Boolean
+     * @since 0.1.4
+     */
+    default Boolean isDisabled() {
+        return null;
+    }
 
 }

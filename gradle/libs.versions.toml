@@ -67,6 +67,7 @@ dingtalk-sdk = { group = "com.aliyun", name = "dingtalk", version.ref = "dingtal
 gitlab = { group = "org.gitlab4j", name = "gitlab4j-api", version.ref = "gitlab" }
 
 openapi-generator = { group = "org.openapitools", name = "openapi-generator", version.ref = "openapi-generator" }
+openapi-generator-cli = { group = "org.openapitools", name = "openapi-generator-cli", version.ref = "openapi-generator" }
 # jqsoft
 jq-apis = { group = "net.jqsoft", name = "jq-apis", version.ref = "jq-apis" }
 jq-service = { group = "net.jqsoft", name = "jq-service", version.ref = "jq-service" }

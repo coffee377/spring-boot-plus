@@ -32,7 +32,7 @@ subprojects {
     implementation(enforcedPlatform(project(":spring-plus-dependencies")))
 
     compileOnly("javax.servlet:javax.servlet-api")
-    compileOnly("jakarta.servlet:jakarta.servlet-api")
+//    compileOnly("jakarta.servlet:jakarta.servlet-api")
 
     annotationProcessor("org.projectlombok:lombok")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
@@ -40,8 +40,10 @@ subprojects {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
-      exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+//      exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+    testImplementation("javax.servlet:javax.servlet-api")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
   }
 
   tasks {

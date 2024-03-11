@@ -16,5 +16,5 @@ public enum TokenFormat implements EnumDictItem<Integer> {
     OPAQUE(1, "不透明令牌"),
     ;
     private final Integer value;
-    private final String text;
+    private final String label;
 }

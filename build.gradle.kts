@@ -7,6 +7,10 @@ plugins {
 
 group = "com.voc"
 
+allprojects {
+  extra["jackson-bom.version"] = "2.15.3"
+}
+
 /* 子项目配置 */
 subprojects {
 

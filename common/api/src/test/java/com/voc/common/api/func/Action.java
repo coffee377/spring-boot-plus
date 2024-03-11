@@ -30,8 +30,7 @@ public enum Action implements FunctionPoint {
         return ordinal() + 1;
     }
 
-    @Override
-    public String getDescription() {
+    public String getLabel() {
         return description;
     }
 }

@@ -171,7 +171,7 @@ public interface Functions extends Supplier<BigInteger> {
         public Functions build() {
             BigInteger result = functions;
             if (functions == null) result = BigInteger.ZERO;
-            if (functionPoints != null && functionPoints.size() > 0) {
+            if (functionPoints != null && !functionPoints.isEmpty()) {
                 result = functionPoints.stream()
                         /* functions 中不包含的功能点才累加 */
                         .filter(point -> functions == null || !point.get().or(functions).equals(functions))

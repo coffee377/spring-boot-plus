@@ -1,0 +1,729 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "商务采购",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "供应商管理"
+    }
+  ],
+  "paths": {
+    "/business/supplier": {
+      "get": {
+        "summary": "供应商查询",
+        "x-apifox-folder": "供应商管理",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "operationId": "listUsingGET_9",
+        "tags": [
+          "供应商管理"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "类别(字典枚举)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "名称",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_num",
+            "in": "query",
+            "description": "页码",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "每页条数",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/3911442/apis/api-146954930-run",
+        "security": []
+      },
+      "post": {
+        "summary": "供应商添加",
+        "x-apifox-folder": "供应商管理",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "operationId": "addUsingPOST_7",
+        "tags": [
+          "供应商管理"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CgSupplierManageBO"
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/3911442/apis/api-146954931-run",
+        "security": []
+      }
+    },
+    "/business/supplier/exportation": {
+      "get": {
+        "summary": "供应商导出",
+        "x-apifox-folder": "供应商管理",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "operationId": "exportUsingGET_4",
+        "tags": [
+          "供应商管理"
+        ],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "类别(字典枚举)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "名称",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_num",
+            "in": "query",
+            "description": "page_num",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "page_size",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/3911442/apis/api-146954932-run",
+        "security": []
+      }
+    },
+    "/business/supplier/{id}": {
+      "put": {
+        "summary": "供应商修改",
+        "x-apifox-folder": "供应商管理",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "operationId": "updateUsingPUT_1",
+        "tags": [
+          "供应商管理"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CgSupplierManageBO"
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/3911442/apis/api-146954933-run",
+        "security": []
+      }
+    },
+    "/business/supplier/{id}/status": {
+      "put": {
+        "summary": "更改启用状态",
+        "x-apifox-folder": "供应商管理",
+        "x-apifox-status": "released",
+        "deprecated": false,
+        "description": "",
+        "operationId": "disableUsingPUT",
+        "tags": [
+          "供应商管理"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {},
+                  "x-apifox-orders": [],
+                  "x-apifox-ignore-properties": []
+                }
+              }
+            }
+          }
+        },
+        "x-run-in-apifox": "https://apifox.com/web/project/3911442/apis/api-146954934-run",
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "消息响应": {
+        "title": "消息响应",
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "业务编码",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string",
+            "description": "消息"
+          },
+          "succeed": {
+            "type": "boolean",
+            "description": "是否成功",
+            "examples": [
+              false
+            ]
+          }
+        },
+        "x-apifox-orders": [
+          "code",
+          "msg",
+          "succeed"
+        ],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
+      "CgSupplierManageBO": {
+        "title": "CgSupplierManageBO",
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "地址"
+          },
+          "bank": {
+            "type": "string",
+            "description": "银行名称"
+          },
+          "bankAccount": {
+            "type": "string",
+            "description": "银行账号"
+          },
+          "linkOneName": {
+            "type": "string",
+            "description": "联系人1"
+          },
+          "linkOneTel": {
+            "type": "string",
+            "description": "联系人1电话"
+          },
+          "linkTwoName": {
+            "type": "string",
+            "description": "联系人2"
+          },
+          "linkTwoTel": {
+            "type": "string",
+            "description": "联系人2电话"
+          },
+          "name": {
+            "type": "string",
+            "description": "名称"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注"
+          },
+          "searchNo": {
+            "type": "string",
+            "description": "查找码"
+          }
+        },
+        "description": "供应商信息入参实体",
+        "x-apifox-orders": [
+          "address",
+          "bank",
+          "bankAccount",
+          "linkOneName",
+          "linkOneTel",
+          "linkTwoName",
+          "linkTwoTel",
+          "name",
+          "remark",
+          "searchNo"
+        ],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
+      "列表数据响应«CgSupplierManageVO»": {
+        "title": "列表数据响应«CgSupplierManageVO»",
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "业务编码",
+            "format": "int32"
+          },
+          "data": {
+            "type": "array",
+            "description": "数据列表",
+            "items": {
+              "$ref": "#/components/schemas/CgSupplierManageVO"
+            }
+          },
+          "msg": {
+            "type": "string",
+            "description": "消息"
+          },
+          "succeed": {
+            "type": "boolean",
+            "description": "是否成功",
+            "examples": [
+              false
+            ]
+          },
+          "total": {
+            "type": "integer",
+            "description": "数据条数",
+            "format": "int64"
+          }
+        },
+        "x-apifox-orders": [
+          "code",
+          "data",
+          "msg",
+          "succeed",
+          "total"
+        ],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      },
+      "CgSupplierManageVO": {
+        "title": "CgSupplierManageVO",
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "地址"
+          },
+          "bank": {
+            "type": "string",
+            "description": "银行名称"
+          },
+          "bankAccount": {
+            "type": "string",
+            "description": "银行账号"
+          },
+          "code": {
+            "type": "string",
+            "description": "编码"
+          },
+          "id": {
+            "type": "string",
+            "description": "主键id"
+          },
+          "linkOneName": {
+            "type": "string",
+            "description": "联系人1"
+          },
+          "linkOneTel": {
+            "type": "string",
+            "description": "联系人1电话"
+          },
+          "name": {
+            "type": "string",
+            "description": "名称"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注"
+          },
+          "searchNo": {
+            "type": "string",
+            "description": "查找码"
+          },
+          "status": {
+            "type": "string",
+            "description": " 0:已启用 1:禁用",
+            "enum": [
+              "DISABLE",
+              "ENABLE"
+            ]
+          }
+        },
+        "description": "供应商信息列表返回实体",
+        "x-apifox-orders": [
+          "address",
+          "bank",
+          "bankAccount",
+          "code",
+          "id",
+          "linkOneName",
+          "linkOneTel",
+          "name",
+          "remark",
+          "searchNo",
+          "status"
+        ],
+        "x-apifox-ignore-properties": [],
+        "x-apifox-folder": "Schemas"
+      }
+    },
+    "securitySchemes": {}
+  },
+  "servers": []
+}

@@ -23,6 +23,11 @@ public class ResultSerializer extends JsonSerializer<IResult> {
     private final ResultProperties resultProperties;
     private final JsonField property;
 
+
+    public ResultSerializer() {
+        this(null);
+    }
+
     public ResultSerializer(ResultProperties resultProperties) {
         this.resultProperties = resultProperties;
         this.property = resultProperties.getJson();

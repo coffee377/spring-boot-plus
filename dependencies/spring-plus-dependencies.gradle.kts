@@ -19,13 +19,6 @@ repositories {
   }
 }
 
-repositories {
-  maven {
-    url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-public/")
-    isAllowInsecureProtocol = true
-  }
-}
-
 /* 依赖管理 */
 dependencies {
   /* Spring Boot */
@@ -52,6 +45,13 @@ dependencies {
     api(libs.mybatis.boot)
     api(libs.mybatis.plus.boot)
 
+    api(libs.openapi.generator)
+    api(libs.openapi.generator.cli)
+
+//    api("com.fasterxml.jackson.core:jackson-annotations:2.12.7") {
+//      version { prefer("2.15.3") }
+//    }
+
     api("e-iceblue:spire.xls.free:5.1.0")
     api("com.baomidou:mybatis-plus-boot-starter:3.5.2")
 
@@ -62,6 +62,8 @@ dependencies {
     api(project(":$plus:$plus-dingtalk"))
     api(project(":$plus:$plus-result"))
   }
+
+
 }
 
 publishing {
